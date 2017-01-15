@@ -26,8 +26,8 @@
 		<script type="text/javascript">
 			window.os_map_base = '../';
 			var options = {
-				cluster: true,
-				dimensional_layering: true,
+				cluster: false,
+				dimensional_layering: false,
 				page_id: 'all'
 			};
 			var bundleIds = [];
@@ -39,6 +39,8 @@
 			}
 			loadOsMap(bundleIds, function(main, bundles) {
 				if (bundleIds.length > 0) {
+					options.cluster = true;
+					options.dimensional_layering = true;
 					main.buildMapWithBundleDatas(options, bundles);
 				} else if (main.hasUrlData()) {
 					main.buildMapFromUrl(options);
