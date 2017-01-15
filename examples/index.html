@@ -37,6 +37,9 @@
 			if (window.location.search.indexOf('trigs=true') != -1) {
 				bundleIds.push('trigs/config_all');
 			}
+			if (window.location.search.indexOf('milestones=true') != -1) {
+				bundleIds.push('milestones/config');
+			}
 			loadOsMap(bundleIds, function(main, bundles) {
 				if (bundleIds.length > 0) {
 					options.cluster = true;

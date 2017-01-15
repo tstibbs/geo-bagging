@@ -10,10 +10,7 @@ define(['../abstract_points_builder'],
 				var lng = point[4];
 				var lat = point[5];
 				
-				var lngLat = [lng, lat];
 				var url = "";
-				var physicalType = "*";
-				var condition = "*";
 
 				var classificationStrings = classification.split(';').map(function(classf) {
 					var displayString = this._bundleConfig.dimensionValueLabels[this._bundleConfig.dimensionNames[0]][classf];
@@ -26,7 +23,7 @@ define(['../abstract_points_builder'],
 					'Height': height,
 					'Classifications': classificationStrings
 				};
-				this.addMarker(lngLat[1], lngLat[0], url, name, extraInfos, 'icon', [classification]);
+				this.addMarker(lat, lng, url, name, extraInfos, 'icon', [classification]);
 			},
 		});
 	}
