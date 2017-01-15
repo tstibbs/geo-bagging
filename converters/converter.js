@@ -2,11 +2,12 @@ const Transform = require('stream').Transform;
 const csv = require('csv');
 const fs = require('fs');
 
-function header(attributionString, columnHeaders) {
+function header(attributionString, columnHeaders, lastUpdated) {
 return `{
-"__comment": "${attributionString}",
-"__header": "${columnHeaders}",
-"points_to_load": [
+"attribution": "${attributionString}",
+"headers": "${columnHeaders}",
+"lastUpdated": "${lastUpdated}",
+"data": [
 `;
 }
 const footer = `
@@ -15,16 +16,15 @@ const footer = `
 `;
 
 class HeaderFooterTransformer extends Transform {
-	constructor(attribution, columnHeaders) {
+	constructor(header) {
 		super();
-		this._attribution = attribution;
-		this._columnHeaders = columnHeaders;
+		this._header = header;
 		this._first = true;
 	}
 
 	_transform(chunk, enc, cb) {
 		if (this._first === true) {
-			this.push(header(this._attribution, this._columnHeaders));
+			this.push(this._header);
 			this._first = false;
 		}
 		this.push(chunk);
@@ -39,8 +39,7 @@ class HeaderFooterTransformer extends Transform {
 
 class Converter {
 	constructor(attribution, columnHeaders) {
-		this._attribution = attribution;
-		this._columnHeaders = columnHeaders;
+		this._header = header(attribution, columnHeaders, new Date().toISOString());
 		this._first = true;
 		this._second = true;
 	}
@@ -76,7 +75,7 @@ class Converter {
 	writeOutStream(inputStream, output) {
 		inputStream.pipe(csv.parse())
 			.pipe(csv.transform(this._formatLine.bind(this)))
-			.pipe(new HeaderFooterTransformer(this._attribution, this._columnHeaders))
+			.pipe(new HeaderFooterTransformer(this._header))
 			.pipe(fs.createWriteStream(output));
 	}
 }
