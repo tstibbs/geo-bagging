@@ -1,13 +1,6 @@
-define(['leaflet', 'conversion'],
-	function(leaflet, conversion) {
-	
-		var PointsBuilder = leaflet.Class.extend({
-			initialize: function (config, bundleConfig) {
-				this._markerList = null;
-				this._config = config;
-				this._bundleConfig = bundleConfig;
-			},
-			
+define(['conversion', '../abstract_points_builder'],
+	function(conversion, AbstractPointsBuilder) {
+		return AbstractPointsBuilder.extend({
 			parse: function(point) {
 				//['osgb_gridref','waypoint','name','physical_type','condition'],
 				var gridref = point[0];
@@ -29,58 +22,17 @@ define(['leaflet', 'conversion'],
 					if (console) {console.log(err);}
 					return;
 				}
-				var extraInfos = {
+				var extraTexts = {
 					'Condition': condition,
 					'Physical Type': physicalType
 				};
-				this.add(lngLat, url, name, extraInfos, physicalType, condition);
-			},
-
-			add: function (lngLat, url, name, extraTexts, type, condition) {
-				var lng = lngLat[0];
-				var lat = lngLat[1];
-				
-				var marker = {
-					latLng: [lat, lng],
-					name: name,
-					extraTexts: extraTexts,
-					exportName: name,
-					url: url,
-					icon: type
-				}
-				
-				if (this._config.dimensional_layering) {
-					if (this._markerList == null) {
-						this._markerList = {};
-					}
-					var markersByType = this._markerList[type];
-					if (markersByType == null) {
-						this._markerList[type] = {};
-						markersByType = this._markerList[type];
-					}
-					var markersByCondition = markersByType[condition];
-					if (markersByCondition == null) {
-						markersByType[condition] = [];
-						markersByCondition = markersByType[condition];
-					}
-					markersByCondition.push(marker);
-				} else {
-					if (this._markerList == null) {
-						this._markerList = [];
-					}
-					this._markerList.push(marker);
-				}
+				this.addMarker(lngLat[1], lngLat[0], url, name, extraTexts, physicalType, [physicalType, condition]);
 			},
 			
-			getMarkerList: function() {
-				return this._markerList;
-			},
-			
-			getBundleConfig: function() {
-				return this._bundleConfig;
+			//called from main
+			add: function (lngLat, url, name, extraTexts, physicalType, condition) {
+				this.addMarker(lngLat[1], lngLat[0], url, name, extraTexts, physicalType, [physicalType, condition]);
 			}
 		});
-
-		return PointsBuilder;
 	}
 );

@@ -18,7 +18,7 @@ define(["leaflet", "os_map", "points_view", "config", "params", "conversion", "j
 			
 			buildMapFromUrl: function(options) {
 				this._buildMap(options, {trigs: trigsPointsBundle});
-				var pointsModel = new trigsPointsBundle.parser(this._config);
+				var pointsModel = new trigsPointsBundle.parser(this._config, trigsPointsBundle);
 				var locationsFromUrl = params('trigs');
 				var allPoints = locationsFromUrl.split(";");
 				for (var i = 0; i < allPoints.length; i++) {
@@ -33,7 +33,7 @@ define(["leaflet", "os_map", "points_view", "config", "params", "conversion", "j
 			buildMapWithDummyData: function(options) {
 				this._buildMap(options, {trigs: trigsPointsBundle});
 				//dummy data as an example
-				var pointsModel = new trigsPointsBundle.parser(this._config);
+				var pointsModel = new trigsPointsBundle.parser(this._config, trigsPointsBundle);
 				pointsModel.add(conversion.osgbToLngLat(418678, 385093), 'http://trigpointing.uk/trig/6995', 'Winhill Pike');
 				pointsModel.add(conversion.osgbToLngLat(422816, 385344), 'http://trigpointing.uk/trig/3795', 'High Neb');
 				pointsModel.add(conversion.osgbToLngLat(419762, 390990), 'http://trigpointing.uk/trig/949', 'Back Tor');
