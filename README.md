@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/tstibbs/os-map.svg?branch=master)](https://travis-ci.org/tstibbs/os-map)
+[![Build Status](https://travis-ci.org/tstibbs/geo-bagging.svg?branch=master)](https://travis-ci.org/tstibbs/geo-bagging)
 [![Coverage Status](https://coveralls.io/repos/github/tstibbs/os-map/badge.svg?branch=master)](https://coveralls.io/github/tstibbs/os-map?branch=master)
 [![GitHub issues](https://img.shields.io/github/issues/tstibbs/os-map.svg)](https://github.com/tstibbs/os-map/issues)
 [![bitHound Overall Score](https://www.bithound.io/github/tstibbs/os-map/badges/score.svg)](https://www.bithound.io/github/tstibbs/os-map)
