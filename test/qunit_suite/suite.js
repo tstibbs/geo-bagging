@@ -4,7 +4,6 @@ var testFiles = [
 	"mouseposition_osgb_test.js",
 	"screenposition_osgb_test.js",
 	"points_view_test.js",
-	"points_model_test.js",
 	"conversion_test.js",
 	"mobile_test.js",
 	"params_test.js",

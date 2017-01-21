@@ -165,6 +165,8 @@ define(["Squire", "sinon", "leaflet", "jquery", "points_view", "config", "contro
 					var injector = new Squire();
 					var MatrixlayersMock = sinon.stub();
 					MatrixlayersMock.prototype.addTo = sinon.stub();
+					var addAspectStub = sinon.stub();
+					MatrixlayersMock.prototype.addAspect = addAspectStub;
 					injector.mock('leaflet_matrixlayers', MatrixlayersMock);
 					injector.require(['points_view'],
 						function(PointsView) {
@@ -173,7 +175,7 @@ define(["Squire", "sinon", "leaflet", "jquery", "points_view", "config", "contro
 							//check matrix layers constructor is called
 							assert.ok(MatrixlayersMock.calledOnce, "matrix layer control is needed");
 							//check all markers are added
-							var actualMarkers = MatrixlayersMock.getCall(0).args[2];
+							var actualMarkers = addAspectStub.getCall(0).args[1];
 							assert.ok(getContentText(actualMarkers[type1 + '/' + condition1].getLayers()[0]), name1);
 							assert.ok(getContentText(actualMarkers[type1 + '/' + condition2].getLayers()[0]), name2);
 							assert.ok(getContentText(actualMarkers[type2 + '/' + condition1].getLayers()[0]), name3);
@@ -209,8 +211,9 @@ define(["Squire", "sinon", "leaflet", "jquery", "points_view", "config", "contro
 			var config = new Config(options, [bundle]);
 			var pointsModel = {};
 			pointsModel.getMarkerList = function() {return markerList};
+			pointsModel.getBundleConfig = function() {return bundle};
 			var layers = {};
-			var pointsView = new PointsView(map, config, pointsModel, new Controls(config, layers), layers);
+			var pointsView = new PointsView(map, config, {testbundle: pointsModel}, new Controls(config, layers), layers);
 			return pointsView;
 		}
 		
