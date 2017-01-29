@@ -4,25 +4,41 @@ const CombinedStream = require('combined-stream2');
 const stream = require('stream');
 
 const Converter = require('./converter');
+const gridconversion = require('./gridconversion');
 
 const inputDir = 'milestones-input';
 
 const attributionString = "This file adapted from the the database of 'The Milestone Society' (http://www.milestonesociety.co.uk/database.html).";
-const columnHeaders = "[Type,National_ID,Grid_Reference,Category]"
+const columnHeaders = "[Type,National_ID,Longitude,Latitude,Category]"
 
 class WaypointsConverter extends Converter {
 	constructor() {
 		super(attributionString, columnHeaders);
 	}
 	
+	_convertGridRef(gridRef) {
+		try {
+			return gridconversion.gridRefToLngLat(gridRef)
+		} catch (err) {
+			console.log(err);
+			return null;
+		}
+	}
+	
 	extractColumns(record) {
 		if (record.length > 1) {
-			return [
-				record[0], //type based on source file
-				record[1], //National_ID
-				record[5], //Grid_Reference
-				record[11] //Category
-			];
+			let lngLat = this._convertGridRef(record[5]);
+			if (lngLat != null) {
+				return [
+					record[0], //type based on source file
+					record[1], //National_ID
+					lngLat[0], //lng
+					lngLat[1], //lat
+					record[11] //Category
+				];
+			} else {
+				return null; //invalid lat/lng so don't export this row
+			}
 		} else {
 			return null;
 		}

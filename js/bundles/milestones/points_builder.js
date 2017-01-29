@@ -1,27 +1,20 @@
-define(['conversion', '../abstract_points_builder'],
-	function(conversion, AbstractPointsBuilder) {
+define(['../abstract_points_builder'],
+	function(AbstractPointsBuilder) {
 		return AbstractPointsBuilder.extend({
 			parse: function(point, pointsModel) {
-				//[Type,National_ID,Grid_Reference,Category],
+				//[Type,National_ID,Long,Lat,Category],
 				var type = point[0];
 				var id = point[1];
-				var gridref = point[2];
-				var category = point[3];
-				
-				var lngLat;
-				try {
-					lngLat = conversion.gridRefToLngLat(gridref);	
-				} catch (err) {
-					if (console) {console.log(err);}
-					return;
-				}
+				var lng = point[2];
+				var lat = point[3];
+				var category = point[4];
 				
 				var url = "";
 				
 				var extraInfos = {
-					'Category': category
+					'Notes': category
 				};
-				this.addMarker(lngLat[1], lngLat[0], url, id, extraInfos, 'icon', [type]);
+				this.addMarker(lat, lng, url, id, extraInfos, 'icon', [type]);
 			},
 		});
 	}
