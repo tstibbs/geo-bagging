@@ -9,37 +9,40 @@ define(['leaflet'],
 			},
 			
 			addMarker: function (lat, lng, url, name, extraTexts, icon, dimensionValues) {
-				var marker = {
-					latLng: [lat, lng],
-					name: name,
-					extraTexts: extraTexts,
-					exportName: name,
-					url: url,
-					icon: icon
-				}
+				var latLng = [parseFloat(lat), parseFloat(lng)];
+				if (this._config.markerConstraints == null || this._config.markerConstraints.contains(latLng)) {
+					var marker = {
+						latLng: latLng,
+						name: name,
+						extraTexts: extraTexts,
+						exportName: name,
+						url: url,
+						icon: icon
+					}
 				
-				if (this._config.dimensional_layering || dimensionValues == null || dimensionValues.length == 0) {
-					if (this._markerList == null) {
-						this._markerList = {};
-					}
-					var currentMap = this._markerList;
-					for (var i = 0; i < dimensionValues.length - 1; i++) { // all but the last one
-						var key = dimensionValues[i];
-						if (currentMap[key] == null) {
-							currentMap[key] = {};
+					if (this._config.dimensional_layering || dimensionValues == null || dimensionValues.length == 0) {
+						if (this._markerList == null) {
+							this._markerList = {};
 						}
-						currentMap = currentMap[key];
+						var currentMap = this._markerList;
+						for (var i = 0; i < dimensionValues.length - 1; i++) { // all but the last one
+							var key = dimensionValues[i];
+							if (currentMap[key] == null) {
+								currentMap[key] = {};
+							}
+							currentMap = currentMap[key];
+						}
+						var lastKey = dimensionValues[dimensionValues.length - 1];
+						if (currentMap[lastKey] == null) {
+							currentMap[lastKey] = []; // set the last level to be an array
+						}
+						currentMap[lastKey].push(marker);
+					} else {
+						if (this._markerList == null) {
+							this._markerList = [];
+						}
+						this._markerList.push(marker);
 					}
-					var lastKey = dimensionValues[dimensionValues.length - 1];
-					if (currentMap[lastKey] == null) {
-						currentMap[lastKey] = []; // set the last level to be an array
-					}
-					currentMap[lastKey].push(marker);
-				} else {
-					if (this._markerList == null) {
-						this._markerList = [];
-					}
-					this._markerList.push(marker);
 				}
 			},
 			
