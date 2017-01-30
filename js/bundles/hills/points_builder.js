@@ -2,13 +2,13 @@ define(['../abstract_points_builder'],
 	function(AbstractPointsBuilder) {
 		return AbstractPointsBuilder.extend({
 			parse: function(point, pointsModel) {
-				//["Number","Name","Classification","Metres","Longitude","Latitude"],
-				var number = point[0];
-				var name = point[1];
-				var classification = point[2];
-				var height = point[3];
-				var lng = point[4];
-				var lat = point[5];
+				//[Longitude,Latitude,Id,Name,Classification,Height(m)]
+				var lng = point[0];
+				var lat = point[1];
+				var id = point[2];
+				var name = point[3];
+				var classification = point[4];
+				var height = point[5];
 				
 				var url = "";
 

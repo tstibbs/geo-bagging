@@ -1,6 +1,7 @@
 const Transform = require('stream').Transform;
 const csv = require('csv');
 const fs = require('fs');
+const gridconversion = require('./gridconversion');
 
 function header(attributionString, columnHeaders, lastUpdated) {
 return `{
@@ -43,6 +44,19 @@ class Converter {
 		this._first = true;
 		this._second = true;
 	}
+	
+	_convertGridRef(gridRef) {
+		try {
+			let lngLat = gridconversion.gridRefToLngLat(gridRef);
+			//don't need more precision than 0.00001 because we can't display it. So no point sending all that data back from the server
+			let lng = parseFloat(lngLat[0].toFixed(5));
+			let lat = parseFloat(lngLat[1].toFixed(5));
+			return [lng, lat];
+		} catch (err) {
+			console.log(err);
+			return null;
+		}
+	}
 
 	_formatLine(record) {
 		if (this._first === true) { // header row
@@ -69,7 +83,7 @@ class Converter {
 	}
 
 	writeOut(input, output) {
-		writeOutStream(fs.createReadStream(input), output);
+		this.writeOutStream(fs.createReadStream(input), output);
 	}
 
 	writeOutStream(inputStream, output) {
