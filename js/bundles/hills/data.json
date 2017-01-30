@@ -1,7 +1,8 @@
 {
-"__comment": "This file adapted from the The Database of British and Irish Hills (http://www.hills-database.co.uk/downloads.html), licenced under CC BY 3.0 (https://creativecommons.org/licenses/by/3.0/deed.en_GB)",
-"__header": "[Number,Name,Classification,Height(m),Longitude,Latitude]",
-"points_to_load": [
+"attribution": "This file adapted from the The Database of British and Irish Hills (http://www.hills-database.co.uk/downloads.html), licenced under CC BY 3.0 (https://creativecommons.org/licenses/by/3.0/deed.en_GB)",
+"headers": "[Number,Name,Classification,Height(m),Longitude,Latitude]",
+"lastUpdated": "2017-01-07T12:11:17.480Z",
+"data": [
 ["1","Ben Chonzie","Ma;M;Sim","931","-3.992057","56.453851"],
 ["2","Creagan na Beinne","Ma;C;Sim","888","-4.041691","56.506918"],
 ["3","Creag Uchdag","Ma;C;Sim","879","-4.098107","56.465278"],

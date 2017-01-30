@@ -20,7 +20,8 @@ define(["leaflet", "jquery", "global", "params"],
 			icons: {},
 			dimensionNames: [],
 			dimensionValueLabels: {},
-			defaultLayer: "OS"
+			defaultLayer: "OS",
+			markerConstraints: null //e.g. will constrain it to show only those markers within a bounding boc
 		};
 
 		var Config = leaflet.Class.extend({
@@ -42,6 +43,14 @@ define(["leaflet", "jquery", "global", "params"],
 				}
 				if (params('startZoom')) {
 					resolvedConfig.initial_zoom = params('startZoom');
+				}
+				if (params('constraints')) {
+					var points = params('constraints').split(','); //lat,lng,lat,lng
+					var tlLat = parseFloat(points[0]);
+					var tlLng = parseFloat(points[1]);
+					var brLat = parseFloat(points[2]);
+					var brLng = parseFloat(points[3]);
+					resolvedConfig.markerConstraints = leaflet.latLngBounds([tlLat, tlLng], [brLat, brLng]);
 				}
 				
 				//set all values locally so that the exporter object works like a hash

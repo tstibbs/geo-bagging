@@ -25,26 +25,8 @@
 		<script src='../js/loader.js'></script>
 		<script type="text/javascript">
 			window.os_map_base = '../';
-			var options = {
-				cluster: true,
-				dimensional_layering: true,
-				page_id: 'all'
-			};
-			var bundleIds = [];
-			if (window.location.search.indexOf('hills=true') != -1) {
-				bundleIds.push('hills/config');
-			}
-			if (window.location.search.indexOf('trigs=true') != -1) {
-				bundleIds.push('trigs/config_all');
-			}
-			loadOsMap(bundleIds, function(main, bundles) {
-				if (bundleIds.length > 0) {
-					main.buildMapWithBundleDatas(options, bundles);
-				} else if (main.hasUrlData()) {
-					main.buildMapFromUrl(options);
-				} else {
-					main.buildMapWithDummyData(options);
-				}
+			loadOsMap([], function(main) {
+				main.loadMap({});
 			});
 		</script>
 	</head>

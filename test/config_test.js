@@ -60,42 +60,6 @@ define(["config"],
 					assert.equal(6, newConfig2.blah);
 				});
 			});
-			QUnit.module('bundles', function() {
-				QUnit.test('can load without bundles', function(assert) {
-					var config = new Config({page_id: 'abc'});
-					assert.ok(true);//no error occured
-				});
-				QUnit.test('bundle overrides defaults', function(assert) {
-					var bundle = {
-						blah: 'thing'
-					}
-					var config = new Config({blah: 'stuff'}, [bundle]);
-					assert.equal(config.blah, bundle.blah);
-				});
-				QUnit.test('bundles override each other', function(assert) {
-					var bundle1 = {
-						blah: 'thing'
-					}
-					var bundle2 = {
-						blah: 'xyz'
-					}
-					var config = new Config({blah: 'stuff'}, [bundle1, bundle2]);
-					assert.equal(config.blah, bundle2.blah);
-				});
-				QUnit.test('saved config overrides bundles', function(assert) {
-					//set up
-					var savedValue= 'lmnop';
-					var config1 = new Config();
-					config1.persist({blah: savedValue});
-					assert.equal(savedValue, (new Config()).blah);//check it's been persisted correctly
-					//test
-					var bundle = {
-						blah: 'abc'
-					}
-					var config2 = new Config({blah: 'xyz'}, [bundle]);
-					assert.equal(config2.blah, savedValue);
-				});
-			});
 		});
 	}
 );

@@ -22,17 +22,8 @@
 		<script src='../js/loader.js'></script>
 		<script type="text/javascript">
 			window.os_map_base = '../';
-			var options = {
-				cluster: false,
-				initial_zoom: 10,
-				start_position: [54.454463, -3.213515],
-				show_search_control: false,
-				show_locate_control: false,
-				show_hider_control: true,
-				hider_control_start_visible: false
-			};
-			loadOsMap(['trigs/config_mini'], function(main, bundles){
-				main.buildMapWithBundleDatas(options, bundles);
+			loadOsMap([], function(main){
+				main.loadMiniMap({}, ['trigs/config_mini']);
 			});
 		</script>
 	</head>

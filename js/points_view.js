@@ -82,13 +82,15 @@ define(["underscore", "leaflet", "leaflet_cluster", "leaflet_subgroup", "leaflet
 			},
 
 			_translateMarkerGroup: function(group, bundleConfig) {
-				if (group.constructor === Array) {
-					group.forEach(function(markerConfig, i, group) {
-						group[i] = this._translateMarker(markerConfig, bundleConfig);
-					}, this);
-				} else { //is hash
-					for (dimension in group) {
-						group[dimension] = this._translateMarkerGroup(group[dimension], bundleConfig);
+				if (group != null) {
+					if (group.constructor === Array) {
+						group.forEach(function(markerConfig, i, group) {
+							group[i] = this._translateMarker(markerConfig, bundleConfig);
+						}, this);
+					} else { //is hash
+						for (dimension in group) {
+							group[dimension] = this._translateMarkerGroup(group[dimension], bundleConfig);
+						}
 					}
 				}
 				return group;
@@ -115,7 +117,9 @@ define(["underscore", "leaflet", "leaflet_cluster", "leaflet_subgroup", "leaflet
 					var markerLists = Object.keys(this._modelsByAspect).map(function(aspect) {
 						var model = this._modelsByAspect[aspect]
 						return this._translateMarkerGroup(model.getMarkerList(), model.getBundleConfig());
-					}.bind(this));
+					}.bind(this)).filter(function(value) {
+						return value != null;
+					});
 					var markerList = [].concat.apply([], markerLists);
 					if (this._config.cluster) {
 						parentGroup.addLayers(markerList);
@@ -129,25 +133,27 @@ define(["underscore", "leaflet", "leaflet_cluster", "leaflet_subgroup", "leaflet
 						multiAspects: true
 					});
 					for (var aspect in this._modelsByAspect) {
-						var model = this._modelsByAspect[aspect]
-						var markerList = this._translateMarkerGroup(model.getMarkerList(), model.getBundleConfig());
-						var matrixOverlays = {};
-						var iter = function(markers, path) {
-							if (markers.constructor === Array) {
-								var subGroup = leaflet.featureGroup.subGroup(parentGroup, markers);
-								//don't add to the map yet - let the layer control do that if it thinks it needs to - otherwise we could add all layers then immediately try to remove them all, which can cause UI weirdness
-								matrixOverlays[path] = subGroup;
-							} else {
-								Object.keys(markers).forEach(function (dimValue) {
-									var newPath = path.length == 0 ? dimValue : path + '/' + dimValue;
-									var sublist = markers[dimValue];
-									iter(sublist, newPath);
-								});
+						var model = this._modelsByAspect[aspect];
+						if (model.getMarkerList() != null) {
+							var markerList = this._translateMarkerGroup(model.getMarkerList(), model.getBundleConfig());
+							var matrixOverlays = {};
+							var iter = function(markers, path) {
+								if (markers.constructor === Array) {
+									var subGroup = leaflet.featureGroup.subGroup(parentGroup, markers);
+									//don't add to the map yet - let the layer control do that if it thinks it needs to - otherwise we could add all layers then immediately try to remove them all, which can cause UI weirdness
+									matrixOverlays[path] = subGroup;
+								} else {
+									Object.keys(markers).forEach(function (dimValue) {
+										var newPath = path.length == 0 ? dimValue : path + '/' + dimValue;
+										var sublist = markers[dimValue];
+										iter(sublist, newPath);
+									});
+								}
 							}
+							iter(markerList, '');
+							var aspectOptions = this._config.bundles[aspect];//will have other options, but collisions are unlikely
+							control.addAspect(aspect, matrixOverlays, aspectOptions);
 						}
-						iter(markerList, '');
-						var aspectOptions = this._config.bundles[aspect];//will have other options, but collisions are unlikely
-						control.addAspect(aspect, matrixOverlays, aspectOptions);
 					}
 					//override the basic layers control
 					this._controls.addControl(control);

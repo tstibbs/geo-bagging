@@ -1,8 +1,8 @@
-[![Build Status](https://travis-ci.org/tstibbs/os-map.svg?branch=master)](https://travis-ci.org/tstibbs/os-map)
-[![Coverage Status](https://coveralls.io/repos/github/tstibbs/os-map/badge.svg?branch=master)](https://coveralls.io/github/tstibbs/os-map?branch=master)
-[![GitHub issues](https://img.shields.io/github/issues/tstibbs/os-map.svg)](https://github.com/tstibbs/os-map/issues)
-[![bitHound Overall Score](https://www.bithound.io/github/tstibbs/os-map/badges/score.svg)](https://www.bithound.io/github/tstibbs/os-map)
-[![GitHub license](https://img.shields.io/badge/license-Apache%202-blue.svg)](https://raw.githubusercontent.com/tstibbs/os-map/master/LICENSE)
+[![Build Status](https://travis-ci.org/tstibbs/geo-bagging.svg?branch=master)](https://travis-ci.org/tstibbs/geo-bagging)
+[![Coverage Status](https://coveralls.io/repos/github/tstibbs/geo-bagging/badge.svg?branch=master)](https://coveralls.io/github/tstibbs/geo-bagging?branch=master)
+[![GitHub issues](https://img.shields.io/github/issues/tstibbs/geo-bagging.svg)](https://github.com/tstibbs/geo-bagging/issues)
+[![bitHound Overall Score](https://www.bithound.io/github/tstibbs/geo-bagging/badges/score.svg)](https://www.bithound.io/github/tstibbs/geo-bagging)
+[![GitHub license](https://img.shields.io/badge/license-Apache%202-blue.svg)](https://raw.githubusercontent.com/tstibbs/geo-bagging/master/LICENSE)
 [![Build Status](https://saucelabs.com/buildstatus/tstibbs)](https://saucelabs.com/beta/builds/5e191601dd4c46cd9c06b041910365ed)
 [![Build Status](https://saucelabs.com/browser-matrix/tstibbs.svg)](https://saucelabs.com/beta/builds/5e191601dd4c46cd9c06b041910365ed)
 
@@ -13,11 +13,11 @@ OS OpenSpace doesn't have the 1:25,000 mapping and the embeddable Bing client is
 Because I wanted to learn about require. The page load time seems to increase significantly with require, so I'd probably remove it if wanted to use this code for something in production.
 
 ## How can I try it?
-[Basic map demo](https://tstibbs.github.io/os-map/examples/index.html)
+[Basic map demo](https://tstibbs.github.io/geo-bagging/examples/index.html)
 
-[Map showing many markers with a category-based selector](https://tstibbs.github.io/os-map/examples/index.html?trigs=true&hills=true)
+[Map showing many markers with a category-based selector](https://tstibbs.github.io/geo-bagging/examples/index.html?trigs=true&hills=true)
 
-[Mini-map that can be embedded into a page](https://tstibbs.github.io/os-map/examples/mini.html)
+[Mini-map that can be embedded into a page](https://tstibbs.github.io/geo-bagging/examples/mini.html)
 
 ## Does it support mobile devices?
 In theory yes. If we detect that you are using a mobile device then the mouse pointer positioning stuff goes away and the coordinates instead show the location that is at the centre of the bit of the map you are currently viewing. Leaflet itself [already supports mobile devices](http://leafletjs.com/examples/mobile.html).
@@ -26,7 +26,7 @@ In theory yes. If we detect that you are using a mobile device then the mouse po
 OS maps are actually quite colourful and creating an icon that stands out regardless of the map beneath it was surprisingly difficult. However, it's just a placeholder really as I'm aware that my graphic design skills are pretty limited - so I'm more than happy to receive suggestions!
 
 ## Unit tests
-There are some basic unit tests covering some of the functionality. To run these go here https://tstibbs.github.io/os-map/test/qunit_suite/test.html or run these commands:
+There are some basic unit tests covering some of the functionality. To run these go here https://tstibbs.github.io/geo-bagging/test/qunit_suite/test.html or run these commands:
 ```
 npm install
 npm test
