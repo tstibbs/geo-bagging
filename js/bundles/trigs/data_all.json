@@ -1,6 +1,7 @@
 {
-	"__comment": "[osgb_gridref,waypoint,name,physical_type,condition],",
-	"points_to_load": [
+	"headers": "[osgb_gridref,waypoint,name,physical_type,condition],",
+	"lastUpdated": "2017-01-07T12:11:17.480Z",
+	"data": [
 		["HU 62229 93521","TP0001","Fetlar","Pillar","Good"],
 		["NG 76500 89127","TP0002","An Cuaidh","Pillar","Good"],
 		["NL 70095 98813","TP0003","Barra Differential","Bolt","Unknown"],

@@ -1,6 +1,7 @@
 {
-	"__comment": "[osgb_gridref,waypoint,name,physical_type,condition],",
-	"points_to_load": [
+	"headers": "[osgb_gridref,waypoint,name,physical_type,condition],",
+	"lastUpdated": "2017-01-07T12:11:17.480Z",
+	"data": [
 		["NY 14436 21763","TP0102","Loweswater","Surface Block","Good"],
 		["NY 14327 19498","TP12818","Mellbreak","Buried Block","Not Logged"],
 		["NY 27849 24656","TP16488","Latrigg","Buried Block","Unknown"],
