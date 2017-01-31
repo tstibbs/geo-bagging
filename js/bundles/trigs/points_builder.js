@@ -20,7 +20,7 @@ define(['conversion', '../abstract_points_builder'],
 					'Condition': condition,
 					'Physical Type': physicalType
 				};
-				this.addMarker(lng, lat, url, name, extraTexts, physicalType, [physicalType, condition]);
+				this.addMarker(lat, lng, url, name, extraTexts, physicalType, [physicalType, condition]);
 			},
 			
 			//called from main
