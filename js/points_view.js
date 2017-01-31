@@ -71,6 +71,8 @@ define(["underscore", "leaflet", "leaflet_cluster", "leaflet_subgroup", "leaflet
 				var markerOptions = {};
 				if (bundleConfig.icons != null && bundleConfig.icons[icon] != null) {
 					markerOptions.icon = bundleConfig.icons[icon];
+				} else if (bundleConfig.defaultIcon != null) {
+					markerOptions.icon = bundleConfig.defaultIcon;
 				}
 				var marker = leaflet.marker(latLng, markerOptions);
 				marker.bindPopup(popupText);
