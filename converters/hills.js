@@ -1,7 +1,10 @@
+const unzip = require('unzip');
+const fs = require('fs');
+
 const Converter = require('./converter');
 
 const attributionString = "This file adapted from the The Database of British and Irish Hills (http://www.hills-database.co.uk/downloads.html), licenced under CC BY 3.0 (https://creativecommons.org/licenses/by/3.0/deed.en_GB)";
-const columnHeaders = "[Number,Name,Classification,Height(m),Longitude,Latitude]"
+const columnHeaders = "[Longitude,Latitude,Id,Name,Classification,Height(m)]"
 
 const classesMap = { //used for mapping and filtering, by filtering in only the things we want
 	'Ma': 'Ma',
@@ -60,13 +63,13 @@ class HillConverter extends Converter {
 			if (allClasses.length > 0) {
 				classification = allClasses.join(';');
 				return [
+					record[34], //Longitude
+					record[33], //Latitude
 					record[0], //Number
 					record[1], //Name
 					classification, //Classification
 					record[13], //Metres
 					//record[30], //hill-bagging link //they appear to all just be http://www.hill-bagging.co.uk/googlemaps.php?qu=S&rf=[id] but some of them are different - so we'll construct them ourselves on the front end
-					record[34], //Longitude
-					record[33], //Latitude
 				];
 			} else {
 				return null;
@@ -77,4 +80,11 @@ class HillConverter extends Converter {
 	}
 }
 
-(new HillConverter()).writeOut('hills.csv', '../js/bundles/hills/data.json');
+
+
+fs.createReadStream('hills-input/hillcsv.zip')
+	.pipe(unzip.Parse())
+	.on('entry', function (entry) {
+		var fileName = entry.path;
+		(new HillConverter()).writeOutStream(entry, '../js/bundles/hills/data.json');
+	});

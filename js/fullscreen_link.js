@@ -7,7 +7,7 @@ define(['jquery'],
 				link.click(function() {
 					var zoom = leafletMap.getZoom();
 					var centre = leafletMap.getCenter();
-					var newUrl = '25k-layers.html?startPosition=' + centre.lat + ',' + centre.lng + '&startZoom=' + zoom;
+					var newUrl = 'index.html?datasources=trigs&startPosition=' + centre.lat + ',' + centre.lng + '&startZoom=' + zoom;
 					window.location.href = newUrl;
 				});
 				$('div.full-screen-link').append(link);

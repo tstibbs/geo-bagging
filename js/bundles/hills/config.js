@@ -1,5 +1,5 @@
-define(['leaflet', './points_builder'],
-	function(leaflet, PointsBuilder) {
+define(['leaflet', './points_builder', 'custom_default_icon'],
+	function(leaflet, PointsBuilder, CustomDefaultIcon) {
 
 		var dimensionNames = ['Hills'];
 		var dimensionValueLabels = {};
@@ -22,8 +22,11 @@ define(['leaflet', './points_builder'],
 			'TU': 'Tump',
 			'W': 'Wainwright'
 		};
-		
+
+		var redIconPath = window.os_map_base + 'img/hill.png';
+
 		return {
+			defaultIcon: new CustomDefaultIcon(redIconPath, {iconUrl: redIconPath}),
 			dimensionNames: dimensionNames,
 			dimensionValueLabels: dimensionValueLabels,
 			dataToLoad: 'data.json',
