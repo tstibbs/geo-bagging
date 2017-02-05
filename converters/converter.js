@@ -39,8 +39,10 @@ class HeaderFooterTransformer extends Transform {
 }
 
 class Converter {
-	constructor(attribution, columnHeaders) {
+	constructor(attribution, columnHeaders, axisIndexes) {
 		this._header = header(attribution, columnHeaders, new Date().toISOString());
+		this._axisIndexes = axisIndexes;
+		this._axes = [];
 		this._first = true;
 		this._second = true;
 	}
@@ -65,6 +67,14 @@ class Converter {
 		} else {
 			let columns = this.extractColumns(record);
 			if (columns != null) {
+				if (this._axisIndexes != null) {
+					for (let i = 0; i < this._axisIndexes.length; i++) {
+						if (this._axes[i] == null) {
+							this._axes[i] = new Set();
+						}
+						this._axes[i].add(columns[this._axisIndexes[i]]);
+					}
+				}
 				let columnString = JSON.stringify(columns);
 				if (this._second) {
 					this._second = false;
@@ -86,11 +96,19 @@ class Converter {
 		this.writeOutStream(fs.createReadStream(input), output);
 	}
 
-	writeOutStream(inputStream, output) {
-		inputStream.pipe(csv.parse())
+	writeOutStream(readable, output) {
+		this.writeOutParsedStream(readable.pipe(csv.parse()));
+	}
+
+	writeOutParsedStream(readable, output) {
+		let writeStream = fs.createWriteStream(output);
+		readable
 			.pipe(csv.transform(this._formatLine.bind(this)))
 			.pipe(new HeaderFooterTransformer(this._header))
-			.pipe(fs.createWriteStream(output));
+			.pipe(writeStream);
+		writeStream.on('finish', () => {
+			console.log(this._axes);
+		});
 	}
 }
 
