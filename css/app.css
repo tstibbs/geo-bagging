@@ -39,7 +39,7 @@ div.mini-map {
 }
 
 #loading-message-pane {
-	z-index: 10;
+	z-index: 1999;
 }
 
 .leaflet-container .leaflet-control-mapcentercoord, .leaflet-container .leaflet-control-mouseposition {
