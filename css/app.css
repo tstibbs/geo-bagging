@@ -104,4 +104,19 @@ div#error-container a#dismiss-button {
     list-style-position: inside;
     padding-left: 8px;
     margin-top: 0px;
+    margin-bottom: 0px;
+}
+
+.openLinkHoverable {	text-align: right;
+}
+
+/* when not hovering, hide links but keep their width to ensure the popup is appropriately sized when they do appear */
+.openLinkHoverable .links {
+	visibility: hidden;
+	height: 0px;
+}
+
+.openLinkHoverable:hover .links {
+	visibility: visible;
+	height: initial;
 }
