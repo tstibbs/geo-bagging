@@ -1,7 +1,7 @@
 define(['../abstract_points_builder'],
 	function(AbstractPointsBuilder) {
 		return AbstractPointsBuilder.extend({
-			parse: function(point, pointsModel) {
+			parse: function(point) {
 				//[Longitude,Latitude,Id,Name,Classification,Height(m)]
 				var lng = point[0];
 				var lat = point[1];
@@ -23,7 +23,7 @@ define(['../abstract_points_builder'],
 					'Height': height,
 					'Classifications': classificationStrings
 				};
-				this.addMarker(lat, lng, url, name, extraInfos, 'icon', [classification]);
+				this.addMarker(lat, lng, url, name, extraInfos, null, [classification]);
 			},
 		});
 	}
