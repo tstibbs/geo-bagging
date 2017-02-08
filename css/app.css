@@ -107,16 +107,26 @@ div#error-container a#dismiss-button {
     margin-bottom: 0px;
 }
 
-.openLinkHoverable {	text-align: right;
+/* links section */
+
+.expandable-links {
+	text-align: right;
 }
 
-/* when not hovering, hide links but keep their width to ensure the popup is appropriately sized when they do appear */
-.openLinkHoverable .links {
+.expandable-checkbox {
+	display: none;
+}
+
+.expandable-checkbox-label {
+	cursor: pointer;
+}
+
+.expandable-checkbox:not(checked) ~ .expandable-content {
 	visibility: hidden;
+	/* when not showing, hide links but keep their width to ensure the popup is appropriately sized when they do appear */
 	height: 0px;
 }
-
-.openLinkHoverable:hover .links {
-	visibility: visible;
+.expandable-checkbox:checked ~ .expandable-content {
+	visibility: initial;
 	height: initial;
 }

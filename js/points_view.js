@@ -46,13 +46,14 @@ define(["underscore", "leaflet", "leaflet_cluster", "leaflet_subgroup", "leaflet
 				var bingUrl = 'https://www.bing.com/maps/?mkt=en-gb&v=2&cp=' + lat + '~' + lng + '&lvl=14&sp=Point.' + lat + '_' + lng + '_' + name;
 				var geohackUrl = 'https://tools.wmflabs.org/geohack/geohack.php?pagename=' + name + '&params=' + lat + '_N_' + lng + '_E_region%3AGB_';
 				
-				popupText += '<div class="openLinkHoverable">';
-				popupText += '<span><a href="' + googleUrl + '"><i class="fa fa-external-link" aria-hidden="true"></i></a></span>'; //icon is also a link as a fallback for mobile devices
-				popupText += '<div class="links">';
-				popupText += '<a href="' + googleUrl + '">View on google maps</a>';
-				popupText += '<br /><a href="' + bingUrl + '">View on bing maps</a>';
-				popupText += '<br /><a href="' + geohackUrl + '">View on geohack</a>';
-				popupText += '</div>';
+				popupText += '<div class="expandable expandable-links">';
+					popupText += '<input type="checkbox" value="selected" id="links-checkbox" class="expandable-checkbox">';
+					popupText += '<label for="links-checkbox" class="expandable-checkbox-label"><i class="fa fa-external-link" aria-hidden="true"></i></label>';
+					popupText += '<div class="expandable-content links">';
+						popupText += '<a href="' + googleUrl + '">View on google maps</a>';
+						popupText += '<br /><a href="' + bingUrl + '">View on bing maps</a>';
+						popupText += '<br /><a href="' + geohackUrl + '">View on geohack</a>';
+					popupText += '</div>';
 				popupText += '</div>';
 
 				return popupText;
