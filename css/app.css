@@ -39,7 +39,7 @@ div.mini-map {
 }
 
 #loading-message-pane {
-	z-index: 10;
+	z-index: 1999;
 }
 
 .leaflet-container .leaflet-control-mapcentercoord, .leaflet-container .leaflet-control-mouseposition {
@@ -104,4 +104,29 @@ div#error-container a#dismiss-button {
     list-style-position: inside;
     padding-left: 8px;
     margin-top: 0px;
+    margin-bottom: 0px;
+}
+
+/* links section */
+
+.expandable-links {
+	text-align: right;
+}
+
+.expandable-checkbox {
+	display: none;
+}
+
+.expandable-checkbox-label {
+	cursor: pointer;
+}
+
+.expandable-checkbox:not(checked) ~ .expandable-content {
+	visibility: hidden;
+	/* when not showing, hide links but keep their width to ensure the popup is appropriately sized when they do appear */
+	height: 0px;
+}
+.expandable-checkbox:checked ~ .expandable-content {
+	visibility: initial;
+	height: initial;
 }
