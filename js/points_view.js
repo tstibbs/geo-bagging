@@ -1,5 +1,5 @@
-define(["underscore", "leaflet", "leaflet_cluster", "leaflet_subgroup", "leaflet_matrixlayers"],
-	function(_, leaflet, leaflet_cluster, leaflet_subgroup, Leaflet_MatrixLayers) {
+define(["underscore", "jquery", "leaflet", "leaflet_cluster", "leaflet_subgroup", "leaflet_matrixlayers"],
+	function(_, $, leaflet, leaflet_cluster, leaflet_subgroup, Leaflet_MatrixLayers) {
 	
 		var PointsView = leaflet.Class.extend({
 			initialize: function (map, config, modelsByAspect, controls, layers) {
@@ -123,7 +123,11 @@ define(["underscore", "leaflet", "leaflet_cluster", "leaflet_subgroup", "leaflet
 			finish: function (finished) {
 				var parentGroup = null;
 				if (this._config.cluster) {
+					var mapElem = $('div#map');
+					var radius = (Math.max(mapElem[0].offsetHeight, mapElem[0].offsetWidth) / 10);
 					parentGroup = leaflet_cluster({
+						disableClusteringAtZoom: 15,
+						maxClusterRadius: radius,
 						chunkedLoading: true,
 						chunkProgress: function (processed, total, elapsed, layersArray) {
 							if (processed === total) {
