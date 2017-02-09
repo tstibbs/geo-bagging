@@ -1,5 +1,5 @@
-define(["leaflet", "jquery", "global", "params"],
-	function(leaflet, $, global, params) {
+define(["leaflet", "jquery", "global", "params", "conversion"],
+	function(leaflet, $, global, params, conversion) {
 		
 		var defaultPageId = global.location.pathname.split("/").pop();
 		
@@ -45,12 +45,26 @@ define(["leaflet", "jquery", "global", "params"],
 					resolvedConfig.initial_zoom = params('startZoom');
 				}
 				if (params('constraints')) {
-					var points = params('constraints').split(','); //lat,lng,lat,lng
-					var tlLat = parseFloat(points[0]);
-					var tlLng = parseFloat(points[1]);
-					var brLat = parseFloat(points[2]);
-					var brLng = parseFloat(points[3]);
-					resolvedConfig.markerConstraints = leaflet.latLngBounds([tlLat, tlLng], [brLat, brLng]);
+					var points = params('constraints').split(',');
+					var tlLat = null;
+					var tlLng = null;
+					var brLat = null;
+					var brLng = null;
+					if (points.length == 2) {
+						//must be os grid refs
+						var topLeft = conversion.gridRefToLngLat(points[0]); //long, lat
+						tlLng = topLeft[0];
+						tlLat = topLeft[1];
+						var topRight = conversion.gridRefToLngLat(points[1]);
+						brLng = topRight[0];
+						brLat = topRight[1];
+					} else { //lat,lng,lat,lng
+						tlLat = parseFloat(points[0]);
+						tlLng = parseFloat(points[1]);
+						brLat = parseFloat(points[2]);
+						brLng = parseFloat(points[3]);
+					}
+					resolvedConfig.markerConstraints = leaflet.latLngBounds([brLat, tlLng], [tlLat, brLng]); //<LatLng> southWest, <LatLng> northEast
 				}
 				
 				//set all values locally so that the exporter object works like a hash
