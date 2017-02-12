@@ -23,19 +23,21 @@ define(["underscore", "jquery", "leaflet", "leaflet_cluster", "leaflet_subgroup"
 				}
 				if (extraTexts != null) {
 					Object.keys(extraTexts).forEach(function(key) {
-						if (popupText.length > 0) {
-							popupText += '<br />';
-						}
-						popupText += '<span class="popup-entry-key">' + key + ': </span>';
 						var value = extraTexts[key];
-						if (Array.isArray(value)) {
-							popupText += '<ul class="popup-entry-list">'
-							for (var i = 0; i < value.length; i++) {
-								popupText += '<li>' + value[i] + '</li>'
+						if (value != null && value != "") {
+							if (popupText.length > 0) {
+								popupText += '<br />';
 							}
-							popupText += '</ul>'
-						} else {
-							popupText += '<span>' + value + '</span>';
+							popupText += '<span class="popup-entry-key">' + key + ': </span>';
+							if (Array.isArray(value)) {
+								popupText += '<ul class="popup-entry-list">'
+								for (var i = 0; i < value.length; i++) {
+									popupText += '<li>' + value[i] + '</li>'
+								}
+								popupText += '</ul>'
+							} else {
+								popupText += '<span>' + value + '</span>';
+							}
 						}
 					}.bind(this));
 				}
