@@ -71,16 +71,6 @@ const knownTypes = {
 const attributionString = "This file adapted from ";
 const columnHeaders = "[Longitude,Latitude,Name,Type,Url,OtherImageLinks]"
 
-function match(input, regex, groupNumber) {
-	groupNumber = groupNumber != null ? groupNumber : 1;
-	let matches = [];
-	let m;
-	while (m = regex.exec(input)) {
-		matches.push(m[1]);
-	}
-	return matches;
-}
-
 function getTagForName(name) {
 	name = name.toLowerCase();
 	let found = Object.keys(knownTypes).filter(type => name.includes(type.toLowerCase()));
@@ -132,8 +122,8 @@ class FolliesConverter extends Converter {
 		
 		let mainLinks = point.link[0].split(' ');
 		let mainLink = mainLinks[0];
-		let imageLinks = match(description, /"(http.*?googleusercontent\.com.*?)"/g);
-		let geographLinks = match(description, /\((http\:\/\/www.geograph\.org\.uk.photo.*?)\)/g);
+		let imageLinks = this._match(description, /"(http.*?googleusercontent\.com.*?)"/g);
+		let geographLinks = this._match(description, /\((http\:\/\/www.geograph\.org\.uk.photo.*?)\)/g);
 		
 		mainLinks.push.apply(mainLinks, imageLinks);
 		mainLinks.push.apply(mainLinks, geographLinks);

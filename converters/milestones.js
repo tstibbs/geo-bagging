@@ -8,7 +8,7 @@ const Converter = require('./converter');
 const inputDir = 'milestones-input';
 
 const attributionString = "This file adapted from the the database of 'The Milestone Society' (http://www.milestonesociety.co.uk/database.html).";
-const columnHeaders = "[Longitude,Latitude,Id,Type,Category]"
+const columnHeaders = "[Longitude,Latitude,Id,Type,Category,Location,Position,Design,Repository_Photo_Hyperlink,Additional_Photo_Hyperlink_1,Additional_Photo_Hyperlink_2]"
 
 class WaypointsConverter extends Converter {
 	constructor() {
@@ -24,7 +24,13 @@ class WaypointsConverter extends Converter {
 					lngLat[1], //lat
 					record[1], //National_ID
 					record[0], //type based on source file
-					record[11] //Category
+					record[11], //Category
+					record[9], //Location
+					record[10], //Position
+					record[12], //Design
+					record[13], //Repository_Photo_Hyperlink
+					record[16], //Additional_Photo_Hyperlink_1
+					record[17], //Additional_Photo_Hyperlink_2
 				];
 			} else {
 				return null; //invalid lat/lng so don't export this row

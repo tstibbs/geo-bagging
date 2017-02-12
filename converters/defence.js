@@ -7,20 +7,19 @@ const Stream = require('stream');
 const Converter = require('./converter');
 
 const attributionString = "This file adapted from the database of the Defence of Britain project.";
-const columnHeaders = "[Longitude,Latitude,Id,Name,location,condition,description]"
+const columnHeaders = "[Longitude,Latitude,Id,Name,Link,location,condition,description]"
 
 class DobConverter extends Converter {
 	constructor() {
-		super(attributionString, columnHeaders, [3, 5]);
+		super(attributionString, columnHeaders);
 	}
 	
 	extractColumns(point) {
-		let locationMatches = point.description[0].match('<b>Location: </b>(.*?)<br />');
-		let location = locationMatches != null && locationMatches.length >= 2 ? locationMatches[1] : null;
-		let conditionMatches = point.description[0].match('<b>Condition: </b>(.*?)<br />');
-		let condition = conditionMatches != null && conditionMatches.length >= 2 ? conditionMatches[1] : null;
-		let descriptionMatches = point.description[0].match('<b>Description: </b>(.*?)</td>');
-		let description = descriptionMatches != null && descriptionMatches.length >= 2 ? descriptionMatches[1] : null;
+		let descriptionText = point.description[0];
+		let location = this._match(descriptionText, /<b>Location: <\/b>(.*?)<br \/>/g)[0];
+		let condition = this._match(descriptionText, /<b>Condition: <\/b>(.*?)<br \/>/g)[0];
+		let description = this._match(descriptionText, /<b>Description: <\/b>(.*?)<\/td>/g)[0];
+		let link = this._match(descriptionText, /<a href="(http\:\/\/archaeologydataservice.ac.uk\/archives\/view.*?)">/g)[0];
 		let coords = point.coordinates[0].split(',');
 		let lng = coords[0];
 		let lat = coords[1];
@@ -36,6 +35,7 @@ class DobConverter extends Converter {
 			lat,
 			id,
 			name,
+			link,
 			location,
 			condition,
 			description

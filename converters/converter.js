@@ -47,6 +47,16 @@ class Converter {
 		this._second = true;
 	}
 	
+	_match(input, regex, groupNumber) {
+		groupNumber = groupNumber != null ? groupNumber : 1;
+		let matches = [];
+		let m;
+		while (m = regex.exec(input)) {
+			matches.push(m[1]);
+		}
+		return matches;
+	}
+	
 	_convertGridRef(gridRef) {
 		try {
 			let lngLat = gridconversion.gridRefToLngLat(gridRef);
@@ -97,7 +107,7 @@ class Converter {
 	}
 
 	writeOutStream(readable, output) {
-		this.writeOutParsedStream(readable.pipe(csv.parse()));
+		this.writeOutParsedStream(readable.pipe(csv.parse()), output);
 	}
 
 	writeOutParsedStream(readable, output) {
