@@ -1,7 +1,7 @@
 define(['leaflet', 'leaflet_bing'],
 	function(leaflet, Leaflet_bing) {
 
-		var bingKey = "LfO3DMI9S6GnXD7d0WGs~bq2DRVkmIAzSOFdodzZLvw~Arx8dclDxmZA0Y38tHIJlJfnMbGq5GXeYmrGOUIbS2VLFzRKCK0Yv_bAl6oe-DOc";
+		var bingKey = "AgYJwt3nv3bZyK31EDXorMaO8aIix-5kAa32O5TTwFAhdVYtZdIKhw3ttntsmgqy";
 		
 		//OS
 		var bingOsLayer = new Leaflet_bing(bingKey, {type: "OrdnanceSurvey", minZoom: 12, maxZoom: 18, maxNativeZoom: 17});
