@@ -1,5 +1,5 @@
-define(["leaflet", "leaflet_controlHider", "selection", "locate", "mobile", "leaflet_geosearch", "leaflet_geosearch_osm", "mouseposition_osgb", "screenposition_osgb"],
-	function(leaflet, Leaflet_ControlHider, Selection, Locate, mobile, Leaflet_Geosearch, Leaflet_Geosearch_Osm, Mouseposition_Osgb, Screenposition_Osgb) {
+define(["leaflet", "leaflet_controlHider", "selection", "locate", "mobile", "leaflet_geosearch", "leaflet_geosearch_bing", "mouseposition_osgb", "screenposition_osgb", "constants"],
+	function(leaflet, Leaflet_ControlHider, Selection, Locate, mobile, Leaflet_Geosearch, Leaflet_Geosearch_Bing, Mouseposition_Osgb, Screenposition_Osgb, constants) {
 
 		//even if some items aren't used in this particular configuration, we'll stick to a given order (resulting gaps are fine)
 		var order = [
@@ -30,7 +30,9 @@ define(["leaflet", "leaflet_controlHider", "selection", "locate", "mobile", "lea
 				if (this._config.show_search_control) {
 					this.addControl(new Leaflet_Geosearch({
 						showPopup: true,
-						provider: new Leaflet_Geosearch_Osm()
+						provider: new Leaflet_Geosearch_Bing({
+							key: constants.bingKey
+						})
 					}));
 				}
 				if (this._config.show_hider_control == true || (this._config.show_hider_control == 'mobile' && mobile.isMobile())) {

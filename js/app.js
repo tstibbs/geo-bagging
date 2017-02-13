@@ -37,7 +37,7 @@ var paths = {
 	leaflet_boxSelector: 'https://cdn.rawgit.com/tstibbs/Leaflet.BoxSelector/' + versions.leaflet_boxSelector + '/src/selector',
 	leaflet_boxSelector_Gpx: 'https://cdn.rawgit.com/tstibbs/Leaflet.BoxSelector/' + versions.leaflet_boxSelector + '/src/gpx',
 	leaflet_geosearch: 'https://cdn.rawgit.com/tstibbs/L.GeoSearch/' + versions.leaflet_geosearch + '/src/js/l.control.geosearch',
-	leaflet_geosearch_osm: 'https://cdn.rawgit.com/tstibbs/L.GeoSearch/' + versions.leaflet_geosearch + '/src/js/l.geosearch.provider.openstreetmap',
+	leaflet_geosearch_bing: 'https://cdn.rawgit.com/tstibbs/L.GeoSearch/' + versions.leaflet_geosearch + '/src/js/l.geosearch.provider.bing',
 	file_saver: 'https://unpkg.com/file-saver@' + versions.file_saver + '/FileSaver.min',
 	underscore: 'https://cdnjs.cloudflare.com/ajax/libs/underscore.js/' + versions.underscore + '/underscore-min',
 	jquery: 'https://code.jquery.com/jquery-' + versions.jquery
@@ -89,9 +89,9 @@ requirejs.config({
 			deps: ['leaflet'],
 			exports: 'L.Control.GeoSearch'
 		},
-		leaflet_geosearch_osm: {
+		leaflet_geosearch_bing: {
 			deps: ['leaflet', 'leaflet_geosearch'],
-			exports: 'L.GeoSearch.Provider.OpenStreetMap'
+			exports: 'L.GeoSearch.Provider.Bing'
 		},
 		file_saver: {
 			exports: 'saveAs'
