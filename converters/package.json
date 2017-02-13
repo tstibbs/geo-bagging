@@ -2,6 +2,7 @@
   "name": "geo-bagging-converter",
   "version": "0.0.1",
   "dependencies": {
+    "cheerio": "^0.22.0",
     "combined-stream2": "^1.1.2",
     "csv": "^1.1.0",
     "proj4": "^2.3.17",

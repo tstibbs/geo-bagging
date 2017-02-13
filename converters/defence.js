@@ -7,7 +7,7 @@ const Stream = require('stream');
 const Converter = require('./converter');
 
 const attributionString = "This file adapted from the database of the Defence of Britain project.";
-const columnHeaders = "[Longitude,Latitude,Id,Name,Link,location,condition,description]"
+const columnHeaders = "[Longitude,Latitude,Id,Name,Link,location,condition,description,imageLinks]"
 
 class DobConverter extends Converter {
 	constructor() {
@@ -20,6 +20,14 @@ class DobConverter extends Converter {
 		let condition = this._match(descriptionText, /<b>Condition: <\/b>(.*?)<br \/>/g)[0];
 		let description = this._match(descriptionText, /<b>Description: <\/b>(.*?)<\/td>/g)[0];
 		let link = this._match(descriptionText, /<a href="(http\:\/\/archaeologydataservice.ac.uk\/archives\/view.*?)">/g)[0];
+		
+		let $ = this._parseHtml(descriptionText);
+		let images = $('img').map((i, elem) => 
+			$(elem).attr('src')
+		).toArray().filter(url => 
+			url.endsWith('.jpg') && !url.endsWith('logo.jpg')
+		);
+		
 		let coords = point.coordinates[0].split(',');
 		let lng = coords[0];
 		let lat = coords[1];
@@ -38,7 +46,8 @@ class DobConverter extends Converter {
 			link,
 			location,
 			condition,
-			description
+			description,
+			images
 		];
 	}
 }

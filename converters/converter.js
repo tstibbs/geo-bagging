@@ -47,6 +47,11 @@ class Converter {
 		this._second = true;
 	}
 	
+	_parseHtml(htmlString) {
+		const cheerio = require('cheerio');
+		return cheerio.load(htmlString);
+	}
+	
 	_match(input, regex, groupNumber) {
 		groupNumber = groupNumber != null ? groupNumber : 1;
 		let matches = [];
