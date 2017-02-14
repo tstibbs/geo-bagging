@@ -70,6 +70,10 @@ define(["leaflet", "os_map", "points_view", "config", "params", "conversion", "j
 					hider_control_start_visible: false,
 					mini: true
 				}, options);
+				if (bundles == null) {
+					bundles = [];
+				}
+				bundles.push('trigs/config_mini');
 				this.loadMap(options, bundles);
 			},
 		
