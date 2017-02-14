@@ -101,3 +101,31 @@ requirejs.config({
 		}
 	}
 });
+
+function loadCss(url) {
+    var css = document.createElement('link');
+    css.rel = 'stylesheet';
+    css.type = 'text/css';
+    css.href = url;
+    document.getElementsByTagName("head")[0].appendChild(css);
+}
+
+[
+	'https://cdn.rawgit.com/tstibbs/L.GeoSearch/' + versions.leaflet_geosearch + '/src/css/l.geosearch.css',
+	'https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css',
+	urlBase + 'css/app.css',
+	'https://cdn.rawgit.com/Leaflet/Leaflet.markercluster/' + versions.leaflet_cluster + '/dist/MarkerCluster.Default.css',
+	'https://cdn.rawgit.com/Leaflet/Leaflet.markercluster/' + versions.leaflet_cluster + '/dist/MarkerCluster.css'
+].forEach(loadCss);
+
+[
+	'leaflet',
+	'leaflet_screenposition',
+	'leaflet_mouseposition',
+	'leaflet_locate',
+	'leaflet_matrixlayers',
+	'leaflet_controlHider',
+	'leaflet_boxSelector'
+].forEach(function(name) {
+	loadCss(paths[name] + '.css');
+});
