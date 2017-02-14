@@ -18,5 +18,5 @@ $.get('down-flash.php' + window.location.search, function(data) {
 		var northings = point.attr('N');
 		points = points + eastings + "," + northings + "," + url + "," + name;
 	});
-	window.location="http://tstibbs.github.io/os-map/examples/index.html?trigs=" + encodeURIComponent(points);
+	window.location="https://tstibbs.github.io/geo-bagging/examples/index.html?trigs=" + encodeURIComponent(points);
 });
