@@ -40,7 +40,7 @@ class HeaderFooterTransformer extends Transform {
 
 class Converter {
 	constructor(attribution, columnHeaders, axisIndexes) {
-		this._header = header(attribution, columnHeaders, new Date().toISOString());
+		this._header = header(attribution, columnHeaders, new Date().toISOString().split('T')[0]);
 		this._axisIndexes = axisIndexes;
 		this._axes = [];
 		this._first = true;
