@@ -1,5 +1,5 @@
-define(["leaflet", "os_map", "points_view", "config", "params", "conversion", "jquery", 'bundles/trigs/config_base'],
-	function(leaflet, OsMap, PointsView, Config, params, conversion, $, trigsPointsBundle) {
+define(["leaflet", "os_map", "points_view", "config", "params", "conversion", "jquery", 'bundles/trigs/config_base', 'map_view'],
+	function(leaflet, OsMap, PointsView, Config, params, conversion, $, trigsPointsBundle, mapView) {
 			
 		function finish() {
 			$('div#loading-message-pane').hide();
@@ -67,13 +67,15 @@ define(["leaflet", "os_map", "points_view", "config", "params", "conversion", "j
 					show_search_control: false,
 					show_locate_control: false,
 					show_hider_control: true,
-					hider_control_start_visible: false
+					hider_control_start_visible: false,
+					mini: true
 				}, options);
 				this.loadMap(options, bundles);
 			},
 		
 			_buildMap: function(options, bundles) {
 				this._config = new Config(options, bundles);
+				mapView(this._config);
 				this._osMap = new OsMap(this._config);
 				this._pointsModels = {};
 			},

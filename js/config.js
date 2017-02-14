@@ -4,6 +4,7 @@ define(["leaflet", "jquery", "global", "params", "conversion"],
 		var defaultPageId = global.location.pathname.split("/").pop();
 		
 		var defaults = {
+			mini: false,
 			cluster: true,
 			dimensional_layering: false,
 			initial_zoom: 13,
