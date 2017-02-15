@@ -24,10 +24,14 @@ $.getScript("https://cdnjs.cloudflare.com/ajax/libs/require.js/2.2.0/require.js"
 			var maxLat = lat + latAddition;
 			var minLng = lng - lngAddition;
 			var maxLng = lng + lngAddition;
+			
+			var mapDiv = $('map[name="trigmap"]').parent();
+			mapDiv.empty()
 
 			var options = {
 				start_position: [lat, lng],
-				markerConstraints: [[minLat, minLng], [maxLat, maxLng]]
+				markerConstraints: [[minLat, minLng], [maxLat, maxLng]],
+				map_outer_container_element: mapDiv
 			};
 			
 			main.loadMiniMap(options, ['trigs']);

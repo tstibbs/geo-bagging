@@ -19,16 +19,16 @@ define(['jquery'],
 			content+= 				'</div>';
 			content+= 			'</div>';
 			content+= 		'</div>';
-			content+= 		'<div id="map" class="' + (config.mini ? 'mini-map' : 'full-screen') + '"></div>';
+			content+= 		'<div id="' + config.map_element_id + '" class="' + (config.mini ? 'mini-map' : 'full-screen') + '"></div>';
 			if (config.mini) {
 				content+= 	'</div>';
 				content+= 	'<div class="full-screen-link"></div>';
 			}
 
 			if (!config.mini) {
-				$('body').addClass('full-screen');
+				config.map_outer_container_element.addClass('full-screen');
 			}
-			$('body').prepend($(content));
+			config.map_outer_container_element.prepend($(content));
 		}
 	}
 );

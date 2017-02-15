@@ -11,6 +11,7 @@ define(["leaflet", "jquery", "global", "params", "conversion"],
 			start_position: [53.374694, -1.711474],//lat, long
 			force_config_override: false,//if true, start position and zoom will be taken from config, not from local storage
 			map_element_id: 'map',
+			map_outer_container_element: $('body'),
 			page_id: defaultPageId,
 			show_selection_control: true,
 			show_search_control: true,
