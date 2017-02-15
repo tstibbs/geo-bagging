@@ -27,13 +27,18 @@ npm test
 ```
 
 ## [trigpointing.uk](http://trigpointing.uk)
-I previously created a simple way to display search results from T:UK on this map. Whilst the scope of this project is beyond just trig points, I've left this integration in place as a demonstration of what is possible. If you want to try this functionality out, you simply need to do a search on trigpointing.uk, then run the following (e.g. in Chrome press F12 and then paste this code into the console):
+There is some basic integration with T:UK. Whilst the scope of this project is beyond just trig points, this integration is here as a demonstration of what is possible.
+
+Firstly, you can replace the mini map that shows on a trig point's details page with one from this project. Run the following (e.g. in Chrome press F12 and then paste this code into the console):
+```
+$.getScript("https://tstibbs.github.io/geo-bagging/integration/trigpointing_embed.js");
+```
+
+There is also some integration to allow you to display the results of a T:UK search on this map. To do this, you simply need to do a search on trigpointing.uk, then run the following (e.g. in Chrome press F12 and then paste this code into the console):
 ```
 $.getScript("https://tstibbs.github.io/geo-bagging/integration/trigpointing.js");
 ```
-After a short delay it should redirect you to this site and display the results of your search.
-
-Note that for now the integration between the two sites relies on passing a bunch of stuff in the URL so you will need to keep the search to something that returns a smallish number of results (maybe a few 10s) to ensure the URL doesn't get truncated by your browser. Searches for 'name contains' will usually give you a small number (try 'castle' or 'tor').
+After a short delay it should redirect you to this site and display the results of your search. Note that for now the integration between the two sites relies on passing a bunch of stuff in the URL so you will need to keep the search to something that returns a smallish number of results (maybe a few 10s) to ensure the URL doesn't get truncated by your browser. Searches for 'name contains' will usually give you a small number (try 'castle' or 'tor').
 
 ## Licence
 Please see [here](Licences.md) for important information regarding the licence of this project.
