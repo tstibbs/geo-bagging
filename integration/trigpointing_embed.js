@@ -29,12 +29,16 @@ $.getScript("https://cdnjs.cloudflare.com/ajax/libs/require.js/2.2.0/require.js"
 			mapDiv.empty()
 
 			var options = {
+				mini: true,
+				cluster: false,
+				hider_control_start_visible: false,
+				show_hider_control: true,
 				start_position: [lat, lng],
 				markerConstraints: [[minLat, minLng], [maxLat, maxLng]],
 				map_outer_container_element: mapDiv
 			};
 			
-			main.loadMiniMap(options, ['trigs']);
+			main.loadMap(options, ['trigs']);
 			function moveMap() {
 				var miniMap = $('div.mini-map');
 				if (miniMap.length > 0) {
