@@ -45,6 +45,9 @@ define(["leaflet", "jquery", "global", "params", "conversion"],
 				if (params('startZoom')) {
 					resolvedConfig.initial_zoom = params('startZoom');
 				}
+				if (resolvedConfig.markerConstraints != null && Array.isArray(resolvedConfig.markerConstraints)) {
+					resolvedConfig.markerConstraints = leaflet.latLngBounds(resolvedConfig.markerConstraints); //[[bottom, left], [top, right]]
+				}
 				if (params('constraints')) {
 					var points = params('constraints').split(',');
 					var tlLat = null;

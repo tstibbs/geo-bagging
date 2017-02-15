@@ -12,12 +12,16 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
 function addErrorHandler() {
 	var dismissButton = document.querySelector('div#error-container a#dismiss-button');
-	dismissButton.onclick = function () {
-		document.getElementById('error-container').style.display = 'none';
-		return false;
-	};
-	for (var i = 0; i < bufferedMessages.length; i++) {
-		displayError(bufferedMessages);
+	if (dismissButton != null) {
+		dismissButton.onclick = function () {
+			document.getElementById('error-container').style.display = 'none';
+			return false;
+		};
+		for (var i = 0; i < bufferedMessages.length; i++) {
+			displayError(bufferedMessages);
+		}
+	} else {
+		setTimeout(addErrorHandler.bind(this), 1000);//just keep checking, it won't be long
 	}
 }
 
