@@ -15,7 +15,7 @@ var versions = {
 	leaflet_locate: '0.52.0',
 	leaflet_controlHider: '3df76ebbfda70789027a40aa6f2e05db603aa364',
 	leaflet_boxSelector: 'd0f8184abafc17170ccc41a98cd6091882683ddf',
-	leaflet_geosearch: '01854d273650a4b5b28e53e7852257280a25a010',
+	leaflet_geosearch: 'ce8da4ded7abbf7c1f590a3337a70e7e25146383',
 	file_saver: '1.3.3',
 	underscore: '1.8.3',
 	jquery: '3.0.0',
