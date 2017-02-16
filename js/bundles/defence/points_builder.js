@@ -17,7 +17,7 @@ define(['../abstract_points_builder'],
 					'Position': location,
 					'Notes': description
 				};
-				this.addMarker(lat, lng, url, id, extraInfos, null, [condition]);
+				this.addMarker(id, lat, lng, url, id, extraInfos, null, [condition]);
 			},
 		});
 	}

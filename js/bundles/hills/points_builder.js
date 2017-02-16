@@ -23,7 +23,7 @@ define(['../abstract_points_builder'],
 					'Height': height,
 					'Classifications': classificationStrings
 				};
-				this.addMarker(lat, lng, url, name, extraInfos, null, [classification]);
+				this.addMarker(id, lat, lng, url, name, extraInfos, null, [classification]);
 			},
 		});
 	}

@@ -34,11 +34,10 @@ Firstly, you can replace the mini map that shows on a trig point's details page 
 $.getScript("https://tstibbs.github.io/geo-bagging/integration/trigpointing_embed.js");
 ```
 
-There is also some integration to allow you to display the results of a T:UK search on this map. To do this, you simply need to do a search on trigpointing.uk, then run the following (e.g. in Chrome press F12 and then paste this code into the console):
+Secondly, you can display the results of a T:UK search on this map (limited to 1000 points). To do this, you simply need to do a search on trigpointing.uk, then run the following (e.g. in Chrome press F12 and then paste this code into the console):
 ```
 $.getScript("https://tstibbs.github.io/geo-bagging/integration/trigpointing.js");
 ```
-After a short delay it should redirect you to this site and display the results of your search. Note that for now the integration between the two sites relies on passing a bunch of stuff in the URL so you will need to keep the search to something that returns a smallish number of results (maybe a few 10s) to ensure the URL doesn't get truncated by your browser. Searches for 'name contains' will usually give you a small number (try 'castle' or 'tor').
 
 ## Licence
 Please see [here](Licences.md) for important information regarding the licence of this project.

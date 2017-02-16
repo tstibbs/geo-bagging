@@ -29,7 +29,7 @@ define(['../abstract_points_builder'],
 					'Location': nullIfEmpty(location),
 					'Position': nullIfEmpty(position)
 				};
-				this.addMarker(lat, lng, url, id, extraInfos, null, [type]);
+				this.addMarker(id, lat, lng, url, id, extraInfos, null, [type]);
 			},
 		});
 	}

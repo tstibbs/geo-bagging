@@ -46,11 +46,34 @@ define(["leaflet", "jquery", "global", "params", "conversion"],
 				if (params('startZoom')) {
 					resolvedConfig.initial_zoom = params('startZoom');
 				}
-				if (resolvedConfig.markerConstraints != null && Array.isArray(resolvedConfig.markerConstraints)) {
-					resolvedConfig.markerConstraints = leaflet.latLngBounds(resolvedConfig.markerConstraints); //[[bottom, left], [top, right]]
+				this._buildMarkerConstraints(resolvedConfig);
+				
+				//set all values locally so that the exporter object works like a hash
+				for (var property in resolvedConfig) {
+					if (resolvedConfig.hasOwnProperty(property)) {
+						this[property] = resolvedConfig[property];
+					}
 				}
-				if (params('constraints')) {
-					var points = params('constraints').split(',');
+			},
+			
+			_buildMarkerConstraints: function(resolvedConfig) {
+				function buildConstraintsMatcher(latLngBounds) {
+					return function(marker) {
+						return latLngBounds.contains(marker.latLng);
+					}
+				}
+				
+				if (resolvedConfig.markerConstraints != null && Array.isArray(resolvedConfig.markerConstraints)) {
+					resolvedConfig.markerConstraints = buildConstraintsMatcher(leaflet.latLngBounds(resolvedConfig.markerConstraints)); //[[bottom, left], [top, right]]
+				}
+				var constraintsString = null;
+				if (params('constraints') != null) { // params takes priority
+					constraintsString = params('constraints');
+				} else if (resolvedConfig.markerConstraints != null && typeof resolvedConfig.markerConstraints == 'string') {
+					constraintsString = resolvedConfig.markerConstraints;
+				}
+				if (constraintsString != null) {
+					var points = constraintsString.split(',');
 					var tlLat = null;
 					var tlLng = null;
 					var brLat = null;
@@ -69,14 +92,7 @@ define(["leaflet", "jquery", "global", "params", "conversion"],
 						brLat = parseFloat(points[2]);
 						brLng = parseFloat(points[3]);
 					}
-					resolvedConfig.markerConstraints = leaflet.latLngBounds([brLat, tlLng], [tlLat, brLng]); //<LatLng> southWest, <LatLng> northEast
-				}
-				
-				//set all values locally so that the exporter object works like a hash
-				for (var property in resolvedConfig) {
-					if (resolvedConfig.hasOwnProperty(property)) {
-						this[property] = resolvedConfig[property];
-					}
+					resolvedConfig.markerConstraints = buildConstraintsMatcher(leaflet.latLngBounds([brLat, tlLng], [tlLat, brLng])); //<LatLng> southWest, <LatLng> northEast
 				}
 			},
 			

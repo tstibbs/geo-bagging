@@ -19,7 +19,7 @@ define(['../abstract_points_builder'],
 					'Type': typeDisplay
 					//'Extra image links': otherImageLinks //not currently sure how to display these in a safe way
 				};
-				this.addMarker(lat, lng, url, name, extraInfos, null, [type]);
+				this.addMarker(null, lat, lng, url, name, extraInfos, null, [type]);
 			},
 		});
 	}

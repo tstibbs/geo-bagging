@@ -8,18 +8,19 @@ define(['leaflet'],
 				this._bundleConfig = bundleConfig;
 			},
 			
-			addMarker: function (lat, lng, url, name, extraTexts, icon, dimensionValues) {
+			addMarker: function (id, lat, lng, url, name, extraTexts, icon, dimensionValues) {
 				var latLng = [parseFloat(lat), parseFloat(lng)];
-				if (this._config.markerConstraints == null || this._config.markerConstraints.contains(latLng)) {
-					var marker = {
-						latLng: latLng,
-						name: name,
-						extraTexts: extraTexts,
-						exportName: name,
-						url: url,
-						icon: icon
-					}
+				var marker = {
+					id: id, // for filtering purposes
+					latLng: latLng,
+					name: name,
+					extraTexts: extraTexts,
+					exportName: name,
+					url: url,
+					icon: icon
+				}
 				
+				if (this._config.markerConstraints == null || this._config.markerConstraints(marker)) {
 					if (this._config.dimensional_layering || dimensionValues == null || dimensionValues.length == 0) {
 						if (this._markerList == null) {
 							this._markerList = {};
