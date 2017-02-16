@@ -2,14 +2,8 @@
 
 var urlBase = 'https://tstibbs.github.io/geo-bagging/';
 
-$.ajaxSetup({
-  cache: true
-});
-$.getScript("https://cdnjs.cloudflare.com/ajax/libs/require.js/2.2.0/require.js").then(function() {
-	return $.getScript(urlBase + "js/loader.js")
-})
-.then(function() {
-	loadOsMap(urlBase, function(main) {
+$.getScript(urlBase + "js/loader.js").then(function() {
+	loadApp(urlBase, function(main) {
 		require(['conversion'], function(conversion) {
 			var centreGridRef = $("div:contains('Grid reference : '):not(:has(*)) + div a").text();
 			var lngLat = conversion.gridRefToLngLat(centreGridRef);

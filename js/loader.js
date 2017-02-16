@@ -11,3 +11,12 @@ function loadOsMap(urlBase, callback) {
 		});
 	});
 }
+
+function loadApp(urlBase, callback) {
+	$.ajaxSetup({
+	  cache: true
+	});
+	$.getScript("https://cdnjs.cloudflare.com/ajax/libs/require.js/2.2.0/require.js").then(function() {
+		loadOsMap(urlBase, callback);
+	});
+}
