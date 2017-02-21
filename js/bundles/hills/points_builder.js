@@ -13,7 +13,7 @@ define(['../abstract_points_builder'],
 				var url = "";
 
 				var classificationStrings = classification.split(';').map(function(classf) {
-					var displayString = this._bundleConfig.dimensionValueLabels[this._bundleConfig.dimensionNames[0]][classf];
+					var displayString = this._bundleConfig.hillDisplayNames[classf];
 					if (displayString == null) {
 						displayString = classf;
 					}
