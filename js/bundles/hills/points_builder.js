@@ -10,7 +10,7 @@ define(['../abstract_points_builder'],
 				var classification = point[4];
 				var height = point[5];
 				
-				var url = "";
+				var url = 'http://www.hill-bagging.co.uk/mountaindetails.php?rf=' + id;
 
 				var classificationStrings = classification.split(';').map(function(classf) {
 					var displayString = this._bundleConfig.hillDisplayNames[classf];
