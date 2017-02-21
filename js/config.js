@@ -80,12 +80,12 @@ define(["leaflet", "jquery", "global", "params", "conversion"],
 					var brLng = null;
 					if (points.length == 2) {
 						//must be os grid refs
-						var topLeft = conversion.gridRefToLngLat(points[0]); //long, lat
+						var topLeft = conversion.gridRefToLngLat(points[0]);
 						tlLng = topLeft[0];
 						tlLat = topLeft[1];
-						var topRight = conversion.gridRefToLngLat(points[1]);
-						brLng = topRight[0];
-						brLat = topRight[1];
+						var bottomRight = conversion.gridRefToLngLat(points[1]);
+						brLng = bottomRight[0];
+						brLat = bottomRight[1];
 					} else { //lat,lng,lat,lng
 						tlLat = parseFloat(points[0]);
 						tlLng = parseFloat(points[1]);
