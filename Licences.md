@@ -8,3 +8,4 @@ Datasource name | Origin | Licence
 --------------- | ------ | -------
 hills | The Database of British and Irish Hills (http://www.hills-database.co.uk/downloads.html) | CC BY 3.0 (https://creativecommons.org/licenses/by/3.0/deed.en_GB)
 milestones | The Milestone Society (http://www.milestonesociety.co.uk/database.html) | Grants permission for non-commercial reuse.
+follies | The Folly Fellowship (http://www.follies.org.uk/follymaps.htm) | Specific permission for reuse in this project granted by email.

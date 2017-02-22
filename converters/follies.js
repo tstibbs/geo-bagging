@@ -68,7 +68,7 @@ const knownTypes = {
 	'House': building,
 }
 
-const attributionString = "This file adapted from ";
+const attributionString = "This file adapted from the Folly Maps (http://www.follies.org.uk/follymaps.htm) with the kind permission of Paul from The Folly Fellowship.";
 const columnHeaders = "[Longitude,Latitude,Name,Type,Url,OtherImageLinks]"
 
 function getTagForName(name) {
@@ -113,7 +113,9 @@ class FolliesConverter extends Converter {
 		let name = point.name[0];
 		let type = getTagForName(name);
 		
-		let coords = point.coordinates[0].split(',');
+		let coordsString = point.coordinates[0];
+		coordsString = coordsString.trim();
+		let coords = coordsString.split(',');
 		let lng = coords[0];
 		let lat = coords[1];
 		
