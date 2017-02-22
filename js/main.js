@@ -119,7 +119,7 @@ define(["leaflet", "os_map", "points_view", "config", "params", "conversion", "j
 			
 			buildMapWithBundleDatas: function(options, bundles) {
 				//https://rawgit.com/tstibbs/geo-bagging/master/js/bundles/hills/data.json
-				var bundleDataPrefix = ((params('remoteData') == 'true') ? 'https://rawgit.com/tstibbs/geo-bagging/milestones' : window.os_map_base);//some mobile browsers don't support local ajax, so this provides a workaround for dev on mobile devices.
+				var bundleDataPrefix = ((params('remoteData') == 'true') ? 'https://rawgit.com/tstibbs/geo-bagging/master' : window.os_map_base);//some mobile browsers don't support local ajax, so this provides a workaround for dev on mobile devices.
 				this._buildMap(options, bundles);
 				var promises = [];
 				Object.keys(bundles).forEach(function(bundleName) {
