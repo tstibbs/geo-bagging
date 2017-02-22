@@ -115,11 +115,11 @@ function loadCss(url) {
 	'https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css',
 	urlBase + 'css/app.css',
 	'https://cdn.rawgit.com/Leaflet/Leaflet.markercluster/' + versions.leaflet_cluster + '/dist/MarkerCluster.Default.css',
-	'https://cdn.rawgit.com/Leaflet/Leaflet.markercluster/' + versions.leaflet_cluster + '/dist/MarkerCluster.css'
+	'https://cdn.rawgit.com/Leaflet/Leaflet.markercluster/' + versions.leaflet_cluster + '/dist/MarkerCluster.css',
+	'https://unpkg.com/leaflet@' + versions.leaflet + '/dist/leaflet.css',
 ].forEach(loadCss);
 
 [
-	'leaflet',
 	'leaflet_screenposition',
 	'leaflet_mouseposition',
 	'leaflet_locate',
