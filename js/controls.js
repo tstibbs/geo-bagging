@@ -1,5 +1,5 @@
-define(["leaflet", "leaflet_controlHider", "selection", "locate", "mobile", "leaflet_geosearch", "leaflet_geosearch_bing", "mouseposition_osgb", "screenposition_osgb", "constants"],
-	function(leaflet, Leaflet_ControlHider, Selection, Locate, mobile, Leaflet_Geosearch, Leaflet_Geosearch_Bing, Mouseposition_Osgb, Screenposition_Osgb, constants) {
+define(["leaflet", "leaflet_controlHider", "selection", "locate", "mobile", "leaflet_geosearch", "leaflet_geosearch_bing", "mouseposition_osgb", "screenposition_osgb", "constants", "data_source_attribution_control"],
+	function(leaflet, Leaflet_ControlHider, Selection, Locate, mobile, Leaflet_Geosearch, Leaflet_Geosearch_Bing, Mouseposition_Osgb, Screenposition_Osgb, constants, DataSourceAttributionControl) {
 
 		//even if some items aren't used in this particular configuration, we'll stick to a given order (resulting gaps are fine)
 		var order = [
@@ -10,7 +10,8 @@ define(["leaflet", "leaflet_controlHider", "selection", "locate", "mobile", "lea
 			leaflet.Control.Layers, //matrix layers extends this, so will appear in the same slot
 			Selection,
 			Mouseposition_Osgb,
-			Screenposition_Osgb
+			Screenposition_Osgb,
+			leaflet.Control.Attribution
 		];
 	
 		var Controls = leaflet.Class.extend({
@@ -23,7 +24,11 @@ define(["leaflet", "leaflet_controlHider", "selection", "locate", "mobile", "lea
 			},
 			
 			_addDefaults: function() {
-				this.addControl(new leaflet.Control.Zoom(), true);
+				//default leaflet controls
+				this.addControl(new leaflet.Control.Zoom());
+				this._attributionControl = new DataSourceAttributionControl();
+				this.addControl(this._attributionControl);
+				//custom controls
 				if (this._config.show_selection_control) {
 					this.addControl(new Selection());
 				}
@@ -43,7 +48,7 @@ define(["leaflet", "leaflet_controlHider", "selection", "locate", "mobile", "lea
 				if (this._config.show_locate_control) {
 					this.addControl(new Locate());
 				}
-				if (this._config.show_layers_control && !this._config.dimensional_layering && this._layers != null && Object.keys(this._layers).length > 1) {
+				if (this._config.show_layers_control && this._layers != null && Object.keys(this._layers).length > 1) {
 					this.addControl(new leaflet.Control.Layers(this._layers, null));
 				}
 				//position displays
@@ -55,11 +60,13 @@ define(["leaflet", "leaflet_controlHider", "selection", "locate", "mobile", "lea
 			},
 			
 			addControl: function(control) {
+				var oldControl = null;
 				var found = false;
 				for (var i = 0; i < order.length; i++) {
 					if (control instanceof order[i]) {
 						if (this._controlsToAdd[i] != null) {
-							console.error('Overwriting existing control "' + this._controlsToAdd[i] + '" with "' + control + '".');
+							if (console) {console.debug('Overwriting existing control "' + this._controlsToAdd[i] + '" with "' + control + '".');}
+							oldControl = this._controlsToAdd[i];
 						}
 						this._controlsToAdd[i] = control;
 						if (!(control instanceof Leaflet_ControlHider)) {
@@ -74,6 +81,16 @@ define(["leaflet", "leaflet_controlHider", "selection", "locate", "mobile", "lea
 					this._controlsToHide.push(control);
 					this._controlsToAdd[Math.max(order.length, this._controlsToAdd.length)] = control;
 				}
+				if (this._map != null) {
+					control.addTo(this._map); //add it, could be in the wrong place, but we'll move it later if necessary
+					if (oldControl != null) {
+						var newContainer = control._container;
+						var oldContainer = oldControl._container;
+						$(newContainer).remove(); //remove from incorrect location
+						$(oldContainer).replaceWith(newContainer); //reattach at new location
+						oldControl.remove();
+					}
+				}
 			},
 			
 			addAllTo: function(map) {
@@ -82,6 +99,11 @@ define(["leaflet", "leaflet_controlHider", "selection", "locate", "mobile", "lea
 						control.addTo(map);
 					}
 				}.bind(this));
+				this._map = map;
+			},
+			
+			addAttribution: function(text) {
+				this._attributionControl.addDataSourceAttribution(text);
 			}
 		});
 

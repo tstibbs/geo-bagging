@@ -188,6 +188,14 @@ define(["underscore", "jquery", "leaflet", "leaflet_cluster", "leaflet_subgroup"
 					//override the basic layers control
 					this._controls.addControl(control);
 				}
+				//add attribution texts
+				Object.keys(this._modelsByAspect).forEach(function(aspect) {
+					var model = this._modelsByAspect[aspect];
+					var attribution = model.getAttribution();
+					if (attribution != null && attribution.length > 0) {
+						this._controls.addAttribution(attribution);
+					}
+				}.bind(this));
 			}
 		});
 

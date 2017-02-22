@@ -5,7 +5,9 @@ define(["leaflet", "layers", "config", "controls", "fullscreen_link"],
 				this._config = config;
 				// set up the map
 				this._map = new leaflet.Map(this._config.map_element_id, {
-					zoomControl: false
+					//these controls will be added by the controls module
+					zoomControl: false,
+					attributionControl: false
 				});
 				//add layers
 				this._layers = layers(this._map, this._config);
@@ -13,6 +15,7 @@ define(["leaflet", "layers", "config", "controls", "fullscreen_link"],
 				this._map.setView(new leaflet.LatLng(this._config.start_position[0], this._config.start_position[1]), this._config.initial_zoom);
 				//add controls
 				this._controls = new Controls(this._config, this._layers);
+				this._controls.addAllTo(this._map);
 				
 				fullscreen_link(this._map);
 				

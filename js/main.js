@@ -132,11 +132,8 @@ define(["leaflet", "os_map", "points_view", "config", "params", "conversion", "j
 						console.error("Failed to load map data: " + textError);
 						console.log(error);
 					}).done(function(data) {
-						var pointsToLoad = data.data;
 						var pointsModel = new bundle.parser(this._config, bundle);
-						for (var i = 0; i < pointsToLoad.length; i++) {
-							pointsModel.parse(pointsToLoad[i]);
-						}
+						pointsModel.addMarkers(data);
 						this._pointsModels[bundleName] = pointsModel;
 					}.bind(this));
 					promises.push(ajaxRequest);
@@ -147,7 +144,6 @@ define(["leaflet", "os_map", "points_view", "config", "params", "conversion", "j
 			_finishLoading: function() {
 				this._pointsView = new PointsView(this._osMap.getMap(), this._config, this._pointsModels, this._osMap.getControls(), this._osMap.getLayers());
 				this._pointsView.finish(finish);
-				this._osMap.getControls().addAllTo(this._osMap.getMap());
 			}
 		};
 	}

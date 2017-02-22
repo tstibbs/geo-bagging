@@ -46,6 +46,10 @@ div.mini-map {
 	background-color: rgba(255, 255, 255, 0.85);
 }
 
+div.leaflet-control-attribution {
+	text-align: end;
+}
+
 /* for now, hide the attribution control on the mini map */
 div.mini-map .leaflet-container .leaflet-control-attribution {
 	display: none;

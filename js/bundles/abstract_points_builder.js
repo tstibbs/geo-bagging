@@ -8,6 +8,18 @@ define(['leaflet'],
 				this._bundleConfig = bundleConfig;
 			},
 			
+			addMarkers: function(data) {
+				var pointsToLoad = data.data;
+				for (var i = 0; i < pointsToLoad.length; i++) {
+					this.parse(pointsToLoad[i]);
+				}
+				if (this._bundleConfig.attribution != null) {
+					this._attributionText = this._bundleConfig.attribution;
+				} else {
+					this._attributionText = data.attribution;
+				}
+			},
+			
 			addMarker: function (id, lat, lng, url, name, extraTexts, icon, dimensionValues) {
 				var latLng = [parseFloat(lat), parseFloat(lng)];
 				var marker = {
@@ -53,6 +65,10 @@ define(['leaflet'],
 			
 			getBundleConfig: function() {
 				return this._bundleConfig;
+			},
+			
+			getAttribution: function() {
+				return this._attributionText;
 			}
 		});
 
