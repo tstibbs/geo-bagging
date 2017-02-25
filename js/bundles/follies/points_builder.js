@@ -8,7 +8,7 @@ define(['../abstract_points_builder'],
 				var name = point[2];
 				var type = point[3];
 				var url = point[4];
-				var otherImageLinks = point[5];
+				var otherImage = point[5];
 				
 				var typeDisplay = this._bundleConfig.dimensionValueLabels[this._bundleConfig.dimensionNames[0]][type];
 				if (typeDisplay == null) {
@@ -16,11 +16,11 @@ define(['../abstract_points_builder'],
 				}
 
 				var extraInfos = {
-					'Type': typeDisplay
-					//'Extra image links': otherImageLinks //not currently sure how to display these in a safe way
+					'Type': typeDisplay,
+					'Images': this.buildImageLinks([otherImage])
 				};
 				this.addMarker(null, lat, lng, url, name, extraInfos, null, [type]);
-			},
+			}
 		});
 	}
 );

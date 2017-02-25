@@ -59,6 +59,12 @@ define(['leaflet'],
 				}
 			},
 			
+			buildImageLinks: function(linksArray) {
+				return linksArray.map(function(elem, index) {
+					return ['Image ' + (index + 1), elem];
+				});
+			},
+			
 			getMarkerList: function() {
 				return this._markerList;
 			},
