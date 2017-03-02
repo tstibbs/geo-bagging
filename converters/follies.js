@@ -69,7 +69,7 @@ const knownTypes = {
 }
 
 const attributionString = "This file adapted from the Folly Maps (http://www.follies.org.uk/follymaps.htm) with the kind permission of Paul from The Folly Fellowship.";
-const columnHeaders = "[Longitude,Latitude,Name,Type,Url,OtherImageLinks]"
+const columnHeaders = "[Longitude,Latitude,Name,Url,Type,ImageLinks]"
 
 function getTagForName(name) {
 	name = name.toLowerCase();
@@ -124,27 +124,50 @@ class FolliesConverter extends Converter {
 		
 		let mainLinks = point.link[0].split(' ');
 		let mainLink = mainLinks[0];
-		let imageLinks = this._match(description, /"(http.*?googleusercontent\.com.*?)"/g);
-		let geographLinks = this._match(description, /\((http\:\/\/www.geograph\.org\.uk.photo.*?)\)/g);
+		let googleRegexInner = 'http.*?googleusercontent\.com.*?';
+		let googleRegex = new RegExp('"(' + googleRegexInner + ')"', 'g');
+		let geographRegexInner = 'http\:\/\/www.geograph\.org\.uk.photo.*?'
+		let geographRegex = new RegExp('\\((' + geographRegexInner + ')\\)', 'g');
+		let googleLinks = this._match(description, googleRegex);
+		let geographLinks = this._match(description, geographRegex);
+		mainLinks.forEach(mainLinkElem => {
+			googleLinks.push.apply(googleLinks, this._match(mainLinkElem, googleRegex));
+			geographLinks.push.apply(geographLinks, this._match(mainLinkElem, geographRegex));
+		});
+		//de-dupe
+		googleLinks = Array.from(new Set(googleLinks));
+		geographLinks = Array.from(new Set(geographLinks));
 		
-		mainLinks.push.apply(mainLinks, imageLinks);
-		mainLinks.push.apply(mainLinks, geographLinks);
-		
-		mainLinks = Array.from(new Set(mainLinks));
-		
-		var mainLinkIndex = mainLinks.indexOf(mainLink);
-		if (mainLinkIndex != -1) {
-			mainLinks.splice(mainLinkIndex, 1);
+		let url;
+		let imageLinks;
+		if (mainLinks.length == 1 && mainLink.match(googleRegexInner) != null && googleLinks.length == 1 && googleLinks[0] == mainLink && geographLinks.length == 1) {
+			//if the main link is a google link and the only other link is a geograph link, it seems that mostly the google link is just a thumnail of the geograph link.
+			url = geographLinks[0];
+			imageLinks = [];
+		} else {
+			//otherwise, show all the links in the extra element at the bottom
+			imageLinks = googleLinks;
+			imageLinks.push.apply(imageLinks, geographLinks);
+			imageLinks.push.apply(imageLinks, mainLinks);
+			imageLinks = Array.from(new Set(imageLinks));
+			if (imageLinks.length == 1) {
+				url = imageLinks[0];
+				imageLinks = [];
+			} else {
+				url = "";
+			}
 		}
-		let imageLinksString = mainLinks.join(';');
-		
+		if (imageLinks.length > 1) {
+			console.log(name);
+		}
+
 		return [
 			lng,
 			lat,
 			name,
+			url,
 			type,
-			mainLink,
-			imageLinksString
+			imageLinks
 		];
 	}
 }
