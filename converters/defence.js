@@ -6,7 +6,7 @@ const streamify = require('stream-array');
 const Stream = require('stream');
 const Converter = require('./converter');
 
-const attributionString = "This file adapted from the database of the Defence of Britain project.";
+const attributionString = "This file adapted from the database of the Defence of Britain project (http://archaeologydataservice.ac.uk/archives/view/dob/download.cfm). Copyright of the Council for British Archaeology (2006) Defence of Britain Archive [data-set]. York: Archaeology Data Service [distributor] https://doi.org/10.5284/1000327";
 const columnHeaders = "[Longitude,Latitude,Id,Name,Link,location,condition,description,imageLinks]"
 
 class DobConverter extends Converter {
