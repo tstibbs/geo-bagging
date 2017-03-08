@@ -4,6 +4,8 @@ define(["leaflet", "jquery", "global", "params", "conversion"],
 		var defaultPageId = global.location.pathname.split("/").pop();
 		
 		var defaults = {
+			remoteData: false,
+			skipLandingPage: false,
 			mini: false,
 			cluster: true,
 			dimensional_layering: false,
@@ -47,6 +49,9 @@ define(["leaflet", "jquery", "global", "params", "conversion"],
 					resolvedConfig.initial_zoom = params('startZoom');
 				}
 				this._buildMarkerConstraints(resolvedConfig);
+				if (params('remoteData') == 'true') {
+					resolvedConfig.remoteData = true;
+				}
 				
 				//set all values locally so that the exporter object works like a hash
 				for (var property in resolvedConfig) {
