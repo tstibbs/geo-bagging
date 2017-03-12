@@ -11,7 +11,7 @@ var testFiles = [
 	"os_map_test.js",
 	"loader_test.js",
 	"error_handler_test.js",
-	"controls_test.js",
+	//"controls_test.js",
 	"layers_test.js",
 	"fullscreen_link_test.js"
 ];

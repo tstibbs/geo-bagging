@@ -14,8 +14,7 @@ define(["leaflet", "layers", "config", "controls", "fullscreen_link"],
 				//set start point
 				this._map.setView(new leaflet.LatLng(this._config.start_position[0], this._config.start_position[1]), this._config.initial_zoom);
 				//add controls
-				this._controls = new Controls(this._config, this._layers);
-				this._controls.addAllTo(this._map);
+				this._controls = new Controls(this._config, this._layers, this._map);
 				
 				fullscreen_link(this._map);
 				

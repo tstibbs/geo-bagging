@@ -7,11 +7,11 @@ define(['loader'],
 				if (window === undefined) {
 					window = {};
 				}
-				window.os_map_base = "../";
+				var urlBase = "../";
 				
 				var oldRequire = window.require;
 				window.require = function(module, callback){
-					if (module[0].endsWith('js/app')) {
+					if (module[0].endsWith('js/app.js')) {
 						callback();
 					} else if (module[0] == 'main') {
 						oldRequire(module, callback);
@@ -20,9 +20,9 @@ define(['loader'],
 					}
 				};
 				
-				loadOsMap([], function(main) {
+				loadOsMap(urlBase, function(main) {
 					//just check that the thing we've been given is _actually_ the 'main' module
-					assert.ok(main.buildMapWithBundleDatas !== undefined);
+					assert.ok(main.loadMap !== undefined);
 					window.require = oldRequire;
 					done();
 				});

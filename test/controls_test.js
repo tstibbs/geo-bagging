@@ -74,7 +74,7 @@ define(['Squire', 'sinon', 'config', 'leaflet'],
                 function(Controls, mouseposition_osgb, screenposition_osgb, specifiedMock) {
 					//run test
 					var leafletMap = new leaflet.Map('map');
-					new Controls(new Config(options)).addAllTo(leafletMap);
+					new Controls(new Config(options), {}, leafletMap);
 					//inspect
 					verify(leafletMap, specifiedMock, mouseposition_osgb, screenposition_osgb);
 					//tear down

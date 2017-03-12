@@ -15,12 +15,15 @@ define(["leaflet", "leaflet_controlHider", "selection", "locate", "mobile", "lea
 		];
 	
 		var Controls = leaflet.Class.extend({
-			initialize: function(config, layers) {
+			initialize: function(config, layers, map) {
 				this._controlsToHide = [];
 				this._controlsToAdd = [];
 				this._config = config;
 				this._layers = layers;
 				this._addDefaults();
+				if (map != null) {
+					this.addAllTo(map);
+				}
 			},
 			
 			_addDefaults: function() {

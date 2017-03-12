@@ -26,7 +26,7 @@ define(["Squire", "sinon", "leaflet", "jquery", "points_view", "config", "contro
 				var url = "http://example/";
 				var pointsView = testIcon(assert, undefined, name, undefined, url);
 				$text = getOneMarkerText(assert, pointsView);
-				assert.equal($text.text(), url);
+				assert.equal($text.text(), url + 'View on google mapsView on bing mapsView on geohack');
 				assert.equal($('a', $text).attr('href'), url);
 			});
 			
@@ -35,8 +35,8 @@ define(["Squire", "sinon", "leaflet", "jquery", "points_view", "config", "contro
 				var url = null;
 				var pointsView = testIcon(assert, undefined, name, undefined, url);
 				$text = getOneMarkerText(assert, pointsView);
-				assert.equal($text.text(), name);
-				assert.equal($('a', $text).length, 0, "should not be any links");
+				assert.equal($text.text(), name + 'View on google mapsView on bing mapsView on geohack');
+				assert.equal($('a', $text).length, 3, "should not be any links other than the three at the bottom");
 			});
 			
 			QUnit.test('should include extra text', function(assert) {
@@ -66,7 +66,7 @@ define(["Squire", "sinon", "leaflet", "jquery", "points_view", "config", "contro
 				var name = "this is my name";
 				var pointsView = testIcon(assert, undefined, name);
 				$text = getOneMarkerText(assert, pointsView);
-				assert.equal($text.text(), name);
+				assert.equal($text.text(), name + 'View on google mapsView on bing mapsView on geohack');
 			});
 			
 			QUnit.test('marker should not allow XSS', function(assert) {
@@ -110,8 +110,8 @@ define(["Squire", "sinon", "leaflet", "jquery", "points_view", "config", "contro
 							assert.ok(leafletClusterMock.addLayers.calledOnce, "should have added layers");
 							var markers = leafletClusterMock.addLayers.getCall(0).args[0];
 							assert.equal(2, markers.length, "should have added both markers");
-							assert.equal(getContentText(markers[0]), 'abc');
-							assert.equal(getContentText(markers[1]), 'def');
+							assert.equal(getContentText(markers[0]), 'abc' + 'View on google mapsView on bing mapsView on geohack');
+							assert.equal(getContentText(markers[1]), 'def' + 'View on google mapsView on bing mapsView on geohack');
 							//check cluster layer is added to the map
 							assert.ok(leafletClusterMock.addTo.calledOnce, "should have added layer to map");
 							//tidy
@@ -212,6 +212,7 @@ define(["Squire", "sinon", "leaflet", "jquery", "points_view", "config", "contro
 			var pointsModel = {};
 			pointsModel.getMarkerList = function() {return markerList};
 			pointsModel.getBundleConfig = function() {return bundle};
+			pointsModel.getAttribution = function() {return "attributiongoeshere"};
 			var layers = {};
 			var pointsView = new PointsView(map, config, {testbundle: pointsModel}, new Controls(config, layers), layers);
 			return pointsView;
