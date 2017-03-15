@@ -76,8 +76,9 @@ define(["Squire", "sinon", "leaflet", "jquery", "points_view", "config", "contro
 				var extraTexts = ['<img>', '<img>'];
 				var pointsView = testIcon(assert, undefined, name, undefined, url, extraTexts, exportName);
 				$text = getOneMarkerText(assert, pointsView);
-				assert.equal($text.html().indexOf('<img'), -1);
-				assert.equal($('hr', $text).length, 0);//will appear in the text, but not in the actual dom
+				//strings may appear in the text, but not in the actual dom
+				assert.equal($('img', $text).length, 0);
+				assert.equal($('hr', $text).length, 0);
 			});
 			
 			QUnit.module('clustering and layering', function() {
