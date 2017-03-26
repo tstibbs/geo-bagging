@@ -11,7 +11,7 @@ $.get('down-flash.php' + window.location.search, function(data) {
 		showMap = true;
 	}
 
-	if (showMap == true) {
+	if (showMap === true) {
 		var decodedXmlString = decodeURIComponent(data);
 		var dom = $($.parseXML(decodedXmlString));
 		var points = dom.find('C').map(function(i, element) {

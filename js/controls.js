@@ -43,7 +43,7 @@ define(["leaflet", "leaflet_controlHider", "selection", "locate", "mobile", "lea
 						})
 					}));
 				}
-				if (this._config.show_hider_control == true || (this._config.show_hider_control == 'mobile' && mobile.isMobile())) {
+				if (this._config.show_hider_control === true || (this._config.show_hider_control == 'mobile' && mobile.isMobile())) {
 					this.addControl(new Leaflet_ControlHider(this._controlsToHide, {
 						visibleByDefault: this._config.hider_control_start_visible
 					}));

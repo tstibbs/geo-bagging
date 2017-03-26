@@ -16,7 +16,7 @@ define(['../abstract_points_builder'],
 				var additionalPhoto2 = point[10];
 				
 				function nullIfEmpty(value) {
-					if (value == null || value.trim().lenght == 0 || value.trim() == ',') {
+					if (value == null || value.trim().lenght === 0 || value.trim() == ',') {
 						return null;
 					} else {
 						return value;

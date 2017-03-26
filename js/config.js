@@ -65,7 +65,7 @@ define(["leaflet", "jquery", "global", "params", "conversion"],
 				function buildConstraintsMatcher(latLngBounds) {
 					return function(marker) {
 						return latLngBounds.contains(marker.latLng);
-					}
+					};
 				}
 				
 				if (resolvedConfig.markerConstraints != null && Array.isArray(resolvedConfig.markerConstraints)) {

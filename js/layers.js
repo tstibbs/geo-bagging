@@ -28,7 +28,7 @@ define(['leaflet', 'leaflet_bing', 'constants'],
 
 		return function(map, config) {
 			//if we have a default layer set, select that now
-			var layerToSelect = layers[config.defaultLayer]
+			var layerToSelect = layers[config.defaultLayer];
 			if (layerToSelect != null) {
 				layerToSelect.addTo(map);
 			} else {

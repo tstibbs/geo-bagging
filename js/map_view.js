@@ -29,6 +29,6 @@ define(['jquery'],
 				config.map_outer_container_element.addClass('full-screen');
 			}
 			config.map_outer_container_element.prepend($(content));
-		}
+		};
 	}
 );

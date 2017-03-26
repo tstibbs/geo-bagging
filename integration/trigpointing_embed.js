@@ -20,7 +20,7 @@ $.getScript(urlBase + "js/loader.js").then(function() {
 			var maxLng = lng + lngAddition;
 			
 			var mapDiv = $('map[name="trigmap"]').parent();
-			mapDiv.empty()
+			mapDiv.empty();
 
 			var options = {
 				mini: true,

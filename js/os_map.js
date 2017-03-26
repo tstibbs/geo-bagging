@@ -46,7 +46,7 @@ define(["leaflet", "layers", "config", "controls", "fullscreen_link"],
 			},
 			
 			getLayers: function() {
-				return this._layers
+				return this._layers;
 			}
 		});
 

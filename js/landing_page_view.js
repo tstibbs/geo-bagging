@@ -50,6 +50,6 @@ define(['jquery', 'map_loader', 'constants', 'params'],
 				}, bundleIds);
 				return false;
 			});
-        }
+        };
     }
 );

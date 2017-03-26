@@ -30,11 +30,11 @@ define(["underscore", "jquery", "leaflet", "leaflet_cluster", "leaflet_subgroup"
 							}
 							popupText += '<span class="popup-entry-key">' + key + ': </span>';
 							if (Array.isArray(value)) {
-								popupText += '<ul class="popup-entry-list">'
+								popupText += '<ul class="popup-entry-list">';
 								for (var i = 0; i < value.length; i++) {
-									popupText += '<li>' + this._buildValue(value[i]) + '</li>'
+									popupText += '<li>' + this._buildValue(value[i]) + '</li>';
 								}
-								popupText += '</ul>'
+								popupText += '</ul>';
 							} else {
 								popupText += '<span>' + this._buildValue(value) + '</span>';
 							}

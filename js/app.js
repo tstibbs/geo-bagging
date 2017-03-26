@@ -41,12 +41,12 @@ var paths = {
 	file_saver: 'https://unpkg.com/file-saver@' + versions.file_saver + '/FileSaver.min',
 	underscore: 'https://cdnjs.cloudflare.com/ajax/libs/underscore.js/' + versions.underscore + '/underscore-min',
 	jquery: 'https://code.jquery.com/jquery-' + versions.jquery
-}
+};
 
 var testingPaths = {
 	Squire: 'https://unpkg.com/squirejs@' + versions.Squire + '/src/Squire',
 	sinon: 'https://unpkg.com/sinon@' + versions.sinon + '/pkg/sinon'
-}
+};
 
 if (window.location.search.indexOf("dev=true") !== -1) {
 	paths.leaflet = paths.leaflet + '-src';
