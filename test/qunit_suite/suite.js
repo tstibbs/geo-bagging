@@ -1,6 +1,5 @@
 //list of tests
 var testFiles = [
-	//commenting a few until we've resolved the issues with Squire mucking up leaflet plugins
 	"mouseposition_osgb_test.js",
 	"screenposition_osgb_test.js",
 	"points_view_test.js",
@@ -11,7 +10,7 @@ var testFiles = [
 	"os_map_test.js",
 	"loader_test.js",
 	"error_handler_test.js",
-	//"controls_test.js",
+	"controls_test.js",
 	"layers_test.js",
 	"fullscreen_link_test.js"
 ];

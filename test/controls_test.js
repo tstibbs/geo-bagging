@@ -63,7 +63,7 @@ define(['Squire', 'sinon', 'config', 'leaflet'],
 			injector.mock('mobile', {isMobile: function() {return isMobile;}});
 			mockAddable(injector, 'mouseposition_osgb');
 			mockAddable(injector, 'screenposition_osgb');
-			mockAddable(injector, 'leaflet_geosearch_osm');
+			mockAddable(injector, 'leaflet_geosearch_bing');
 			
 			var deps = ['controls', 'mouseposition_osgb', 'screenposition_osgb'];
 			if (depName != '') {
