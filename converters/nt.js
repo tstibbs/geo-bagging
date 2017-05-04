@@ -15,14 +15,14 @@ function get(path) {
 			if (error) {
 				reject(error);
 			} else {
-				resolve(body);
+				resolve([body, path]);
 			}
 		});
 	});
 }
 
 function getHtml(path) {
-	return get(path).then(body => 
+	return get(path).then(([body, path]) => 
 		cheerio.load(body)
 	);
 }
@@ -33,12 +33,13 @@ function getIdsForAspect(aspect) {
 	);
 	return Promise.all(placePromises).then(values => {
 		let placeIds = {};
-		values.forEach((value, i) => {
+		values.forEach(([body, path], i) => {
 			let attribute = aspect.values[i];
-			let result = /<script>var nt_searchResultsPlaceIds = \[(\d+(, \d+)*)\]<\/script>/.exec(value);
+			let result = /<script>var nt_searchResultsPlaceIds = \[(\d+(, \d+)*)\]<\/script>/.exec(body);
 			if (result == null) {
 				console.log('result null');
-				console.log(value);
+				console.log(path);
+				console.log(body);
 				placeIds[attribute] = [];
 			} else {
 				placeIds[attribute] = JSON.parse('[' + result[1] + ']');
@@ -80,41 +81,39 @@ getHtml(basePath).then($ => {
 			});
 		});
 	});
-	get(allDataPath).then(response => {
-		let data = JSON.parse(response);
-		let csv = Object.entries(data)
-			.filter(([id, details]) => details.location != null)
-			.map(([id, details]) => [parseInt(id), details])
-			.sort((a, b) => a[0] - b[0])
-			.map(([id, details]) => {
-				function stringVals(id, aspect) {
-					if (aspectsById[id] == null || aspectsById[id][aspect] == null) {
-						return 'Other';
-					} else {
-						return aspectsById[id][aspect].join(',');
-					}
+	return Promise.all([get(allDataPath), aspectsById]);
+}).then(([[body, path], aspectsById]) => {
+	let data = JSON.parse(body);
+	let csv = Object.entries(data)
+		.filter(([id, details]) => details.location != null)
+		.map(([id, details]) => [parseInt(id), details])
+		.sort((a, b) => a[0] - b[0])
+		.map(([id, details]) => {
+			function stringVals(id, aspect) {
+				if (aspectsById[id] == null || aspectsById[id][aspect] == null) {
+					return 'Other';
+				} else {
+					return aspectsById[id][aspect].join(',');
 				}
-				let type = stringVals(id, 'places');
-				let facilities = stringVals(id, 'facilities');
-				return [
-					details.location.longitude,
-					details.location.latitude,
-					id,
-					details.title,
-					details.websiteUrl,
-					type,
-					facilities
-				];
-			});
-		
-		const readable = new Stream.Readable({objectMode: true});
-		csv.forEach(entry => readable.push(entry));
-		// end the stream
-		readable.push(null);
+			}
+			let type = stringVals(id, 'places');
+			let facilities = stringVals(id, 'facilities');
+			return [
+				details.location.longitude,
+				details.location.latitude,
+				id,
+				details.title,
+				details.websiteUrl,
+				type,
+				facilities
+			];
+		});
+	
+	const readable = new Stream.Readable({objectMode: true});
+	csv.forEach(entry => readable.push(entry));
+	// end the stream
+	readable.push(null);
 
-		const converter = new Converter(attributionString, columnHeaders);
-		converter.writeOutParsedStream(readable, '../js/bundles/nt/data.json');
-	});
+	const converter = new Converter(attributionString, columnHeaders);
+	converter.writeOutParsedStream(readable, '../js/bundles/nt/data.json');
 }).catch(error => console.error(error));
-
-
