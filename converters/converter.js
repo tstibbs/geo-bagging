@@ -1,6 +1,7 @@
 const Transform = require('stream').Transform;
 const csv = require('csv');
 const fs = require('fs');
+const cheerio = require('cheerio');
 const gridconversion = require('./gridconversion');
 
 function header(attributionString, columnHeaders, lastUpdated) {
@@ -48,7 +49,6 @@ class Converter {
 	}
 	
 	_parseHtml(htmlString) {
-		const cheerio = require('cheerio');
 		return cheerio.load(htmlString);
 	}
 	
@@ -104,7 +104,11 @@ class Converter {
 	}
 	
 	extractColumns(record) {
-		throw new Error("abstract");
+		if (Array.isArray(record)) {
+			return record;
+		} else {
+			throw new Error("abstract");
+		}
 	}
 
 	writeOut(input, output) {
