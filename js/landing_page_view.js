@@ -5,6 +5,7 @@ define(['jquery', 'map_loader', 'constants', 'params', 'map_view', 'leaflet', 'l
 				var datasources = constants.dataSources;
 				var bundles = mapLoader.getBundleIds();
 				var remoteData = params('remoteData') != null;
+				var constraints = params('constraints');
 				
 				var view = '';
 				view += '<div id="container" class="landing-container">';
@@ -43,8 +44,14 @@ define(['jquery', 'map_loader', 'constants', 'params', 'map_view', 'leaflet', 'l
 				if (remoteData) {
 					$('input[name="remoteData"]', this._view).attr('checked', 'true');
 				}
+				
 				$('body').addClass('landing');
 				$('body').append(this._view);
+				
+				if (constraints != null) {
+					$('input[name="constraints"]', this._view).attr('checked', 'true');
+					this.showHideMap(true);
+				}
 			},
 			
 			showHideMap: function(showMap) {
@@ -85,10 +92,23 @@ define(['jquery', 'map_loader', 'constants', 'params', 'map_view', 'leaflet', 'l
 				var drawnItems = new leaflet.FeatureGroup();
 				this._drawnItems = drawnItems;
 				map.addLayer(drawnItems);
-				var rect = (new LeafletDraw.Rectangle(map, {
+				var rect = new LeafletDraw.Rectangle(map, {
 					repeatMode: true
-				}));
+				});
 				rect.enable();
+				
+				var constraints = params('constraints');
+				if (constraints != null) {
+					var points = constraints.split(',');
+					var north = parseFloat(points[0]);
+					var west = parseFloat(points[1]);
+					var south = parseFloat(points[2]);
+					var east = parseFloat(points[3]);
+					var bounds = leaflet.latLngBounds([south, west], [north, east]); //<LatLng> southWest, <LatLng> northEast
+					
+					var shape = new leaflet.Rectangle(bounds, rect.options.shapeOptions);
+					this._drawnItems.addLayer(shape);
+				}
 
 				map.on('draw:created', function (e) {
 					var layer = e.layer;
@@ -99,10 +119,9 @@ define(['jquery', 'map_loader', 'constants', 'params', 'map_view', 'leaflet', 'l
 				mapLoader._finishLoading();
 			},
 			
-			buildTargetUrl: function(bundleIds, bounds, remoteData) {
+			navigate: function(bundleIds, bounds, remoteData) {
 				var href = 'index.html';
-				href += '?skipLandingPage=true';
-				href += '&datasources=' + bundleIds.join(',');
+				href += '?datasources=' + bundleIds.join(',');
 				if (remoteData === true) {
 					href += '&remoteData=true';
 				}
@@ -112,7 +131,16 @@ define(['jquery', 'map_loader', 'constants', 'params', 'map_view', 'leaflet', 'l
 					href += '&constraints=' + boundsString;
 				}
 				
-				return href;
+				
+				
+				var mainMapUrl = href + '&skipLandingPage=true';
+				var landingUrl = href + '&skipLandingPage=false';//TODO remove this once the landing page is the default
+				
+				//first push history, so that when the user clicks 'back' it preserves their choices (there are cleaverer ways to do this, but this way allows bookmarking)
+				history.pushState({}, "GeoBagging - Landing", landingUrl);
+				
+				//now actually change page to show the full map
+				document.location.href = mainMapUrl;
 			},
 			
 			loadMainMap: function() {
@@ -121,14 +149,12 @@ define(['jquery', 'map_loader', 'constants', 'params', 'map_view', 'leaflet', 'l
 				}));
 				var remoteData = $('input[name="remoteData"]', this._view).is(':checked');
 				
-				var layers = this._drawnItems.getLayers();
 				var bounds = null;
-				if ($('input[name="constraints"]', this._view).is(':checked') && layers.length > 0) {
-					bounds = layers[0].getBounds();
+				if ($('input[name="constraints"]', this._view).is(':checked') && this._drawnItems.getLayers().length > 0) {
+					bounds = this._drawnItems.getLayers()[0].getBounds();
 				}
 				
-				var url = this.buildTargetUrl(bundleIds, bounds, remoteData);
-				document.location.href = url;
+				this.navigate(bundleIds, bounds, remoteData);
 			},
 			
 			initialize: function() {
