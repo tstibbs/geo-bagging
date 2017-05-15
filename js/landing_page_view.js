@@ -144,9 +144,16 @@ define(['jquery', 'map_loader', 'constants', 'params', 'map_view', 'leaflet', 'l
 			},
 			
 			loadMainMap: function() {
-				var bundleIds = $.makeArray($('fieldset input:checked', this._view).map(function(index, input) {
+				var selectedBundleIds = $.makeArray($('fieldset input:checked', this._view).map(function(index, input) {
 					return $(input).attr('value');
 				}));
+				
+				var hiddenBundleIds = mapLoader.getBundleIds().filter(function(bundleId) {
+					return constants.dataSources.indexOf(bundleId) < 0;
+				});
+				console.log(hiddenBundleIds);
+				var bundleIds = selectedBundleIds.concat(hiddenBundleIds);
+				
 				var remoteData = $('input[name="remoteData"]', this._view).is(':checked');
 				
 				var bounds = null;
