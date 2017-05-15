@@ -82,7 +82,7 @@ define(["leaflet", "os_map", "points_view", "config", "params", "conversion", "j
 					show_locate_control: false,
 					show_hider_control: true,
 					hider_control_start_visible: false,
-					mini: true
+					map_style: 'mini'
 				}, options);
 				if (bundles == null) { //default if we haven't passed one in
 					bundles = ['trigs/config_mini'];
@@ -95,6 +95,7 @@ define(["leaflet", "os_map", "points_view", "config", "params", "conversion", "j
 				mapView(this._config);
 				this._osMap = new OsMap(this._config);
 				this._pointsModels = {};
+				return this._osMap;
 			},
 			
 			hasUrlData: function() {

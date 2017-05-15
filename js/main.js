@@ -1,5 +1,5 @@
 define(['map_loader', 'params', 'landing_page_view'],
-	function(mapLoader, params, landingPageView) {
+	function(mapLoader, params, LandingPageView) {
 		return {			
 			loadMap: function(options, bundleIds) {
 				var skipLandingPageString = params('skipLandingPage');
@@ -13,7 +13,7 @@ define(['map_loader', 'params', 'landing_page_view'],
 					options.skipLandingPage = true;
 					mapLoader.loadMap(options, bundleIds);
 				} else {
-					landingPageView();
+					new LandingPageView();
 				}
 			},
 				

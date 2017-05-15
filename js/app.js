@@ -16,6 +16,7 @@ var versions = {
 	leaflet_controlHider: '3df76ebbfda70789027a40aa6f2e05db603aa364',
 	leaflet_boxSelector: 'd0f8184abafc17170ccc41a98cd6091882683ddf',
 	leaflet_geosearch: 'ce8da4ded7abbf7c1f590a3337a70e7e25146383',
+	leaflet_draw: '0.4.9',
 	file_saver: '1.3.3',
 	underscore: '1.8.3',
 	jquery: '3.0.0',
@@ -38,6 +39,7 @@ var paths = {
 	leaflet_boxSelector_Gpx: 'https://cdn.rawgit.com/tstibbs/Leaflet.BoxSelector/' + versions.leaflet_boxSelector + '/src/gpx',
 	leaflet_geosearch: 'https://cdn.rawgit.com/tstibbs/L.GeoSearch/' + versions.leaflet_geosearch + '/src/js/l.control.geosearch',
 	leaflet_geosearch_bing: 'https://cdn.rawgit.com/tstibbs/L.GeoSearch/' + versions.leaflet_geosearch + '/src/js/l.geosearch.provider.bing',
+	leaflet_draw: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/' + versions.leaflet_draw + '/leaflet.draw',
 	file_saver: 'https://unpkg.com/file-saver@' + versions.file_saver + '/FileSaver.min',
 	underscore: 'https://cdnjs.cloudflare.com/ajax/libs/underscore.js/' + versions.underscore + '/underscore-min',
 	jquery: 'https://code.jquery.com/jquery-' + versions.jquery
@@ -93,6 +95,10 @@ requirejs.config({
 			deps: ['leaflet', 'leaflet_geosearch'],
 			exports: 'L.GeoSearch.Provider.Bing'
 		},
+		leaflet_draw: {
+			deps: ['leaflet'],
+			exports: 'L.Draw'
+		},
 		file_saver: {
 			exports: 'saveAs'
 		},
@@ -125,7 +131,8 @@ function loadCss(url) {
 	'leaflet_locate',
 	'leaflet_matrixlayers',
 	'leaflet_controlHider',
-	'leaflet_boxSelector'
+	'leaflet_boxSelector',
+	'leaflet_draw'
 ].forEach(function(name) {
 	loadCss(paths[name] + '.css');
 });

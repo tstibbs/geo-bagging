@@ -28,7 +28,9 @@ define(["leaflet", "leaflet_controlHider", "selection", "locate", "mobile", "lea
 			
 			_addDefaults: function() {
 				//default leaflet controls
-				this.addControl(new leaflet.Control.Zoom());
+				if (this._config.show_zoom_control) {
+					this.addControl(new leaflet.Control.Zoom());
+				}
 				this._attributionControl = new DataSourceAttributionControl();
 				this.addControl(this._attributionControl);
 				//custom controls
