@@ -157,9 +157,6 @@ class FolliesConverter extends Converter {
 				url = "";
 			}
 		}
-		if (imageLinks.length > 1) {
-			console.log(name);
-		}
 
 		return [
 			lng,
