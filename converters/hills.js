@@ -33,8 +33,9 @@ const classesMap = { //used for mapping and filtering, by filtering in only the 
 }
 
 class HillConverter extends Converter {
-	constructor() {
+	constructor(filtering) {
 		super(attributionString, columnHeaders);
+		this._filtering = filtering;
 	}
 	
 	extractColumns(record) {
@@ -52,11 +53,14 @@ class HillConverter extends Converter {
 				if (classString.endsWith('=')) {
 					classString = classString.substring(0, classString.length - 1);
 				}
-				if (classString.length > 0 
-						&& !classString.startsWith('s') 
-						&& !classString.startsWith('x') //i.e. it isn't a sub or a deletion
-						&& (classString in classesMap)) {
-					allClasses.push(classesMap[classString]);
+				if (classString.length > 0) {
+					if (this._filtering && !classString.startsWith('s') 
+							&& !classString.startsWith('x') //i.e. it isn't a sub or a deletion
+							&& (classString in classesMap)) {
+						allClasses.push(classesMap[classString]);
+					} else if (!this._filtering) {
+						allClasses.push(classString);
+					}
 				}
 			});
 			allClasses = Array.from(new Set(allClasses));
@@ -86,5 +90,6 @@ fs.createReadStream('hills-input/hillcsv.zip')
 	.pipe(unzip.Parse())
 	.on('entry', function (entry) {
 		var fileName = entry.path;
-		(new HillConverter()).writeOutStream(entry, '../js/bundles/hills/data.json');
+		(new HillConverter(true)).writeOutStream(entry, '../js/bundles/hills/data.json');
+		(new HillConverter(false)).writeOutStream(entry, '../js/bundles/hills/data_all.json');
 	});

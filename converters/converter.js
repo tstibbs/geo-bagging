@@ -1,6 +1,7 @@
 const Transform = require('stream').Transform;
 const csv = require('csv');
 const fs = require('fs');
+const cheerio = require('cheerio');
 const gridconversion = require('./gridconversion');
 
 function header(attributionString, columnHeaders, lastUpdated) {
@@ -40,11 +41,25 @@ class HeaderFooterTransformer extends Transform {
 
 class Converter {
 	constructor(attribution, columnHeaders, axisIndexes) {
-		this._header = header(attribution, columnHeaders, new Date().toISOString());
+		this._header = header(attribution, columnHeaders, new Date().toISOString().split('T')[0]);
 		this._axisIndexes = axisIndexes;
 		this._axes = [];
 		this._first = true;
 		this._second = true;
+	}
+	
+	_parseHtml(htmlString) {
+		return cheerio.load(htmlString);
+	}
+	
+	_match(input, regex, groupNumber) {
+		groupNumber = groupNumber != null ? groupNumber : 1;
+		let matches = [];
+		let m;
+		while (m = regex.exec(input)) {
+			matches.push(m[1]);
+		}
+		return matches;
 	}
 	
 	_convertGridRef(gridRef) {
@@ -89,7 +104,11 @@ class Converter {
 	}
 	
 	extractColumns(record) {
-		throw new Error("abstract");
+		if (Array.isArray(record)) {
+			return record;
+		} else {
+			throw new Error("abstract");
+		}
 	}
 
 	writeOut(input, output) {
@@ -97,7 +116,7 @@ class Converter {
 	}
 
 	writeOutStream(readable, output) {
-		this.writeOutParsedStream(readable.pipe(csv.parse()));
+		this.writeOutParsedStream(readable.pipe(csv.parse()), output);
 	}
 
 	writeOutParsedStream(readable, output) {

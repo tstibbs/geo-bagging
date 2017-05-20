@@ -10,10 +10,10 @@ define(['../abstract_points_builder'],
 				var classification = point[4];
 				var height = point[5];
 				
-				var url = "";
+				var url = 'http://www.hill-bagging.co.uk/mountaindetails.php?rf=' + id;
 
 				var classificationStrings = classification.split(';').map(function(classf) {
-					var displayString = this._bundleConfig.dimensionValueLabels[this._bundleConfig.dimensionNames[0]][classf];
+					var displayString = this._bundleConfig.hillDisplayNames[classf];
 					if (displayString == null) {
 						displayString = classf;
 					}
@@ -23,7 +23,7 @@ define(['../abstract_points_builder'],
 					'Height': height,
 					'Classifications': classificationStrings
 				};
-				this.addMarker(lat, lng, url, name, extraInfos, null, [classification]);
+				this.addMarker(id, lat, lng, url, name, extraInfos, null, [classification]);
 			},
 		});
 	}

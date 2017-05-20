@@ -7,7 +7,7 @@ define(["leaflet"],
 			},
 
 			_getIconUrl: function(name) {
-				var url = leaflet.Icon.prototype._getIconUrl.call(this, name)
+				var url = leaflet.Icon.prototype._getIconUrl.call(this, name);
 				if (url == this._customIconPath) {
 					return url;
 				} else {

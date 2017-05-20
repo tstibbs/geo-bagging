@@ -1,5 +1,5 @@
 const fs = require('fs');
-const http = require('http');
+const download = require('./downloader').download;
 
 const allFiles = [
 	'MSS_Summary_Sheet_Milestones_East.xls',
@@ -26,32 +26,9 @@ const allFiles = [
 
 const outputDir = 'milestones-input';
 
-if (!fs.existsSync(outputDir)){
-    fs.mkdirSync(outputDir);
-}
-
-function download(fileName) {
-	let path = 'http://www.msocrepository.co.uk/Excel%20Spreadsheets/' + fileName
-	let dest = outputDir + '/' + fileName;
-	return new Promise((resolve, reject) => {
-		let file = fs.createWriteStream(dest);
-		let request = http.get({
-			host: 'proxyhost',
-			port: 8080,
-			path
-		}, (response) => {
-			response.pipe(file);
-			file.on('finish', () => {
-				file.close(resolve)
-			});
-		}).on('error', (err) => {
-			console.log(err);
-			fs.unlink(dest, reject);
-		});
-	});
-};
-
-let promises = allFiles.map(download);
+let promises = allFiles.map(fileName => 
+	download(`http://www.msocrepository.co.uk/Excel%20Spreadsheets/${fileName}`, outputDir, fileName)
+);
 Promise.all(promises).then(values => { 
 	console.log("finished downloading all");
 }).catch(reason => { 

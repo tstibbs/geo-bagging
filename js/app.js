@@ -15,7 +15,8 @@ var versions = {
 	leaflet_locate: '0.52.0',
 	leaflet_controlHider: '3df76ebbfda70789027a40aa6f2e05db603aa364',
 	leaflet_boxSelector: 'd0f8184abafc17170ccc41a98cd6091882683ddf',
-	leaflet_geosearch: '01854d273650a4b5b28e53e7852257280a25a010',
+	leaflet_geosearch: 'ce8da4ded7abbf7c1f590a3337a70e7e25146383',
+	leaflet_draw: '0.4.9',
 	file_saver: '1.3.3',
 	underscore: '1.8.3',
 	jquery: '3.0.0',
@@ -37,16 +38,17 @@ var paths = {
 	leaflet_boxSelector: 'https://cdn.rawgit.com/tstibbs/Leaflet.BoxSelector/' + versions.leaflet_boxSelector + '/src/selector',
 	leaflet_boxSelector_Gpx: 'https://cdn.rawgit.com/tstibbs/Leaflet.BoxSelector/' + versions.leaflet_boxSelector + '/src/gpx',
 	leaflet_geosearch: 'https://cdn.rawgit.com/tstibbs/L.GeoSearch/' + versions.leaflet_geosearch + '/src/js/l.control.geosearch',
-	leaflet_geosearch_osm: 'https://cdn.rawgit.com/tstibbs/L.GeoSearch/' + versions.leaflet_geosearch + '/src/js/l.geosearch.provider.openstreetmap',
+	leaflet_geosearch_bing: 'https://cdn.rawgit.com/tstibbs/L.GeoSearch/' + versions.leaflet_geosearch + '/src/js/l.geosearch.provider.bing',
+	leaflet_draw: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/' + versions.leaflet_draw + '/leaflet.draw',
 	file_saver: 'https://unpkg.com/file-saver@' + versions.file_saver + '/FileSaver.min',
 	underscore: 'https://cdnjs.cloudflare.com/ajax/libs/underscore.js/' + versions.underscore + '/underscore-min',
 	jquery: 'https://code.jquery.com/jquery-' + versions.jquery
-}
+};
 
 var testingPaths = {
 	Squire: 'https://unpkg.com/squirejs@' + versions.Squire + '/src/Squire',
 	sinon: 'https://unpkg.com/sinon@' + versions.sinon + '/pkg/sinon'
-}
+};
 
 if (window.location.search.indexOf("dev=true") !== -1) {
 	paths.leaflet = paths.leaflet + '-src';
@@ -89,9 +91,13 @@ requirejs.config({
 			deps: ['leaflet'],
 			exports: 'L.Control.GeoSearch'
 		},
-		leaflet_geosearch_osm: {
+		leaflet_geosearch_bing: {
 			deps: ['leaflet', 'leaflet_geosearch'],
-			exports: 'L.GeoSearch.Provider.OpenStreetMap'
+			exports: 'L.GeoSearch.Provider.Bing'
+		},
+		leaflet_draw: {
+			deps: ['leaflet'],
+			exports: 'L.Draw'
 		},
 		file_saver: {
 			exports: 'saveAs'
@@ -100,4 +106,33 @@ requirejs.config({
 			exports: 'module.exports'
 		}
 	}
+});
+
+function loadCss(url) {
+    var css = document.createElement('link');
+    css.rel = 'stylesheet';
+    css.type = 'text/css';
+    css.href = url;
+    document.getElementsByTagName("head")[0].appendChild(css);
+}
+
+[
+	'https://cdn.rawgit.com/tstibbs/L.GeoSearch/' + versions.leaflet_geosearch + '/src/css/l.geosearch.css',
+	'https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css',
+	urlBase + 'css/app.css',
+	'https://cdn.rawgit.com/Leaflet/Leaflet.markercluster/' + versions.leaflet_cluster + '/dist/MarkerCluster.Default.css',
+	'https://cdn.rawgit.com/Leaflet/Leaflet.markercluster/' + versions.leaflet_cluster + '/dist/MarkerCluster.css',
+	'https://unpkg.com/leaflet@' + versions.leaflet + '/dist/leaflet.css',
+].forEach(loadCss);
+
+[
+	'leaflet_screenposition',
+	'leaflet_mouseposition',
+	'leaflet_locate',
+	'leaflet_matrixlayers',
+	'leaflet_controlHider',
+	'leaflet_boxSelector',
+	'leaflet_draw'
+].forEach(function(name) {
+	loadCss(paths[name] + '.css');
 });

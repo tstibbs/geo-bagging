@@ -1,7 +1,7 @@
-define(['leaflet', 'leaflet_bing'],
-	function(leaflet, Leaflet_bing) {
+define(['leaflet', 'leaflet_bing', 'constants'],
+	function(leaflet, Leaflet_bing, constants) {
 
-		var bingKey = "LfO3DMI9S6GnXD7d0WGs~bq2DRVkmIAzSOFdodzZLvw~Arx8dclDxmZA0Y38tHIJlJfnMbGq5GXeYmrGOUIbS2VLFzRKCK0Yv_bAl6oe-DOc";
+		var bingKey = constants.bingKey;
 		
 		//OS
 		var bingOsLayer = new Leaflet_bing(bingKey, {type: "OrdnanceSurvey", minZoom: 12, maxZoom: 18, maxNativeZoom: 17});
@@ -28,7 +28,7 @@ define(['leaflet', 'leaflet_bing'],
 
 		return function(map, config) {
 			//if we have a default layer set, select that now
-			var layerToSelect = layers[config.defaultLayer]
+			var layerToSelect = layers[config.defaultLayer];
 			if (layerToSelect != null) {
 				layerToSelect.addTo(map);
 			} else {

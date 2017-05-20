@@ -6,44 +6,11 @@
 		
 		<!-- must be first -->
 		<script src='../js/error_handler.js'></script>
-
-		<link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.0/dist/leaflet.css" />
-		<!-- Add the moment it's safe to load these at the same time because there are no conflicts and the styles will only be used if the particular control is in play -->
-		<link rel="stylesheet" href="https://cdn.rawgit.com/tstibbs/Leaflet.MapCenterCoord/cc990a672930886aaef55b1a66e651bdaaf27353/src/L.Control.MapCenterCoord.css" />
-		<link rel="stylesheet" href="https://cdn.rawgit.com/tstibbs/Leaflet.MousePosition/b628c7be754c134c63117b3feb75e720a1d20673/src/L.Control.MousePosition.css" />
-		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
-		<link rel="stylesheet" href="https://cdn.jsdelivr.net/leaflet.locatecontrol/0.52.0/L.Control.Locate.min.css" />
-		<link rel="stylesheet" href="https://cdn.rawgit.com/tstibbs/Leaflet.ControlHider/3df76ebbfda70789027a40aa6f2e05db603aa364/src/hider.css" />
-		<link rel="stylesheet" href="https://cdn.rawgit.com/tstibbs/Leaflet.BoxSelector/d0f8184abafc17170ccc41a98cd6091882683ddf/src/selector.css" />
-		<link rel="stylesheet" href="https://cdn.rawgit.com/tstibbs/L.GeoSearch/01854d273650a4b5b28e53e7852257280a25a010/src/css/l.geosearch.css" />
-		<link rel="stylesheet" href="../css/app.css" />
 		
 		<script src='https://cdnjs.cloudflare.com/ajax/libs/require.js/2.2.0/require.js'></script>
 		<script src='../js/loader.js'></script>
 		<script type="text/javascript">
-			window.os_map_base = '../';
-			loadOsMap([], function(main){
-				main.loadMiniMap({}, ['trigs/config_mini']);
-			});
+			loadOsMap('../', 'loadMiniMap');
 		</script>
 	</head>
-
-	<body>
-		<div id="error-container" style="display: none;">
-			<p class="title">Some errors have occurred:</p>
-			<div id="errors-list"></div>
-			<a id="dismiss-button" href="#">Hide</a>
-		</div>
-		<div class="mini-map">
-			<div id="loading-message-pane" class="full-screen">
-				<div class="loading-message-container">
-					<div class="loading-message-text">
-						<p>Loading...</p>
-					</div>
-				</div>
-			</div>
-			<div id="map" class="mini-map"></div>
-		</div>
-		<div class="full-screen-link"></div>
-	</body>
 </html>

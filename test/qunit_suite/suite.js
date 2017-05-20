@@ -1,6 +1,5 @@
 //list of tests
 var testFiles = [
-	//commenting a few until we've resolved the issues with Squire mucking up leaflet plugins
 	"mouseposition_osgb_test.js",
 	"screenposition_osgb_test.js",
 	"points_view_test.js",

@@ -1,16 +1,21 @@
-define(["leaflet", "jquery", "global", "params"],
-	function(leaflet, $, global, params) {
+define(["leaflet", "jquery", "global", "params", "conversion"],
+	function(leaflet, $, global, params, conversion) {
 		
 		var defaultPageId = global.location.pathname.split("/").pop();
 		
 		var defaults = {
+			remoteData: false,
+			skipLandingPage: false,
+			map_style: 'full',//full, mini, embedded
 			cluster: true,
 			dimensional_layering: false,
 			initial_zoom: 13,
 			start_position: [53.374694, -1.711474],//lat, long
 			force_config_override: false,//if true, start position and zoom will be taken from config, not from local storage
 			map_element_id: 'map',
+			map_outer_container_element: $('body'),
 			page_id: defaultPageId,
+			show_zoom_control: true,
 			show_selection_control: true,
 			show_search_control: true,
 			show_locate_control: true,
@@ -44,13 +49,9 @@ define(["leaflet", "jquery", "global", "params"],
 				if (params('startZoom')) {
 					resolvedConfig.initial_zoom = params('startZoom');
 				}
-				if (params('constraints')) {
-					var points = params('constraints').split(','); //lat,lng,lat,lng
-					var tlLat = parseFloat(points[0]);
-					var tlLng = parseFloat(points[1]);
-					var brLat = parseFloat(points[2]);
-					var brLng = parseFloat(points[3]);
-					resolvedConfig.markerConstraints = leaflet.latLngBounds([tlLat, tlLng], [brLat, brLng]);
+				this._buildMarkerConstraints(resolvedConfig);
+				if (params('remoteData') == 'true') {
+					resolvedConfig.remoteData = true;
 				}
 				
 				//set all values locally so that the exporter object works like a hash
@@ -58,6 +59,46 @@ define(["leaflet", "jquery", "global", "params"],
 					if (resolvedConfig.hasOwnProperty(property)) {
 						this[property] = resolvedConfig[property];
 					}
+				}
+			},
+			
+			_buildMarkerConstraints: function(resolvedConfig) {
+				function buildConstraintsMatcher(latLngBounds) {
+					return function(marker) {
+						return latLngBounds.contains(marker.latLng);
+					};
+				}
+				
+				if (resolvedConfig.markerConstraints != null && Array.isArray(resolvedConfig.markerConstraints)) {
+					resolvedConfig.markerConstraints = buildConstraintsMatcher(leaflet.latLngBounds(resolvedConfig.markerConstraints)); //[[bottom, left], [top, right]]
+				}
+				var constraintsString = null;
+				if (params('constraints') != null) { // params takes priority
+					constraintsString = params('constraints');
+				} else if (resolvedConfig.markerConstraints != null && typeof resolvedConfig.markerConstraints == 'string') {
+					constraintsString = resolvedConfig.markerConstraints;
+				}
+				if (constraintsString != null) {
+					var points = constraintsString.split(',');
+					var tlLat = null;
+					var tlLng = null;
+					var brLat = null;
+					var brLng = null;
+					if (points.length == 2) {
+						//must be os grid refs
+						var topLeft = conversion.gridRefToLngLat(points[0]);
+						tlLng = topLeft[0];
+						tlLat = topLeft[1];
+						var bottomRight = conversion.gridRefToLngLat(points[1]);
+						brLng = bottomRight[0];
+						brLat = bottomRight[1];
+					} else { //lat,lng,lat,lng
+						tlLat = parseFloat(points[0]);
+						tlLng = parseFloat(points[1]);
+						brLat = parseFloat(points[2]);
+						brLng = parseFloat(points[3]);
+					}
+					resolvedConfig.markerConstraints = buildConstraintsMatcher(leaflet.latLngBounds([brLat, tlLng], [tlLat, brLng])); //<LatLng> southWest, <LatLng> northEast
 				}
 			},
 			

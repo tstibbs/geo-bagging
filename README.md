@@ -7,23 +7,17 @@
 [![Build Status](https://saucelabs.com/browser-matrix/tstibbs.svg)](https://saucelabs.com/beta/builds/5e191601dd4c46cd9c06b041910365ed)
 
 ## What is this?
-OS OpenSpace doesn't have the 1:25,000 mapping and the embeddable Bing client is a bit rubbish. So I thought I'd hook together some pre-existing stuff to make something a bit more appropriate for walking maps that isn't as rubbish as the bing client but still has the 1:25,000 mapping. It's mostly just me experimenting, there will be no technological breakthroughs here.
+This project creates a map showing markers from a number of difference data sources showing historical POIs (e.g. trig points, milestones, follies). Some of this information is already available in map form, but this project aims to bring these datasources together and present the information on one interface. 
 
-## Why does it use require.js?
-Because I wanted to learn about require. The page load time seems to increase significantly with require, so I'd probably remove it if wanted to use this code for something in production.
+Note this started as an excuse to learn about a few javascript libraries that I'd not had a reason to use (e.g. leaflet). Therefore I'm sure there are simpler ways to achieve some of these things.
 
 ## How can I try it?
-[Basic map demo](https://tstibbs.github.io/geo-bagging/examples/index.html)
+[Map showing many markers with a category-based selector](https://tstibbs.github.io/geo-bagging/examples/index.html?datasources=milestones,hills)
 
-[Map showing many markers with a category-based selector](https://tstibbs.github.io/geo-bagging/examples/index.html?trigs=true&hills=true)
+[Mini-map that can be embedded into another page](https://tstibbs.github.io/geo-bagging/examples/mini.html)
 
-[Mini-map that can be embedded into a page](https://tstibbs.github.io/geo-bagging/examples/mini.html)
-
-## Does it support mobile devices?
-In theory yes. If we detect that you are using a mobile device then the mouse pointer positioning stuff goes away and the coordinates instead show the location that is at the centre of the bit of the map you are currently viewing. Leaflet itself [already supports mobile devices](http://leafletjs.com/examples/mobile.html).
-
-## What's with that hideous blue marker?
-OS maps are actually quite colourful and creating an icon that stands out regardless of the map beneath it was surprisingly difficult. However, it's just a placeholder really as I'm aware that my graphic design skills are pretty limited - so I'm more than happy to receive suggestions!
+## Why are the marker icons so bad?
+I'm not good with colours or icons; I'd welcome any contributions.
 
 ## Unit tests
 There are some basic unit tests covering some of the functionality. To run these go here https://tstibbs.github.io/geo-bagging/test/qunit_suite/test.html or run these commands:
@@ -33,10 +27,17 @@ npm test
 ```
 
 ## [trigpointing.uk](http://trigpointing.uk)
-This project started as an excuse to learn a little about a few javascript libraries I'd never used (leaflet and requirejs mainly). However recently I added some stuff to it to enable it to be used as the map for tripointing.uk, because I struggle to use the "interactive" map on that site. If you want to try this functionality out, you simply need to do a search on trigpointing.uk, then run the following (e.g. in Chrome press F12 and then paste this code into the console):
-```
-$.getScript("https://tstibbs.github.io/os-map/integration/trigpointing.js");
-```
-After a short delay it should redirect you to this site and display the results of your search.
+There is some basic integration with T:UK. Whilst the scope of this project is beyond just trig points, this integration is here as a demonstration of what is possible.
 
-Note that for now the integration between the two sites relies on passing a bunch of stuff in the URL so you will need to keep the search to something that returns a smallish number of results (maybe a few 10s) to ensure the URL doesn't get truncated by your browser. Searches for 'name contains' will usually give you a small number (try 'castle' or 'tor').
+Firstly, you can replace the mini map that shows on a trig point's details page with one from this project. Run the following (e.g. in Chrome press F12 and then paste this code into the console):
+```
+$.getScript("https://tstibbs.github.io/geo-bagging/integration/trigpointing_embed.js");
+```
+
+Secondly, you can display the results of a T:UK search on this map (limited to 1000 points). To do this, you simply need to do a search on trigpointing.uk, then run the following (e.g. in Chrome press F12 and then paste this code into the console):
+```
+$.getScript("https://tstibbs.github.io/geo-bagging/integration/trigpointing.js");
+```
+
+## Licence
+Please see [here](Licences.md) for important information regarding the licence of this project.

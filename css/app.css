@@ -16,8 +16,13 @@ div.full-screen {
 }
 
 div.mini-map {
-	width: 200px;
-	height: 200px
+	width: 300px;
+	height: 300px
+}
+
+div.embedded-map {
+	width: 100%;
+	height: 100%;
 }
 
 .loading-message-container {
@@ -44,6 +49,10 @@ div.mini-map {
 
 .leaflet-container .leaflet-control-mapcentercoord, .leaflet-container .leaflet-control-mouseposition {
 	background-color: rgba(255, 255, 255, 0.85);
+}
+
+div.leaflet-control-attribution {
+	text-align: end;
 }
 
 /* for now, hide the attribution control on the mini map */
@@ -129,4 +138,28 @@ div#error-container a#dismiss-button {
 .expandable-checkbox:checked ~ .expandable-content {
 	visibility: initial;
 	height: initial;
+}
+
+/* landing page */
+
+body.landing {
+	height: calc(100vh - 16px);
+	/* this seems to be the default in chrome at least, we just need to force it to ensure the above calc works */
+	margin: 8px;
+}
+
+.landing .landing-container {
+	height: 100%;
+	display: flex;
+	flex-flow: column;
+}
+
+.landing #map-container {
+	flex: 1;
+}
+
+/* other */
+
+.hidden {
+	visibility: hidden;
 }
