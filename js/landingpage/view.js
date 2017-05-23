@@ -1,9 +1,9 @@
-define(['jquery', 'map_loader', 'constants', 'params', 'map_view', 'leaflet', 'leaflet_draw'],
-    function($, mapLoader, constants, params, mapView, leaflet, LeafletDraw) {
+define(['jquery', 'map_loader', '../constants', '../params', '../map_view', './source_view', './hills_source_view', './extra_source_view', 'leaflet', 'leaflet_draw'],
+    function($, mapLoader, constants, params, mapView, SourceView, HillsSourceView, ExtraSourceView, leaflet, LeafletDraw) {
         var LandingPageView = leaflet.Class.extend({
 			buildView: function() {
-				var datasources = constants.dataSources;
-				var bundles = mapLoader.getBundleIds();
+				var datasources = [].concat(constants.dataSources).sort();//don't want to modify the constant
+				var bundles = mapLoader.getBundleIds().sort();
 				var remoteData = params('remoteData') != null;
 				var constraints = params('constraints');
 				
@@ -24,22 +24,52 @@ define(['jquery', 'map_loader', 'constants', 'params', 'map_view', 'leaflet', 'l
 				view += '</div>';
 				
 				this._view = $(view);
+				var fieldset = $('fieldset', this._view);
+				this._sources = [];
+				this._extraSources = [];
 				
-				for (var i = 0; i < datasources.length; i++) {
-					var source = datasources[i];
-					var label = $('<label></label>');
-					var input = $('<input></input>');
-					input.attr('type', 'checkbox');
-					input.attr('name', source);
-					input.attr('value', source);
-					if (bundles.indexOf(source) != -1) {
-						input.attr('checked', 'true');
+				var createSources = function(sources, datasources) {
+					var sourceViews = {};
+					for (var i = 0; i < sources.length; i++) {
+						var source = sources[i];
+						var bundleBase = source.split('/', 1)[0];
+						if (HillsSourceView.canDisplaySource(source)) {
+							sourceViews[source] = new HillsSourceView(source, bundles);
+							console.log('hill: ' + source);
+						} else if (SourceView.canDisplaySource(source)) {
+							sourceViews[source] = new SourceView(source, bundles);
+							console.log('general: ' + source);
+						} else {
+							this._extraSources.push(source);
+							console.log('extra: ' + source);
+						}
+						if (datasources != null && datasources.indexOf(bundleBase) != -1) {
+							datasources.splice(datasources.indexOf(bundleBase), 1);
+						}
 					}
-					label.append(input);
-					label.append(source);
-					$('fieldset', this._view).append(label);
-					$('fieldset', this._view).append($('<br />'));
-				}
+					return sourceViews;
+				}.bind(this);
+				
+				//create sources for all bundles
+				var sourceViews = createSources(bundles, datasources);
+				console.log(datasources);
+				//now create sources for the remaining datasources
+				$.extend(sourceViews, createSources(datasources, null));
+				console.log(this._extraSources);
+
+				Object.keys(sourceViews).sort().forEach(function(source) {
+					this._sources.push(sourceViews[source]);
+				}.bind(this));
+
+				this._extraSources.sort().forEach(function(source) {
+					this._sources.push(new ExtraSourceView(source));
+				}.bind(this));
+
+				this._sources.forEach(function(source) {
+					source.render(fieldset);
+				}.bind(this));
+
+
 
 				if (remoteData) {
 					$('input[name="remoteData"]', this._view).attr('checked', 'true');
@@ -144,15 +174,11 @@ define(['jquery', 'map_loader', 'constants', 'params', 'map_view', 'leaflet', 'l
 			},
 			
 			loadMainMap: function() {
-				var selectedBundleIds = $.makeArray($('fieldset input:checked', this._view).map(function(index, input) {
-					return $(input).attr('value');
-				}));
-				
-				var hiddenBundleIds = mapLoader.getBundleIds().filter(function(bundleId) {
-					return constants.dataSources.indexOf(bundleId) < 0;
+				var selectedBundleIds = this._sources.map(function(source) {
+					return source.getSelected();
+				}).filter(function(source) {
+					return source != null;
 				});
-				console.log(hiddenBundleIds);
-				var bundleIds = selectedBundleIds.concat(hiddenBundleIds);
 				
 				var remoteData = $('input[name="remoteData"]', this._view).is(':checked');
 				
@@ -161,7 +187,7 @@ define(['jquery', 'map_loader', 'constants', 'params', 'map_view', 'leaflet', 'l
 					bounds = this._drawnItems.getLayers()[0].getBounds();
 				}
 				
-				this.navigate(bundleIds, bounds, remoteData);
+				this.navigate(selectedBundleIds, bounds, remoteData);
 			},
 			
 			initialize: function() {
