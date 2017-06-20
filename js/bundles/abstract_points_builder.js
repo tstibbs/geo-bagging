@@ -32,7 +32,7 @@ define(['leaflet'],
 					icon: icon
 				};
 				
-				if (this._config.markerConstraints == null || this._config.markerConstraints(marker)) {
+				if (this._config.markerConstraintsMatcher == null || this._config.markerConstraintsMatcher(marker)) {
 					if (this._config.dimensional_layering || dimensionValues == null || dimensionValues.length === 0) {
 						if (this._markerList == null) {
 							this._markerList = {};

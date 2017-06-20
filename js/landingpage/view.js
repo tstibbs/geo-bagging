@@ -1,5 +1,5 @@
-define(['jquery', 'map_loader', '../constants', '../params', '../map_view', './source_view', './hills_source_view', './extra_source_view', 'mobile', 'leaflet', 'leaflet_draw'],
-    function($, mapLoader, constants, params, mapView, SourceView, HillsSourceView, ExtraSourceView, mobile, leaflet, LeafletDraw) {
+define(['jquery', 'map_loader', '../constants', '../params', '../map_view', './source_view', './hills_source_view', './extra_source_view', 'mobile', 'config', 'leaflet', 'leaflet_draw'],
+    function($, mapLoader, constants, params, mapView, SourceView, HillsSourceView, ExtraSourceView, mobile, Config, leaflet, LeafletDraw) {
         var LandingPageView = leaflet.Class.extend({
 			buildView: function() {
 				var datasources = [].concat(constants.dataSources).sort();//don't want to modify the constant
@@ -143,12 +143,7 @@ define(['jquery', 'map_loader', '../constants', '../params', '../map_view', './s
 				
 				var constraints = params('constraints');
 				if (constraints != null) {
-					var points = constraints.split(',');
-					var north = parseFloat(points[0]);
-					var west = parseFloat(points[1]);
-					var south = parseFloat(points[2]);
-					var east = parseFloat(points[3]);
-					var bounds = leaflet.latLngBounds([south, west], [north, east]); //<LatLng> southWest, <LatLng> northEast
+					var bounds = (new Config()).markerConstraints;
 					
 					var shape = new leaflet.Rectangle(bounds, rect.options.shapeOptions);
 					this._drawnItems.addLayer(shape);
