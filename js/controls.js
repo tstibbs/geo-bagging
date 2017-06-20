@@ -56,11 +56,13 @@ define(["leaflet", "leaflet_controlHider", "selection", "locate", "mobile", "lea
 				if (this._config.show_layers_control && this._layers != null && Object.keys(this._layers).length > 1) {
 					this.addControl(new leaflet.Control.Layers(this._layers, null));
 				}
-				//position displays
-				if (mobile.isMobile()) {
-					this.addControl(new Screenposition_Osgb());
-				} else {
-					this.addControl(new Mouseposition_Osgb());
+				if (this._config.show_position_control) {
+					//position displays
+					if (mobile.isMobile()) {
+						this.addControl(new Screenposition_Osgb());
+					} else {
+						this.addControl(new Mouseposition_Osgb());
+					}
 				}
 			},
 			

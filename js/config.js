@@ -20,6 +20,7 @@ define(["leaflet", "jquery", "global", "params", "conversion"],
 			show_search_control: true,
 			show_locate_control: true,
 			show_layers_control: true,
+			show_position_control: true,
 			show_hider_control: 'mobile',// false, true, 'mobile'
 			hider_control_start_visible: true,
 			icons: {},
