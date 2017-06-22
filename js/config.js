@@ -20,6 +20,7 @@ define(["leaflet", "jquery", "global", "params", "conversion"],
 			show_search_control: true,
 			show_locate_control: true,
 			show_layers_control: true,
+			show_position_control: true,
 			show_hider_control: 'mobile',// false, true, 'mobile'
 			hider_control_start_visible: true,
 			icons: {},
@@ -63,15 +64,6 @@ define(["leaflet", "jquery", "global", "params", "conversion"],
 			},
 			
 			_buildMarkerConstraints: function(resolvedConfig) {
-				function buildConstraintsMatcher(latLngBounds) {
-					return function(marker) {
-						return latLngBounds.contains(marker.latLng);
-					};
-				}
-				
-				if (resolvedConfig.markerConstraints != null && Array.isArray(resolvedConfig.markerConstraints)) {
-					resolvedConfig.markerConstraints = buildConstraintsMatcher(leaflet.latLngBounds(resolvedConfig.markerConstraints)); //[[bottom, left], [top, right]]
-				}
 				var constraintsString = null;
 				if (params('constraints') != null) { // params takes priority
 					constraintsString = params('constraints');
@@ -98,8 +90,14 @@ define(["leaflet", "jquery", "global", "params", "conversion"],
 						brLat = parseFloat(points[2]);
 						brLng = parseFloat(points[3]);
 					}
-					resolvedConfig.markerConstraints = buildConstraintsMatcher(leaflet.latLngBounds([brLat, tlLng], [tlLat, brLng])); //<LatLng> southWest, <LatLng> northEast
+					resolvedConfig.markerConstraints = [[brLat, tlLng], [tlLat, brLng]]; //<LatLng> southWest, <LatLng> northEast
 				}
+				if (resolvedConfig.markerConstraints != null && Array.isArray(resolvedConfig.markerConstraints)) {
+					resolvedConfig.markerConstraints = leaflet.latLngBounds(resolvedConfig.markerConstraints); //[[bottom, left], [top, right]]
+				}
+				resolvedConfig.markerConstraintsMatcher = function(marker) {
+					return resolvedConfig.markerConstraints.contains(marker.latLng);
+				};
 			},
 			
 			_checkForUndefaultedProperties: function(newConfig, source) {

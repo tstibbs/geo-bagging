@@ -1,4 +1,4 @@
-define(['map_loader', 'params', 'landing_page_view'],
+define(['map_loader', 'params', 'landingpage/view'],
 	function(mapLoader, params, LandingPageView) {
 		return {			
 			loadMap: function(options, bundleIds) {

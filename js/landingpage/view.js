@@ -1,9 +1,9 @@
-define(['jquery', 'map_loader', 'constants', 'params', 'map_view', 'leaflet', 'leaflet_draw'],
-    function($, mapLoader, constants, params, mapView, leaflet, LeafletDraw) {
+define(['jquery', 'map_loader', '../constants', '../params', '../map_view', './source_view', './hills_source_view', './extra_source_view', 'mobile', 'config', 'leaflet', 'leaflet_draw'],
+    function($, mapLoader, constants, params, mapView, SourceView, HillsSourceView, ExtraSourceView, mobile, Config, leaflet, LeafletDraw) {
         var LandingPageView = leaflet.Class.extend({
 			buildView: function() {
-				var datasources = constants.dataSources;
-				var bundles = mapLoader.getBundleIds();
+				var datasources = [].concat(constants.dataSources).sort();//don't want to modify the constant
+				var bundles = mapLoader.getBundleIds().sort();
 				var remoteData = params('remoteData') != null;
 				var constraints = params('constraints');
 				
@@ -18,28 +18,59 @@ define(['jquery', 'map_loader', 'constants', 'params', 'map_view', 'leaflet', 'l
 				view += '        <input type="submit" value="Load map">';
 				view += '        <br />';
 				view += '        <label><input type="checkbox" name="constraints" value="constraints">Limit markers by area?</label>';
+				view += '        <label><input type="checkbox" name="constraintsselect" value="constraintsselect">Enable selection</label>';
 				view += '    </form>';
 				view += '    <div id="map-container" class="hidden">';
 				view += '    </div>';
 				view += '</div>';
 				
 				this._view = $(view);
+				var fieldset = $('fieldset', this._view);
+				this._sources = [];
+				this._extraSources = [];
 				
-				for (var i = 0; i < datasources.length; i++) {
-					var source = datasources[i];
-					var label = $('<label></label>');
-					var input = $('<input></input>');
-					input.attr('type', 'checkbox');
-					input.attr('name', source);
-					input.attr('value', source);
-					if (bundles.indexOf(source) != -1) {
-						input.attr('checked', 'true');
+				var createSources = function(sources, datasources) {
+					var sourceViews = {};
+					for (var i = 0; i < sources.length; i++) {
+						var source = sources[i];
+						var bundleBase = source.split('/', 1)[0];
+						if (HillsSourceView.canDisplaySource(source)) {
+							sourceViews[source] = new HillsSourceView(source, bundles);
+							console.log('hill: ' + source);
+						} else if (SourceView.canDisplaySource(source)) {
+							sourceViews[source] = new SourceView(source, bundles);
+							console.log('general: ' + source);
+						} else {
+							this._extraSources.push(source);
+							console.log('extra: ' + source);
+						}
+						if (datasources != null && datasources.indexOf(bundleBase) != -1) {
+							datasources.splice(datasources.indexOf(bundleBase), 1);
+						}
 					}
-					label.append(input);
-					label.append(source);
-					$('fieldset', this._view).append(label);
-					$('fieldset', this._view).append($('<br />'));
-				}
+					return sourceViews;
+				}.bind(this);
+				
+				//create sources for all bundles
+				var sourceViews = createSources(bundles, datasources);
+				console.log(datasources);
+				//now create sources for the remaining datasources
+				$.extend(sourceViews, createSources(datasources, null));
+				console.log(this._extraSources);
+
+				Object.keys(sourceViews).sort().forEach(function(source) {
+					this._sources.push(sourceViews[source]);
+				}.bind(this));
+
+				this._extraSources.sort().forEach(function(source) {
+					this._sources.push(new ExtraSourceView(source));
+				}.bind(this));
+
+				this._sources.forEach(function(source) {
+					source.render(fieldset);
+				}.bind(this));
+
+
 
 				if (remoteData) {
 					$('input[name="remoteData"]', this._view).attr('checked', 'true');
@@ -81,7 +112,8 @@ define(['jquery', 'map_loader', 'constants', 'params', 'map_view', 'leaflet', 'l
 					show_zoom_control: false,
 					show_selection_control: false,
 					show_hider_control: false,
-					show_layers_control: false
+					show_layers_control: false,
+					show_position_control: false
 				});
 				var map = osMap.getMap();
 				var bounds = new leaflet.LatLngBounds([49.872, -10.568], [60.849, 1.774]); //southWest, northEast
@@ -95,16 +127,23 @@ define(['jquery', 'map_loader', 'constants', 'params', 'map_view', 'leaflet', 'l
 				var rect = new LeafletDraw.Rectangle(map, {
 					repeatMode: true
 				});
-				rect.enable();
+				$('input[name="constraintsselect"]', this._view).click(function() {
+					var enable = $(this).is(':checked');
+					if (enable) {
+						rect.enable();
+					} else {
+						rect.disable();
+						if (mobile.isMobile()) {
+							//hack because box drawing doesn't work with touch so we allow multiple boxes as a workaround
+							drawnItems.clearLayers();
+						}
+					}
+				});
+				
 				
 				var constraints = params('constraints');
 				if (constraints != null) {
-					var points = constraints.split(',');
-					var north = parseFloat(points[0]);
-					var west = parseFloat(points[1]);
-					var south = parseFloat(points[2]);
-					var east = parseFloat(points[3]);
-					var bounds = leaflet.latLngBounds([south, west], [north, east]); //<LatLng> southWest, <LatLng> northEast
+					var bounds = (new Config()).markerConstraints;
 					
 					var shape = new leaflet.Rectangle(bounds, rect.options.shapeOptions);
 					this._drawnItems.addLayer(shape);
@@ -112,7 +151,10 @@ define(['jquery', 'map_loader', 'constants', 'params', 'map_view', 'leaflet', 'l
 
 				map.on('draw:created', function (e) {
 					var layer = e.layer;
-					drawnItems.clearLayers();
+					if (!mobile.isMobile()) {
+						//hack because box drawing doesn't work with touch so we allow multiple boxes as a workaround
+						drawnItems.clearLayers();
+					}
 					drawnItems.addLayer(layer);
 				});
 				
@@ -144,24 +186,20 @@ define(['jquery', 'map_loader', 'constants', 'params', 'map_view', 'leaflet', 'l
 			},
 			
 			loadMainMap: function() {
-				var selectedBundleIds = $.makeArray($('fieldset input:checked', this._view).map(function(index, input) {
-					return $(input).attr('value');
-				}));
-				
-				var hiddenBundleIds = mapLoader.getBundleIds().filter(function(bundleId) {
-					return constants.dataSources.indexOf(bundleId) < 0;
+				var selectedBundleIds = this._sources.map(function(source) {
+					return source.getSelected();
+				}).filter(function(source) {
+					return source != null;
 				});
-				console.log(hiddenBundleIds);
-				var bundleIds = selectedBundleIds.concat(hiddenBundleIds);
 				
 				var remoteData = $('input[name="remoteData"]', this._view).is(':checked');
 				
 				var bounds = null;
 				if ($('input[name="constraints"]', this._view).is(':checked') && this._drawnItems.getLayers().length > 0) {
-					bounds = this._drawnItems.getLayers()[0].getBounds();
+					bounds = this._drawnItems.getBounds();
 				}
 				
-				this.navigate(bundleIds, bounds, remoteData);
+				this.navigate(selectedBundleIds, bounds, remoteData);
 			},
 			
 			initialize: function() {
