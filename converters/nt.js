@@ -2,24 +2,13 @@ const cheerio = require('cheerio');
 const request = require('request');
 const Stream = require('stream');
 const Converter = require('./converter');
+const get = require('./Utils').get;
 
 const attributionString = "This file adapted from data available on www.nationaltrust.org.uk which is copyright © National Trust";
 const columnHeaders = "[Longitude,Latitude,Id,Name,Link,type,facilities]"
 
 const allDataPath = 'https://www.nationaltrust.org.uk/search/data/all-places';
 const basePath = 'https://www.nationaltrust.org.uk/search?query=&type=place&view=map';
-
-function get(path) {
-	return new Promise((resolve, reject) => {
-		request(path, (error, response, body) => {
-			if (error) {
-				reject(error);
-			} else {
-				resolve([body, path]);
-			}
-		});
-	});
-}
 
 function getHtml(path) {
 	return get(path).then(([body, path]) => 
@@ -108,12 +97,7 @@ getHtml(basePath).then($ => {
 				facilities
 			];
 		});
-	
-	const readable = new Stream.Readable({objectMode: true});
-	csv.forEach(entry => readable.push(entry));
-	// end the stream
-	readable.push(null);
 
 	const converter = new Converter(attributionString, columnHeaders);
-	converter.writeOutParsedStream(readable, '../js/bundles/nt/data.json');
+	converter.writeOutCsv(csv, '../js/bundles/nt/data.json');
 }).catch(error => console.error(error));

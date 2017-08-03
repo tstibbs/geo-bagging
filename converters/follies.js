@@ -175,12 +175,6 @@ const parser = new xml2js.Parser();
 fs.readFile('follies-input/out.xml', (err, data) => {
     parser.parseString(data, (err, result) => {
 		let points = result.points.point;
-
-		const readable = new Stream.Readable({objectMode: true});
-		points.forEach(point => readable.push(point));
-		// end the stream
-		readable.push(null);
-
-		converter.writeOutParsedStream(readable, '../js/bundles/follies/data.json');
+		converter.writeOutCsv(points, '../js/bundles/follies/data.json');
     });
 });
