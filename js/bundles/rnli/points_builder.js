@@ -10,20 +10,15 @@ define(['../abstract_points_builder'],
 				var types = point[4];
 				var launchMethods = point[5];
 				
-				var typeLabels = this._bundleConfig.dimensionValueLabels[this._bundleConfig.dimensionNames[0]];
+				var typeLabels = this._bundleConfig.typeData;
 				var launchMethodLabels = this._bundleConfig.dimensionValueLabels[this._bundleConfig.dimensionNames[1]];
 				
 				function split(values, labels) {
 					var splits = values.split(';');
-					splits = splits.map(function(value) {
+					return splits.map(function(value) {
 						var label = labels[value];
 						return label != null ? label : value;
 					});
-					if (splits.length == 1) {
-						return splits[0];
-					} else {
-						return splits;
-					}
 				}
 
 				var extraInfos = {
