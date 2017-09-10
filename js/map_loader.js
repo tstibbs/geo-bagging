@@ -1,5 +1,5 @@
-define(["leaflet", "os_map", "points_view", "config", "params", "conversion", "jquery", 'bundles/trigs/config_base', 'map_view'],
-	function(leaflet, OsMap, PointsView, Config, params, conversion, $, trigsPointsBundle, mapView) {
+define(["leaflet", "os_map", "points_view", "config", "params", "conversion", "jquery", 'bundles/trigs/config_base', 'map_view', 'bundles/nationaltrails/trailsLayer'],
+	function(leaflet, OsMap, PointsView, Config, params, conversion, $, trigsPointsBundle, mapView, trailsLayer) {
 			
 		function finish() {
 			$('div#loading-message-pane').hide();
@@ -157,6 +157,7 @@ define(["leaflet", "os_map", "points_view", "config", "params", "conversion", "j
 			},
 			
 			_finishLoading: function() {
+				trailsLayer.addTo(this._osMap.getMap());
 				this._pointsView = new PointsView(this._osMap.getMap(), this._config, this._pointsModels, this._osMap.getControls(), this._osMap.getLayers());
 				this._pointsView.finish(finish);
 			}
