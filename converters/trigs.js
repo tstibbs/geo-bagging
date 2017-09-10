@@ -33,7 +33,7 @@ class TrigConverter extends Converter {
 }
 
 fs.readdir('trigs-input', (err, files) => {
-	let foundFiles = files.filter((file) => /trigpoints-\\d+.csv/.test(file) );
+	let foundFiles = files.filter((file) => /trigpoints-\d+.csv/.test(file) );
 	if (foundFiles.length != 1) {
 		console.error(`Should be exactly 1 file called trigpoints-[date as numbers].csv, but were: ${foundFiles}`);
 		process.exit(1);

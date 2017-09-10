@@ -1,4 +1,5 @@
 const Transform = require('stream').Transform;
+const Stream = require('stream');
 const csv = require('csv');
 const fs = require('fs');
 const cheerio = require('cheerio');
@@ -128,6 +129,15 @@ class Converter {
 		writeStream.on('finish', () => {
 			console.log(this._axes);
 		});
+	}
+	
+	writeOutCsv(csvContent, output) {
+		const readable = new Stream.Readable({objectMode: true});
+		csvContent.forEach(entry => readable.push(entry));
+		// end the stream
+		readable.push(null);
+
+		this.writeOutParsedStream(readable, output);
 	}
 }
 
