@@ -1,5 +1,5 @@
-define(["leaflet", "os_map", "points_view", "config", "params", "conversion", "jquery", 'bundles/trigs/config_base', 'map_view', 'bundles/nationaltrails/trailsLayer', 'bundles/abstract_points_builder'],
-	function(leaflet, OsMap, PointsView, Config, params, conversion, $, trigsPointsBundle, mapView, trailsLayer, AbstractPointsBuilder) {
+define(["leaflet", "os_map", "points_view", "config", "params", "conversion", "jquery", 'bundles/trigs/config_base', 'map_view', 'bundles/abstract_points_builder', 'bundles/abstract_geojson_builder'],
+	function(leaflet, OsMap, PointsView, Config, params, conversion, $, trigsPointsBundle, mapView, AbstractPointsBuilder, AbstractGeojsonBuilder) {
 			
 		function finish() {
 			$('div#loading-message-pane').hide();
@@ -146,15 +146,25 @@ define(["leaflet", "os_map", "points_view", "config", "params", "conversion", "j
 			},
 			
 			_finishLoading: function() {
-				trailsLayer.addTo(this._osMap.getMap());
-				var pointsModels = {};
-				Object.keys(this._bundleModels).filter(function(bundleName) {
-					var model = this._bundleModels[bundleName];
-					return model instanceof AbstractPointsBuilder;
-				}.bind(this)).forEach(function(bundleName) {
-					pointsModels[bundleName] = this._bundleModels[bundleName];
-				}.bind(this));
+				var filterModels = function(className) {
+					var matchingModels = {};
+					Object.keys(this._bundleModels).filter(function(bundleName) {
+						var model = this._bundleModels[bundleName];
+						return model instanceof className;
+					}.bind(this)).forEach(function(bundleName) {
+						matchingModels[bundleName] = this._bundleModels[bundleName];
+					}.bind(this));
+					return matchingModels;
+				}.bind(this);
+				
+				var pointsModels = filterModels(AbstractPointsBuilder);
+				var geojsonModels = filterModels(AbstractGeojsonBuilder);
 				this._pointsView = new PointsView(this._osMap.getMap(), this._config, pointsModels, this._osMap.getControls(), this._osMap.getLayers());
+				Object.keys(geojsonModels).forEach(function(bundleName) {
+					var model = geojsonModels[bundleName];
+					model.addTo(this._osMap.getMap());
+				}.bind(this));
+				
 				this._pointsView.finish(finish);
 			}
 		};
