@@ -26,6 +26,8 @@ define(["underscore", "jquery", "leaflet", "leaflet_cluster", "leaflet_subgroup"
 			},
 			
 			finish: function (finished) {
+				var deferredObject = $.Deferred();
+				
 				var parentGroup = null;
 				if (this._config.cluster) {
 					var mapElem = $('div#map');
@@ -36,13 +38,13 @@ define(["underscore", "jquery", "leaflet", "leaflet_cluster", "leaflet_subgroup"
 						chunkedLoading: true,
 						chunkProgress: function (processed, total, elapsed, layersArray) {
 							if (processed === total) {
-								finished();
+								deferredObject.resolve();
 							}
 						}
 					});
 				} else {
 					parentGroup = leaflet.layerGroup();
-					finished();
+					deferredObject.resolve();
 				}
 				
 				parentGroup.addTo(this._map);
@@ -99,6 +101,8 @@ define(["underscore", "jquery", "leaflet", "leaflet_cluster", "leaflet_subgroup"
 						this._controls.addAttribution(attribution);
 					}
 				}.bind(this));
+				
+				return deferredObject.promise();
 			}
 		});
 

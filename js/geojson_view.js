@@ -17,7 +17,8 @@ define(['jquery', 'leaflet'],
 						model.addTo(this._map);
 					}.bind(this));
 				}
-				finished();
+				//no async here, but stick to the convention of the other views
+				return $.Deferred().resolve().promise();
 			}
 		});
 
