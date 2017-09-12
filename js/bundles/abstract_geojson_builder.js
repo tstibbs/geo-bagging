@@ -19,8 +19,8 @@ define(['leaflet', 'jquery'],
 				}.bind(this));
 			},
 			
-			addTo: function(map) {
-				leaflet.geoJSON(this._data).addTo(map);
+			buildLayer: function() {
+				return leaflet.geoJSON(this._data);
 			},
 			
 			getBundleConfig: function() {

@@ -4,6 +4,7 @@ define(['./builder'],
 			dataToLoad: 'data.geojson',
 			parser: Builder,
 			attribution: 'Adapted from TODO',
+			displayLabel: 'National Trails'
 		};
 	}
 );

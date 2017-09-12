@@ -1,5 +1,5 @@
-define(["leaflet", "os_map", "points_view", "geojson_view", "config", "params", "conversion", "jquery", 'bundles/trigs/config_base', 'map_view', 'bundles/abstract_points_builder', 'bundles/abstract_geojson_builder'],
-	function(leaflet, OsMap, PointsView, GeojsonView, Config, params, conversion, $, trigsPointsBundle, mapView, AbstractPointsBuilder, AbstractGeojsonBuilder) {
+define(["leaflet", "os_map", "points_view", "geojson_view", "config", "params", "conversion", "jquery", 'bundles/trigs/config_base', 'map_view', 'bundles/abstract_points_builder', 'model_views'],
+	function(leaflet, OsMap, PointsView, GeojsonView, Config, params, conversion, $, trigsPointsBundle, mapView, AbstractPointsBuilder, ModelViews) {
 			
 		return {			
 			getBundleIds: function(bundles) {
@@ -142,26 +142,8 @@ define(["leaflet", "os_map", "points_view", "geojson_view", "config", "params", 
 			},
 			
 			_finishLoading: function() {
-				var filterModels = function(className) {
-					var matchingModels = {};
-					Object.keys(this._bundleModels).filter(function(bundleName) {
-						var model = this._bundleModels[bundleName];
-						return model instanceof className;
-					}.bind(this)).forEach(function(bundleName) {
-						matchingModels[bundleName] = this._bundleModels[bundleName];
-					}.bind(this));
-					return matchingModels;
-				}.bind(this);
-				
-				var pointsModels = filterModels(AbstractPointsBuilder);
-				var geojsonModels = filterModels(AbstractGeojsonBuilder);
-				var pointsView = new PointsView(this._osMap.getMap(), this._config, pointsModels, this._osMap.getControls(), this._osMap.getLayers());
-				var geojsonView = new GeojsonView(this._osMap.getMap(), this._config, geojsonModels);
-				var promises = [
-					pointsView.finish(),
-					geojsonView.finish()
-				];
-				$.when.apply($, promises).always(this._finish);
+				var modelViews = new ModelViews();
+				modelViews.loadModelViews(this._bundleModels, this._osMap.getMap(), this._config, this._osMap.getControls(), this._osMap.getLayers(), this._finish);
 			},
 			
 			_finish: function() {

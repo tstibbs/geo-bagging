@@ -2,12 +2,12 @@ define(["underscore", "jquery", "leaflet", "leaflet_cluster", "leaflet_subgroup"
 	function(_, $, leaflet, leaflet_cluster, leaflet_subgroup, Leaflet_MatrixLayers, markerView) {
 	
 		var PointsView = leaflet.Class.extend({
-			initialize: function (map, config, modelsByAspect, controls, layers) {
+			initialize: function (map, config, modelsByAspect, matrixLayerControl, controls) {
 				this._map = map;
 				this._config = config;
 				this._modelsByAspect = modelsByAspect;
+				this._matrixLayerControl = matrixLayerControl;
 				this._controls = controls;
-				this._layers = layers;
 			},
 
 			_translateMarkerGroup: function(group, bundleConfig) {
@@ -64,9 +64,6 @@ define(["underscore", "jquery", "leaflet", "leaflet_cluster", "leaflet_subgroup"
 						}
 					}
 				} else {
-					var control = new Leaflet_MatrixLayers(this._layers, null, {}, {
-						multiAspects: true
-					});
 					function iter(markers, path, overlays) {
 						if (markers.constructor === Array) {
 							var subGroup = leaflet.featureGroup.subGroup(parentGroup, markers);
@@ -87,20 +84,10 @@ define(["underscore", "jquery", "leaflet", "leaflet_cluster", "leaflet_subgroup"
 							var matrixOverlays = {};
 							iter(markerList, '', matrixOverlays);
 							var aspectOptions = this._config.bundles[aspect];//will have other options, but collisions are unlikely
-							control.addAspect(aspect, matrixOverlays, aspectOptions);
+							this._matrixLayerControl.addAspect(aspect, matrixOverlays, aspectOptions);
 						}
 					}
-					//override the basic layers control
-					this._controls.addControl(control);
 				}
-				//add attribution texts
-				Object.keys(this._modelsByAspect).forEach(function(aspect) {
-					var model = this._modelsByAspect[aspect];
-					var attribution = model.getAttribution();
-					if (attribution != null && attribution.length > 0) {
-						this._controls.addAttribution(attribution);
-					}
-				}.bind(this));
 				
 				return deferredObject.promise();
 			}

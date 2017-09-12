@@ -1,11 +1,12 @@
 define(['jquery', 'leaflet'],
 	function($, leaflet) {
 	
-		var PointsView = leaflet.Class.extend({
-			initialize: function (map, config, modelsByAspect) {
+		var GeojsonView = leaflet.Class.extend({
+			initialize: function (map, config, modelsByAspect, matrixLayerControl) {
 				this._map = map;
 				this._config = config;
 				this._modelsByAspect = modelsByAspect;
+				this._matrixLayerControl = matrixLayerControl;
 			},
 			
 			finish: function (finished) {
@@ -14,7 +15,10 @@ define(['jquery', 'leaflet'],
 				} else {
 					var markerLists = Object.keys(this._modelsByAspect).forEach(function(aspect) {
 						var model = this._modelsByAspect[aspect];
-						model.addTo(this._map);
+						var layer = model.buildLayer();
+						var label = model.getBundleConfig().displayLabel
+						layer.addTo(this._map)
+						this._matrixLayerControl.addOverlay(layer, label);
 					}.bind(this));
 				}
 				//no async here, but stick to the convention of the other views
@@ -22,6 +26,6 @@ define(['jquery', 'leaflet'],
 			}
 		});
 
-		return PointsView;
+		return GeojsonView;
 	}
 );
