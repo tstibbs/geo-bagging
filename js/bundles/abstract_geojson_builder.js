@@ -15,12 +15,26 @@ define(['leaflet', 'jquery'],
 					url: dataToLoad,
 					dataType: 'json'
 				}).done(function(data) {
-					this._data = data;
+					var features = data.features;
+					var transformed = {};
+					features.forEach(function(feature){
+						var name = feature.properties.Name;
+						transformed[name] = {
+							"type": "FeatureCollection",
+							"features": [feature]
+						};
+					});
+					this._data = transformed;
 				}.bind(this));
 			},
 			
-			buildLayer: function() {
-				return leaflet.geoJSON(this._data);
+			buildLayers: function() {
+				var layers = {};
+				Object.keys(this._data).forEach(function(layerName) {
+					var layer = this._data[layerName];
+					layers[layerName] = leaflet.geoJSON(layer);
+				}.bind(this));
+				return layers;
 			},
 			
 			getBundleConfig: function() {
