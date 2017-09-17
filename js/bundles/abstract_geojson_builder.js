@@ -54,7 +54,7 @@ define(['leaflet', 'jquery', 'popup_view'],
 			},
 			
 			getAttribution: function() {
-				return this._attributionText;//TODO
+				return this._bundleConfig.attribution;
 			}
 		});
 
