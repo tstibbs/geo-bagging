@@ -1,5 +1,5 @@
-define(['leaflet', 'jquery'],
-	function(leaflet, $) {
+define(['leaflet', 'jquery', 'popup_view'],
+	function(leaflet, $, popupView) {
 	
 		var GeojsonLayer = leaflet.Class.extend({
 			initialize: function (config, bundleConfig, bundleName) {
@@ -15,26 +15,37 @@ define(['leaflet', 'jquery'],
 					url: dataToLoad,
 					dataType: 'json'
 				}).done(function(data) {
-					var features = data.features;
-					var transformed = {};
-					features.forEach(function(feature){
-						var name = feature.properties.Name;
-						transformed[name] = {
-							"type": "FeatureCollection",
-							"features": [feature]
-						};
-					});
-					this._data = transformed;
+					this._data = data;
 				}.bind(this));
 			},
 			
-			buildLayers: function() {
+			_parseDatas: function() {
+				return this._data.features.map(function(feature) {
+					return this.parse(feature);
+				}.bind(this));
+			},
+			
+			_translateDatas: function(layerDatas) {
 				var layers = {};
-				Object.keys(this._data).forEach(function(layerName) {
-					var layer = this._data[layerName];
-					layers[layerName] = leaflet.geoJSON(layer);
+				layerDatas.forEach(function(layerData) {
+					var name = layerData.name;
+					var url = layerData.url;
+					var geojson = layerData.geojson;
+					
+					var geoLayer = leaflet.geoJSON(geojson, {
+						onEachFeature: function(feature, layer) {
+							var popup = popupView.buildPopup(name, url, null, null)
+							layer.bindPopup(popup);
+						}.bind(this)
+					});
+					layers[name] = geoLayer;
 				}.bind(this));
 				return layers;
+			},
+			
+			buildLayers: function() {
+				var layerDatas = this._parseDatas();
+				return this._translateDatas(layerDatas);
 			},
 			
 			getBundleConfig: function() {
