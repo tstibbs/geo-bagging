@@ -31,10 +31,11 @@ define(['leaflet', 'jquery', 'popup_view'],
 					var name = layerData.name;
 					var url = layerData.url;
 					var geojson = layerData.geojson;
+					var extraInfos = layerData.extraInfos;
 					
 					var geoLayer = leaflet.geoJSON(geojson, {
 						onEachFeature: function(feature, layer) {
-							var popup = popupView.buildPopup(name, url, null, null)
+							var popup = popupView.buildPopup(name, url, null, extraInfos);
 							layer.bindPopup(popup);
 						}.bind(this)
 					});
