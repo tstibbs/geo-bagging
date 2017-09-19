@@ -1,10 +1,6 @@
-define(["leaflet", "os_map", "points_view", "config", "params", "conversion", "jquery", 'bundles/trigs/config_base', 'map_view'],
-	function(leaflet, OsMap, PointsView, Config, params, conversion, $, trigsPointsBundle, mapView) {
+define(["leaflet", "os_map", "points_view", "geojson_view", "config", "params", "conversion", "jquery", 'bundles/trigs/config_base', 'map_view', 'bundles/abstract_points_builder', 'model_views'],
+	function(leaflet, OsMap, PointsView, GeojsonView, Config, params, conversion, $, trigsPointsBundle, mapView, AbstractPointsBuilder, ModelViews) {
 			
-		function finish() {
-			$('div#loading-message-pane').hide();
-		}
-		
 		return {			
 			getBundleIds: function(bundles) {
 				var allBundles = [];
@@ -94,7 +90,7 @@ define(["leaflet", "os_map", "points_view", "config", "params", "conversion", "j
 				this._config = new Config(options, bundles);
 				mapView(this._config);
 				this._osMap = new OsMap(this._config);
-				this._pointsModels = {};
+				this._bundleModels = {};
 				return this._osMap;
 			},
 			
@@ -114,7 +110,7 @@ define(["leaflet", "os_map", "points_view", "config", "params", "conversion", "j
 					var lngLat = conversion.osgbToLngLat(point[0], point[1]);
 					pointsModel.add(lngLat, point[2], point[3]);
 				}
-				this._pointsModels.trigs = pointsModel;
+				this._bundleModels.trigs = pointsModel;
 				this._finishLoading();
 			},
 			
@@ -128,7 +124,7 @@ define(["leaflet", "os_map", "points_view", "config", "params", "conversion", "j
 				pointsModel.add(conversion.osgbToLngLat(422816, 385344), 'http://trigpointing.uk/trig/3795', 'High Neb');
 				pointsModel.add(conversion.osgbToLngLat(419762, 390990), 'http://trigpointing.uk/trig/949', 'Back Tor');
 				pointsModel.add(conversion.osgbToLngLat(412927, 387809), 'http://trigpointing.uk/trig/3019', 'Edale Moor');
-				this._pointsModels.trigs = pointsModel;
+				this._bundleModels.trigs = pointsModel;
 				this._finishLoading();
 			},
 			
@@ -136,29 +132,22 @@ define(["leaflet", "os_map", "points_view", "config", "params", "conversion", "j
 				this._buildMap(options, bundles);
 				//https://rawgit.com/tstibbs/geo-bagging/master/js/bundles/hills/data.json
 				var bundleDataPrefix = (this._config.remoteData ? 'https://rawgit.com/tstibbs/geo-bagging/gh-pages' : window.os_map_base);//some mobile browsers don't support local ajax, so this provides a workaround for dev on mobile devices.
-				var promises = [];
-				Object.keys(bundles).forEach(function(bundleName) {
+				var promises = Object.keys(bundles).map(function(bundleName) {
 					var bundle = bundles[bundleName];
-					var dataToLoad = bundleDataPrefix + '/js/bundles/' + bundleName.substring(0, bundleName.lastIndexOf('/')) + '/' + bundle.dataToLoad;
-					var ajaxRequest = $.ajax({
-						url: dataToLoad,
-						dataType: 'json'
-					}).fail(function(xhr, textError, error) {
-						console.error("Failed to load map data: " + textError);
-						console.log(error);
-					}).done(function(data) {
-						var pointsModel = new bundle.parser(this._config, bundle);
-						pointsModel.addMarkers(data);
-						this._pointsModels[bundleName] = pointsModel;
-					}.bind(this));
-					promises.push(ajaxRequest);
+					var bundleModel = new bundle.parser(this._config, bundle, bundleName);
+					this._bundleModels[bundleName] = bundleModel;
+					return bundleModel.fetchData(bundleDataPrefix);
 				}.bind(this));
 				$.when.apply($, promises).always(this._finishLoading.bind(this));
 			},
 			
 			_finishLoading: function() {
-				this._pointsView = new PointsView(this._osMap.getMap(), this._config, this._pointsModels, this._osMap.getControls(), this._osMap.getLayers());
-				this._pointsView.finish(finish);
+				var modelViews = new ModelViews();
+				modelViews.loadModelViews(this._bundleModels, this._osMap.getMap(), this._config, this._osMap.getControls(), this._osMap.getLayers(), this._finish);
+			},
+			
+			_finish: function() {
+				$('div#loading-message-pane').hide();
 			}
 		};
 	}

@@ -1,11 +1,25 @@
-define(['leaflet'],
-	function(leaflet) {
+define(['leaflet', 'jquery'],
+	function(leaflet, $) {
 	
 		var PointsBuilder = leaflet.Class.extend({
-			initialize: function (config, bundleConfig) {
+			initialize: function (config, bundleConfig, bundleName) {
 				this._markerList = null;
 				this._config = config;
 				this._bundleConfig = bundleConfig;
+				this._bundleName = bundleName;
+			},
+			
+			fetchData: function(urlPrefix) {
+				var dataToLoad = urlPrefix + '/js/bundles/' + this._bundleName.substring(0, this._bundleName.lastIndexOf('/')) + '/' + this._bundleConfig.dataToLoad;
+				return $.ajax({
+					url: dataToLoad,
+					dataType: 'json'
+				}).fail(function(xhr, textError, error) {
+					console.error("Failed to load map data: " + textError);
+					console.log(error);
+				}).done(function(data) {
+					this.addMarkers(data);
+				}.bind(this));
 			},
 			
 			addMarkers: function(data) {
