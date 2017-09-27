@@ -15,13 +15,16 @@ define(['./builder'],
 			"Thames Path",
 			"Hadrian's Wall Path",
 			"Cotswold Way",
-			"Pennine Bridleway"
+			"Pennine Bridleway",
+			"England Coast Path",
+			"Glyndŵr's Way"
 		];
 		var urls = {};
 		keys.forEach(function(key){
-			var munged = key.replace(/^The /g, "").replace(/\s/g, "-").replace(/'/g, "").toLowerCase();
+			var munged = key.replace(/^The /g, "").replace(/\s/g, "-").replace(/'/g, "").replace(/ŵ/g, 'w').toLowerCase();
 			urls[key] = 'http://www.nationaltrail.co.uk/' + munged;
 		});
+		urls["Wales Coast Path"] = "http://www.walescoastpath.gov.uk";
 		
 		return {
 			dimensionNames: dimensionNames,
