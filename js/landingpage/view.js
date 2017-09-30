@@ -158,7 +158,7 @@ define(['jquery', 'map_loader', '../constants', '../params', '../map_view', './s
 					drawnItems.addLayer(layer);
 				});
 				
-				mapLoader._finishLoading();
+				mapLoader._finish();
 			},
 			
 			navigate: function(bundleIds, bounds, remoteData) {
