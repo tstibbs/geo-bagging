@@ -1,8 +1,4 @@
-milestones-input/*
-trigs-input/*
-hills-input/*
-defence-input/*
-follies-input/*
+*-input/*
 
 # Created by https://www.gitignore.io/api/node
 
