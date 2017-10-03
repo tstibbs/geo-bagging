@@ -22,7 +22,28 @@ define(['underscore'],
 				}
 			},
 			
-			buildExtraTexts: function(extraTexts) {
+			buildShortDescription: function(extraTexts) {
+				return Object.keys(extraTexts).map(function(key) {
+					return extraTexts[key]
+				}).filter(function(value) {
+					return value != null && value != "";
+				}).map(function(value) {
+					function extractValue(val) {
+						if (Array.isArray(val) && val.length == 2) {
+							return val[0];
+						} else {
+							return val;
+						}
+					};
+					if (Array.isArray(value)) {
+						return value.map(extractValue).join('/');
+					} else {
+						return extractValue(value);
+					}
+				}).join(', ');
+			},
+			
+			buildDescription: function(extraTexts) {
 				var popupText = "";
 				Object.keys(extraTexts).forEach(function(key) {
 					var value = extraTexts[key];
@@ -73,7 +94,7 @@ define(['underscore'],
 					if (popupText.length > 0) {
 						popupText += '<br />';
 					}
-					popupText += this.buildExtraTexts(extraTexts);
+					popupText += this.buildDescription(extraTexts);
 				}
 				
 				if (latLng != null) {

@@ -32,12 +32,8 @@ define(["underscore", "leaflet", "popup_view"],
 				var cmt = null;
 				var desc = null;
 				if (extraTexts != null) {
-					cmt = Object.keys(extraTexts).map(function(key) {
-						return extraTexts[key];
-					}).filter(function(value) {
-						return value != null && (!Array.isArray(value) || value.length > 0);
-					}).join('/');
-					desc = _.escape(popupView.buildExtraTexts(extraTexts));//build the extra texts html but escape it to encode into the exported xml
+					cmt = _.escape(popupView.buildShortDescription(extraTexts));//build the extra texts html but escape it to encode into the exported xml
+					desc = _.escape(popupView.buildDescription(extraTexts));//build the extra texts html but escape it to encode into the exported xml
 				}
 				//selection control looks for .exportData in its default actions
 				marker.exportData = {
