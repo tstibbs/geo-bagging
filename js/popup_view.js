@@ -22,6 +22,54 @@ define(['underscore'],
 				}
 			},
 			
+			buildShortDescription: function(extraTexts) {
+				return Object.keys(extraTexts).map(function(key) {
+					return extraTexts[key]
+				}).filter(function(value) {
+					return value != null && value != "";
+				}).map(function(value) {
+					function extractValue(val) {
+						if (Array.isArray(val) && val.length == 2) {
+							return val[0];
+						} else {
+							return val;
+						}
+					};
+					if (Array.isArray(value)) {
+						return value.map(extractValue).join('/');
+					} else {
+						return extractValue(value);
+					}
+				}).join(', ');
+			},
+			
+			buildDescription: function(extraTexts) {
+				var popupText = "";
+				Object.keys(extraTexts).forEach(function(key) {
+					var value = extraTexts[key];
+					if (value != null && value != "") {
+						if (popupText.length > 0) {
+							popupText += '<br />';
+						}
+						popupText += '<span class="popup-entry-key">' + key + ': </span>';
+						if (Array.isArray(value)) {
+							if (value.length > 1) {
+								popupText += '<ul class="popup-entry-list">';
+								for (var i = 0; i < value.length; i++) {
+									popupText += '<li>' + this._buildValue(value[i]) + '</li>';
+								}
+								popupText += '</ul>';
+							} else {
+								popupText += '<span>' + this._buildValue(value[0]) + '</span>';
+							}
+						} else {
+							popupText += '<span>' + this._buildValue(value) + '</span>';
+						}
+					}
+				}.bind(this));
+				return popupText;
+			},
+			
 			buildPopup: function(unescapedName, unescapedUrl, latLng, unescapedExtraTexts) {
 				//get everything from the model - anything that gets put into the dom needs to be escaped to prevent XSS
 				var name = _.escape(unescapedName);
@@ -43,30 +91,11 @@ define(['underscore'],
 					popupText = '<span class="popup-title">' + name + '</span>';
 				}
 				if (extraTexts != null) {
-					Object.keys(extraTexts).forEach(function(key) {
-						var value = extraTexts[key];
-						if (value != null && value != "") {
-							if (popupText.length > 0) {
-								popupText += '<br />';
-							}
-							popupText += '<span class="popup-entry-key">' + key + ': </span>';
-							if (Array.isArray(value)) {
-								if (value.length > 1) {
-									popupText += '<ul class="popup-entry-list">';
-									for (var i = 0; i < value.length; i++) {
-										popupText += '<li>' + this._buildValue(value[i]) + '</li>';
-									}
-									popupText += '</ul>';
-								} else {
-									popupText += '<span>' + this._buildValue(value[0]) + '</span>';
-								}
-							} else {
-								popupText += '<span>' + this._buildValue(value) + '</span>';
-							}
-						}
-					}.bind(this));
+					if (popupText.length > 0) {
+						popupText += '<br />';
+					}
+					popupText += this.buildDescription(extraTexts);
 				}
-				
 				
 				if (latLng != null) {
 					var lat = latLng[0];

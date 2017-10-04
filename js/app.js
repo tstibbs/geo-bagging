@@ -14,7 +14,7 @@ var versions = {
 	leaflet_matrixlayers: '1b38ed3d96a27c2073f954325d6183463714bc2b',
 	leaflet_locate: '0.52.0',
 	leaflet_controlHider: '3df76ebbfda70789027a40aa6f2e05db603aa364',
-	leaflet_boxSelector: 'd0f8184abafc17170ccc41a98cd6091882683ddf',
+	leaflet_boxSelector: '11007fa9',
 	leaflet_geosearch: 'ce8da4ded7abbf7c1f590a3337a70e7e25146383',
 	leaflet_draw: '0.4.9',
 	file_saver: '1.3.3',

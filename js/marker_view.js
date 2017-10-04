@@ -27,11 +27,21 @@ define(["underscore", "leaflet", "popup_view"],
 				}
 				var marker = leaflet.marker(latLng, markerOptions);
 				marker.bindPopup(popupText);
-				if (exportName != null) {
-					exportName = _.escape(markerConfig.exportName);
-					//selection control looks for .name in its default actions
-					marker.name = exportName.replace(/"/g, "'");
+				
+				exportName = _.escape(markerConfig.exportName);
+				var cmt = null;
+				var desc = null;
+				if (extraTexts != null) {
+					cmt = _.escape(popupView.buildShortDescription(extraTexts));//build the extra texts html but escape it to encode into the exported xml
+					desc = _.escape(popupView.buildDescription(extraTexts));//build the extra texts html but escape it to encode into the exported xml
 				}
+				//selection control looks for .exportData in its default actions
+				marker.exportData = {
+					name: exportName,
+					link: url,
+					cmt: cmt,
+					desc: desc
+				};
 				return marker;
 			}
 		};

@@ -17,8 +17,8 @@ define(['conversion', '../abstract_points_builder'],
 					url = 'http://trigpointing.uk/trig/' + trigId;
 				}
 				var extraTexts = {
-					'Condition': condition,
-					'Physical Type': physicalType
+					'Physical Type': physicalType,
+					'Condition': condition
 				};
 				this.addMarker(id, lat, lng, url, name, extraTexts, physicalType, [physicalType, condition]);
 			},
