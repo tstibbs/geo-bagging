@@ -36,13 +36,10 @@ define(['jquery', 'map_loader', '../constants', '../params', '../map_view', './s
 						var bundleBase = source.split('/', 1)[0];
 						if (HillsSourceView.canDisplaySource(source)) {
 							sourceViews[source] = new HillsSourceView(source, bundles);
-							console.log('hill: ' + source);
 						} else if (SourceView.canDisplaySource(source)) {
 							sourceViews[source] = new SourceView(source, bundles);
-							console.log('general: ' + source);
 						} else {
 							this._extraSources.push(source);
-							console.log('extra: ' + source);
 						}
 						if (datasources != null && datasources.indexOf(bundleBase) != -1) {
 							datasources.splice(datasources.indexOf(bundleBase), 1);
@@ -53,10 +50,8 @@ define(['jquery', 'map_loader', '../constants', '../params', '../map_view', './s
 				
 				//create sources for all bundles
 				var sourceViews = createSources(bundles, datasources);
-				console.log(datasources);
 				//now create sources for the remaining datasources
 				$.extend(sourceViews, createSources(datasources, null));
-				console.log(this._extraSources);
 
 				Object.keys(sourceViews).sort().forEach(function(source) {
 					this._sources.push(sourceViews[source]);
