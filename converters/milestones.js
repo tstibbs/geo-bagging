@@ -3,9 +3,11 @@ const xlsx = require('xlsx');
 const CombinedStream = require('combined-stream2');
 const stream = require('stream');
 
+const constants = require('./constants');
+const ifCmd = require('./utils').doIfCmdCall;
 const Converter = require('./converter');
 
-const inputDir = 'milestones-input';
+const inputDir = `${constants.tmpInputDir}/milestones`;
 
 const attributionString = "This file adapted from the the database of 'The Milestone Society' (http://www.milestonesociety.co.uk/database.html).";
 const columnHeaders = "[Longitude,Latitude,Id,Type,Category,Location,Position,Design,Repository_Photo_Hyperlink,Additional_Photo_Hyperlink_1,Additional_Photo_Hyperlink_2]"
@@ -85,7 +87,12 @@ class WaypointsConverter extends Converter {
 	}
 }
 
-fs.readdir(inputDir, (err, files) => {
-	(new WaypointsConverter()).writeOut2(files, '../js/bundles/milestones/data.json');
-})
+function buildDataFile() {
+	fs.readdir(inputDir, (err, files) => {
+		(new WaypointsConverter()).writeOut2(files, '../js/bundles/milestones/data.json');
+	})
+}
 
+ifCmd(module, buildDataFile)
+
+module.exports = buildDataFile;

@@ -1,7 +1,9 @@
 const proj4 = require('proj4');
 const fs = require('fs');
+const constants = require('./constants');
+const ifCmd = require('./utils').doIfCmdCall;
 
-const inputDirectory = 'trails-input';
+const inputDirectory = `${constants.tmpInputDir}/trails`;
 
 //additional data not included in the input files
 const walesNatTrailsDetails = {
@@ -106,56 +108,62 @@ function combineReducer(features) {
 	return [combined];
 }
 
-let pEngNatTrails = parse('National_Trails_England.geojson', properties => {
-	return {
-		openedDate: properties['Opened'],
-		length: properties['Length_Mil'],
-		name: properties['Name']
-	}
-}, (crs, geometry) => {
-	return geometry;
-}, feature => {
-	return feature.properties["Name"] != "Offa's Dyke Path";
-});
-
-let pWelshNatTrails = parse('WalesNationalTrails.json', properties => {
-	let name = properties['NAME'].trim();
-	let extraProps = walesNatTrailsDetails[name];
-	return Object.assign({name}, extraProps);
-}, crsTransformer, feature => {
-	let name = feature.properties["NAME"]
-	return name != null && name.trim() != "Pembrokeshire"
-});
-
-let pEnglandCoastPath = parse('England_Coast_Path_Route.geojson', properties => 
-	englandCoastPathDetails
-, crsTransformer, feature => {
-	return feature.properties["Alt_Route"].trim() == "No"
-}, features => {
-	return combineReducer(features);
-});
-
-let pWalesCoastPath = parse('WalesCoastPath.json', properties => 
-	walesCoastPathDetails
-, crsTransformer, feature => {
-	let status = feature.properties["STATUS"]
-	return status != null && status.trim() == "Main"
-}, features => {
-	return combineReducer(features);
-});
-
-Promise.all([pEngNatTrails, pWelshNatTrails, pWalesCoastPath, pEnglandCoastPath]).then(values => {
-	let allFeatures = values.reduce((allFeatures, fileFeatures) => 
-		[...allFeatures, ...fileFeatures]
-	, []);
-	let output = {
-		"type": "FeatureCollection",
-		"features": allFeatures,
-		"totalFeatures": allFeatures.length
-	};
-	fs.writeFile('../js/bundles/trails/data.geojson', JSON.stringify(output, null, 2) , 'utf-8', (err) => {
-		console.log("Done.");
+function buildDataFile() {
+	let pEngNatTrails = parse('National_Trails_England.geojson', properties => {
+		return {
+			openedDate: properties['Opened'],
+			length: properties['Length_Mil'],
+			name: properties['Name']
+		}
+	}, (crs, geometry) => {
+		return geometry;
+	}, feature => {
+		return feature.properties["Name"] != "Offa's Dyke Path";
 	});
-}).catch(err => {
-	console.error(err);
-});
+
+	let pWelshNatTrails = parse('WalesNationalTrails.json', properties => {
+		let name = properties['NAME'].trim();
+		let extraProps = walesNatTrailsDetails[name];
+		return Object.assign({name}, extraProps);
+	}, crsTransformer, feature => {
+		let name = feature.properties["NAME"]
+		return name != null && name.trim() != "Pembrokeshire"
+	});
+
+	let pEnglandCoastPath = parse('England_Coast_Path_Route.geojson', properties => 
+		englandCoastPathDetails
+	, crsTransformer, feature => {
+		return feature.properties["Alt_Route"].trim() == "No"
+	}, features => {
+		return combineReducer(features);
+	});
+
+	let pWalesCoastPath = parse('WalesCoastPath.json', properties => 
+		walesCoastPathDetails
+	, crsTransformer, feature => {
+		let status = feature.properties["STATUS"]
+		return status != null && status.trim() == "Main"
+	}, features => {
+		return combineReducer(features);
+	});
+
+	Promise.all([pEngNatTrails, pWelshNatTrails, pWalesCoastPath, pEnglandCoastPath]).then(values => {
+		let allFeatures = values.reduce((allFeatures, fileFeatures) => 
+			[...allFeatures, ...fileFeatures]
+		, []);
+		let output = {
+			"type": "FeatureCollection",
+			"features": allFeatures,
+			"totalFeatures": allFeatures.length
+		};
+		fs.writeFile('../js/bundles/trails/data.geojson', JSON.stringify(output, null, 2) , 'utf-8', (err) => {
+			console.log("Done.");
+		});
+	}).catch(err => {
+		console.error(err);
+	});
+}
+
+ifCmd(module, buildDataFile)
+
+module.exports = buildDataFile;

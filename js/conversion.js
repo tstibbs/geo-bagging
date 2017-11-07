@@ -25,7 +25,7 @@ define(["proj4"],
 				var e = Number(Number(eastings));
 				var n = Number(Number(northings));
 
-				if (isNaN(e) || isNaN(n)) throw new Error('Invalid grid reference');
+				if (isNaN(e) || isNaN(n)) throw new Error('Invalid grid reference: ' + [lat, lng]);
 
 				// use digits = 0 to return numeric format (in metres)
 				if (digits === 0) return pad(e, 6)+','+pad(n, 6);
@@ -67,7 +67,7 @@ define(["proj4"],
 
 				// validate format
 				match = gridref.match(/^[A-Z]{2}\s*[0-9]+\s*[0-9]+$/i);
-				if (!match) throw new Error('Invalid grid reference');
+				if (!match) throw new Error('Invalid grid reference: ' + gridref);
 
 				// get numeric values of letter references, mapping A->0, B->1, C->2, etc:
 				var l1 = gridref.toUpperCase().charCodeAt(0) - 'A'.charCodeAt(0);
@@ -87,8 +87,8 @@ define(["proj4"],
 
 				// validation
 				if (e100km<0 || e100km>6 || n100km<0 || n100km>12) throw new Error('Invalid grid reference: gridref='+gridref+', e100km='+e100km+', n100km='+n100km);
-				if (en.length != 2) throw new Error('Invalid grid reference');
-				if (en[0].length != en[1].length) throw new Error('Invalid grid reference');
+				if (en.length != 2) throw new Error('Invalid grid reference: ' + gridref);
+				if (en[0].length != en[1].length) throw new Error('Invalid grid reference: ' + gridref);
 
 				// standardise to 10-digit refs (metres)
 				en[0] = (en[0]+'00000').slice(0, 5);

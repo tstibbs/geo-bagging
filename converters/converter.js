@@ -71,7 +71,7 @@ class Converter {
 			let lat = parseFloat(lngLat[1].toFixed(5));
 			return [lng, lat];
 		} catch (err) {
-			console.log(err);
+			console.log(err.message);
 			return null;
 		}
 	}
