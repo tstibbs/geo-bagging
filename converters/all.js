@@ -36,7 +36,7 @@ Promise.all(allDownloads).then(() => {
 	folliesProcessing();
 	//downloading and processing together
 	ntProcessing();
-	//rnliProcessing();
+	rnliProcessing();
 	//processing manually downloaded stuff
 	//trigsProcessing();
 });
