@@ -1,6 +1,7 @@
 const Converter = require('./converter');
 const ifCmd = require('./utils').doIfCmdCall;
 const fs = require('fs');
+const constants = require('./constants');
 
 const attributionString = "Downloaded from http://trigpointing.uk/";
 const columnHeaders = "[Longitude,Latitude,Id,Name,physical_type,condition]"
@@ -34,7 +35,8 @@ class TrigConverter extends Converter {
 }
 
 function buildDataFile() {
-	fs.readdir('trigs-input', (err, files) => {
+	const inputDir = `${constants.tmpInputDir}/trigs`;
+	fs.readdir(inputDir, (err, files) => {
 		let foundFiles = files.filter((file) => /trigpoints-\d+.csv/.test(file) );
 		if (foundFiles.length != 1) {
 			console.error(`Should be exactly 1 file called trigpoints-[date as numbers].csv, but were: ${foundFiles}`);
@@ -44,7 +46,7 @@ function buildDataFile() {
 		
 		//generate the 'all' data
 		
-		(new TrigConverter()).writeOut('trigs-input/' + foundFiles[0], `../js/bundles/trigs/data_all.json`);
+		(new TrigConverter()).writeOut(`${inputDir}/` + foundFiles[0], `../js/bundles/trigs/data_all.json`);
 		
 		
 		//generate the 'mini' data
@@ -60,7 +62,7 @@ function buildDataFile() {
 			let lng = lngLat[0];
 			let lat = lngLat[1];
 			return lng > minLng && lat > minLat && lng < maxLng && lat < maxLat && conditions.includes(condition);
-		})).writeOut('trigs-input/' + foundFiles[0], `../js/bundles/trigs/data_mini.json`);
+		})).writeOut(`${inputDir}/` + foundFiles[0], `../js/bundles/trigs/data_mini.json`);
 	});
 }
 
