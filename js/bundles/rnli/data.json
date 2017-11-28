@@ -1,7 +1,7 @@
 {
 "attribution": "This file adapted from data available on rnli.org which is copyright © RNLI and from https://en.wikipedia.org/wiki/List_of_RNLI_stations",
 "headers": "[Longitude,Latitude,Name,Link,LifeboatTypes,LaunchMethods]",
-"lastUpdated": "2017-11-08",
+"lastUpdated": "2017-11-27",
 "data": [
 [-4.698023200035095,54.22705585104291,"Peel","https://rnli.org/find-my-nearest/lifeboat-stations/peel-lifeboat-station","Mersey","Carriage"],
 [-4.46959817799995,54.144952601,"Douglas","https://rnli.org/find-my-nearest/lifeboat-stations/douglas-lifeboat-station","Tyne","Slipway"],
@@ -33,7 +33,6 @@
 [-4.23197720699995,53.35464885,"Moelfre","https://rnli.org/find-my-nearest/lifeboat-stations/moelfre-lifeboat-station","Tamar;D","Slipway;Carriage"],
 [-4.64181259299995,53.317998997,"Holyhead","https://rnli.org/find-my-nearest/lifeboat-stations/holyhead-lifeboat-station","Severn;D","MooredAfloat;Carriage"],
 [-4.61996087299995,53.280685305,"Trearddur Bay","https://rnli.org/find-my-nearest/lifeboat-stations/trearddur-bay-lifeboat-station","Atlantic85;D","Carriage"],
-[-3.83399999999995,53.322,"Llandudno","https://rnli.org/find-my-nearest/lifeboat-stations/llandudno-lifeboat-station","Mersey;D","Carriage"],
 [-6.23538451499995,53.78840795,"Clogher Head","https://rnli.org/find-my-nearest/lifeboat-stations/clogher-head-lifeboat-station","Mersey","Carriage"],
 [-4.09079999999995,53.2622,"Beaumaris","https://rnli.org/find-my-nearest/lifeboat-stations/beaumaris-lifeboat-station","Atlantic85","Carriage"],
 [-3.82625567999995,53.280798371,"Conwy","https://rnli.org/find-my-nearest/lifeboat-stations/conwy-lifeboat-station","D","Carriage"],
@@ -98,7 +97,7 @@
 [-2.4723315238952637,56.70680987724712,"Montrose","https://rnli.org/find-my-nearest/lifeboat-stations/montrose-lifeboat-station","Shannon;D","MooredAfloat;Davit"],
 [-6.33581490499995,52.253975556,"Rosslare Harbour","https://rnli.org/find-my-nearest/lifeboat-stations/rosslare-harbour-lifeboat-station","Severn","MooredAfloat"],
 [-4.98419999999995,52.0133,"Fishguard","https://rnli.org/find-my-nearest/lifeboat-stations/fishguard-lifeboat-station","Trent;D","MooredAfloat;Launchway"],
-[-0.199732765999952,54.076464225,"Bridlington","https://rnli.org/find-my-nearest/lifeboat-stations/bridlington-lifeboat-station","Mersey;D","Carriage"],
+[-0.199732765999952,54.076464225,"Bridlington","https://rnli.org/find-my-nearest/lifeboat-stations/bridlington-lifeboat-station","Shannon;D","Carriage"],
 [-0.118986898999952,54.104723601,"Flamborough","https://rnli.org/find-my-nearest/lifeboat-stations/flamborough-lifeboat-station","Atlantic85","Carriage"],
 [-5.8287,57.006,"Mallaig","https://rnli.org/find-my-nearest/lifeboat-stations/mallaig-lifeboat-station","Severn","MooredAfloat"],
 [-6.58987655299995,52.173354334,"Kilmore Quay","https://rnli.org/find-my-nearest/lifeboat-stations/kilmore-quay-lifeboat-station","Tyne","MooredAfloat"],
