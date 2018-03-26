@@ -23,7 +23,7 @@ $.getScript(urlBase + "js/loader.js").then(function() {
 			mapDiv.empty();
 
 			var options = {
-				mini: true,
+				map_style: 'mini',
 				cluster: false,
 				hider_control_start_visible: false,
 				show_hider_control: true,
