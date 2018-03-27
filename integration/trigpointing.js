@@ -17,23 +17,24 @@ $.get('down-flash.php' + window.location.search, function(data) {
 		var points = dom.find('C').map(function(i, element) {
 			//e.g. <C D='Castlebythe Barrow' I='2041' E='202873' N='229647' F='n'/>
 			var point = $(element);
-			return point.attr('I');
+			var url = 'http://trigpointing.uk/trig/' + point.attr('I');
+			return {
+				eastings: point.attr('E'),
+				northings: point.attr('N'),
+				url: url,
+				name: point.attr('D')
+			};
 		}).toArray();
 		
 		var options = {
-			markerConstraints: function(marker) {
-				var waypointRegex = /TP0*(\d+)/;
-				var match = waypointRegex.exec(marker.id);
-				var trigId = match[1];
-				return points.indexOf(trigId) != -1;
-			}
+			pointsToLoad: points
 		};
 
 		var urlBase = 'https://tstibbs.github.io/geo-bagging/';
 		$.getScript(urlBase + "js/loader.js").then(function() {
 			loadApp(urlBase, function(main) {
 				$('body').empty();//our map assumes it is full screen - there's probably a better way, but this will work for now
-				main.loadMap(options, ['trigs']);
+				main.loadMap(options);
 			});
 		});
 	}
