@@ -1,6 +1,21 @@
 define(['jquery', 'conversion', 'main'],
 	function($, conversion, main) {
 		return {
+			showMap: function() {
+				if (/^https?:\/\/trigpointing\.uk\/trig\/\d+/.test(window.location.href)) {
+					//e.g. http://trigpointing.uk/trig/2614 - single trig page
+					this.embedSingleMap();
+				} else if (/^https?:\/\/trigpointing\.uk\/trigs\/view-trigs\.php.*/.test(window.location.href)) {
+					//e.g. http://trigpointing.uk/trigs/view-trigs.php?q=2168478 - detailed search page
+					this.showMapForSearch();
+				} else if (/^https?:\/\/trigpointing\.uk\/trigtools\/find.php.*/.test(window.location.href)) {
+					//e.g. http://trigpointing.uk/trigtools/find.php?t=milton - 'quick search' page (not supported)
+					alert("Map display not supported on this page, please use the 'detailed search' page instead: http://trigpointing.uk/trigs/");
+				} else {
+					alert("Map display not supported on this page.");
+				}
+			},
+			
 			showMapForSearch: function() {
 				this.getPointsFromSearch(window.location.search, function(points) {
 					var options = {
