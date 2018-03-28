@@ -26,18 +26,8 @@ npm install
 npm test
 ```
 
-## [trigpointing.uk](http://trigpointing.uk)
-There is some basic integration with T:UK. Whilst the scope of this project is beyond just trig points, this integration is here as a demonstration of what is possible.
-
-Firstly, you can replace the mini map that shows on a trig point's details page with one from this project. Run the following (e.g. in Chrome press F12 and then paste this code into the console):
-```
-$.getScript("https://tstibbs.github.io/geo-bagging/integration/trigpointing_embed.js");
-```
-
-Secondly, you can display the results of a T:UK search on this map (limited to 1000 points). To do this, you simply need to do a search on trigpointing.uk, then run the following (e.g. in Chrome press F12 and then paste this code into the console):
-```
-$.getScript("https://tstibbs.github.io/geo-bagging/integration/trigpointing.js");
-```
+## Integration with other sites
+As a demonstration of some things this project can be used for, some basic integration with trigpointing.uk has been created, see [Integration](integration/trigpointing.md) for details.
 
 ## Licence
 Please see [here](Licences.md) for important information regarding the licence of this project.
