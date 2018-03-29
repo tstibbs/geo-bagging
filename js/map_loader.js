@@ -60,12 +60,13 @@ define(["leaflet", "os_map", "points_view", "geojson_view", "config", "params", 
 						}
 						this.buildMapWithBundleDatas(options, configBundles);
 					}.bind(this));
+					return null;
 				} else if (this.hasUrlData()) {
-					this.buildMapFromUrl(options);
+					return this.buildMapFromUrl(options);
 				} else if (options.pointsToLoad != null) {
-					this.buildMapFromPoints(options.pointsToLoad, options)
+					return this.buildMapFromPoints(options.pointsToLoad, options);
 				} else {
-					this.buildMapWithDummyData(options);
+					return this.buildMapWithDummyData(options);
 				}
 			},
 			
@@ -112,13 +113,13 @@ define(["leaflet", "os_map", "points_view", "geojson_view", "config", "params", 
 						name: details[3]
 					};
 				});
-				buildMapFromPoints(allPoints, options);
+				return buildMapFromPoints(allPoints, options);
 			},
 			
 			buildMapFromPoints: function(points, options) {
 				options.cluster = (points.length > 300);
 				options.dimensional_layering = false;
-				this._buildMap(options, {trigs: trigsPointsBundle});
+				var map = this._buildMap(options, {trigs: trigsPointsBundle});
 				var pointsModel = new trigsPointsBundle.parser(this._config, trigsPointsBundle);
 				for (var i = 0; i < points.length; i++) {
 					var point = points[i];
@@ -127,12 +128,13 @@ define(["leaflet", "os_map", "points_view", "geojson_view", "config", "params", 
 				}
 				this._bundleModels.trigs = pointsModel;
 				this._finishLoading();
+				return map;
 			},
 			
 			buildMapWithDummyData: function(options) {
 				options.cluster = false;
 				options.dimensional_layering = false;
-				this._buildMap(options, {trigs: trigsPointsBundle});
+				var map = this._buildMap(options, {trigs: trigsPointsBundle});
 				//dummy data as an example
 				var pointsModel = new trigsPointsBundle.parser(this._config, trigsPointsBundle);
 				pointsModel.add(conversion.osgbToLngLat(418678, 385093), 'http://trigpointing.uk/trig/6995', 'Winhill Pike');
@@ -141,10 +143,11 @@ define(["leaflet", "os_map", "points_view", "geojson_view", "config", "params", 
 				pointsModel.add(conversion.osgbToLngLat(412927, 387809), 'http://trigpointing.uk/trig/3019', 'Edale Moor');
 				this._bundleModels.trigs = pointsModel;
 				this._finishLoading();
+				return map;
 			},
 			
 			buildMapWithBundleDatas: function(options, bundles) {
-				this._buildMap(options, bundles);
+				var map = this._buildMap(options, bundles);
 				//https://rawgit.com/tstibbs/geo-bagging/master/js/bundles/hills/data.json
 				var bundleDataPrefix = (this._config.remoteData ? 'https://rawgit.com/tstibbs/geo-bagging/gh-pages' : window.os_map_base);//some mobile browsers don't support local ajax, so this provides a workaround for dev on mobile devices.
 				var promises = Object.keys(bundles).map(function(bundleName) {
@@ -154,6 +157,7 @@ define(["leaflet", "os_map", "points_view", "geojson_view", "config", "params", 
 					return bundleModel.fetchData(bundleDataPrefix);
 				}.bind(this));
 				$.when.apply($, promises).always(this._finishLoading.bind(this));
+				return map;
 			},
 			
 			_finishLoading: function() {
