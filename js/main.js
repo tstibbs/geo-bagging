@@ -11,9 +11,9 @@ define(['map_loader', 'params', 'landingpage/view'],
 						options = {};
 					}
 					options.skipLandingPage = true;
-					mapLoader.loadMap(options, bundleIds);
+					return mapLoader.loadMap(options, bundleIds);
 				} else {
-					new LandingPageView();
+					return new LandingPageView();
 				}
 			},
 				
