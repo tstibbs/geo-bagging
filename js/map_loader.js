@@ -62,6 +62,8 @@ define(["leaflet", "os_map", "points_view", "geojson_view", "config", "params", 
 					}.bind(this));
 				} else if (this.hasUrlData()) {
 					this.buildMapFromUrl(options);
+				} else if (options.pointsToLoad != null) {
+					this.buildMapFromPoints(options.pointsToLoad, options)
 				} else {
 					this.buildMapWithDummyData(options);
 				}
@@ -101,14 +103,27 @@ define(["leaflet", "os_map", "points_view", "geojson_view", "config", "params", 
 			buildMapFromUrl: function(options) {
 				var locationsFromUrl = params('trigs');
 				var allPoints = locationsFromUrl.split(";");
-				options.cluster = (allPoints.length > 300);
+				allPoints = allPoints.map(function(point) {
+					var details = point.split(',');
+					return {
+						eastings: details[0],
+						northings: details[1],
+						url: details[2],
+						name: details[3]
+					};
+				});
+				buildMapFromPoints(allPoints, options);
+			},
+			
+			buildMapFromPoints: function(points, options) {
+				options.cluster = (points.length > 300);
 				options.dimensional_layering = false;
 				this._buildMap(options, {trigs: trigsPointsBundle});
 				var pointsModel = new trigsPointsBundle.parser(this._config, trigsPointsBundle);
-				for (var i = 0; i < allPoints.length; i++) {
-					var point = allPoints[i].split(',');
-					var lngLat = conversion.osgbToLngLat(point[0], point[1]);
-					pointsModel.add(lngLat, point[2], point[3]);
+				for (var i = 0; i < points.length; i++) {
+					var point = points[i];
+					var lngLat = conversion.osgbToLngLat(point.eastings, point.northings);
+					pointsModel.add(lngLat, point.url, point.name);
 				}
 				this._bundleModels.trigs = pointsModel;
 				this._finishLoading();

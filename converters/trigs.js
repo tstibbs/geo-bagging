@@ -1,5 +1,7 @@
 const Converter = require('./converter');
+const ifCmd = require('./utils').doIfCmdCall;
 const fs = require('fs');
+const constants = require('./constants');
 
 const attributionString = "Downloaded from http://trigpointing.uk/";
 const columnHeaders = "[Longitude,Latitude,Id,Name,physical_type,condition]"
@@ -32,31 +34,38 @@ class TrigConverter extends Converter {
 	}
 }
 
-fs.readdir('trigs-input', (err, files) => {
-	let foundFiles = files.filter((file) => /trigpoints-\d+.csv/.test(file) );
-	if (foundFiles.length != 1) {
-		console.error(`Should be exactly 1 file called trigpoints-[date as numbers].csv, but were: ${foundFiles}`);
-		process.exit(1);
-	}
-	
-	
-	//generate the 'all' data
-	
-	(new TrigConverter()).writeOut('trigs-input/' + foundFiles[0], `../js/bundles/trigs/data_all.json`);
-	
-	
-	//generate the 'mini' data
-	
-	// bottom-right: NY 37193 01441 (54.404536 N -002.969059 E)
-	// top-left: NY 09275 32238 (54.677004 N -003.408519 E)
-	const minLat = 54.404536;
-	const maxLat = 54.677004;
-	const minLng = -3.408519;
-	const maxLng = -2.969059;
-	const conditions = ['Good', 'Remains', 'Toppled', 'Moved', 'Damaged', 'Converted'];
-	(new TrigConverter((lngLat, condition) => {
-		let lng = lngLat[0];
-		let lat = lngLat[1];
-		return lng > minLng && lat > minLat && lng < maxLng && lat < maxLat && conditions.includes(condition);
-	})).writeOut('trigs-input/' + foundFiles[0], `../js/bundles/trigs/data_mini.json`);
-});
+function buildDataFile() {
+	const inputDir = `${constants.tmpInputDir}/trigs`;
+	fs.readdir(inputDir, (err, files) => {
+		let foundFiles = files.filter((file) => /trigpoints-\d+.csv/.test(file) );
+		if (foundFiles.length != 1) {
+			console.error(`Should be exactly 1 file called trigpoints-[date as numbers].csv, but were: ${foundFiles}`);
+			process.exit(1);
+		}
+		
+		
+		//generate the 'all' data
+		
+		(new TrigConverter()).writeOut(`${inputDir}/` + foundFiles[0], `../js/bundles/trigs/data_all.json`);
+		
+		
+		//generate the 'mini' data
+		
+		// bottom-right: NY 37193 01441 (54.404536 N -002.969059 E)
+		// top-left: NY 09275 32238 (54.677004 N -003.408519 E)
+		const minLat = 54.404536;
+		const maxLat = 54.677004;
+		const minLng = -3.408519;
+		const maxLng = -2.969059;
+		const conditions = ['Good', 'Remains', 'Toppled', 'Moved', 'Damaged', 'Converted'];
+		(new TrigConverter((lngLat, condition) => {
+			let lng = lngLat[0];
+			let lat = lngLat[1];
+			return lng > minLng && lat > minLat && lng < maxLng && lat < maxLat && conditions.includes(condition);
+		})).writeOut(`${inputDir}/` + foundFiles[0], `../js/bundles/trigs/data_mini.json`);
+	});
+}
+
+ifCmd(module, buildDataFile)
+
+module.exports = buildDataFile;

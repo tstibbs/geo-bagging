@@ -10,7 +10,7 @@ define(['jquery', 'leaflet'],
 			},
 			
 			finish: function (finished) {
-				if (!this._config.dimensional_layering) {
+				if (!this._config.dimensional_layering && Object.keys(this._modelsByAspect).length > 0) {
 					throw new Error("!dimensional_layering is not supported yet.");
 				} else {
 					var parentGroup = leaflet.layerGroup();

@@ -1,5 +1,6 @@
 const fs = require('fs');
-const download = require('./downloader').download;
+const ifCmd = require('./utils').doIfCmdCall;
+const downloadFiles = require('./downloader').download;
 
 const allFiles = [
 	'MSS_Summary_Sheet_Milestones_East.xls',
@@ -24,13 +25,14 @@ const allFiles = [
 	'MSS_Summary_Sheet_Tollhouses.xls'
 ];
 
-const outputDir = 'milestones-input';
+function download() {
+	let urls = allFiles.reduce((urls, fileName) => {
+		urls[`http://www.msocrepository.co.uk/Excel%20Spreadsheets/${fileName}`] = fileName;
+		return urls
+	}, {})
+	return downloadFiles('milestones', urls);
+}
 
-let promises = allFiles.map(fileName => 
-	download(`http://www.msocrepository.co.uk/Excel%20Spreadsheets/${fileName}`, outputDir, fileName)
-);
-Promise.all(promises).then(values => { 
-	console.log("finished downloading all");
-}).catch(reason => { 
-	console.log("something went wrong downloading files: " + reason)
-});
+ifCmd(module, download)
+
+module.exports = download;

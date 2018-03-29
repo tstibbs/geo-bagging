@@ -95,7 +95,10 @@ define(["leaflet", "jquery", "global", "params", "conversion"],
 				if (resolvedConfig.markerConstraints != null && Array.isArray(resolvedConfig.markerConstraints)) {
 					resolvedConfig.markerConstraints = leaflet.latLngBounds(resolvedConfig.markerConstraints); //[[bottom, left], [top, right]]
 				}
-				if (resolvedConfig.markerConstraints != null) {
+				if (resolvedConfig.markerConstraints != null && typeof resolvedConfig.markerConstraints === "function") {
+					resolvedConfig.markerConstraintsMatcher = resolvedConfig.markerConstraints;
+				}
+				if (resolvedConfig.markerConstraints != null && resolvedConfig.markerConstraintsMatcher == null) {
 					resolvedConfig.markerConstraintsMatcher = function(marker) {
 						return resolvedConfig.markerConstraints.contains(marker.latLng);
 					};

@@ -25,7 +25,7 @@ define(["proj4"],
 				var e = Number(Number(eastings));
 				var n = Number(Number(northings));
 
-				if (isNaN(e) || isNaN(n)) throw new Error('Invalid grid reference');
+				if (isNaN(e) || isNaN(n)) throw new Error('Invalid grid reference: ' + [lat, lng]);
 
 				// use digits = 0 to return numeric format (in metres)
 				if (digits === 0) return pad(e, 6)+','+pad(n, 6);
@@ -60,6 +60,7 @@ define(["proj4"],
 			
 			gridRefToOsgb: function(/*String*/ gridref) {
 				gridref = String(gridref).trim();
+				this._determineGridRefType(gridref);
 
 				// check for fully numeric comma-separated gridref format
 				var match = gridref.match(/^(\d+),\s*(\d+)$/);
@@ -67,7 +68,7 @@ define(["proj4"],
 
 				// validate format
 				match = gridref.match(/^[A-Z]{2}\s*[0-9]+\s*[0-9]+$/i);
-				if (!match) throw new Error('Invalid grid reference');
+				if (!match) throw new Error('Invalid grid reference: ' + gridref);
 
 				// get numeric values of letter references, mapping A->0, B->1, C->2, etc:
 				var l1 = gridref.toUpperCase().charCodeAt(0) - 'A'.charCodeAt(0);
@@ -85,17 +86,26 @@ define(["proj4"],
 				// if e/n not whitespace separated, split half way
 				if (en.length == 1) en = [ en[0].slice(0, en[0].length/2), en[0].slice(en[0].length/2) ];
 
+				//fix for grid refs technically part of the grid but outside of the uk
+				//this helped to work this out: https://raw.githubusercontent.com/wu-lee/dinty/master/national-grid.png
+				if (e100km >= 15) {
+					e100km -= 25
+				}
+				if (n100km > 20) {
+					n100km -= 25
+				}
+
 				// validation
-				if (e100km<0 || e100km>6 || n100km<0 || n100km>12) throw new Error('Invalid grid reference: gridref='+gridref+', e100km='+e100km+', n100km='+n100km);
-				if (en.length != 2) throw new Error('Invalid grid reference');
-				if (en[0].length != en[1].length) throw new Error('Invalid grid reference');
+				if (e100km < -10 || n100km < -5)  throw new Error('Invalid grid reference: gridref='+gridref+', e100km='+e100km+', n100km='+n100km);
+				if (en.length != 2) throw new Error('Invalid grid reference: ' + gridref);
+				if (en[0].length != en[1].length) throw new Error('Invalid grid reference: ' + gridref);
 
 				// standardise to 10-digit refs (metres)
 				en[0] = (en[0]+'00000').slice(0, 5);
 				en[1] = (en[1]+'00000').slice(0, 5);
 
-				var e = parseInt(e100km + en[0]);
-				var n = parseInt(n100km + en[1]);
+				var e = parseInt(e100km + '00000') + parseInt(en[0]);
+				var n = parseInt(n100km + '00000') + parseInt(en[1]);
 
 				return [e, n];
 			},
@@ -104,6 +114,12 @@ define(["proj4"],
 				var lngLat = this.gridRefToOsgb(gridref);
 				var out = osgbProj.inverse(lngLat);//to WSG84
 				return out;
+			},
+			
+			_determineGridRefType: function(gridref) {
+				if (/^\w\s*\d{3,}\s*\d{3,}$/.test(gridref)) {
+					throw new Error('Irish grid references currently unsupported: ' + gridref);
+				}
 			}
 		};
 	}

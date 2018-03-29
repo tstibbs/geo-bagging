@@ -31,7 +31,10 @@ function fetchWikiData() {
 }
 
 function parseStation(stationText) {
-	let station = stationText.match(/{{Lbs\|(.*)}}/)[1]
+	if (/{{Lbs\|(.*)}}/.test(stationText)) {
+		stationText = stationText.match(/{{Lbs\|(.*)}}/)[1]
+	}
+	
 	// just some basic but very specific replacements to make it match up with the rnli data
 	let replacements = [
 		["Berwick-upon-Tweed", "Berwick Upon Tweed"],
@@ -40,7 +43,7 @@ function parseStation(stationText) {
 		["Red Bay", "Red bay"],
 		["Wells-next-the-Sea", "Wells"]
 	];
-    return replace(station, replacements).trim()
+    return replace(stationText, replacements).trim()
 }
 
 function parseTypes(typesString) {

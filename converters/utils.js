@@ -12,4 +12,12 @@ function get(path) {
 	});
 }
 
+function doIfCmdCall(module, doit) {
+	//execute if run from command line
+	if (!module.parent) {
+		doit();
+	}
+}
+
 module.exports.get = get;
+module.exports.doIfCmdCall = doIfCmdCall;

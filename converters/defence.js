@@ -1,10 +1,11 @@
-//java -jar E:\m2r\net\sourceforge\saxon\saxon\9.1.0.8\saxon-9.1.0.8.jar -xsl:defence-extract.xslt -s:defence-input/doc.kml -o:defence-input/out.xml
-
 const fs = require('fs');
 const xml2js = require('xml2js');
 const streamify = require('stream-array');
 const Stream = require('stream');
+const constants = require('./constants');
+const ifCmd = require('./utils').doIfCmdCall;
 const Converter = require('./converter');
+const xslt = require('./xslt');
 
 const attributionString = "This file adapted from the database of the Defence of Britain project (http://archaeologydataservice.ac.uk/archives/view/dob/download.cfm). Copyright of the Council for British Archaeology (2006) Defence of Britain Archive [data-set]. York: Archaeology Data Service [distributor] https://doi.org/10.5284/1000327";
 const columnHeaders = "[Longitude,Latitude,Id,Name,Link,location,condition,description,imageLinks]"
@@ -55,9 +56,17 @@ class DobConverter extends Converter {
 const converter = new DobConverter();
 const parser = new xml2js.Parser();
 
-fs.readFile('defence-input/out.xml', (err, data) => {
-    parser.parseString(data, (err, result) => {
-		let points = result.points.point;
-		converter.writeOutCsv(points, '../js/bundles/defence/data.json');
-    });
-});
+function buildDataFile() {
+	xslt('defence-extract.xslt', 'defence/doc.kml', 'defence/out.xml').then(() => {
+		fs.readFile(`${constants.tmpInputDir}/defence/out.xml`, (err, data) => {
+			parser.parseString(data, (err, result) => {
+				let points = result.points.point;
+				converter.writeOutCsv(points, '../js/bundles/defence/data.json');
+			});
+		});
+	});
+}
+
+ifCmd(module, buildDataFile)
+
+module.exports = buildDataFile;

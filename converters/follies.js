@@ -1,9 +1,10 @@
-//java -jar E:\m2r\net\sourceforge\saxon\saxon\9.1.0.8\saxon-9.1.0.8.jar -xsl:follies-extract.xslt -s:follies-input/Follies.kml -o:follies-input/out.xml
-
 const fs = require('fs');
 const xml2js = require('xml2js');
 const Stream = require('stream');
+const ifCmd = require('./utils').doIfCmdCall;
 const Converter = require('./converter');
+const xslt = require('./xslt');
+const constants = require('./constants');
 
 const gardenStructure = 'Garden structure';
 const arch = 'Arch_Gateway';
@@ -172,9 +173,17 @@ class FolliesConverter extends Converter {
 const converter = new FolliesConverter();
 const parser = new xml2js.Parser();
 
-fs.readFile('follies-input/out.xml', (err, data) => {
-    parser.parseString(data, (err, result) => {
-		let points = result.points.point;
-		converter.writeOutCsv(points, '../js/bundles/follies/data.json');
-    });
-});
+function buildDataFile() {
+	xslt('follies-extract.xslt', 'follies/follies.kml', 'follies/out.xml').then(() => {
+		fs.readFile(`${constants.tmpInputDir}/follies/out.xml`, (err, data) => {
+			parser.parseString(data, (err, result) => {
+				let points = result.points.point;
+				converter.writeOutCsv(points, '../js/bundles/follies/data.json');
+			});
+		});
+	});
+}
+
+ifCmd(module, buildDataFile)
+
+module.exports = buildDataFile;

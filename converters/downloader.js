@@ -1,34 +1,44 @@
 const fs = require('fs');
 const request = require('request');
+const constants = require('./constants');
 
-function download(source, outputDir, fileName) {
-	if (!fs.existsSync(outputDir)){
-		fs.mkdirSync(outputDir);
-	}
-	
-	let dest = outputDir + '/' + fileName;
+function _downloadSingle(source, destination) {
 	return new Promise((resolve, reject) => {
-		let file = fs.createWriteStream(dest);
+		let file = fs.createWriteStream(destination);
 		request(source)
 		.pipe(file)
 		.on('finish', () => {
-			resolve();
-			file.close(resolve);
+			file.close(() => {
+				resolve();
+			});
 		}).on('error', (err) => {
 			console.log(err);
-			fs.unlink(dest, reject);
+			fs.unlink(destination, reject);
 		});
 	});
 }
 
-function downloadSingle(source, outputDir, fileName) {
-	return download(source, outputDir, fileName).then(values => { 
-		console.log(`finished downloading ${source}`);
-		return '';
+function download(bundleName, urls) {
+	if (!fs.existsSync(constants.tmpInputDir)){
+		fs.mkdirSync(constants.tmpInputDir);
+	}
+	let outputDir = `${constants.tmpInputDir}`;
+	if (bundleName != null) {
+		outputDir += `/${bundleName}`;
+	}
+	if (!fs.existsSync(outputDir)){
+		fs.mkdirSync(outputDir);
+	}
+	let promises = Object.entries(urls).map(([url, fileName]) => 
+		_downloadSingle(url, outputDir + '/' + fileName)
+	);
+	let from = bundleName != null ? bundleName : Object.keys(urls).join(';');
+	return Promise.all(promises).then(values => {
+		console.log(`Finished downloading '${from}'.`);
+		return values;
 	}).catch(reason => { 
-		console.log(`something went wrong downloading ${source}: ${reason}`);
+		console.log(`Error downloading '${from}': ${reason}`)
 	});
 }
 
 module.exports.download = download;
-module.exports.downloadSingle = downloadSingle;

@@ -1,3 +1,10 @@
-const download = require('./downloader').downloadSingle;
+const ifCmd = require('./utils').doIfCmdCall;
+const downloadFiles = require('./downloader').download;
 
-download('http://www.hills-database.co.uk/hillcsv.zip', 'hills-input', 'hillcsv.zip');
+function download() {
+	return downloadFiles('hills', {'http://www.hills-database.co.uk/hillcsv.zip': 'hillcsv.zip'});
+}
+
+ifCmd(module, download)
+
+module.exports = download;

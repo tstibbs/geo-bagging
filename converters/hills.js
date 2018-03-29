@@ -1,6 +1,8 @@
 const unzip = require('unzip');
 const fs = require('fs');
 
+const constants = require('./constants');
+const ifCmd = require('./utils').doIfCmdCall;
 const Converter = require('./converter');
 
 const attributionString = "This file adapted from the The Database of British and Irish Hills (http://www.hills-database.co.uk/downloads.html), licenced under CC BY 3.0 (https://creativecommons.org/licenses/by/3.0/deed.en_GB)";
@@ -84,12 +86,16 @@ class HillConverter extends Converter {
 	}
 }
 
+function buildDataFile() {
+	fs.createReadStream(`${constants.tmpInputDir}/hills/hillcsv.zip`)
+		.pipe(unzip.Parse())
+		.on('entry', function (entry) {
+			var fileName = entry.path;
+			(new HillConverter(true)).writeOutStream(entry, '../js/bundles/hills/data.json');
+			(new HillConverter(false)).writeOutStream(entry, '../js/bundles/hills/data_all.json');
+		});
+}
 
+ifCmd(module, buildDataFile)
 
-fs.createReadStream('hills-input/hillcsv.zip')
-	.pipe(unzip.Parse())
-	.on('entry', function (entry) {
-		var fileName = entry.path;
-		(new HillConverter(true)).writeOutStream(entry, '../js/bundles/hills/data.json');
-		(new HillConverter(false)).writeOutStream(entry, '../js/bundles/hills/data_all.json');
-	});
+module.exports = buildDataFile;
