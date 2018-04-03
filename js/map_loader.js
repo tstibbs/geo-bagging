@@ -1,4 +1,4 @@
-define(["leaflet", "os_map", "points_view", "geojson_view", "config", "params", "conversion", "jquery", 'bundles/trigs/config_base', 'map_view', 'bundles/abstract_points_builder', 'model_views'],
+define(["leaflet", "os_map", "points_view", "geojson_view", "config", "params", "conversion", "jquery", 'bundles/trigs/config_embedding', 'map_view', 'bundles/abstract_points_builder', 'model_views'],
 	function(leaflet, OsMap, PointsView, GeojsonView, Config, params, conversion, $, trigsPointsBundle, mapView, AbstractPointsBuilder, ModelViews) {
 			
 		return {			
@@ -113,18 +113,27 @@ define(["leaflet", "os_map", "points_view", "geojson_view", "config", "params", 
 						name: details[3]
 					};
 				});
-				return buildMapFromPoints(allPoints, options);
+				return buildMapFromPoints({
+					generalPoints: allPoints
+				}, options);
 			},
 			
 			buildMapFromPoints: function(points, options) {
-				options.cluster = (points.length > 300);
+				var generalPoints = points.generalPoints;
+				options.cluster = (generalPoints.length > 300);
 				options.dimensional_layering = false;
 				var map = this._buildMap(options, {trigs: trigsPointsBundle});
 				var pointsModel = new trigsPointsBundle.parser(this._config, trigsPointsBundle);
-				for (var i = 0; i < points.length; i++) {
-					var point = points[i];
+				for (var i = 0; i < generalPoints.length; i++) {
+					var point = generalPoints[i];
 					var lngLat = conversion.osgbToLngLat(point.eastings, point.northings);
-					pointsModel.add(lngLat, point.url, point.name);
+					pointsModel.addWithoutDimensions(lngLat, point.url, point.name);
+				}
+				if (points.significantPoint != null) {
+					var p = points.significantPoint;
+					var lngLat = conversion.osgbToLngLat(p.eastings, p.northings);
+					var iconName = 'searchResult';
+					pointsModel.addWithoutDimensions(lngLat, p.url, p.name, iconName);
 				}
 				this._bundleModels.trigs = pointsModel;
 				this._finishLoading();

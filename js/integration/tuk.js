@@ -19,7 +19,9 @@ define(['jquery', 'conversion', 'main'],
 			showMapForSearch: function() {
 				this.getPointsFromSearch(window.location.search, function(points) {
 					var options = {
-						pointsToLoad: points
+						pointsToLoad: {
+							generalPoints: points
+						}
 					};
 					
 					$('body').empty();//our map assumes it is full screen - there's probably a better way, but this will work for now
@@ -69,6 +71,19 @@ define(['jquery', 'conversion', 'main'],
 						var mapDiv = $('map[name="trigmap"]').parent();
 						mapDiv.empty();
 
+						//get 'this' trig id
+						var id = window.location.pathname.split(/\//).pop();
+						id = /0*([^0].*)/.exec(id)[1];//strip any leading zeros
+						
+						var significantPoint = null;
+						points = points.filter(function(point) {
+							if (point.id == id) {
+								significantPoint = point;
+								return false;
+							} else {
+								return true;
+							}
+						});
 						var options = {
 							map_style: 'mini',
 							cluster: false,
@@ -76,10 +91,13 @@ define(['jquery', 'conversion', 'main'],
 							show_hider_control: true,
 							start_position: [lat, lng],
 							map_outer_container_element: mapDiv,
-							pointsToLoad: points
+							pointsToLoad: {
+								significantPoint: significantPoint,
+								generalPoints: points
+							}
 						};
 						
-						main.loadMap(options);
+						main.loadMap(options);						
 						function moveMap() {
 							var miniMap = $('div.mini-map');
 							if (miniMap.length > 0) {
@@ -111,11 +129,13 @@ define(['jquery', 'conversion', 'main'],
 						var points = dom.find('C').map(function(i, element) {
 							//e.g. <C D='Castlebythe Barrow' I='2041' E='202873' N='229647' F='n'/>
 							var point = $(element);
-							var url = 'http://trigpointing.uk/trig/' + point.attr('I');
+							var id = point.attr('I');
+							var url = 'http://trigpointing.uk/trig/' + id;
 							return {
 								eastings: point.attr('E'),
 								northings: point.attr('N'),
 								url: url,
+								id: id,
 								name: point.attr('D')
 							};
 						}).toArray();

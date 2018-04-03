@@ -26,6 +26,11 @@ define(['conversion', '../abstract_points_builder'],
 			//called from main
 			add: function (lngLat, url, name, extraTexts, physicalType, condition) {
 				this.addMarker(null, lngLat[1], lngLat[0], url, name, extraTexts, physicalType, [physicalType, condition]);
+			},
+
+			//called from map_loader
+			addWithoutDimensions: function (lngLat, url, name, icon) {
+				this.addMarker(null, lngLat[1], lngLat[0], url, name, null, icon, [null]);
 			}
 		});
 	}
