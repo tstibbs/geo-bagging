@@ -34,7 +34,7 @@ define(['leaflet', 'jquery'],
 				}
 			},
 			
-			addMarker: function (id, lat, lng, url, name, extraTexts, icon, dimensionValues) {
+			addMarker: function (id, lat, lng, url, name, extraTexts, icon, dimensionValues, layerId) {
 				var latLng = [parseFloat(lat), parseFloat(lng)];
 				var marker = {
 					id: id, // for filtering purposes
@@ -43,7 +43,8 @@ define(['leaflet', 'jquery'],
 					extraTexts: extraTexts,
 					exportName: name,
 					url: url,
-					icon: icon
+					icon: icon,
+					layerId: layerId
 				};
 				
 				if (this._config.markerConstraintsMatcher == null || this._config.markerConstraintsMatcher(marker)) {

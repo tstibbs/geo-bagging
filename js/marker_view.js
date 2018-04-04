@@ -25,6 +25,7 @@ define(["underscore", "leaflet", "popup_view"],
 				} else if (bundleConfig.defaultIcon != null) {
 					markerOptions.icon = bundleConfig.defaultIcon;
 				}
+				markerOptions.layerId = markerConfig.layerId;
 				var marker = leaflet.marker(latLng, markerOptions);
 				marker.bindPopup(popupText);
 				
