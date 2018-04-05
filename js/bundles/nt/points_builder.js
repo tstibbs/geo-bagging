@@ -8,10 +8,18 @@ define(['../abstract_points_builder'],
 				var id = point[2];
 				var name = point[3];
 				var link = point[4];
-				var type = point[5];
+				var types = point[5];
 				var facilities = point[6];
+				
+				var typeLabels = this._bundleConfig.dimensionValueLabels[this._bundleConfig.dimensionNames[0]];
+				var facilityLabels = this._bundleConfig.dimensionValueLabels[this._bundleConfig.dimensionNames[1]];
 
-				this.addMarker(id, lat, lng, link, name, null, null, [type, facilities]);
+				var extraInfos = {
+					'Type': this.split(types, typeLabels),
+					'Facilities': this.split(facilities, facilityLabels)
+				};
+
+				this.addMarker(id, lat, lng, link, name, extraInfos, null, [types, facilities]);
 			},
 		});
 	}
