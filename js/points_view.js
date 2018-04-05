@@ -57,7 +57,30 @@ define(["underscore", "jquery", "leaflet", "leaflet_cluster", "leaflet_subgroup"
 					});
 					var allMarkers = [].concat.apply([], markerLists);
 					if (this._config.cluster) {
-						parentGroup.addLayers(allMarkers);
+						var nullLayerId = "null";
+						var markersByLayer = allMarkers.reduce(function (markersByLayer, marker) {
+							var layerId = marker.options.layerId;
+							layerId = layerId == null ? nullLayerId : layerId;//because the Object.keys layer will coerce into a string anyway
+							if (markersByLayer[layerId] == null) {
+								markersByLayer[layerId] = [];
+							}
+							markersByLayer[layerId].push(marker);
+							return markersByLayer;
+						}, {});
+						
+						//add things that don't specify a layer to the default clustered layer
+						parentGroup.addLayers(markersByLayer[nullLayerId]);
+						//add everything else to individual, non-clustered, layers
+						Object.keys(markersByLayer).filter(function(layerId) {
+							return layerId !== nullLayerId;
+						}).forEach(function(layerId) {
+							var markers = markersByLayer[layerId];
+							var layerGroup = leaflet.layerGroup();
+							for (var i = 0; i < markers.length; i++) {
+								layerGroup.addLayer(markers[i]);
+							}
+							layerGroup.addTo(this._map);
+						}.bind(this));
 					} else {
 						for (var i = 0; i < allMarkers.length; i++) {
 							parentGroup.addLayer(allMarkers[i]);
