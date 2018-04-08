@@ -12,18 +12,10 @@ define(['../abstract_points_builder'],
 				
 				var typeLabels = this._bundleConfig.typeData;
 				var launchMethodLabels = this._bundleConfig.dimensionValueLabels[this._bundleConfig.dimensionNames[1]];
-				
-				function split(values, labels) {
-					var splits = values.split(';');
-					return splits.map(function(value) {
-						var label = labels[value];
-						return label != null ? label : value;
-					});
-				}
 
 				var extraInfos = {
-					'Types': split(types, typeLabels),
-					'Launch Methods': split(launchMethods, launchMethodLabels)
+					'Types': this.split(types, typeLabels),
+					'Launch Methods': this.split(launchMethods, launchMethodLabels)
 				};
 				this.addMarker(name, lat, lng, link, name, extraInfos, null, [types, launchMethods]);
 			},

@@ -79,6 +79,13 @@ define(['leaflet', 'jquery'],
 					return ['Image ' + (index + 1), elem];
 				});
 			},
+				
+			split: function(values, labels) {
+				return values.split(';').map(function(value) {
+					var label = labels[value];
+					return label != null ? label : value;
+				});
+			},
 			
 			getMarkerList: function() {
 				return this._markerList;
