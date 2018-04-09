@@ -9,6 +9,7 @@
     "proj4": "^2.3.17",
     "request": "^2.81.0",
     "requirejs": "^2.3.2",
+    "stream-array": "^1.1.2",
     "unzip": "^0.1.11",
     "wtf_wikipedia": "^1.0.1",
     "xlsx": "^0.8.1",
