@@ -21,7 +21,8 @@ define(['jquery', 'conversion', 'main'],
 					var options = {
 						pointsToLoad: {
 							generalPoints: points
-						}
+						},
+						force_config_override: true
 					};
 					
 					$('body').empty();//our map assumes it is full screen - there's probably a better way, but this will work for now
@@ -94,7 +95,9 @@ define(['jquery', 'conversion', 'main'],
 							pointsToLoad: {
 								significantPoint: significantPoint,
 								generalPoints: points
-							}
+							},
+							force_config_override: true,
+							initial_zoom: 13
 						};
 						
 						main.loadMap(options);						
