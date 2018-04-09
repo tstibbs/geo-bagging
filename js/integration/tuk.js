@@ -86,7 +86,7 @@ define(['jquery', 'conversion', 'main'],
 							}
 						});
 						var options = {
-							map_style: 'mini',
+							map_style: 'mini_embedded',
 							cluster: false,
 							hider_control_start_visible: false,
 							show_hider_control: true,
@@ -100,16 +100,7 @@ define(['jquery', 'conversion', 'main'],
 							initial_zoom: 13
 						};
 						
-						main.loadMap(options);						
-						function moveMap() {
-							var miniMap = $('div.mini-map');
-							if (miniMap.length > 0) {
-								miniMap.css('top', $('div.navbar').css('height'));
-							} else {
-								setTimeout(moveMap.bind(this), 500);
-							}
-						}
-						moveMap();
+						main.loadMap(options);
 					});
 				}.bind(this));
 			},

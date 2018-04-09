@@ -5,7 +5,7 @@ define(['jquery'],
 			var content = '';
 			
 			var mapClass = '';
-			if (config.map_style == 'mini') {
+			if (config.map_style == 'mini' || config.map_style == 'mini_embedded') {
 				mapClass = ' class="mini-map"';
 			} else if (config.map_style == 'full') {
 				mapClass = ' class="full-screen"';
@@ -18,7 +18,7 @@ define(['jquery'],
 			content+= 		'<div id="errors-list"></div>';
 			content+= 		'<a id="dismiss-button" href="#">Hide</a>';
 			content+= 	'</div>';
-			if (config.map_style == 'mini') {
+			if (config.map_style == 'mini' || config.map_style == 'mini_embedded') {
 				content+= 	'<div class="mini-map">';
 			}
 			content+= 		'<div id="loading-message-pane" class="full-screen">';

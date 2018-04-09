@@ -17,7 +17,7 @@ define(['map_loader', 'params', 'landingpage/view'],
 				}
 			},
 				
-			loadMiniMap: function(options, bundles) {
+			loadMiniMap: function(options, bundleIds) {
 				mapLoader.loadMiniMap(options, bundleIds);
 			}
 		};
