@@ -21,7 +21,8 @@ define(['jquery', 'conversion', 'main'],
 					var options = {
 						pointsToLoad: {
 							generalPoints: points
-						}
+						},
+						force_config_override: true
 					};
 					
 					$('body').empty();//our map assumes it is full screen - there's probably a better way, but this will work for now
@@ -85,7 +86,7 @@ define(['jquery', 'conversion', 'main'],
 							}
 						});
 						var options = {
-							map_style: 'mini',
+							map_style: 'mini_embedded',
 							cluster: false,
 							hider_control_start_visible: false,
 							show_hider_control: true,
@@ -94,19 +95,12 @@ define(['jquery', 'conversion', 'main'],
 							pointsToLoad: {
 								significantPoint: significantPoint,
 								generalPoints: points
-							}
+							},
+							force_config_override: true,
+							initial_zoom: 13
 						};
 						
-						main.loadMap(options);						
-						function moveMap() {
-							var miniMap = $('div.mini-map');
-							if (miniMap.length > 0) {
-								miniMap.css('top', $('div.navbar').css('height'));
-							} else {
-								setTimeout(moveMap.bind(this), 500);
-							}
-						}
-						moveMap();
+						main.loadMap(options);
 					});
 				}.bind(this));
 			},
