@@ -1,11 +1,11 @@
 const wtfWikipedia = require("wtf_wikipedia")
+const globalTunnel = require('global-tunnel-ng');
 
 function fetchWikiData() {
 	return new Promise((resolve, reject) => {
-		wtfWikipedia.from_api("List_of_RNLI_stations", "en", function(markup){
-			var obj = wtfWikipedia.parse(markup)
-			let stations = obj.tables.reduce((allStations, division) => {
-				let divisionStations = division.map(station => {
+		wtfWikipedia.fetch("List_of_RNLI_stations", "en", function(err, doc){
+			let stations = doc.tables().reduce((allStations, division) => {
+				let divisionStations = division.json().map(station => {
 					let typesString = station['Lifeboat type(s)'].text;
 					let launchString = station['Launch method'].text;
 					let types = parseTypes(typesString)
@@ -48,18 +48,18 @@ function parseStation(stationText) {
 
 function parseTypes(typesString) {
 	let replacements = [
-		['{{Lbb\\|', ''],
-		['{{Lbc\\|', ''],
-		['}}', ''],
 		['Atlantic 75', 'Atlantic75'],
+		['Atlantic 85', 'Atlantic85'],
 		['Shannon class 13-06 RNLB', 'Shannon'],
 		['Shannon Class', 'Shannon'],
-		['Atlantic 85', 'Atlantic85'],
+		['Arancia IRB \\(A-76\\)', 'Arancia'],
+		['Tamar-class', 'Tamar'],
+		['Tyne-class', 'Tyne'],
 		['H\\-class', 'H'],
 		['E\\-class', 'E'],
 		['D\\-class \\(1B1\\)', 'D'],
-		['D\\|IB1', 'D'],
-		['D\\-class \\(IB1\\)', 'D']
+		['D\\-class \\(IB1\\)', 'D'],
+		['D\\-class', 'D']		
 	];
     return multiReplace(typesString, replacements)
 }

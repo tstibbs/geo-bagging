@@ -5,6 +5,7 @@ const rnliWiki = require('./rnli-wikipedia');
 const Converter = require('./converter');
 const get = require('./Utils').get;
 const ifCmd = require('./utils').doIfCmdCall;
+require('global-tunnel-ng').initialize();
 
 const baseUrl = 'https://rnli.org';
 const mainPageUrl = `${baseUrl}/find-my-nearest?type=Lifeboat-Station`;
