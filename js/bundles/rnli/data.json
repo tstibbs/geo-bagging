@@ -1,7 +1,7 @@
 {
 "attribution": "This file adapted from data available on rnli.org which is copyright © RNLI and from https://en.wikipedia.org/wiki/List_of_RNLI_stations",
 "headers": "[Longitude,Latitude,Name,Link,LifeboatTypes,LaunchMethods]",
-"lastUpdated": "2018-09-24",
+"lastUpdated": "2018-10-17",
 "data": [
 [-4.698023200035095,54.22705585104291,"Peel","https://rnli.org/find-my-nearest/lifeboat-stations/peel-lifeboat-station","Mersey","Carriage"],
 [-4.46959817799995,54.144952601,"Douglas","https://rnli.org/find-my-nearest/lifeboat-stations/douglas-lifeboat-station","Tyne","Slipway"],
@@ -148,7 +148,6 @@
 [-8.00168213299995,51.826984275,"Ballycotton","https://rnli.org/find-my-nearest/lifeboat-stations/ballycotton-lifeboat-station","Trent","MooredAfloat"],
 [-10.0297776599999,53.485853283,"Clifden","https://rnli.org/find-my-nearest/lifeboat-stations/clifden-lifeboat-station","Atlantic85;D","Carriage"],
 [-4.19986903299995,51.056909316,"Appledore","https://rnli.org/find-my-nearest/lifeboat-stations/appledore-lifeboat-station","Tamar;Atlantic85","MooredAfloat;Carriage"],
-[-2.00282398399995,57.69357106,"Fraserburgh","https://rnli.org/find-my-nearest/lifeboat-stations/fraserburgh-lifeboat-station","Trent","MooredAfloat"],
 [-4.39759999999995,50.9983,"Clovelly","https://rnli.org/find-my-nearest/lifeboat-stations/clovelly-lifeboat-station","Atlantic85","Carriage"],
 [0.851731633000048,52.972995262,"Wells","https://rnli.org/find-my-nearest/lifeboat-stations/wells-lifeboat-station","Mersey;D","Carriage"],
 [-9.50056992699995,52.629944921,"Kilrush","https://rnli.org/find-my-nearest/lifeboat-stations/kilrush-lifeboat-station","Atlantic85","Carriage"],
