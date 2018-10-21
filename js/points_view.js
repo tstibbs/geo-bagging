@@ -32,7 +32,7 @@ define(["underscore", "jquery", "leaflet", "leaflet_cluster", "leaflet_subgroup"
 				if (this._config.cluster) {
 					var mapElem = $('div#map');
 					var radius = (Math.max(mapElem[0].offsetHeight, mapElem[0].offsetWidth) / 10);
-					parentGroup = leaflet_cluster({
+					parentGroup = new leaflet_cluster.MarkerClusterGroup({
 						disableClusteringAtZoom: 15,
 						maxClusterRadius: radius,
 						chunkedLoading: true,
