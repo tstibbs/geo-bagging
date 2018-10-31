@@ -81,7 +81,8 @@ define(["leaflet", "os_map", "points_view", "geojson_view", "config", "params", 
 					show_locate_control: false,
 					show_hider_control: true,
 					hider_control_start_visible: false,
-					map_style: 'mini'
+					map_style: 'mini',
+					use_sidebar: false
 				}, options);
 				if (bundles == null) { //default if we haven't passed one in
 					bundles = ['trigs/config_mini'];
@@ -157,8 +158,8 @@ define(["leaflet", "os_map", "points_view", "geojson_view", "config", "params", 
 			
 			buildMapWithBundleDatas: function(options, bundles) {
 				var map = this._buildMap(options, bundles);
-				//https://rawgit.com/tstibbs/geo-bagging/master/js/bundles/hills/data.json
-				var bundleDataPrefix = (this._config.remoteData ? 'https://rawgit.com/tstibbs/geo-bagging/gh-pages' : window.os_map_base);//some mobile browsers don't support local ajax, so this provides a workaround for dev on mobile devices.
+				//https://tstibbs.github.io/geo-bagging/js/bundles/trigs/data_all.json
+				var bundleDataPrefix = (this._config.remoteData ? 'https://tstibbs.github.io/geo-bagging' : window.os_map_base);//some mobile browsers don't support local ajax, so this provides a workaround for dev on mobile devices.
 				var promises = Object.keys(bundles).map(function(bundleName) {
 					var bundle = bundles[bundleName];
 					var bundleModel = new bundle.parser(this._config, bundle, bundleName);

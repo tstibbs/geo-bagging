@@ -18,7 +18,8 @@ define(['leaflet', 'jquery', 'points_view', 'geojson_view', 'bundles/abstract_po
 				var matrixLayerControl = null;
 				if (config.dimensional_layering) {
 					matrixLayerControl = new Leaflet_MatrixLayers(layers, null, {}, {
-						multiAspects: true
+						multiAspects: true,
+						embeddable: config.use_sidebar
 					});
 				}
 				var pointsView = new PointsView(map, config, pointsModels, matrixLayerControl, controls);

@@ -1,9 +1,38 @@
-define(["leaflet", "leaflet_controlHider", "selection", "locate", "mobile", "leaflet_geosearch", "leaflet_geosearch_bing", "mouseposition_osgb", "screenposition_osgb", "constants", "data_source_attribution_control"],
-	function(leaflet, Leaflet_ControlHider, Selection, Locate, mobile, Leaflet_Geosearch, Leaflet_Geosearch_Bing, Mouseposition_Osgb, Screenposition_Osgb, constants, DataSourceAttributionControl) {
+define([
+	'leaflet',
+	'leaflet_controlHider',
+	'selection',
+	'locate',
+	'mobile',
+	'leaflet_geosearch',
+	'leaflet_geosearch_bing',
+	'mouseposition_osgb',
+	'screenposition_osgb',
+	'constants',
+	'data_source_attribution_control',
+	'./menu/view',
+	'leaflet_matrixlayers'
+],
+	function(
+		leaflet,
+		Leaflet_ControlHider,
+		Selection,
+		Locate,
+		mobile,
+		Leaflet_Geosearch,
+		Leaflet_Geosearch_Bing,
+		Mouseposition_Osgb,
+		Screenposition_Osgb,
+		constants,
+		DataSourceAttributionControl,
+		MenuView,
+		Leaflet_MatrixLayers
+	) {
 
 		//even if some items aren't used in this particular configuration, we'll stick to a given order (resulting gaps are fine)
 		var order = [
 			Leaflet_ControlHider,
+			MenuView,
 			leaflet.Control.Zoom,
 			Locate,
 			Leaflet_Geosearch,
@@ -22,14 +51,20 @@ define(["leaflet", "leaflet_controlHider", "selection", "locate", "mobile", "lea
 				this._layers = layers;
 				this._addDefaults();
 				if (map != null) {
-					this.addAllTo(map);
+					this._addAllTo(map);
 				}
 			},
 			
 			_addDefaults: function() {
 				//default leaflet controls
+				var configOverrides = {};
+				if (this._config.use_sidebar) {
+					this._menuView = new MenuView();
+					this.addControl(this._menuView);
+					configOverrides = {position: 'topright'};
+				}
 				if (this._config.show_zoom_control) {
-					this.addControl(new leaflet.Control.Zoom());
+					this.addControl(new leaflet.Control.Zoom(configOverrides));
 				}
 				this._attributionControl = new DataSourceAttributionControl();
 				this.addControl(this._attributionControl);
@@ -38,12 +73,12 @@ define(["leaflet", "leaflet_controlHider", "selection", "locate", "mobile", "lea
 					this.addControl(new Selection());
 				}
 				if (this._config.show_search_control) {
-					this.addControl(new Leaflet_Geosearch({
+					this.addControl(new Leaflet_Geosearch($.extend({
 						showPopup: true,
 						provider: new Leaflet_Geosearch_Bing({
 							key: constants.bingKey
-						})
-					}));
+						}),
+					}, configOverrides)));
 				}
 				if (this._config.show_hider_control === true || (this._config.show_hider_control == 'mobile' && mobile.isMobile())) {
 					this.addControl(new Leaflet_ControlHider(this._controlsToHide, {
@@ -51,7 +86,7 @@ define(["leaflet", "leaflet_controlHider", "selection", "locate", "mobile", "lea
 					}));
 				}
 				if (this._config.show_locate_control) {
-					this.addControl(new Locate());
+					this.addControl(new Locate(configOverrides));
 				}
 				if (this._config.show_layers_control && this._layers != null && Object.keys(this._layers).length > 1) {
 					this.addControl(new leaflet.Control.Layers(this._layers, null));
@@ -88,19 +123,26 @@ define(["leaflet", "leaflet_controlHider", "selection", "locate", "mobile", "lea
 					this._controlsToHide.push(control);
 					this._controlsToAdd[Math.max(order.length, this._controlsToAdd.length)] = control;
 				}
+				//won't run for anything in addDefaults because this._map won't be populated at that point
 				if (this._map != null) {
 					control.addTo(this._map); //add it, could be in the wrong place, but we'll move it later if necessary
 					if (oldControl != null) {
-						var newContainer = control._container;
-						var oldContainer = oldControl._container;
-						$(newContainer).remove(); //remove from incorrect location
-						$(oldContainer).replaceWith(newContainer); //reattach at new location
-						oldControl.remove();
+						if (control instanceof Leaflet_MatrixLayers && oldControl instanceof leaflet.Control.Layers && this._config.use_sidebar) {
+							//remove standard layer control and put the new one on the menu
+							oldControl.remove();
+							this._menuView.addLayers(control);
+						} else {
+							var newContainer = control._container;
+							var oldContainer = oldControl._container;
+							$(newContainer).remove(); //remove from incorrect location
+							$(oldContainer).replaceWith(newContainer); //reattach at new location
+							oldControl.remove();
+						}
 					}
 				}
 			},
 			
-			addAllTo: function(map) {
+			_addAllTo: function(map) {
 				this._controlsToAdd.forEach(function(control) {
 					if (control != null) {
 						control.addTo(map);
