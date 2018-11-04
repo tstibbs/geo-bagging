@@ -3,7 +3,7 @@ const ifCmd = require('./utils').doIfCmdCall;
 const fs = require('fs');
 const constants = require('./constants');
 
-const attributionString = "Downloaded from http://trigpointing.uk/";
+const attributionString = "This file adapted from data available on http://trigpointing.uk/ which is a mixture of Public Domain and OGL from Ordnance Survey";
 const columnHeaders = "[Longitude,Latitude,Id,Name,physical_type,condition]"
 
 class TrigConverter extends Converter {

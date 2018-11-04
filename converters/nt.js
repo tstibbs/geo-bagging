@@ -84,7 +84,7 @@ function buildDataFile() {
 					if (aspectsById[id] == null || aspectsById[id][aspect] == null) {
 						return 'Other';
 					} else {
-						return aspectsById[id][aspect].join(',');
+						return aspectsById[id][aspect].join(';');
 					}
 				}
 				let type = stringVals(id, 'places');
