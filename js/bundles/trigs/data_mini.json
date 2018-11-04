@@ -1,7 +1,6 @@
 {
-"attribution": "Downloaded from http://trigpointing.uk/",
+"attribution": "This file adapted from data available on http://trigpointing.uk/ which is a mixture of Public Domain and OGL from Ordnance Survey",
 "headers": "[Longitude,Latitude,Id,Name,physical_type,condition]",
-"lastUpdated": "2018-10-17",
 "data": [
 [-3.3468,54.42343,"TP0101","Old Strands","Surface Block","Good"],
 [-3.32544,54.5838,"TP0102","Loweswater","Surface Block","Good"],
@@ -26,7 +25,7 @@
 [-3.32888,54.46368,"TP5863","Seatallan","Pillar","Good"],
 [-3.14777,54.65143,"TP6001","Skiddaw","Pillar","Damaged"],
 [-3.35543,54.42615,"TP7238","Wasdale","FBM","Good"],
-[-3.04977,54.63993,"TP7306","Saddleback","Concrete Ring","Good"],
+[-3.04977,54.63993,"TP7306","Saddleback","Concrete Ring","Damaged"],
 [-3.24203,54.59177,"TP7422","Grisedale Pike","Surface Block","Good"],
 [-3.20736,54.50279,"TP7480","Grey Knotts","Bolt","Good"],
 [-3.23848,54.42497,"TP7505","Great How","Bolt","Good"],
