@@ -55,10 +55,10 @@ var testingPaths = {
 
 if (window.location.search.indexOf("dev=true") !== -1) {
 	paths.leaflet = paths.leaflet + '-src';
-	paths.leaflet_matrixlayers = '../../Leaflet.MatrixLayersControl/src/matrixControl';
-	paths.leaflet_boxSelector = '../../Leaflet.BoxSelector/src/selector';
-	paths.leaflet_boxSelector_Gpx = '../../Leaflet.BoxSelector/src/gpx';
-	paths.leaflet_controlHider = '../../Leaflet.ControlHider/src/hider';
+	paths.leaflet_matrixlayers = urlBase + '../Leaflet.MatrixLayersControl/src/matrixControl';
+	paths.leaflet_boxSelector = urlBase + '../Leaflet.BoxSelector/src/selector';
+	paths.leaflet_boxSelector_Gpx = urlBase + '../Leaflet.BoxSelector/src/gpx';
+	paths.leaflet_controlHider = urlBase + '../Leaflet.ControlHider/src/hider';
 }
 
 

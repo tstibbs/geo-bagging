@@ -45,29 +45,36 @@ define(["leaflet", "os_map", "points_view", "geojson_view", "config", "params", 
 		
 			loadMap: function(options, bundleIds) {
 				var allBundleIds = this._bundleIdsToDataSources(options, bundleIds);
-				if (allBundleIds.length > 0) {
-					options = $.extend({ //set some defaults that can be overriden by the page or by loadMiniMap
-						cluster: true,
-						dimensional_layering: true
-					}, options);
-					var bundleModuleIds = allBundleIds.map(function(bundleId){
-						return 'bundles/' + bundleId;
-					});
-					require(bundleModuleIds, function(/*bundles...*/) {
-						var configBundles = {};
-						for (var i = 0; i < arguments.length; i++) {
-							configBundles[allBundleIds[i]] = arguments[i];
-						}
-						this.buildMapWithBundleDatas(options, configBundles);
-					}.bind(this));
-					return null;
-				} else if (this.hasUrlData()) {
-					return this.buildMapFromUrl(options);
+				if (this.hasUrlData()) {
+					alert('Loading data from URL is no longer an option.');
+					throw new Error('Loading data from URL is no longer an option.');
 				} else if (options.pointsToLoad != null) {
-					return this.buildMapFromPoints(options.pointsToLoad, options);
-				} else {
-					return this.buildMapWithDummyData(options);
+					var generalPoints = options.pointsToLoad.generalPoints;
+					options.cluster = (generalPoints.length > 300);
+					options.dimensional_layering = false;
+					allBundleIds = ['trigs/config_embedding'];
 				}
+				if (allBundleIds.length == 0) {
+					throw new Error("No config bundle specified");
+				}
+				options = $.extend({ //set some defaults that can be overriden by the page or by loadMiniMap
+					cluster: true,
+					dimensional_layering: true
+				}, options);
+				var bundleModuleIds = allBundleIds.map(function(bundleId){
+					return 'bundles/' + bundleId;
+				});
+				
+				var deferredObject = $.Deferred();
+				require(bundleModuleIds, function(/*bundles...*/) {
+					var configBundles = {};
+					for (var i = 0; i < arguments.length; i++) {
+						configBundles[allBundleIds[i]] = arguments[i];
+					}
+					var map = this.buildMapWithBundleDatas(options, configBundles);
+					deferredObject.resolve(map);
+				}.bind(this));
+				return deferredObject.promise();
 			},
 			
 			loadMiniMap: function(options, bundles) {
@@ -100,60 +107,6 @@ define(["leaflet", "os_map", "points_view", "geojson_view", "config", "params", 
 			
 			hasUrlData: function() {
 				return params('trigs') != null;
-			},
-			
-			buildMapFromUrl: function(options) {
-				var locationsFromUrl = params('trigs');
-				var allPoints = locationsFromUrl.split(";");
-				allPoints = allPoints.map(function(point) {
-					var details = point.split(',');
-					return {
-						eastings: details[0],
-						northings: details[1],
-						url: details[2],
-						name: details[3]
-					};
-				});
-				return buildMapFromPoints({
-					generalPoints: allPoints
-				}, options);
-			},
-			
-			buildMapFromPoints: function(points, options) {
-				var generalPoints = points.generalPoints;
-				options.cluster = (generalPoints.length > 300);
-				options.dimensional_layering = false;
-				var map = this._buildMap(options, {trigs: trigsPointsBundle});
-				var pointsModel = new trigsPointsBundle.parser(this._config, trigsPointsBundle);
-				for (var i = 0; i < generalPoints.length; i++) {
-					var point = generalPoints[i];
-					var lngLat = conversion.osgbToLngLat(point.eastings, point.northings);
-					pointsModel.addWithoutDimensions(lngLat, point.url, point.name);
-				}
-				if (points.significantPoint != null) {
-					var p = points.significantPoint;
-					var lngLat = conversion.osgbToLngLat(p.eastings, p.northings);
-					var iconName = 'searchResult';
-					pointsModel.addWithoutDimensions(lngLat, p.url, p.name, iconName);
-				}
-				this._bundleModels.trigs = pointsModel;
-				this._finishLoading();
-				return map;
-			},
-			
-			buildMapWithDummyData: function(options) {
-				options.cluster = false;
-				options.dimensional_layering = false;
-				var map = this._buildMap(options, {trigs: trigsPointsBundle});
-				//dummy data as an example
-				var pointsModel = new trigsPointsBundle.parser(this._config, trigsPointsBundle);
-				pointsModel.add(conversion.osgbToLngLat(418678, 385093), 'http://trigpointing.uk/trig/6995', 'Winhill Pike');
-				pointsModel.add(conversion.osgbToLngLat(422816, 385344), 'http://trigpointing.uk/trig/3795', 'High Neb');
-				pointsModel.add(conversion.osgbToLngLat(419762, 390990), 'http://trigpointing.uk/trig/949', 'Back Tor');
-				pointsModel.add(conversion.osgbToLngLat(412927, 387809), 'http://trigpointing.uk/trig/3019', 'Edale Moor');
-				this._bundleModels.trigs = pointsModel;
-				this._finishLoading();
-				return map;
 			},
 			
 			buildMapWithBundleDatas: function(options, bundles) {
