@@ -2,12 +2,13 @@ define(["underscore", "jquery", "leaflet", "leaflet_cluster", "leaflet_subgroup"
 	function(_, $, leaflet, leaflet_cluster, leaflet_subgroup, Leaflet_MatrixLayers, markerView) {
 	
 		var PointsView = leaflet.Class.extend({
-			initialize: function (map, config, modelsByAspect, matrixLayerControl, controls) {
+			initialize: function (map, config, modelsByAspect, matrixLayerControl, controls, bundles) {
 				this._map = map;
 				this._config = config;
 				this._modelsByAspect = modelsByAspect;
 				this._matrixLayerControl = matrixLayerControl;
 				this._controls = controls;
+				this._bundles = bundles;
 			},
 
 			_translateMarkerGroup: function(group, bundleConfig) {
@@ -106,7 +107,7 @@ define(["underscore", "jquery", "leaflet", "leaflet_cluster", "leaflet_subgroup"
 							var markerList = this._translateMarkerGroup(model.getMarkerList(), model.getBundleConfig());
 							var matrixOverlays = {};
 							iter(markerList, '', matrixOverlays);
-							var aspectOptions = this._config.bundles[aspect];//will have other options, but collisions are unlikely
+							var aspectOptions = this._bundles[aspect];//will have other options, but collisions are unlikely
 							this._matrixLayerControl.addAspect(aspect, matrixOverlays, aspectOptions);
 						}
 					}

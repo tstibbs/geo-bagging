@@ -12,7 +12,7 @@ define(['leaflet', 'jquery', 'points_view', 'geojson_view', 'bundles/abstract_po
 				return matchingModels;
 			},
 			
-			loadModelViews: function(bundleModels, map, config, controls, layers, callback) {
+			loadModelViews: function(bundleModels, lazyModels, map, config, controls, layers, bundles, callback) {
 				var pointsModels = this._filterModels(bundleModels, AbstractPointsBuilder);
 				var geojsonModels = this._filterModels(bundleModels, AbstractGeojsonBuilder);
 				var matrixLayerControl = null;
@@ -22,8 +22,8 @@ define(['leaflet', 'jquery', 'points_view', 'geojson_view', 'bundles/abstract_po
 						embeddable: config.use_sidebar
 					});
 				}
-				var pointsView = new PointsView(map, config, pointsModels, matrixLayerControl, controls);
-				var geojsonView = new GeojsonView(map, config, geojsonModels, matrixLayerControl);
+				var pointsView = new PointsView(map, config, pointsModels, matrixLayerControl, controls, bundles);
+				var geojsonView = new GeojsonView(map, config, geojsonModels, matrixLayerControl, bundles);
 				var promises = [
 					pointsView.finish(),
 					geojsonView.finish()

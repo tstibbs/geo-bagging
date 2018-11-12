@@ -18,8 +18,8 @@ define([
 				searchResult: new CustomDefaultIcon(redIconPath, {iconUrl: redIconPath})
 			},
 			parser: TrigsPointsBuilder.extend({
-				initialize: function (config, bundleConfig, bundleName) {
-					TrigsPointsBuilder.prototype.initialize.call(this, config, bundleConfig, bundleName);
+				initialize: function (config, bundleConfig, bundleName, urlPrefix) {
+					TrigsPointsBuilder.prototype.initialize.call(this, config, bundleConfig, bundleName, urlPrefix);
 					var generalPoints = config.pointsToLoad.generalPoints;
 					for (var i = 0; i < generalPoints.length; i++) {
 						var point = generalPoints[i];

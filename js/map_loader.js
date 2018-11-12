@@ -1,5 +1,19 @@
-define(["leaflet", "os_map", "points_view", "geojson_view", "config", "params", "conversion", "jquery", 'bundles/trigs/config_embedding', 'map_view', 'bundles/abstract_points_builder', 'model_views'],
-	function(leaflet, OsMap, PointsView, GeojsonView, Config, params, conversion, $, trigsPointsBundle, mapView, AbstractPointsBuilder, ModelViews) {
+define([
+	'os_map',
+	'config',
+	'params',
+	'jquery',
+	'map_view',
+	'source_loader'
+],
+	function(
+		OsMap,
+		Config,
+		params,
+		$,
+		mapView,
+		SourceLoader
+	) {
 			
 		return {			
 			getBundleIds: function(bundles) {
@@ -21,30 +35,13 @@ define(["leaflet", "os_map", "points_view", "geojson_view", "config", "params", 
 				//end legacy options
 				return allBundles;
 			},
-			
-			_bundleIdsToDataSources: function(options, bundles) {
-				var allBundles;
-				if (options.skipLandingPage) {
-					allBundles = this.getBundleIds(bundles);
-				} else {
-					allBundles = bundles;
-				}
-				if (allBundles != null) {
-					allBundles = allBundles.map(function(bundle) {
-						if (bundle.indexOf('/') == -1) {
-							return bundle + '/config';
-						} else {
-							return bundle;
-						}
-					});
-				} else {
-					allBundles = [];
-				}
-				return allBundles;
-			},
 		
 			loadMap: function(options, bundleIds) {
-				var allBundleIds = this._bundleIdsToDataSources(options, bundleIds);
+				if (options.skipLandingPage) {
+					allBundles = this.getBundleIds(bundleIds);
+				} else {
+					allBundles = bundleIds;
+				}
 				if (this.hasUrlData()) {
 					alert('Loading data from URL is no longer an option.');
 					throw new Error('Loading data from URL is no longer an option.');
@@ -52,29 +49,20 @@ define(["leaflet", "os_map", "points_view", "geojson_view", "config", "params", 
 					var generalPoints = options.pointsToLoad.generalPoints;
 					options.cluster = (generalPoints.length > 300);
 					options.dimensional_layering = false;
-					allBundleIds = ['trigs/config_embedding'];
+					allBundles = ['trigs/config_embedding'];
 				}
-				if (allBundleIds.length == 0) {
+				if (allBundles.length == 0) {
 					throw new Error("No config bundle specified");
 				}
 				options = $.extend({ //set some defaults that can be overriden by the page or by loadMiniMap
 					cluster: true,
 					dimensional_layering: true
 				}, options);
-				var bundleModuleIds = allBundleIds.map(function(bundleId){
-					return 'bundles/' + bundleId;
-				});
 				
-				var deferredObject = $.Deferred();
-				require(bundleModuleIds, function(/*bundles...*/) {
-					var configBundles = {};
-					for (var i = 0; i < arguments.length; i++) {
-						configBundles[allBundleIds[i]] = arguments[i];
-					}
-					var map = this.buildMapWithBundleDatas(options, configBundles);
-					deferredObject.resolve(map);
-				}.bind(this));
-				return deferredObject.promise();
+				var map = this._buildMap(options);
+				return (new SourceLoader(map, this._config)).loadSources(allBundles).then(function() {
+					return map;
+				});
 			},
 			
 			loadMiniMap: function(options, bundles) {
@@ -97,39 +85,14 @@ define(["leaflet", "os_map", "points_view", "geojson_view", "config", "params", 
 				this.loadMap(options, bundles);
 			},
 		
-			_buildMap: function(options, bundles) {
-				this._config = new Config(options, bundles);
+			_buildMap: function(options) {
+				this._config = new Config(options);
 				mapView(this._config);
-				this._osMap = new OsMap(this._config);
-				this._bundleModels = {};
-				return this._osMap;
+				return new OsMap(this._config);
 			},
 			
 			hasUrlData: function() {
 				return params('trigs') != null;
-			},
-			
-			buildMapWithBundleDatas: function(options, bundles) {
-				var map = this._buildMap(options, bundles);
-				//https://tstibbs.github.io/geo-bagging/js/bundles/trigs/data_all.json
-				var bundleDataPrefix = (this._config.remoteData ? 'https://tstibbs.github.io/geo-bagging' : window.os_map_base);//some mobile browsers don't support local ajax, so this provides a workaround for dev on mobile devices.
-				var promises = Object.keys(bundles).map(function(bundleName) {
-					var bundle = bundles[bundleName];
-					var bundleModel = new bundle.parser(this._config, bundle, bundleName);
-					this._bundleModels[bundleName] = bundleModel;
-					return bundleModel.fetchData(bundleDataPrefix);
-				}.bind(this));
-				$.when.apply($, promises).always(this._finishLoading.bind(this));
-				return map;
-			},
-			
-			_finishLoading: function() {
-				var modelViews = new ModelViews();
-				modelViews.loadModelViews(this._bundleModels, this._osMap.getMap(), this._config, this._osMap.getControls(), this._osMap.getLayers(), this._finish);
-			},
-			
-			_finish: function() {
-				$('div#loading-message-pane').hide();
 			}
 		};
 	}
