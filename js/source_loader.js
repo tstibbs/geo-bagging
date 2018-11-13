@@ -51,8 +51,8 @@ define([
 					}.bind(this));
 					
 					$.when.apply($, promises).always(function() {
-						var modelViews = new ModelViews();
-						modelViews.loadModelViews(sourceModels, lazyModels, this._osMap.getMap(), this._config, this._osMap.getControls(), this._osMap.getLayers(), sources, this._finish);
+						var modelViews = new ModelViews(sources, this._osMap.getControls());
+						modelViews.loadModelViews(sourceModels, lazyModels, this._osMap.getMap(), this._config, this._osMap.getLayers(), this._finish);
 						//don't need to wait for ModeViews to finish, callback will update UI when the time comes, but can safely return after this call
 						deferredObject.resolve();
 					}.bind(this));

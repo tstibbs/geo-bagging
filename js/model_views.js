@@ -1,6 +1,12 @@
 define(['leaflet', 'jquery', 'points_view', 'geojson_view', 'bundles/abstract_points_builder', 'bundles/abstract_geojson_builder', 'leaflet_matrixlayers'],
 	function(leaflet, $, PointsView, GeojsonView, AbstractPointsBuilder, AbstractGeojsonBuilder, Leaflet_MatrixLayers) {
 		var ModelViews = leaflet.Class.extend({
+			initialize: function (bundles, controls) {
+				this._bundles = bundles;
+				this._controls = controls;
+				this._matrixLayerControl = null;
+			},			
+			
 			_filterModels: function(bundleModels, className) {
 				var matchingModels = {};
 				Object.keys(bundleModels).filter(function(bundleName) {
@@ -12,18 +18,19 @@ define(['leaflet', 'jquery', 'points_view', 'geojson_view', 'bundles/abstract_po
 				return matchingModels;
 			},
 			
-			_addLazyModels: function(lazyModels, matrixLayerControl, bundles, addCallback) {
+			_addLazyModels: function(lazyModels, addCallback) {
 				Object.keys(lazyModels).forEach(function(bundleName) {
 					var model = lazyModels[bundleName];
 					var callback = function() {
 						model.fetchData().done(function() {
 							addCallback(bundleName, model);
-						});
-					};
+							this._addAttribution(model, this._controls);
+						}.bind(this));
+					}.bind(this);
 					var meta = model.getMeta();
 					var description = meta.recordCount + " items (last updated " + meta.lastUpdated + ")";
-					var bundleDetails = bundles[bundleName];
-					matrixLayerControl.addLazyAspect(bundleName, bundleDetails, {
+					var bundleDetails = this._bundles[bundleName];
+					this._matrixLayerControl.addLazyAspect(bundleName, bundleDetails, {
 						description: description,
 						callback: callback
 					});
@@ -31,31 +38,37 @@ define(['leaflet', 'jquery', 'points_view', 'geojson_view', 'bundles/abstract_po
 				}.bind(this));
 			},
 			
-			loadModelViews: function(bundleModels, lazyModels, map, config, controls, layers, bundles, callback) {
+			_addAttribution: function(model) {
+				var attribution = model.getAttribution();
+				if (attribution != null && attribution.length > 0) {
+					this._controls.addAttribution(attribution);
+				}
+			},
+			
+			loadModelViews: function(bundleModels, lazyModels, map, config, layers, callback) {
 				var pointsModels = this._filterModels(bundleModels, AbstractPointsBuilder);
 				var geojsonModels = this._filterModels(bundleModels, AbstractGeojsonBuilder);
 				var lazyPointsModels = this._filterModels(lazyModels, AbstractPointsBuilder);
 				var lazyGeojsonModels = this._filterModels(lazyModels, AbstractGeojsonBuilder);
-				var matrixLayerControl = null;
 				if (config.dimensional_layering) {
-					matrixLayerControl = new Leaflet_MatrixLayers(layers, null, {}, {
+					this._matrixLayerControl = new Leaflet_MatrixLayers(layers, null, {}, {
 						multiAspects: true,
 						embeddable: config.use_sidebar
 					});
 				}
 				
-				var pointsView = new PointsView(map, config, pointsModels, matrixLayerControl, controls, bundles);
-				var geojsonView = new GeojsonView(map, config, geojsonModels, matrixLayerControl, bundles);
+				var pointsView = new PointsView(map, config, pointsModels, this._matrixLayerControl, this._controls, this._bundles);
+				var geojsonView = new GeojsonView(map, config, geojsonModels, this._matrixLayerControl, this._bundles);
 				var promises = [
 					pointsView.finish(),
 					geojsonView.finish()
 				];
 				
 				if (config.dimensional_layering) {
-					this._addLazyModels(lazyPointsModels, matrixLayerControl, bundles, function (bundleName, model) {
+					this._addLazyModels(lazyPointsModels, function (bundleName, model) {
 						pointsView.addClusteredModel(bundleName, model);
 					});
-					this._addLazyModels(lazyGeojsonModels, matrixLayerControl, bundles, function (bundleName, model) {
+					this._addLazyModels(lazyGeojsonModels, function (bundleName, model) {
 						geojsonView.addClusteredModel(bundleName, model);
 					});
 				}
@@ -63,18 +76,15 @@ define(['leaflet', 'jquery', 'points_view', 'geojson_view', 'bundles/abstract_po
 				$.when.apply($, promises).always(function() {
 					if (config.dimensional_layering) {
 						//override the basic layers control
-						controls.addControl(matrixLayerControl);
+						this._controls.addControl(this._matrixLayerControl);
 					}
 					//add attribution texts
 					Object.keys(bundleModels).forEach(function(aspect) {
 						var model = bundleModels[aspect];
-						var attribution = model.getAttribution();
-						if (attribution != null && attribution.length > 0) {
-							controls.addAttribution(attribution);
-						}
-					});
+						this._addAttribution(model);
+					}.bind(this));
 					callback();
-				});
+				}.bind(this));
 			}
 		});
 		return ModelViews;
