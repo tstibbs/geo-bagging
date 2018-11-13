@@ -1,7 +1,7 @@
 define(['./points_builder'],
 	function(PointsBuilder) {
 
-		var dimensionNames = ["RNLI - Lifeboat Types", "RNLI - Launch Methods"];
+		var dimensionNames = ["Lifeboat Types", "Launch Methods"];
 
 		var typeData = {
 			'Atlantic85': ['Atlantic 85', 'b-class-lifeboat'],
@@ -38,6 +38,7 @@ define(['./points_builder'],
 		};
 		
 		return {
+			aspectLabel: "RNLI",
 			dimensionNames: dimensionNames,
 			dimensionValueLabels: dimensionValueLabels,
 			dataToLoad: 'data.json',

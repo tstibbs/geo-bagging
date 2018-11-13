@@ -27,6 +27,7 @@ define(['./builder'],
 		urls["Wales Coast Path"] = "http://www.walescoastpath.gov.uk";
 		
 		return {
+			aspectLabel: "National Trails",
 			dimensionNames: dimensionNames,
 			dataToLoad: 'data.geojson',
 			parser: Builder,

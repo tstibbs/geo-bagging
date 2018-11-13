@@ -1,7 +1,7 @@
 define(['leaflet', './points_builder', 'custom_default_icon'],
 	function(leaflet, PointsBuilder, CustomDefaultIcon) {
 
-		var dimensionNames = ["NT - Type", "NT - Facilities"];
+		var dimensionNames = ["Type", "Facilities"];
 		
 		var dimensionValueLabels = {};
 		dimensionValueLabels[dimensionNames[0]] = {
@@ -28,6 +28,7 @@ define(['leaflet', './points_builder', 'custom_default_icon'],
 		};
 		
 		return {
+			aspectLabel: "National Trust",
 			dimensionNames: dimensionNames,
 			dimensionValueLabels: dimensionValueLabels,
 			dataToLoad: 'data.json',

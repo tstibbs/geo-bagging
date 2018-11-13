@@ -9,6 +9,7 @@ define(['leaflet', './points_builder'],
 		};
 
 		return {
+			aspectLabel: "Follies",
 			dimensionNames: dimensionNames,
 			dimensionValueLabels: dimensionValueLabels,
 			dataToLoad: 'data.json',

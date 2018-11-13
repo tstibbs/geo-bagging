@@ -11,7 +11,7 @@ var versions = {
 	leaflet_mouseposition: 'b628c7be754c134c63117b3feb75e720a1d20673',
 	leaflet_screenposition: '614445ce5e06b1ce20f78b08aad0b9f6e64d6c37',
 	leaflet_subgroup: '1.0.2',
-	leaflet_matrixlayers: '05318f006202d77de2e0382b033d018eeed5edc6',
+	leaflet_matrixlayers: '570d2fa2f1a42bbb375abdf1f463ff214bf0decb',
 	leaflet_locate: '0.63.0',
 	leaflet_controlHider: '3df76ebbfda70789027a40aa6f2e05db603aa364',
 	leaflet_boxSelector: '11007fa9e2553353a53c7523d5d964aa8c553fe5',

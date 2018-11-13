@@ -12,6 +12,7 @@ define(['./points_builder', 'custom_default_icon'],
 		var milestonesIcon = window.os_map_base + 'img/milestone.png';
 
 		return {
+			aspectLabel: "Waymarks",
 			defaultIcon: new CustomDefaultIcon(milestonesIcon, {iconUrl: milestonesIcon}),
 			dimensionNames: dimensionNames,
 			dimensionValueLabels: dimensionValueLabels,

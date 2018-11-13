@@ -34,7 +34,12 @@ define([
 					}
 				},
 				
-				fetchData: function(urlPrefix) {
+				fetchData: function() {
+					//not relevant, ignore
+					return $.Deferred().resolve().promise();
+				},
+
+				fetchMeta: function() {
 					//not relevant, ignore
 					return $.Deferred().resolve().promise();
 				}

@@ -16,18 +16,21 @@ define(['jquery', 'leaflet'],
 				} else {
 					var parentGroup = leaflet.layerGroup();
 					var markerLists = Object.keys(this._modelsByAspect).forEach(function(aspect) {
-						var aspectOptions = this._bundles[aspect];//will have other options, but collisions are unlikely
-						
 						var model = this._modelsByAspect[aspect];
-						var layers = model.buildLayers();
-						Object.values(layers).forEach(function(layer) {
-							layer.addTo(this._map)
-						}.bind(this));
-						this._matrixLayerControl.addAspect(aspect, layers, aspectOptions);
+						this.addClusteredModel(aspect, model);
 					}.bind(this));
 				}
 				//no async here, but stick to the convention of the other views
 				return $.Deferred().resolve().promise();
+			},
+			
+			addClusteredModel: function(aspect, model) {
+				var aspectOptions = this._bundles[aspect];//will have other options, but collisions are unlikely
+				var layers = model.buildLayers();
+				Object.values(layers).forEach(function(layer) {
+					layer.addTo(this._map)
+				}.bind(this));
+				this._matrixLayerControl.addAspect(aspect, layers, aspectOptions);
 			}
 		});
 
