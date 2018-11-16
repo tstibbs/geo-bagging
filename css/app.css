@@ -44,7 +44,7 @@ div.embedded-map {
 }
 
 #loading-message-pane {
-	z-index: 1999;
+	z-index: 2001;
 }
 
 .leaflet-container .leaflet-control-mapcentercoord, .leaflet-container .leaflet-control-mouseposition {
@@ -65,7 +65,7 @@ div#error-container {
 	position: absolute;
 	left: 0;
 	top: 0;
-	z-index: 2000;
+	z-index: 2002;
 	margin: 5px;
 	padding: 10px;
 	border-color: black;
@@ -156,6 +156,32 @@ body.landing {
 
 .landing #map-container {
 	flex: 1;
+}
+
+/* controls */
+
+.sidebar-pane {
+	padding: 10px !important;
+}
+
+.leaflet-control-layers-list {
+	padding-top: 10px;
+}
+
+.sidebar.collapsed {
+	bottom: 16px;
+}
+.mobile.sidebar.collapsed {
+	top: 28px;
+}
+@media (min-width: 768px) {
+	/* repetition is a hack to get around the style above winning due to higher specificity */
+	.sidebar.collapsed, .sidebar {
+		bottom: 26px;
+	}
+	.mobile.sidebar.collapsed, .mobile.sidebar {
+		top: 38px;
+	}
 }
 
 /* other */

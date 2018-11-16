@@ -1,23 +1,16 @@
-define(['leaflet', 'jquery'],
-	function(leaflet, $) {
+define(['./abstract_bundle_builder'],
+	function(AbstractBundleBuilder) {
 	
-		var PointsBuilder = leaflet.Class.extend({
-			initialize: function (config, bundleConfig, bundleName) {
+		var PointsBuilder = AbstractBundleBuilder.extend({
+			initialize: function (config, bundleConfig, bundleName, urlPrefix) {
+				AbstractBundleBuilder.prototype.initialize.call(this, config, bundleConfig, bundleName, urlPrefix);
 				this._markerList = null;
 				this._config = config;
 				this._bundleConfig = bundleConfig;
-				this._bundleName = bundleName;
 			},
 			
 			fetchData: function(urlPrefix) {
-				var dataToLoad = urlPrefix + '/js/bundles/' + this._bundleName.substring(0, this._bundleName.lastIndexOf('/')) + '/' + this._bundleConfig.dataToLoad;
-				return $.ajax({
-					url: dataToLoad,
-					dataType: 'json'
-				}).fail(function(xhr, textError, error) {
-					console.error("Failed to load map data: " + textError);
-					console.log(error);
-				}).done(function(data) {
+				return this._doFetchData(urlPrefix).done(function(data) {
 					this.addMarkers(data);
 				}.bind(this));
 			},
@@ -89,10 +82,6 @@ define(['leaflet', 'jquery'],
 			
 			getMarkerList: function() {
 				return this._markerList;
-			},
-			
-			getBundleConfig: function() {
-				return this._bundleConfig;
 			},
 			
 			getAttribution: function() {

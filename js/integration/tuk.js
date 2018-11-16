@@ -22,38 +22,40 @@ define(['jquery', 'conversion', 'main'],
 						pointsToLoad: {
 							generalPoints: points
 						},
-						force_config_override: true
+						force_config_override: true,
+						use_sidebar: false
 					};
 					
 					$('body').empty();//our map assumes it is full screen - there's probably a better way, but this will work for now
-					var osMap = main.loadMap(options);
-					
-					//now get the map showing everything
-                    var minEastings;
-                    var maxEastings;
-                    var minNorthings;
-                    var maxNorthings;
-                    
-                    var latLngs = points.forEach(function(point) {
-                        var eastings = point.eastings
-                        var northings = point.northings;
-                        if (minEastings == null || eastings < minEastings) {
-                            minEastings = eastings;
-                        }
-                        if (maxEastings == null || eastings > maxEastings) {
-                            maxEastings = eastings;
-                        }
-                        if (minNorthings == null || northings < minNorthings) {
-                            minNorthings = northings;
-                        }
-                        if (maxNorthings == null || northings > maxNorthings) {
-                            maxNorthings = northings;
-                        }
-                    });
-					
-					var bottomLeft = conversion.osgbToLngLat(minEastings, minNorthings);
-					var topRight = conversion.osgbToLngLat(maxEastings, maxNorthings);
-                    osMap.getMap().fitBounds([[bottomLeft[1], bottomLeft[0]], [topRight[1], topRight[0]]]);
+					var osMapPromise = main.loadMap(options);
+					osMapPromise.done(function(osMap) {
+						//now get the map showing everything
+						var minEastings;
+						var maxEastings;
+						var minNorthings;
+						var maxNorthings;
+						
+						var latLngs = points.forEach(function(point) {
+							var eastings = point.eastings
+							var northings = point.northings;
+							if (minEastings == null || eastings < minEastings) {
+								minEastings = eastings;
+							}
+							if (maxEastings == null || eastings > maxEastings) {
+								maxEastings = eastings;
+							}
+							if (minNorthings == null || northings < minNorthings) {
+								minNorthings = northings;
+							}
+							if (maxNorthings == null || northings > maxNorthings) {
+								maxNorthings = northings;
+							}
+						});
+						
+						var bottomLeft = conversion.osgbToLngLat(minEastings, minNorthings);
+						var topRight = conversion.osgbToLngLat(maxEastings, maxNorthings);
+						osMap.getMap().fitBounds([[bottomLeft[1], bottomLeft[0]], [topRight[1], topRight[0]]]);
+					});
 				});
 			},
 			
@@ -97,7 +99,8 @@ define(['jquery', 'conversion', 'main'],
 								generalPoints: points
 							},
 							force_config_override: true,
-							initial_zoom: 13
+							initial_zoom: 13,
+							use_sidebar: false
 						};
 						
 						main.loadMap(options);

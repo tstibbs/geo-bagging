@@ -1,5 +1,6 @@
 const proj4 = require('proj4');
 const fs = require('fs');
+const Converter = require('./converter');
 const constants = require('./constants');
 const ifCmd = require('./utils').doIfCmdCall;
 
@@ -151,14 +152,20 @@ function buildDataFile() {
 		let allFeatures = values.reduce((allFeatures, fileFeatures) => 
 			[...allFeatures, ...fileFeatures]
 		, []);
+		let totalFeatures = allFeatures.length;
 		let output = {
 			"type": "FeatureCollection",
 			"features": allFeatures,
-			"totalFeatures": allFeatures.length
+			"totalFeatures": totalFeatures
 		};
-		fs.writeFile('../js/bundles/trails/data.geojson', JSON.stringify(output, null, 2) , 'utf-8', (err) => {
+		const fileName = '../js/bundles/trails/data.geojson'
+		fs.writeFile(fileName, JSON.stringify(output, null, 2) , 'utf-8', (err) => {
 			console.log("Done.");
 		});
+		
+		const converter = new Converter();
+		let lastUpdated = converter.getLastUpdatedString();
+		converter.writeMetaData(fileName, totalFeatures, lastUpdated)
 	}).catch(err => {
 		console.error(err);
 	});

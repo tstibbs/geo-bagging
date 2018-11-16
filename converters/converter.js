@@ -5,11 +5,10 @@ const fs = require('fs');
 const cheerio = require('cheerio');
 const gridconversion = require('./gridconversion');
 
-function header(attributionString, columnHeaders, lastUpdated) {
+function header(attributionString, columnHeaders) {
 return `{
 "attribution": "${attributionString}",
 "headers": "${columnHeaders}",
-"lastUpdated": "${lastUpdated}",
 "data": [
 `;
 }
@@ -42,11 +41,16 @@ class HeaderFooterTransformer extends Transform {
 
 class Converter {
 	constructor(attribution, columnHeaders, axisIndexes) {
-		this._header = header(attribution, columnHeaders, new Date().toISOString().split('T')[0]);
+		this._header = header(attribution, columnHeaders);
 		this._axisIndexes = axisIndexes;
 		this._axes = [];
 		this._first = true;
 		this._second = true;
+		this._lastUpdated = new Date().toISOString().split('T')[0];
+	}
+	
+	getLastUpdatedString() {
+		return this._lastUpdated;
 	}
 	
 	_parseHtml(htmlString) {
@@ -83,6 +87,7 @@ class Converter {
 		} else {
 			let columns = this.extractColumns(record);
 			if (columns != null) {
+				this._lineCount++;
 				if (this._axisIndexes != null) {
 					for (let i = 0; i < this._axisIndexes.length; i++) {
 						if (this._axes[i] == null) {
@@ -112,32 +117,46 @@ class Converter {
 		}
 	}
 
-	writeOut(input, output) {
-		this.writeOutStream(fs.createReadStream(input), output);
+	writeOut(input, fileName) {
+		this.writeOutStream(fs.createReadStream(input), fileName);
 	}
 
-	writeOutStream(readable, output) {
-		this.writeOutParsedStream(readable.pipe(csv.parse()), output);
+	writeOutStream(readable, fileName) {
+		this.writeOutParsedStream(readable.pipe(csv.parse()), fileName);
 	}
 
-	writeOutParsedStream(readable, output) {
-		let writeStream = fs.createWriteStream(output);
+	writeOutParsedStream(readable, fileName) {
+		this._lineCount = 0;
+		let writeStream = fs.createWriteStream(fileName);
 		readable
 			.pipe(csv.transform(this._formatLine.bind(this)))
 			.pipe(new HeaderFooterTransformer(this._header))
 			.pipe(writeStream);
 		writeStream.on('finish', () => {
+			this.writeMetaData(fileName, this._lineCount, this._lastUpdated);
+			this._lineCount = 0;
 			console.log(this._axes);
 		});
 	}
 	
-	writeOutCsv(csvContent, output) {
+	writeOutCsv(csvContent, fileName) {
 		const readable = new Stream.Readable({objectMode: true});
 		csvContent.forEach(entry => readable.push(entry));
 		// end the stream
 		readable.push(null);
 
-		this.writeOutParsedStream(readable, output);
+		this.writeOutParsedStream(readable, fileName);
+	}
+	
+	writeMetaData(fileName, recordCount, lastUpdated) {
+		let data = {
+			recordCount,
+			lastUpdated
+		};
+		let contents = JSON.stringify(data);
+		fs.writeFile(`${fileName}.meta`, contents, function(err){
+			if (err) console.log(err);
+		});
 	}
 }
 

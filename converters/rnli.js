@@ -10,7 +10,7 @@ require('global-tunnel-ng').initialize();
 const baseUrl = 'https://rnli.org';
 const mainPageUrl = `${baseUrl}/find-my-nearest?type=Lifeboat-Station`;
 
-const attributionString = "This file adapted from data available on rnli.org which is copyright © RNLI and from https://en.wikipedia.org/wiki/List_of_RNLI_stations";
+const attributionString = "This file adapted from data available on rnli.org (which is copyright © RNLI) and from https://en.wikipedia.org/wiki/List_of_RNLI_stations";
 const columnHeaders = "[Longitude,Latitude,Name,Link,LifeboatTypes,LaunchMethods]"
 
 function getRnliData() {

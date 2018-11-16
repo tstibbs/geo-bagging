@@ -2,12 +2,14 @@ define(["underscore", "jquery", "leaflet", "leaflet_cluster", "leaflet_subgroup"
 	function(_, $, leaflet, leaflet_cluster, leaflet_subgroup, Leaflet_MatrixLayers, markerView) {
 	
 		var PointsView = leaflet.Class.extend({
-			initialize: function (map, config, modelsByAspect, matrixLayerControl, controls) {
+			initialize: function (map, config, modelsByAspect, matrixLayerControl, controls, bundles) {
 				this._map = map;
 				this._config = config;
 				this._modelsByAspect = modelsByAspect;
 				this._matrixLayerControl = matrixLayerControl;
 				this._controls = controls;
+				this._bundles = bundles;
+				this._parentGroup = null;
 			},
 
 			_translateMarkerGroup: function(group, bundleConfig) {
@@ -28,11 +30,10 @@ define(["underscore", "jquery", "leaflet", "leaflet_cluster", "leaflet_subgroup"
 			finish: function (finished) {
 				var deferredObject = $.Deferred();
 				
-				var parentGroup = null;
 				if (this._config.cluster) {
 					var mapElem = $('div#map');
 					var radius = (Math.max(mapElem[0].offsetHeight, mapElem[0].offsetWidth) / 10);
-					parentGroup = leaflet_cluster({
+					this._parentGroup = new leaflet_cluster.MarkerClusterGroup({
 						disableClusteringAtZoom: 15,
 						maxClusterRadius: radius,
 						chunkedLoading: true,
@@ -43,11 +44,11 @@ define(["underscore", "jquery", "leaflet", "leaflet_cluster", "leaflet_subgroup"
 						}
 					});
 				} else {
-					parentGroup = leaflet.layerGroup();
+					this._parentGroup = leaflet.layerGroup();
 					deferredObject.resolve();
 				}
 				
-				parentGroup.addTo(this._map);
+				this._parentGroup.addTo(this._map);
 				if (!this._config.dimensional_layering) {
 					var markerLists = Object.keys(this._modelsByAspect).map(function(aspect) {
 						var model = this._modelsByAspect[aspect];
@@ -69,7 +70,7 @@ define(["underscore", "jquery", "leaflet", "leaflet_cluster", "leaflet_subgroup"
 						}, {});
 						
 						//add things that don't specify a layer to the default clustered layer
-						parentGroup.addLayers(markersByLayer[nullLayerId]);
+						this._parentGroup.addLayers(markersByLayer[nullLayerId]);
 						//add everything else to individual, non-clustered, layers
 						Object.keys(markersByLayer).filter(function(layerId) {
 							return layerId !== nullLayerId;
@@ -83,36 +84,41 @@ define(["underscore", "jquery", "leaflet", "leaflet_cluster", "leaflet_subgroup"
 						}.bind(this));
 					} else {
 						for (var i = 0; i < allMarkers.length; i++) {
-							parentGroup.addLayer(allMarkers[i]);
+							this._parentGroup.addLayer(allMarkers[i]);
 						}
 					}
 				} else {
-					function iter(markers, path, overlays) {
-						if (markers.constructor === Array) {
-							var subGroup = leaflet.featureGroup.subGroup(parentGroup, markers);
-							//don't add to the map yet - let the layer control do that if it thinks it needs to - otherwise we could add all layers then immediately try to remove them all, which can cause UI weirdness
-							overlays[path] = subGroup;
-						} else {
-							Object.keys(markers).forEach(function (dimValue) {
-								var newPath = path.length === 0 ? dimValue : path + '/' + dimValue;
-								var sublist = markers[dimValue];
-								iter(sublist, newPath, overlays);
-							});
-						}
-					}
 					for (var aspect in this._modelsByAspect) {
 						var model = this._modelsByAspect[aspect];
-						if (model.getMarkerList() != null) {
-							var markerList = this._translateMarkerGroup(model.getMarkerList(), model.getBundleConfig());
-							var matrixOverlays = {};
-							iter(markerList, '', matrixOverlays);
-							var aspectOptions = this._config.bundles[aspect];//will have other options, but collisions are unlikely
-							this._matrixLayerControl.addAspect(aspect, matrixOverlays, aspectOptions);
-						}
+						this.addClusteredModel(aspect, model);
 					}
 				}
 				
 				return deferredObject.promise();
+			},
+			
+			addClusteredModel: function(aspect, model) {
+				if (model.getMarkerList() != null) {
+					var markerList = this._translateMarkerGroup(model.getMarkerList(), model.getBundleConfig());
+					var matrixOverlays = {};
+					this.depthFirstIteration(markerList, '', matrixOverlays);
+					var aspectOptions = this._bundles[aspect];//will have other options, but collisions are unlikely
+					this._matrixLayerControl.addAspect(aspect, matrixOverlays, aspectOptions);
+				}
+			},
+			
+			depthFirstIteration: function(markers, path, overlays) {
+				if (markers.constructor === Array) {
+					var subGroup = leaflet.featureGroup.subGroup(this._parentGroup, markers);
+					//don't add to the map yet - let the layer control do that if it thinks it needs to - otherwise we could add all layers then immediately try to remove them all, which can cause UI weirdness
+					overlays[path] = subGroup;
+				} else {
+					Object.keys(markers).forEach(function (dimValue) {
+						var newPath = path.length === 0 ? dimValue : path + '/' + dimValue;
+						var sublist = markers[dimValue];
+						this.depthFirstIteration(sublist, newPath, overlays);
+					}.bind(this));
+				}
 			}
 		});
 

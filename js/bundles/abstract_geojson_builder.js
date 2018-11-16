@@ -1,20 +1,15 @@
-define(['leaflet', 'jquery', 'popup_view'],
-	function(leaflet, $, popupView) {
+define(['leaflet', './abstract_bundle_builder', 'popup_view'],
+	function(leaflet, AbstractBundleBuilder, popupView) {
 	
-		var GeojsonLayer = leaflet.Class.extend({
-			initialize: function (config, bundleConfig, bundleName) {
-				this._markerList = null;
-				this._config = config;
+		var GeojsonLayer = AbstractBundleBuilder.extend({
+			initialize: function (config, bundleConfig, bundleName, urlPrefix) {
+				AbstractBundleBuilder.prototype.initialize.call(this, config, bundleConfig, bundleName, urlPrefix);
+				this._data = null;
 				this._bundleConfig = bundleConfig;
-				this._bundleName = bundleName;
 			},
 			
 			fetchData: function(urlPrefix) {
-				var dataToLoad = urlPrefix + '/js/bundles/' + this._bundleName.substring(0, this._bundleName.lastIndexOf('/')) + '/' + this._bundleConfig.dataToLoad;
-				return $.ajax({
-					url: dataToLoad,
-					dataType: 'json'
-				}).done(function(data) {
+				return this._doFetchData(urlPrefix).done(function(data) {
 					this._data = data;
 				}.bind(this));
 			},
@@ -47,10 +42,6 @@ define(['leaflet', 'jquery', 'popup_view'],
 			buildLayers: function() {
 				var layerDatas = this._parseDatas();
 				return this._translateDatas(layerDatas);
-			},
-			
-			getBundleConfig: function() {
-				return this._bundleConfig;
 			},
 			
 			getAttribution: function() {

@@ -4,6 +4,7 @@ define(['./points_builder'],
 		var dimensionNames = ['DOB'];
 
 		return {
+			aspectLabel: "Defence of Britain",
 			dimensionNames: dimensionNames,
 			dataToLoad: 'data.json',
 			parser: PointsBuilder,

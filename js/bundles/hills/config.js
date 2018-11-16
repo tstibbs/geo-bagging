@@ -52,6 +52,7 @@ define(['leaflet', './points_builder', 'custom_default_icon'],
 		var redIconPath = window.os_map_base + 'img/hill.png';
 
 		return {
+			aspectLabel: "Hills",
 			defaultIcon: new CustomDefaultIcon(redIconPath, {iconUrl: redIconPath}),
 			dimensionNames: dimensionNames,
 			dimensionValueLabels: dimensionValueLabels,

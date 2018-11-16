@@ -1,6 +1,6 @@
 define(['leaflet', 'conversion', './points_builder'],
 	function(leaflet, conversion, pointsBuilder) {
-		var dimensionNames = ['Trigs - type', 'Trigs - condition'];
+		var dimensionNames = ['Type', 'Condition'];
 		var dimensionValueKeys = ['Pillar', 'Bolt', 'Surface Block', 'Rivet', 'Buried Block', 'Cut', 'Other', 'Berntsen', 'FBM', 'Intersected Station', 'Disc', 'Brass Plate', 'Active station', 'Block', 'Concrete Ring', 'Curry Stool', 'Fenomark', 'Platform Bolt', 'Cannon', 'Spider', 'Pipe'];
 		var dimensionValueLabels = {};
 		var typeValueLabels = {};
@@ -11,6 +11,7 @@ define(['leaflet', 'conversion', './points_builder'],
 		});
 
 		return {
+			aspectLabel: "Trig Points",
 			icons: {
 				Pillar: leaflet.icon({
 					iconUrl: window.os_map_base + 'img/pillar.png',
