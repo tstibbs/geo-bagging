@@ -43,7 +43,7 @@ define(['./points_builder'],
 			dimensionValueLabels: dimensionValueLabels,
 			dataToLoad: 'data.json',
 			parser: PointsBuilder,
-			attribution: 'Adapted from data &copy; RNLI and from wikipedia',
+			attribution: 'Contains <a href="https://hub.arcgis.com/datasets/7dad2e58254345c08dfde737ec348166_0">Open Data</a> licensed under the GIS Open Data Licence &copy; RNLI and data from <a href="https://en.wikipedia.org/wiki/List_of_RNLI_stations">Wikipedia</a>',
 			typeData: typeData
 		};
 	}

@@ -30,8 +30,8 @@ define([
 						sources[sourceIds[i]] = arguments[i];
 					}
 				
-					//https://tstibbs.github.io/geo-bagging/js/bundles/trigs/data_all.json
-					var sourceDataPrefix = (this._config.remoteData ? 'https://tstibbs.github.io/geo-bagging' : window.os_map_base);//some mobile browsers don't support local ajax, so this provides a workaround for dev on mobile devices.
+					//https://cdn.jsdelivr.net/gh/tstibbs/geo-bagging@gh-pages/js/bundles/nt/data.json
+					var sourceDataPrefix = (this._config.remoteData ? 'https://cdn.jsdelivr.net/gh/tstibbs/geo-bagging@gh-pages' : window.os_map_base);//some mobile browsers don't support local ajax, so this provides a workaround for dev on mobile devices.
 					
 					var sourceModels = {};
 					var lazyModels = {};

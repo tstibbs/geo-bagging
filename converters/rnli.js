@@ -1,62 +1,80 @@
-const request = require('request');
-const Entities = require('html-entities').AllHtmlEntities;
-const entities = new Entities();
-const rnliWiki = require('./rnli-wikipedia');
+const fs = require('fs');
 const Converter = require('./converter');
-const get = require('./Utils').get;
 const ifCmd = require('./utils').doIfCmdCall;
-require('global-tunnel-ng').initialize();
+const constants = require('./constants');
 
-const baseUrl = 'https://rnli.org';
-const mainPageUrl = `${baseUrl}/find-my-nearest?type=Lifeboat-Station`;
-
-const attributionString = "This file adapted from data available on rnli.org (which is copyright © RNLI) and from https://en.wikipedia.org/wiki/List_of_RNLI_stations";
+const attributionString = "Contains (https://hub.arcgis.com/datasets/7dad2e58254345c08dfde737ec348166_0) licensed under the GIS Open Data Licence &copy; RNLI and data from (https://en.wikipedia.org/wiki/List_of_RNLI_stations)";
 const columnHeaders = "[Longitude,Latitude,Name,Link,LifeboatTypes,LaunchMethods]"
 
-function getRnliData() {
-	return get(mainPageUrl).then(body => {
-		let result = /<div data-rnli-map-data data-json="([^"]+)"><\/div>/.exec(body);
-		let escapedJson = result[1];
-		escapedJson = escapedJson.replace(/\\u0026/g, '&')
-		let unescapedJson = entities.decode(escapedJson)
-		let data = JSON.parse(unescapedJson);
-		return data;
-
-	});
-}
-
-function getWikipediaData() {
-	return rnliWiki.fetchWikiData()
-}
-
-function buildDataFile() {
-	Promise.all([getRnliData(), getWikipediaData()]).then(values => { 
-		let rnliData = values[0];
-		let wikiData = values[1];
-		let csv = rnliData.Results.map(station => {
-			if (station.Title.includes('Bembridge')) {
+class RnliConverter extends Converter {
+	constructor(wikiData) {
+		super(attributionString, columnHeaders);
+		this._wikiData = wikiData;
+	}
+	
+	_findExtraData(stationName) {
+		//stations are called slightly different things in the RNLI data and in the wikipedia data
+		stationName = stationName.toLowerCase();
+		let wikiStation = this._wikiData[stationName];
+		if (wikiStation == null) {
+			stationName = /^([\w\s-&]+)( \([\w\s-&]+\))?$/.exec(stationName)[1];
+			wikiStation = this._wikiData[stationName];
+		}
+		if (wikiStation == null) {
+			stationName = stationName.replace('-', ' ');
+			wikiStation = this._wikiData[stationName];
+		}
+		if (wikiStation == null) {
+			stationName = stationName.replace('&', 'and');
+			wikiStation = this._wikiData[stationName];
+		}
+		if (wikiStation == null) {
+			//hard-coded replacements, but not much we can do about this - they're just called different things
+			if (stationName.includes('enniskillen lower')) {
+				stationName = 'Enniskillen'
+			} else if (stationName.includes('enniskillen upper')) {
+				stationName = 'Carrybridge'
 			}
-			let name = station.Title.replace(/\s+Lifeboat\s+Station/g, '').replace(/ Lifeboats/g, '').trim();
-			let wikiStation = wikiData[name];
+		}
+		return wikiStation;
+	}
+	
+	extractColumns(record) {
+		if (record.length > 1) {
+			//X,Y,OBJECTID_1,OBJECTID,SAP_ID,Station,Station_Ty,County,Region,Division,Country,Lifesaving,Lifesavi_1,Lat_Dec_De,Long_Dec_D,URL
+			var lng = parseFloat(record[0]);
+			var lat = parseFloat(record[1]);
+			var stationName = record[5];
+			var url = record[15];
+			
 			let lifeboatTypes = 'Unknown';
 			let launchMethods = 'Unknown';
+			let wikiStation = this._findExtraData(stationName);
 			if (wikiStation != null) {
 				lifeboatTypes = wikiStation.types.join(';');
 				launchMethods = wikiStation.launchMethods.join(';');
 			}
+
 			return [
-				station.Location.Longitude,
-				station.Location.Latitude,
-				name,
-				baseUrl + station.Url,
+				lng,
+				lat,
+				stationName,
+				url,
 				lifeboatTypes,
 				launchMethods
 			];
-		});
+		} else {
+			return null;
+		}
+	}
+}
 
-		const converter = new Converter(attributionString, columnHeaders);
-		converter.writeOutCsv(csv, '../js/bundles/rnli/data.json');
-	}).catch(error => console.error(error));
+function buildDataFile() {
+	const inputDir = `${constants.tmpInputDir}/rnli`;
+	fs.readFile(`${inputDir}/wiki.json`, (err, data) => {
+		let wikiData = JSON.parse(data);
+		(new RnliConverter(wikiData)).writeOut(`${inputDir}/lifeboatStations.csv`, `../js/bundles/rnli/data.json`);
+	});
 }
 
 ifCmd(module, buildDataFile)

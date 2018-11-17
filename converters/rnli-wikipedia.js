@@ -1,5 +1,9 @@
+const fs = require('fs');
 const wtfWikipedia = require("wtf_wikipedia")
-const globalTunnel = require('global-tunnel-ng');
+const ifCmd = require('./utils').doIfCmdCall;
+const constants = require('./constants');
+require('global-tunnel-ng').initialize();
+const inputDir = `${constants.tmpInputDir}/rnli`;
 
 function fetchWikiData() {
 	return new Promise((resolve, reject) => {
@@ -25,7 +29,16 @@ function fetchWikiData() {
 				}
 				return stationsByName
 			}, {});
-			resolve(stations);
+			
+			let stationsString = JSON.stringify(stations, null, 2);
+			fs.writeFile(`${inputDir}/wiki.json`, stationsString, function(err) {
+				if (err) {
+					reject(err);
+				} else {
+					resolve();
+				}
+			}); 
+			
 		});
 	});
 }
@@ -43,7 +56,7 @@ function parseStation(stationText) {
 		["Red Bay", "Red bay"],
 		["Wells-next-the-Sea", "Wells"]
 	];
-    return replace(stationText, replacements).trim()
+    return replace(stationText, replacements).trim().toLowerCase()
 }
 
 function parseTypes(typesString) {
@@ -88,5 +101,7 @@ function replace(input, replacements) {
         result.replace(new RegExp(regex, 'gi'), replacement)
     , input).trim()
 }
+
+ifCmd(module, fetchWikiData)
 
 module.exports.fetchWikiData = fetchWikiData;
