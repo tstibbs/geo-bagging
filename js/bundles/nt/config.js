@@ -32,7 +32,8 @@ define(['leaflet', './points_builder', 'custom_default_icon'],
 			dimensionNames: dimensionNames,
 			dimensionValueLabels: dimensionValueLabels,
 			dataToLoad: 'data.json',
-			parser: PointsBuilder
+			parser: PointsBuilder,
+			attribution: '&copy; National Trust'
 		};
 	}
 );

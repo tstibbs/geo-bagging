@@ -184,6 +184,10 @@ body.landing {
 	}
 }
 
+.attribution-source::after {
+	content: ": "
+}
+
 /* other */
 
 .hidden {

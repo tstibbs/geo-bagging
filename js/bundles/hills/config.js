@@ -59,7 +59,7 @@ define(['leaflet', './points_builder', 'custom_default_icon'],
 			hillDisplayNames: displayNames,
 			dataToLoad: 'data.json',
 			parser: PointsBuilder,
-			attribution: 'Hills data &copy; <a href="http://www.hills-database.co.uk/downloads.html">The Database of British and Irish Hills</a>'
+			attribution: '&copy; <a href="http://www.hills-database.co.uk/downloads.html">The Database of British and Irish Hills</a>'
 		};
 	}
 );

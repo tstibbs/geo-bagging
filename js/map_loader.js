@@ -51,9 +51,6 @@ define([
 					options.dimensional_layering = false;
 					allBundles = ['trigs/config_embedding'];
 				}
-				if (allBundles.length == 0) {
-					throw new Error("No config bundle specified");
-				}
 				options = $.extend({ //set some defaults that can be overriden by the page or by loadMiniMap
 					cluster: true,
 					dimensional_layering: true

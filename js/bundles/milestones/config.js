@@ -18,7 +18,7 @@ define(['./points_builder', 'custom_default_icon'],
 			dimensionValueLabels: dimensionValueLabels,
 			dataToLoad: 'data.json',
 			parser: PointsBuilder,
-			attribution: 'Milestones data &copy; <a href="http://www.msocrepository.co.uk/">The Milestone Society</a>'
+			attribution: '&copy; <a href="http://www.msocrepository.co.uk/">The Milestone Society</a>'
 		};
 	}
 );

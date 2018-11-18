@@ -31,7 +31,7 @@ define(['./builder'],
 			dimensionNames: dimensionNames,
 			dataToLoad: 'data.geojson',
 			parser: Builder,
-			attribution: 'Trails data from Natural England Open Data (<a href="http://www.nationalarchives.gov.uk/doc/open-government-licence/version/">OGL</a>)',
+			attribution: 'Natural England Open Data (<a href="http://www.nationalarchives.gov.uk/doc/open-government-licence/version/">OGL</a>)',
 			urls: urls
 		};
 	}

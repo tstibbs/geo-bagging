@@ -24,7 +24,7 @@ define(['leaflet', 'jquery', 'points_view', 'geojson_view', 'bundles/abstract_po
 					var callback = function() {
 						model.fetchData().done(function() {
 							addCallback(bundleName, model);
-							this._addAttribution(model, this._controls);
+							this._addAttribution(bundleName, model);
 						}.bind(this));
 					}.bind(this);
 					var meta = model.getMeta();
@@ -38,10 +38,10 @@ define(['leaflet', 'jquery', 'points_view', 'geojson_view', 'bundles/abstract_po
 				}.bind(this));
 			},
 			
-			_addAttribution: function(model) {
+			_addAttribution: function(bundleName, model) {
 				var attribution = model.getAttribution();
 				if (attribution != null && attribution.length > 0) {
-					this._controls.addAttribution(attribution);
+					this._controls.addAttribution(bundleName, attribution);
 				}
 			},
 			
@@ -81,7 +81,7 @@ define(['leaflet', 'jquery', 'points_view', 'geojson_view', 'bundles/abstract_po
 					//add attribution texts
 					Object.keys(bundleModels).forEach(function(aspect) {
 						var model = bundleModels[aspect];
-						this._addAttribution(model);
+						this._addAttribution(aspect, model);
 					}.bind(this));
 					callback();
 				}.bind(this));

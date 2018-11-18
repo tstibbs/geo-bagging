@@ -9,7 +9,6 @@ define([
 	'mouseposition_osgb',
 	'screenposition_osgb',
 	'constants',
-	'data_source_attribution_control',
 	'./menu/view',
 	'leaflet_matrixlayers'
 ],
@@ -24,7 +23,6 @@ define([
 		Mouseposition_Osgb,
 		Screenposition_Osgb,
 		constants,
-		DataSourceAttributionControl,
 		MenuView,
 		Leaflet_MatrixLayers
 	) {
@@ -66,8 +64,6 @@ define([
 				if (this._config.show_zoom_control) {
 					this.addControl(new leaflet.Control.Zoom(configOverrides));
 				}
-				this._attributionControl = new DataSourceAttributionControl();
-				this.addControl(this._attributionControl);
 				//custom controls
 				if (this._config.show_selection_control) {
 					this.addControl(new Selection());
@@ -151,8 +147,10 @@ define([
 				this._map = map;
 			},
 			
-			addAttribution: function(text) {
-				this._attributionControl.addDataSourceAttribution(text);
+			addAttribution: function(dataSourceName, text) {
+				if (this._config.use_sidebar) {
+					this._menuView.addAttribution(dataSourceName, text);
+				}
 			}
 		});
 
