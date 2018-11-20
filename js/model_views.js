@@ -1,10 +1,11 @@
-define(['leaflet', 'jquery', 'points_view', 'geojson_view', 'bundles/abstract_points_builder', 'bundles/abstract_geojson_builder', 'leaflet_matrixlayers'],
-	function(leaflet, $, PointsView, GeojsonView, AbstractPointsBuilder, AbstractGeojsonBuilder, Leaflet_MatrixLayers) {
+define(['leaflet', 'jquery', 'points_view', 'geojson_view', 'bundles/abstract_points_builder', 'bundles/abstract_geojson_builder', 'leaflet_matrixlayers', './utils/url_handler'],
+	function(leaflet, $, PointsView, GeojsonView, AbstractPointsBuilder, AbstractGeojsonBuilder, Leaflet_MatrixLayers, UrlHandler) {
 		var ModelViews = leaflet.Class.extend({
 			initialize: function (bundles, controls) {
 				this._bundles = bundles;
 				this._controls = controls;
 				this._matrixLayerControl = null;
+				this._urlHandler = new UrlHandler();
 			},			
 			
 			_filterModels: function(bundleModels, className) {
@@ -25,6 +26,7 @@ define(['leaflet', 'jquery', 'points_view', 'geojson_view', 'bundles/abstract_po
 						model.fetchData().done(function() {
 							addCallback(bundleName, model);
 							this._addAttribution(bundleName, model);
+							this._urlHandler.sourceLoaded(bundleName);
 						}.bind(this));
 					}.bind(this);
 					var meta = model.getMeta();

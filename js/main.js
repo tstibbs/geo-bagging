@@ -2,7 +2,7 @@ define(['map_loader', 'params', 'landingpage/view'],
 	function(mapLoader, params, LandingPageView) {
 		return {			
 			loadMap: function(options, bundleIds) {
-				var skipLandingPageString = params('skipLandingPage');
+				var skipLandingPageString = params.test('skipLandingPage');
 				//non-landing page should be the default for now
 				var skipLandingPage = (skipLandingPageString == null || skipLandingPageString == 'true' || skipLandingPageString === true);
 

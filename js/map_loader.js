@@ -21,15 +21,15 @@ define([
 				if (bundles != null) {
 					allBundles.push.apply(allBundles, bundles);
 				}
-				var dataSourcesString = params('datasources');
+				var dataSourcesString = params.test('datasources');
 				if (dataSourcesString != null && dataSourcesString.length > 0) {
 					allBundles.push.apply(allBundles, dataSourcesString.split(','));
 				}
 				//legacy options
-				if (params('hills') == 'true') {
+				if (params.test('hills') == 'true') {
 					allBundles.push('hills');
 				}
-				if (params('trigs') == 'true') {
+				if (params.test('trigs') == 'true') {
 					allBundles.push('trigs');
 				}
 				//end legacy options
@@ -89,7 +89,7 @@ define([
 			},
 			
 			hasUrlData: function() {
-				return params('trigs') != null;
+				return params.test('trigs') != null;
 			}
 		};
 	}
