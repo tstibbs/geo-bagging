@@ -1,9 +1,10 @@
 define(['leaflet', 'jquery'],
 	function(leaflet, $) {
 		var AbstractBundleBuilder = leaflet.Class.extend({
-			initialize: function (config, bundleConfig, bundleName, urlPrefix) {
+			initialize: function (manager, bundleConfig, bundleName, urlPrefix) {
 				this._markerList = null;
-				this._config = config;
+				this._manager = manager;
+				this._config = manager.getConfig();
 				this._bundleConfig = bundleConfig;
 				this._bundleName = bundleName.indexOf('/') == -1 ? bundleName : bundleName.substring(0, bundleName.lastIndexOf('/'));
 				this._urlPrefix = urlPrefix;

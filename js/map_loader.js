@@ -1,18 +1,18 @@
 define([
-	'os_map',
 	'config',
 	'params',
 	'jquery',
 	'map_view',
-	'source_loader'
+	'source_loader',
+	'manager'
 ],
 	function(
-		OsMap,
 		Config,
 		params,
 		$,
-		mapView,
-		SourceLoader
+		MapView,
+		SourceLoader,
+		Manager
 	) {
 			
 		return {			
@@ -56,8 +56,9 @@ define([
 					dimensional_layering: true
 				}, options);
 				
-				var map = this._buildMap(options);
-				return (new SourceLoader(map, this._config)).loadSources(allBundles).then(function() {
+				var mapView = this._buildMap(options);
+				var manager = new Manager(mapView.getMap(), this._config);
+				return (new SourceLoader(manager, this._config)).loadSources(allBundles).then(function() {
 					return map;
 				});
 			},
@@ -84,8 +85,7 @@ define([
 		
 			_buildMap: function(options) {
 				this._config = new Config(options);
-				mapView(this._config);
-				return new OsMap(this._config);
+				return new MapView(this._config);
 			},
 			
 			hasUrlData: function() {

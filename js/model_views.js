@@ -1,9 +1,28 @@
-define(['leaflet', 'jquery', 'points_view', 'geojson_view', 'bundles/abstract_points_builder', 'bundles/abstract_geojson_builder', 'leaflet_matrixlayers', './utils/url_handler'],
-	function(leaflet, $, PointsView, GeojsonView, AbstractPointsBuilder, AbstractGeojsonBuilder, Leaflet_MatrixLayers, UrlHandler) {
+define([
+	'leaflet',
+	'jquery',
+	'points_view',
+	'geojson_view',
+	'bundles/abstract_points_builder',
+	'bundles/abstract_geojson_builder',
+	'leaflet_matrixlayers',
+	'./utils/url_handler'
+],
+	function(
+		leaflet,
+		$,
+		PointsView,
+		GeojsonView,
+		AbstractPointsBuilder,
+		AbstractGeojsonBuilder,
+		Leaflet_MatrixLayers,
+		UrlHandler
+	) {
 		var ModelViews = leaflet.Class.extend({
-			initialize: function (bundles, controls) {
+			initialize: function (bundles, manager) {
 				this._bundles = bundles;
-				this._controls = controls;
+				this._manager = manager;
+				this._controls = manager.getControls();
 				this._matrixLayerControl = null;
 				this._urlHandler = new UrlHandler();
 			},			
@@ -47,20 +66,21 @@ define(['leaflet', 'jquery', 'points_view', 'geojson_view', 'bundles/abstract_po
 				}
 			},
 			
-			loadModelViews: function(bundleModels, lazyModels, map, config, layers, callback) {
+			loadModelViews: function(bundleModels, lazyModels, config, callback) {
 				var pointsModels = this._filterModels(bundleModels, AbstractPointsBuilder);
 				var geojsonModels = this._filterModels(bundleModels, AbstractGeojsonBuilder);
 				var lazyPointsModels = this._filterModels(lazyModels, AbstractPointsBuilder);
 				var lazyGeojsonModels = this._filterModels(lazyModels, AbstractGeojsonBuilder);
 				if (config.dimensional_layering) {
-					this._matrixLayerControl = new Leaflet_MatrixLayers(layers, null, {}, {
+					
+					this._matrixLayerControl = new Leaflet_MatrixLayers(this._manager.getLayers(), null, {}, {
 						multiAspects: true,
 						embeddable: config.use_sidebar
 					});
 				}
 				
-				var pointsView = new PointsView(map, config, pointsModels, this._matrixLayerControl, this._controls, this._bundles);
-				var geojsonView = new GeojsonView(map, config, geojsonModels, this._matrixLayerControl, this._bundles);
+				var pointsView = new PointsView(this._manager.getMap(), config, pointsModels, this._matrixLayerControl, this._controls, this._bundles);
+				var geojsonView = new GeojsonView(this._manager.getMap(), config, geojsonModels, this._matrixLayerControl, this._bundles);
 				var promises = [
 					pointsView.finish(),
 					geojsonView.finish()

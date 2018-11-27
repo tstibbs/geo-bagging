@@ -3,16 +3,24 @@ define([
 	'leaflet',
 	'leaflet_sidebar',
 	'mobile',
-	'./attribution'
+	'./attribution',
+	'./constraints_view'
 ],
     function(
 		$,
 		leaflet,
 		Leaflet_Sidebar,
 		mobile,
-		AttributionView
+		AttributionView,
+		ConstraintsView
 	) {
         var MenuView = leaflet.Class.extend({
+			initialize: function(manager) {
+				this._manager = manager;
+				this._buildView();
+				this._buildControl();
+			},
+
 			_buildView: function() {
 				var view = '';
 				
@@ -26,9 +34,7 @@ define([
 				view += '    <div class="sidebar-tabs">';
 				view += '        <ul role="tablist">';
 				view += '            <li><a href="#sidebar-layers" role="tab"><i class="fa fa-bars"></i></a></li>';
-				//view += '            <li><a href="#profile" role="tab"><i class="fa fa-user"></i></a></li>';
-				// view += '            <li><a href="#sidebar-layers" role="tab"><i class="fa fa-map"></i></a></li>';
-				// view += '            <li><a href="#export" role="tab"><i class="fa fa-cloud-download"></i></a></li>';
+				view += '            <li><a href="#sidebar-constraints" role="tab"><i class="fa fa-map-o"></i></a></li>';
 				view += '        </ul>';
 
 				//bottom of the navigation bar
@@ -45,6 +51,9 @@ define([
 				view += '        <div id="sidebar-attribution" class="sidebar-pane">';
 				view += '            <h1 class="sidebar-header">Attribution<span class="sidebar-close"><i class="fa fa-caret-left"></i></span></h1>';
 				view += '        </div>';
+				view += '        <div id="sidebar-constraints" class="sidebar-pane">';
+				view += '            <h1 class="sidebar-header">Data Limits<span class="sidebar-close"><i class="fa fa-caret-left"></i></span></h1>';
+				view += '        </div>';
 				view += '    </div>';
 				view += '</div>';
 				
@@ -54,15 +63,13 @@ define([
 				var attributionContainer = $('<div></div>');
 				$('#sidebar-attribution', this._view).append(attributionContainer);
 				this._attributionView = new AttributionView(attributionContainer);
+				
+				var constraintsView = new ConstraintsView(this._manager);
+				$('#sidebar-constraints', this._view).append(constraintsView.getView())
 			},
 			
 			_buildControl: function() {
 				this._control = new Leaflet_Sidebar('sidebar');
-			},
-			
-			initialize: function() {
-				this._buildView();
-				this._buildControl();
 			},
 			
 			addTo: function(map) {

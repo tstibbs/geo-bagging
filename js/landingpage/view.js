@@ -1,5 +1,5 @@
-define(['jquery', 'map_loader', '../constants', '../params', '../map_view', './source_view', './hills_source_view', './extra_source_view', 'mobile', 'config', 'leaflet', 'leaflet_draw'],
-    function($, mapLoader, constants, params, mapView, SourceView, HillsSourceView, ExtraSourceView, mobile, Config, leaflet, LeafletDraw) {
+define(['jquery', 'map_loader', '../constants', '../params', './source_view', './hills_source_view', './extra_source_view', 'mobile', 'config', 'leaflet', 'leaflet_draw'],
+    function($, mapLoader, constants, params, SourceView, HillsSourceView, ExtraSourceView, mobile, Config, leaflet, LeafletDraw) {
         var LandingPageView = leaflet.Class.extend({
 			buildView: function() {
 				var datasources = [].concat(constants.dataSources).sort();//don't want to modify the constant

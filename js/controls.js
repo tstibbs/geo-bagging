@@ -42,11 +42,12 @@ define([
 		];
 	
 		var Controls = leaflet.Class.extend({
-			initialize: function(config, layers, map) {
+			initialize: function(config, layers, map, manager) {
 				this._controlsToHide = [];
 				this._controlsToAdd = [];
 				this._config = config;
 				this._layers = layers;
+				this._manager = manager;
 				this._addDefaults();
 				if (map != null) {
 					this._addAllTo(map);
@@ -57,7 +58,7 @@ define([
 				//default leaflet controls
 				var configOverrides = {};
 				if (this._config.use_sidebar) {
-					this._menuView = new MenuView();
+					this._menuView = new MenuView(this._manager);
 					this.addControl(this._menuView);
 					configOverrides = {position: 'topright'};
 				}
