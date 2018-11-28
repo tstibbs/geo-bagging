@@ -199,6 +199,12 @@ hr.info {
 	border-style: solid;
 }
 
+div.setting {
+    padding-left: 2px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
 /* general */
 
 .hidden {
@@ -207,4 +213,5 @@ hr.info {
 
 input[type="checkbox"] {
 	vertical-align: bottom;
+	margin-left: 0px;
 }
