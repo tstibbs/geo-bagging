@@ -13,6 +13,9 @@ define(['jquery', 'leaflet'],
 				
 				var currentLocationView = this._buildCurrentLocationView();
 				this._view.append(currentLocationView);
+				
+				var reset = this._buildReset();
+				this._view.append(reset);
 			},
 			
 			_buildCurrentAreaView: function() {
@@ -41,6 +44,14 @@ define(['jquery', 'leaflet'],
 				return wrapper;
 			},
 			
+			_buildReset: function() {
+				var wrapper = $('<div class="setting"></div>');
+				var currentLocationLimitButton = $('<button type="button">Reset</button>');
+				currentLocationLimitButton.click(this._unlimit.bind(this));
+				wrapper.append(currentLocationLimitButton);
+				return wrapper;
+			},
+			
 			_limitToCurrentLocation: function() {
 				var map = this._manager.getMap();
 				var listener = function(e) {
@@ -53,6 +64,7 @@ define(['jquery', 'leaflet'],
 						[lat + latExtra, lng + lngExtra],
 						[lat - latExtra, lng - lngExtra]
 					);
+					this._currentAreaLimit.prop('checked', false);
 					this._limitTo(latLngBounds);
 				}.bind(this);
 				map.on('locationfound', listener);
@@ -64,13 +76,29 @@ define(['jquery', 'leaflet'],
 				this._limitTo(this._manager.getMap().getBounds());
 			},
 			
-			_limitTo: function(bounds) {
+			_limitTo: function(/*LatLngBounds*/ bounds) {
 				this._manager.setViewConstraints(bounds);
+				if (this._constraintPolygon != null) {
+					this._constraintPolygon.remove();
+				}
+				var latlngs = [
+					[[-90, -180], [90, -180], [90, 180], [-90, 180]], //outer - should cover the entire map
+					[bounds.getSouthWest(), bounds.getNorthWest(), bounds.getNorthEast(), bounds.getSouthEast()] //hole
+				];
+				this._constraintPolygon = L.polygon(latlngs , {
+					color: 'rgb(0, 0, 0, 0)',
+					fillColor: 'rgb(90, 90, 90)',
+					fillOpacity: 0.3
+				});
+				this._constraintPolygon.addTo(this._manager.getMap());
 			},
 			
 			_unlimit: function() {
 				this._manager.setViewConstraints(null);
 				this._currentAreaLimit.prop('checked', false);
+				if (this._constraintPolygon != null) {
+					this._constraintPolygon.remove();
+				}
 			},
 			
 			getView: function() {
