@@ -2,8 +2,8 @@ define(['leaflet', './abstract_bundle_builder', 'popup_view'],
 	function(leaflet, AbstractBundleBuilder, popupView) {
 	
 		var GeojsonLayer = AbstractBundleBuilder.extend({
-			initialize: function (config, bundleConfig, bundleName, urlPrefix) {
-				AbstractBundleBuilder.prototype.initialize.call(this, config, bundleConfig, bundleName, urlPrefix);
+			initialize: function (manager, bundleConfig, bundleName, urlPrefix) {
+				AbstractBundleBuilder.prototype.initialize.call(this, manager, bundleConfig, bundleName, urlPrefix);
 				this._data = null;
 				this._bundleConfig = bundleConfig;
 			},

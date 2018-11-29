@@ -45,14 +45,14 @@ define(["leaflet", "jquery", "global", "params", "conversion"],
 					resolvedConfig = $.extend({}, resolvedConfig, saved);
 				}
 
-				if (params('startPosition')) {//lat, long
-					resolvedConfig.start_position = params('startPosition').split(',');
+				if (params.test('startPosition')) {//lat, long
+					resolvedConfig.start_position = params.test('startPosition').split(',');
 				}
-				if (params('startZoom')) {
-					resolvedConfig.initial_zoom = params('startZoom');
+				if (params.test('startZoom')) {
+					resolvedConfig.initial_zoom = params.test('startZoom');
 				}
 				this._buildMarkerConstraints(resolvedConfig);
-				if (params('remoteData') == 'true') {
+				if (params.test('remoteData') == 'true') {
 					resolvedConfig.remoteData = true;
 				}
 				
@@ -66,8 +66,8 @@ define(["leaflet", "jquery", "global", "params", "conversion"],
 			
 			_buildMarkerConstraints: function(resolvedConfig) {
 				var constraintsString = null;
-				if (params('constraints') != null) { // params takes priority
-					constraintsString = params('constraints');
+				if (params.test('constraints') != null) { // params takes priority
+					constraintsString = params.test('constraints');
 				} else if (resolvedConfig.markerConstraints != null && typeof resolvedConfig.markerConstraints == 'string') {
 					constraintsString = resolvedConfig.markerConstraints;
 				}

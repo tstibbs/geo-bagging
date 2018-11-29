@@ -1,11 +1,11 @@
-define(['jquery', 'map_loader', '../constants', '../params', '../map_view', './source_view', './hills_source_view', './extra_source_view', 'mobile', 'config', 'leaflet', 'leaflet_draw'],
-    function($, mapLoader, constants, params, mapView, SourceView, HillsSourceView, ExtraSourceView, mobile, Config, leaflet, LeafletDraw) {
+define(['jquery', 'map_loader', '../constants', '../params', './source_view', './hills_source_view', './extra_source_view', 'mobile', 'config', 'leaflet', 'leaflet_draw'],
+    function($, mapLoader, constants, params, SourceView, HillsSourceView, ExtraSourceView, mobile, Config, leaflet, LeafletDraw) {
         var LandingPageView = leaflet.Class.extend({
 			buildView: function() {
 				var datasources = [].concat(constants.dataSources).sort();//don't want to modify the constant
 				var bundles = mapLoader.getBundleIds().sort();
-				var remoteData = params('remoteData') != null;
-				var constraints = params('constraints');
+				var remoteData = params.test('remoteData') != null;
+				var constraints = params.test('constraints');
 				
 				var view = '';
 				view += '<div id="container" class="landing-container">';
@@ -136,7 +136,7 @@ define(['jquery', 'map_loader', '../constants', '../params', '../map_view', './s
 				});
 				
 				
-				var constraints = params('constraints');
+				var constraints = params.test('constraints');
 				if (constraints != null) {
 					var bounds = (new Config()).markerConstraints;
 					

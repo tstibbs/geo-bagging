@@ -18,15 +18,15 @@ define([
 				searchResult: new CustomDefaultIcon(redIconPath, {iconUrl: redIconPath})
 			},
 			parser: TrigsPointsBuilder.extend({
-				initialize: function (config, bundleConfig, bundleName, urlPrefix) {
-					TrigsPointsBuilder.prototype.initialize.call(this, config, bundleConfig, bundleName, urlPrefix);
-					var generalPoints = config.pointsToLoad.generalPoints;
+				initialize: function (manager, bundleConfig, bundleName, urlPrefix) {
+					TrigsPointsBuilder.prototype.initialize.call(this, manager, bundleConfig, bundleName, urlPrefix);
+					var generalPoints = this._config.pointsToLoad.generalPoints;
 					for (var i = 0; i < generalPoints.length; i++) {
 						var point = generalPoints[i];
 						var lngLat = conversion.osgbToLngLat(point.eastings, point.northings);
 						this.addWithoutDimensions(lngLat, point.url, point.name);
 					}
-					var significantPoint = config.pointsToLoad.significantPoint;
+					var significantPoint = this._config.pointsToLoad.significantPoint;
 					if (significantPoint != null) {
 						var lngLat = conversion.osgbToLngLat(significantPoint.eastings, significantPoint.northings);
 						var iconName = 'searchResult';

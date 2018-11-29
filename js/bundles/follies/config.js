@@ -14,7 +14,7 @@ define(['leaflet', './points_builder'],
 			dimensionValueLabels: dimensionValueLabels,
 			dataToLoad: 'data.json',
 			parser: PointsBuilder,
-			attribution: 'Follies data reproduced with the kind permission of Paul from <a href="http://www.follies.org.uk/follymaps.htm">The Folly Fellowship</a>'
+			attribution: 'Reproduced with the kind permission of Paul from <a href="http://www.follies.org.uk/follymaps.htm">The Folly Fellowship</a>'
 		};
 	}
 );

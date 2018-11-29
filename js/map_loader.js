@@ -1,18 +1,18 @@
 define([
-	'os_map',
 	'config',
 	'params',
 	'jquery',
 	'map_view',
-	'source_loader'
+	'source_loader',
+	'manager'
 ],
 	function(
-		OsMap,
 		Config,
 		params,
 		$,
-		mapView,
-		SourceLoader
+		MapView,
+		SourceLoader,
+		Manager
 	) {
 			
 		return {			
@@ -21,15 +21,15 @@ define([
 				if (bundles != null) {
 					allBundles.push.apply(allBundles, bundles);
 				}
-				var dataSourcesString = params('datasources');
+				var dataSourcesString = params.test('datasources');
 				if (dataSourcesString != null && dataSourcesString.length > 0) {
 					allBundles.push.apply(allBundles, dataSourcesString.split(','));
 				}
 				//legacy options
-				if (params('hills') == 'true') {
+				if (params.test('hills') == 'true') {
 					allBundles.push('hills');
 				}
-				if (params('trigs') == 'true') {
+				if (params.test('trigs') == 'true') {
 					allBundles.push('trigs');
 				}
 				//end legacy options
@@ -51,16 +51,14 @@ define([
 					options.dimensional_layering = false;
 					allBundles = ['trigs/config_embedding'];
 				}
-				if (allBundles.length == 0) {
-					throw new Error("No config bundle specified");
-				}
 				options = $.extend({ //set some defaults that can be overriden by the page or by loadMiniMap
 					cluster: true,
 					dimensional_layering: true
 				}, options);
 				
-				var map = this._buildMap(options);
-				return (new SourceLoader(map, this._config)).loadSources(allBundles).then(function() {
+				var mapView = this._buildMap(options);
+				var manager = new Manager(mapView.getMap(), this._config);
+				return (new SourceLoader(manager, this._config)).loadSources(allBundles).then(function() {
 					return map;
 				});
 			},
@@ -87,12 +85,11 @@ define([
 		
 			_buildMap: function(options) {
 				this._config = new Config(options);
-				mapView(this._config);
-				return new OsMap(this._config);
+				return new MapView(this._config);
 			},
 			
 			hasUrlData: function() {
-				return params('trigs') != null;
+				return params.test('trigs') != null;
 			}
 		};
 	}

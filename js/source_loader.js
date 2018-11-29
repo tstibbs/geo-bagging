@@ -12,8 +12,8 @@ define([
 	) {
 	
 		var SourceLoader = leaflet.Class.extend({
-			initialize: function (map, config) {
-				this._osMap = map;
+			initialize: function (manager, config) {
+				this._manager = manager;
 				this._config = config;
 			},
 			
@@ -37,7 +37,7 @@ define([
 					var lazyModels = {};
 					var promises = Object.keys(sources).map(function(sourceName) {
 						var source = sources[sourceName];
-						var parser = new source.parser(this._config, source, sourceName, sourceDataPrefix);
+						var parser = new source.parser(this._manager, source, sourceName, sourceDataPrefix);
 						
 						var metaPromise = parser.fetchMeta();
 						if (selectedSourceIds.indexOf(sourceName) != -1) {
@@ -51,9 +51,9 @@ define([
 					}.bind(this));
 					
 					$.when.apply($, promises).always(function() {
-						var modelViews = new ModelViews(sources, this._osMap.getControls());
-						modelViews.loadModelViews(sourceModels, lazyModels, this._osMap.getMap(), this._config, this._osMap.getLayers(), this._finish);
-						//don't need to wait for ModeViews to finish, callback will update UI when the time comes, but can safely return after this call
+						var modelViews = new ModelViews(sources, this._manager);
+						modelViews.loadModelViews(sourceModels, lazyModels, this._config, this._finish);
+						//don't need to wait for ModelViews to finish, callback will update UI when the time comes, but can safely return after this call
 						deferredObject.resolve();
 					}.bind(this));
 				}.bind(this));
