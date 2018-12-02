@@ -18,6 +18,7 @@ var versions = {
 	leaflet_geosearch: 'ce8da4ded7abbf7c1f590a3337a70e7e25146383',
 	leaflet_draw: '1.0.3',
 	leaflet_sidebar: '0.4.0',
+	toGeoJson: 'v0.16.0',
 	file_saver: '1.3.8',
 	underscore: '1.9.1',
 	jquery: '3.3.1',
@@ -43,6 +44,7 @@ var paths = {
 	leaflet_geosearch_bing: 'https://cdn.jsdelivr.net/gh/tstibbs/L.GeoSearch@' + versions.leaflet_geosearch + '/src/js/l.geosearch.provider.bing',
 	leaflet_draw: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/' + versions.leaflet_draw + '/leaflet.draw',
 	leaflet_sidebar: 'https://unpkg.com/sidebar-v2@' + versions.leaflet_sidebar + '/js/leaflet-sidebar',
+	toGeoJson: 'https://unpkg.com/@mapbox/togeojson@' + versions.toGeoJson + '/togeojson',   
 	file_saver: 'https://unpkg.com/file-saver@' + versions.file_saver + '/FileSaver.min',
 	underscore: 'https://cdnjs.cloudflare.com/ajax/libs/underscore.js/' + versions.underscore + '/underscore-min',
 	jquery: 'https://code.jquery.com/jquery-' + versions.jquery
@@ -105,6 +107,10 @@ requirejs.config({
 			deps: ['leaflet'],
 			exports: 'L.Control.Sidebar'
 		},
+        toGeoJson: {
+            deps: ['leaflet'],
+            exports: 'toGeoJSON'
+        },
 		file_saver: {
 			exports: 'saveAs'
 		},

@@ -20,11 +20,8 @@ define([
 				this._controls = new Controls(config, this._layers, map, this);
 			},
 			
-			setViewConstraints: function (bounds) {
-				var limit = leaflet.latLngBounds(bounds);
-				this._limitFunction = function(latLng) {
-					return limit.contains(latLng);
-				};
+			setViewConstraints: function (limitFunction) {
+				this._limitFunction = limitFunction;//function(latLng) {return true or false}
 			},
 			
 			getViewConstraints: function() {
