@@ -2,11 +2,11 @@
 function loadOsMap(urlBase, callback) {
 	window.os_map_base = urlBase;
 	require([window.os_map_base + 'js/app.js'], function() {
-		require(['main'], function(main) {
+		require(['map_loader'], function(mapLoader) {
 			if (typeof callback == 'string') {
-				main[callback]({});
+				mapLoader[callback]({});
 			} else {
-				callback(main);
+				callback(mapLoader);
 			}
 		});
 	});

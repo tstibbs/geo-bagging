@@ -37,11 +37,10 @@ define([
 			},
 		
 			loadMap: function(options, bundleIds) {
-				if (options.skipLandingPage) {
-					allBundles = this.getBundleIds(bundleIds);
-				} else {
-					allBundles = bundleIds;
+				if (options == null) {
+					options = {};
 				}
+				allBundles = this.getBundleIds(bundleIds);
 				if (this.hasUrlData()) {
 					alert('Loading data from URL is no longer an option.');
 					throw new Error('Loading data from URL is no longer an option.');
@@ -59,7 +58,7 @@ define([
 				var mapView = this._buildMap(options);
 				var manager = new Manager(mapView.getMap(), this._config);
 				return (new SourceLoader(manager, this._config)).loadSources(allBundles).then(function() {
-					return map;
+					return manager;
 				});
 			},
 			

@@ -1,5 +1,5 @@
-define(['jquery', 'conversion', 'main'],
-	function($, conversion, main) {
+define(['jquery', 'conversion', 'map_loader'],
+	function($, conversion, mapLoader) {
 		return {
 			showMap: function() {
 				if (/^https?:\/\/trigpointing\.uk\/trig\/\d+/.test(window.location.href)) {
@@ -27,7 +27,7 @@ define(['jquery', 'conversion', 'main'],
 					};
 					
 					$('body').empty();//our map assumes it is full screen - there's probably a better way, but this will work for now
-					var osMapPromise = main.loadMap(options);
+					var osMapPromise = mapLoader.loadMap(options);
 					osMapPromise.done(function(osMap) {
 						//now get the map showing everything
 						var minEastings;
@@ -103,7 +103,7 @@ define(['jquery', 'conversion', 'main'],
 							use_sidebar: false
 						};
 						
-						main.loadMap(options);
+						mapLoader.loadMap(options);
 					});
 				}.bind(this));
 			},
