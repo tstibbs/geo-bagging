@@ -4,7 +4,7 @@ define([
 	'leaflet_sidebar',
 	'mobile',
 	'./attribution',
-	'./constraints_view'
+	'./constraints/view'
 ],
     function(
 		$,
