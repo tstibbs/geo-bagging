@@ -1,6 +1,7 @@
 [![Build Status](https://github.com/tstibbs/geo-bagging/workflows/CI/badge.svg)](https://github.com/tstibbs/geo-bagging/actions?query=workflow%3ACI)
 [![GitHub issues](https://img.shields.io/github/issues/tstibbs/geo-bagging.svg)](https://github.com/tstibbs/geo-bagging/issues)
 [![GitHub license](https://img.shields.io/badge/license-Apache%202-blue.svg)](https://raw.githubusercontent.com/tstibbs/geo-bagging/master/LICENSE)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Ftstibbs%2Fgeo-bagging.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Ftstibbs%2Fgeo-bagging?ref=badge_shield)
 
 ## What is this?
 
