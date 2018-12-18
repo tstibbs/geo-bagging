@@ -7,7 +7,7 @@ var testFiles = [
 	"mobile_test.js",
 	"params_test.js",
 	"config_test.js",
-	"os_map_test.js",
+	"map_view_test.js",
 	"loader_test.js",
 	"error_handler_test.js",
 	"controls_test.js",
@@ -42,7 +42,6 @@ if (window.__karma__ == undefined) {
 function setupNonKarma() {
 	QUnit.config.autostart = false;
 
-	var tests = [];
 	var tests = testFiles.map(function (testFile) { 
 		return '../' + testFile;
 	})
@@ -63,7 +62,6 @@ function setupKarma() {
 		};
 	}
 
-	var tests = [];
 	var tests = testFiles.map(function (testFile) { 
 		return '/base/test/' + testFile;
 	});

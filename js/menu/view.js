@@ -58,7 +58,7 @@ define([
 				view += '</div>';
 				
 				this._view = $(view);
-				$('body').append(this._view);
+				this._manager.getConfig().map_outer_container_element.append(this._view);
 				
 				var attributionContainer = $('<div></div>');
 				$('#sidebar-attribution', this._view).append(attributionContainer);

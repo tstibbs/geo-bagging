@@ -13,7 +13,7 @@ define(['loader'],
 				window.require = function(module, callback){
 					if (module[0].endsWith('js/app.js')) {
 						callback();
-					} else if (module[0] == 'main') {
+					} else if (module[0] == 'map_loader') {
 						oldRequire(module, callback);
 					} else {
 						throw new Error('unrecognised module request in loader, this test needs updating: ' + module);

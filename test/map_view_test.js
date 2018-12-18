@@ -59,29 +59,25 @@ define(['Squire', 'sinon', 'config'],
 					});
 				});
 			});
-			
-			QUnit.test('layers are added', function(assert) {
-				runTest(assert, false, {}, function(leafletMap, map, layers, layersMock) {
-					assert.ok(layers.calledOnce);
-					assert.ok(layersMock === map.getLayers());
-				});
-			});
 		});
 				
 		function runTest(assert, isMobile, options, verify) {
 			var done = assert.async();
 		
-			$('#qunit-fixture').append('<div id="map" style="height: 180px;"></div>');
+			var testDiv = $('<div></div>');
+			testDiv.append('<div id="map" style="height: 180px;"></div>');
+			$('#qunit-fixture').append(testDiv);
 
 			var injector = new Squire();
 			var layersMock = {};
 			injector.mock('layers', sinon.spy(function() {return layersMock}));
 			injector.mock('controls', function() {});
 			
-			injector.require(['os_map', 'layers', 'controls'],
-				function(OsMap, layers, controls) {
+			injector.require(['map_view', 'layers', 'controls'],
+				function(MapView, layers, controls) {
 					//run test
-					var map = new OsMap(new Config(options));
+					options.map_outer_container_element = testDiv;
+					var map = new MapView(new Config(options));
 					var leafletMap = map.getMap();
 					//inspect
 					verify(leafletMap, map, layers, layersMock);

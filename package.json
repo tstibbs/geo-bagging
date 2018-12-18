@@ -1,33 +1,32 @@
 {
-  "name": "tstibbs_os-map",
+  "name": "@tstibbs/geo-bagging",
   "version": "0.0.1",
   "scripts": {
     "test_coverage_baseline": "node ./node_modules/istanbul/lib/cli.js --hook-run-in-context cover ./node_modules/mocha/bin/_mocha node_modules/istanbul-baseline/cli.js --report lcovonly -- -R spec && mkdir ./coverage/baseline && node node_modules/lcov-zeroer/cli.js ./coverage/lcov.info ./coverage/baseline/lcov.info",
-	"test": "node_modules/karma/bin/karma start --no-auto-watch --single-run",
+    "test": "node_modules/karma/bin/karma start --no-auto-watch --single-run",
     "merge_test_coverage": "node_modules/.bin/lcov-result-merger 'coverage/**/lcov.info*' 'coverage/lcov.merged'",
     "coveralls": "cat ./coverage/lcov.merged | ./node_modules/coveralls/bin/coveralls.js",
-	"saucelabs": "node_modules/karma/bin/karma start saucelabs.karma.conf.js --no-auto-watch --single-run"
+    "saucelabs": "node_modules/karma/bin/karma start saucelabs.karma.conf.js --no-auto-watch --single-run"
   },
   "author": "tstibbs",
   "license": "Apache-2.0",
-  "homepage": "https://github.com/tstibbs/os-map",
+  "homepage": "https://github.com/tstibbs/geo-bagging",
   "devDependencies": {
-	"istanbul": "^0.4.4",
-	"coveralls": "^2.11.9",
-	"lcov-result-merger": "^1.2.0",
-	"requirejs": "^2.2.0",
-	"mocha": "^3.0.1",
-	"istanbul-baseline": "tstibbs/node-istanbul-baseline",
-	"lcov-zeroer": "tstibbs/node-lcov-zeroer",
-	"karma": "^1.3.0",
-	"karma-chrome-launcher": "^2.0.0",
-	"karma-qunit": "^1.2.1",
-	"karma-requirejs": "^1.0.0",
-	"karma-phantomjs-launcher": "^1.0.1",
-	"karma-sauce-launcher": "^1.0.0",
-	"karma-spec-reporter": "^0.0.26",
-	"karma-coverage": "^1.1.1",
-	"qunitjs": "^2.0.1"
+    "istanbul": "^0.4.5",
+    "coveralls": "^3.0.2",
+    "lcov-result-merger": "^3.1.0",
+    "requirejs": "^2.3.6",
+	"mocha": "^5.2.0",
+    "istanbul-baseline": "tstibbs/node-istanbul-baseline",
+    "lcov-zeroer": "tstibbs/node-lcov-zeroer",
+    "karma": "^3.1.3",
+    "karma-chrome-launcher": "^2.2.0",
+    "karma-qunit": "^2.1.0",
+    "karma-requirejs": "^1.1.0",
+    "karma-sauce-launcher": "^2.0.2",
+    "karma-spec-reporter": "^0.0.32",
+    "karma-coverage": "^1.1.2",
+    "qunit": "^2.8.0"
   },
   "config": {
     "istanbul_baseline": {

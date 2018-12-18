@@ -16,10 +16,10 @@ define(["leaflet", "jquery", "mouseposition_osgb"],
 			assert.ok($positionDisplay.is(":visible"));
 			//move mouse to top left and check expected coords
 			moveMouse($mapElement, 1, 1);
-			assert.equal($positionDisplay.text(), ' TW 56425 65662');
+			assert.equal($positionDisplay.text(), ' TQ 31354 81419');
 			//move mouse to bottom right and check expected coords
 			moveMouse($mapElement, 199, 199);
-			assert.equal($positionDisplay.text(), ' TW 58956 63373');
+			assert.equal($positionDisplay.text(), ' TQ 33774 79128');
 		});
 		
 		function moveMouse($mapElement, x, y) {

@@ -3,7 +3,7 @@ define(["leaflet", "screenposition_osgb"],
 		QUnit.module("screenposition_osgb", function(assert) {
 			QUnit.test("should display location", function(assert) {
 				//set up
-				$('#qunit-fixture').append('<div id="map" style="height: 180px;"></div>');
+				$('#qunit-fixture').append('<div id="map" style="height: 200px; width: 200px;"></div>');
 				var map = leaflet.map('map');
 				map.setView([51.505, -0.09], 13);
 				var $positionDisplay = $('div#map div.leaflet-control-mapcentercoord');
@@ -15,7 +15,8 @@ define(["leaflet", "screenposition_osgb"],
 				$positionDisplay = $('div#map div.leaflet-control-mapcentercoord');
 				assert.equal(1, $positionDisplay.length);
 				assert.ok($positionDisplay.is(":visible"));
-				assert.ok(/\w\w \d\d\d\d\d \d\d\d\d\d/.test($positionDisplay.text()));
+				var text = $positionDisplay.text();
+				assert.equal(text, 'TQ 32658 80180');
 			});
 			
 			QUnit.test("clicking should show or hide crosshairs", function(assert) {

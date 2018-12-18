@@ -5,10 +5,10 @@ module.exports = function(config) {
 	frameworks: ['requirejs', 'qunit'],
 
 	files: [
-		{pattern: 'js/**/*.js', included: false},
-		{pattern: 'test/**/*.js', included: false},
 		'js/app.js',
 		'test/qunit_suite/suite.js',
+		{pattern: 'js/**/*.js', included: false},
+		{pattern: 'test/**/*.js', included: false},
 	],
 
 	reporters: ['spec', 'coverage'],
@@ -20,6 +20,13 @@ module.exports = function(config) {
 		subdir: 'karma'
 	},
 
-	browsers: [/*'Chrome',*/ 'PhantomJS'],
+	browsers: ['Chrome_fixedSize'],
+	
+	customLaunchers: {
+      'Chrome_fixedSize': {
+        base: 'ChromeHeadless',
+        flags: ['--window-size=1152,864']
+      }
+    }
   });
 };
