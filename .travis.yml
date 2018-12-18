@@ -8,7 +8,6 @@ script:
   - npm run-script test_coverage_baseline
   - npm run-script test
   - npm run-script merge_test_coverage
-  - if [ "$TRAVIS_BRANCH" == "master" ] && [ "$TRAVIS_PULL_REQUEST" == "false" ]; then npm run-script saucelabs; fi
 
 after_success: npm run-script coveralls
 
