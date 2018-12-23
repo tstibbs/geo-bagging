@@ -16,25 +16,20 @@ define(["leaflet", "jquery", "mouseposition_osgb"],
 			assert.ok($positionDisplay.is(":visible"));
 			//move mouse to top left and check expected coords
 			moveMouse($mapElement, 1, 1);
-			assert.equal($positionDisplay.text(), ' TQ 31354 81419');
+			assert.equal($positionDisplay.text(), ' TQ 31452 81326');
 			//move mouse to bottom right and check expected coords
 			moveMouse($mapElement, 199, 199);
-			assert.equal($positionDisplay.text(), ' TQ 33774 79128');
+			assert.equal($positionDisplay.text(), ' TQ 33872 79035');
 		});
 		
 		function moveMouse($mapElement, x, y) {
-			var event;
-			try {
-				//proper browsers
-				event = new MouseEvent('mousemove', {
-					'clientX': x,
-					'clientY': y
-				});
-			} catch (err) {
-				//phantomjs doesn't behave like a normal browser...
-				event = document.createEvent('MouseEvent');
-				event.initMouseEvent('mousemove', true, false, null, null, x, y, x, y, null, null, null, null, null, null);
-			}
+			var bounds = $mapElement[0].getBoundingClientRect();
+			var clientX = bounds.left + x;
+			var clientY = bounds.top + y;
+			var event = new MouseEvent('mousemove', {
+				'clientX': clientX,
+				'clientY': clientY
+			});
 			$mapElement[0].dispatchEvent(event);
 		}
 	}
