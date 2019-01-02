@@ -159,7 +159,7 @@ function buildDataFile() {
 			"totalFeatures": totalFeatures
 		};
 		const fileName = '../js/bundles/trails/data.geojson'
-		fs.writeFile(fileName, JSON.stringify(output, null, 2) , 'utf-8', (err) => {
+		fs.writeFile(fileName, JSON.stringify(output) , 'utf-8', (err) => {
 			console.log("Done.");
 		});
 		

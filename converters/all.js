@@ -11,6 +11,8 @@ const folliesDownload = require('./follies_download');
 const folliesProcessing = require('./follies');
 const rnliDownload = require('./rnli_download');
 const rnliProcessing = require('./rnli');
+const nationaparksDownload = require('./nationalparks_download');
+const nationaparksProcessing = require('./nationalparks');
 //don't require seperate download
 const ntProcessing = require('./nt');
 //require manual download
@@ -23,7 +25,8 @@ let allDownloads = [
 	milestonesDownload(),
 	trailsDownload(),
 	folliesDownload(),
-	rnliDownload()
+	rnliDownload(),
+	nationaparksDownload()
 ];
 Promise.all(allDownloads).then(() => {
 	console.log("");
@@ -37,6 +40,7 @@ Promise.all(allDownloads).then(() => {
 	trailsProcessing();
 	folliesProcessing();
 	rnliProcessing();
+	nationaparksProcessing();
 	//downloading and processing together
 	ntProcessing();
 	//processing manually downloaded stuff

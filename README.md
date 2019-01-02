@@ -1,10 +1,7 @@
 [![Build Status](https://travis-ci.org/tstibbs/geo-bagging.svg?branch=master)](https://travis-ci.org/tstibbs/geo-bagging)
 [![Coverage Status](https://coveralls.io/repos/github/tstibbs/geo-bagging/badge.svg?branch=master)](https://coveralls.io/github/tstibbs/geo-bagging?branch=master)
 [![GitHub issues](https://img.shields.io/github/issues/tstibbs/geo-bagging.svg)](https://github.com/tstibbs/geo-bagging/issues)
-[![bitHound Overall Score](https://www.bithound.io/github/tstibbs/geo-bagging/badges/score.svg)](https://www.bithound.io/github/tstibbs/geo-bagging)
 [![GitHub license](https://img.shields.io/badge/license-Apache%202-blue.svg)](https://raw.githubusercontent.com/tstibbs/geo-bagging/master/LICENSE)
-[![Build Status](https://saucelabs.com/buildstatus/tstibbs)](https://saucelabs.com/beta/builds/5e191601dd4c46cd9c06b041910365ed)
-[![Build Status](https://saucelabs.com/browser-matrix/tstibbs.svg)](https://saucelabs.com/beta/builds/5e191601dd4c46cd9c06b041910365ed)
 
 ## What is this?
 This project creates a map showing markers from a number of difference data sources showing historical POIs (e.g. trig points, milestones, follies). Some of this information is already available in map form, but this project aims to bring these datasources together and present the information on one interface. 

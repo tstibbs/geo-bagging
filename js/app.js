@@ -16,7 +16,6 @@ var versions = {
 	leaflet_controlHider: '3df76ebbfda70789027a40aa6f2e05db603aa364',
 	leaflet_boxSelector: '11007fa9e2553353a53c7523d5d964aa8c553fe5',
 	leaflet_geosearch: 'ce8da4ded7abbf7c1f590a3337a70e7e25146383',
-	leaflet_draw: '1.0.3',
 	leaflet_sidebar: '0.4.0',
 	toGeoJson: 'v0.16.0',
 	file_saver: '1.3.8',
@@ -42,7 +41,6 @@ var paths = {
 	leaflet_boxSelector_Gpx: 'https://cdn.jsdelivr.net/gh/tstibbs/Leaflet.BoxSelector@' + versions.leaflet_boxSelector + '/src/gpx',
 	leaflet_geosearch: 'https://cdn.jsdelivr.net/gh/tstibbs/L.GeoSearch@' + versions.leaflet_geosearch + '/src/js/l.control.geosearch',
 	leaflet_geosearch_bing: 'https://cdn.jsdelivr.net/gh/tstibbs/L.GeoSearch@' + versions.leaflet_geosearch + '/src/js/l.geosearch.provider.bing',
-	leaflet_draw: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/' + versions.leaflet_draw + '/leaflet.draw',
 	leaflet_sidebar: 'https://unpkg.com/sidebar-v2@' + versions.leaflet_sidebar + '/js/leaflet-sidebar',
 	toGeoJson: 'https://unpkg.com/@mapbox/togeojson@' + versions.toGeoJson + '/togeojson',   
 	file_saver: 'https://unpkg.com/file-saver@' + versions.file_saver + '/FileSaver.min',
@@ -99,10 +97,6 @@ requirejs.config({
 			deps: ['leaflet', 'leaflet_geosearch'],
 			exports: 'L.GeoSearch.Provider.Bing'
 		},
-		leaflet_draw: {
-			deps: ['leaflet'],
-			exports: 'L.Draw'
-		},
 		leaflet_sidebar: {
 			deps: ['leaflet'],
 			exports: 'L.Control.Sidebar'
@@ -144,8 +138,7 @@ function loadCss(url) {
 	'leaflet_locate',
 	'leaflet_matrixlayers',
 	'leaflet_controlHider',
-	'leaflet_boxSelector',
-	'leaflet_draw'
+	'leaflet_boxSelector'
 ].forEach(function(name) {
 	loadCss(paths[name] + '.css');
 });

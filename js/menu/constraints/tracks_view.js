@@ -2,7 +2,7 @@ define([
 	'leaflet'
 ],
 function(
-	leaflet,
+	leaflet
 ) {
 	return leaflet.Class.extend({
 		initialize: function (manager) {

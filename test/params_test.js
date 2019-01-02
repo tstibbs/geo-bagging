@@ -2,22 +2,22 @@ define(['Squire'], function(Squire) {
 	QUnit.module('params', function() {
 		QUnit.test('single param', function (assert) {
 			runParamsTest(assert, Squire, "blah=stuff", function(params) {
-				assert.equal(params('blah'), 'stuff');
+				assert.equal(params.test('blah'), 'stuff');
 			});
 		});
 		
 		QUnit.test('many params', function (assert) {
 			runParamsTest(assert, Squire, "blah=stuff&more=xyz", function(params) {
-				assert.equal(params('blah'), 'stuff');
-				assert.equal(params('more'), 'xyz');
-				assert.equal(params('xyz'), null);
+				assert.equal(params.test('blah'), 'stuff');
+				assert.equal(params.test('more'), 'xyz');
+				assert.equal(params.test('xyz'), null);
 			});
 		});
 		
 		QUnit.test('multi-value params', function (assert) {
 			runParamsTest(assert, Squire, "blah=stuff,thing&more=xyz&more=abc", function(params) {
-				assert.equal(params('blah'), 'stuff,thing');
-				assert.equal(params('more'), 'abc');//if the param appears multiple times, we just use the last one - this is a known limitation
+				assert.equal(params.test('blah'), 'stuff,thing');
+				assert.equal(params.test('more'), 'abc');//if the param appears multiple times, we just use the last one - this is a known limitation
 			});
 		});
 	});

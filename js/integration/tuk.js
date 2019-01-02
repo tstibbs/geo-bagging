@@ -1,5 +1,5 @@
-define(['jquery', 'conversion', 'main'],
-	function($, conversion, main) {
+define(['jquery', 'conversion', 'map_loader'],
+	function($, conversion, mapLoader) {
 		return {
 			showMap: function() {
 				if (/^https?:\/\/trigpointing\.uk\/trig\/\d+/.test(window.location.href)) {
@@ -27,8 +27,8 @@ define(['jquery', 'conversion', 'main'],
 					};
 					
 					$('body').empty();//our map assumes it is full screen - there's probably a better way, but this will work for now
-					var osMapPromise = main.loadMap(options);
-					osMapPromise.done(function(osMap) {
+					var osMapPromise = mapLoader.loadMap(options);
+					osMapPromise.done(function(manager) {
 						//now get the map showing everything
 						var minEastings;
 						var maxEastings;
@@ -54,7 +54,7 @@ define(['jquery', 'conversion', 'main'],
 						
 						var bottomLeft = conversion.osgbToLngLat(minEastings, minNorthings);
 						var topRight = conversion.osgbToLngLat(maxEastings, maxNorthings);
-						osMap.getMap().fitBounds([[bottomLeft[1], bottomLeft[0]], [topRight[1], topRight[0]]]);
+						manager.getMap().fitBounds([[bottomLeft[1], bottomLeft[0]], [topRight[1], topRight[0]]]);
 					});
 				});
 			},
@@ -103,7 +103,7 @@ define(['jquery', 'conversion', 'main'],
 							use_sidebar: false
 						};
 						
-						main.loadMap(options);
+						mapLoader.loadMap(options);
 					});
 				}.bind(this));
 			},
@@ -129,8 +129,8 @@ define(['jquery', 'conversion', 'main'],
 							var id = point.attr('I');
 							var url = 'http://trigpointing.uk/trig/' + id;
 							return {
-								eastings: point.attr('E'),
-								northings: point.attr('N'),
+								eastings: parseInt(point.attr('E')),
+								northings: parseInt(point.attr('N')),
 								url: url,
 								id: id,
 								name: point.attr('D')

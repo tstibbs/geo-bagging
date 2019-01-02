@@ -1,5 +1,5 @@
-define(['Squire', 'sinon', 'config', 'leaflet'],
-	function(Squire, sinon, Config, leaflet) {
+define(['Squire', 'sinon', 'config', 'leaflet', 'manager'],
+	function(Squire, sinon, Config, leaflet, Manager) {
 
 		QUnit.module('controls', function(hooks) {			
 			QUnit.module('location displays', function() {
@@ -57,7 +57,9 @@ define(['Squire', 'sinon', 'config', 'leaflet'],
 		function runTest(assert, isMobile, options, depName, verify) {
 			var done = assert.async();
 		
-			$('#qunit-fixture').append('<div id="map" style="height: 180px;"></div>');
+			var testDiv = $('<div></div>');
+			testDiv.append('<div id="map" style="height: 180px;"></div>');
+			$('#qunit-fixture').append(testDiv);
 
 			var injector = new Squire();
 			injector.mock('mobile', {isMobile: function() {return isMobile;}});
@@ -74,7 +76,12 @@ define(['Squire', 'sinon', 'config', 'leaflet'],
                 function(Controls, mouseposition_osgb, screenposition_osgb, specifiedMock) {
 					//run test
 					var leafletMap = new leaflet.Map('map');
-					new Controls(new Config(options), {}, leafletMap);
+					options.map_outer_container_element = testDiv;
+					var config = new Config(options);
+					var manager = {
+						getConfig: function() {return config;}
+					};
+					new Controls(config, {}, leafletMap, manager);
 					//inspect
 					verify(leafletMap, specifiedMock, mouseposition_osgb, screenposition_osgb);
 					//tear down

@@ -18,7 +18,7 @@ define(['leaflet', 'params'],
 				}).join('&');
 				newParams = (newParams.length > 0 ? newParams + '&' : '') + 'datasources=' + datasource
 				var newUrl = document.location.origin + document.location.pathname + '?' + newParams;
-				history.replaceState({}, "GeoBagging", newUrl);
+				//history.replaceState({}, "GeoBagging", newUrl);//do nothing for now until we come up with a nice way to make this bookmarkable
 			}
 		});
 

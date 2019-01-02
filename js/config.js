@@ -5,7 +5,6 @@ define(["leaflet", "jquery", "global", "params", "conversion"],
 		
 		var defaults = {
 			remoteData: false,
-			skipLandingPage: false,
 			map_style: 'full',//full, mini, embedded
 			cluster: true,
 			dimensional_layering: false,

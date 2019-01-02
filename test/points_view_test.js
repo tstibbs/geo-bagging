@@ -96,97 +96,26 @@ define(["Squire", "sinon", "leaflet", "jquery", "points_view", "config", "contro
 					];
 					
 					var injector = new Squire();
-					var leafletClusterMock = sinon.stub();
-					var leafletClusterSpy = sinon.spy(function() {return leafletClusterMock});
-					leafletClusterMock.addLayers = sinon.stub();
-					leafletClusterMock.addTo = sinon.stub();
+					var clusterLayerMock = {};
+					var leafletClusterSpy = {};
+					leafletClusterSpy.MarkerClusterGroup = sinon.spy(function() {return clusterLayerMock});
+					clusterLayerMock.addLayers = sinon.stub();
+					clusterLayerMock.addTo = sinon.stub();
 					injector.mock('leaflet_cluster', leafletClusterSpy);
 					injector.require(['points_view'],
 						function(PointsView) {
 							var pointsView = dummyMap(PointsView, {cluster: true}, initialMarkers);
 							pointsView.finish(function() {});
 							//check leaflet_cluster constructor is called
-							assert.ok(leafletClusterSpy.calledOnce, "cluster layer group is needed");
+							assert.ok(leafletClusterSpy.MarkerClusterGroup.calledOnce, "cluster layer group is needed");
 							//check all markers are added
-							assert.ok(leafletClusterMock.addLayers.calledOnce, "should have added layers");
-							var markers = leafletClusterMock.addLayers.getCall(0).args[0];
+							assert.ok(clusterLayerMock.addLayers.calledOnce, "should have added layers");
+							var markers = clusterLayerMock.addLayers.getCall(0).args[0];
 							assert.equal(2, markers.length, "should have added both markers");
 							assert.equal(getContentText(markers[0]), 'abc' + 'View on google mapsView on bing mapsView on geohack');
 							assert.equal(getContentText(markers[1]), 'def' + 'View on google mapsView on bing mapsView on geohack');
 							//check cluster layer is added to the map
-							assert.ok(leafletClusterMock.addTo.calledOnce, "should have added layer to map");
-							//tidy
-							injector.clean();
-							done();
-						}
-					);
-				});
-				
-				QUnit.test('matrix layers should be set up correctly', function(assert) {
-					var done = assert.async();
-					var name1 = 'abc';
-					var name2 = 'def';
-					var name3 = 'ghi';
-					var name4 = 'jkl';
-					var type1 = 'type1';
-					var type2 = 'type2';
-					var condition1 = 'condition1';
-					var condition2 = 'condition2';
-					var initialMarkers = {
-						type1 : {
-							condition1: [
-								{
-									latLng: [-0.06, 51.505],
-									name: name1
-								},
-							],
-							condition2: [
-								{
-									latLng: [-0.07, 51.506],
-									name: name2
-								}
-							]
-						},
-						type2 : {
-							condition1: [
-								{
-									latLng: [-0.08, 51.507],
-									name: name3
-								},
-							],
-							condition2: [
-								{
-									latLng: [-0.09, 51.508],
-									name: name4
-								}
-							]
-						}
-					};
-					
-					var injector = new Squire();
-					var MatrixlayersMock = sinon.stub();
-					MatrixlayersMock.prototype.addTo = sinon.stub();
-					var addAspectStub = sinon.stub();
-					MatrixlayersMock.prototype.addAspect = addAspectStub;
-					injector.mock('leaflet_matrixlayers', MatrixlayersMock);
-					injector.require(['points_view'],
-						function(PointsView) {
-							var pointsView = dummyMap(PointsView, {cluster: false, dimensional_layering: true}, initialMarkers);
-							pointsView.finish(function() {});
-							//check matrix layers constructor is called
-							assert.ok(MatrixlayersMock.calledOnce, "matrix layer control is needed");
-							//check all markers are added
-							var actualMarkers = addAspectStub.getCall(0).args[1];
-							assert.ok(getContentText(actualMarkers[type1 + '/' + condition1].getLayers()[0]), name1);
-							assert.ok(getContentText(actualMarkers[type1 + '/' + condition2].getLayers()[0]), name2);
-							assert.ok(getContentText(actualMarkers[type2 + '/' + condition1].getLayers()[0]), name3);
-							assert.ok(getContentText(actualMarkers[type2 + '/' + condition2].getLayers()[0]), name4);
-							// //check cluster layer is added to the map
-							var found = false;
-							for (var i = 0; i < pointsView._controls._controlsToAdd.length; i++) {
-								found |= pointsView._controls._controlsToAdd[i] instanceof MatrixlayersMock;
-							}
-							assert.ok(found, "should have added layer to map");
+							assert.ok(clusterLayerMock.addTo.calledOnce, "should have added layer to map");
 							//tidy
 							injector.clean();
 							done();
@@ -197,7 +126,11 @@ define(["Squire", "sinon", "leaflet", "jquery", "points_view", "config", "contro
 		});
 		
 		function dummyMap(PointsView, options, markerList) {
-			$('#qunit-fixture').append('<div id="map" style="height: 180px;"></div>');
+			var testDiv = $('<div></div>');
+			testDiv.append('<div id="map" style="height: 180px;"></div>');
+			$('#qunit-fixture').append(testDiv);
+			options.map_outer_container_element = testDiv;
+
 			var map = leaflet.map('map', {maxZoom: 10});
 			map.setView([51.505, -0.09], 13);
 			var bundle = {
@@ -215,7 +148,11 @@ define(["Squire", "sinon", "leaflet", "jquery", "points_view", "config", "contro
 			pointsModel.getBundleConfig = function() {return bundle};
 			pointsModel.getAttribution = function() {return "attributiongoeshere"};
 			var layers = {};
-			var pointsView = new PointsView(map, config, {testbundle: pointsModel}, new Controls(config, layers), layers);
+			var manager = {
+				getConfig: function() {return config;}
+			};
+			var controls = new Controls(config, layers, null, manager);
+			var pointsView = new PointsView(map, config, {testbundle: pointsModel}, null, controls, layers);
 			return pointsView;
 		}
 		
