@@ -6,8 +6,6 @@ define(['jquery', 'leaflet'],
 			},
 			
 			addAttribution: function(dataSourceName, text) {
-				//capitalise source name, they're all lowercase by convention but this doesn't look very friendly
-				dataSourceName = dataSourceName.charAt(0).toUpperCase() + dataSourceName.substr(1);
 				var wrapper = $('<div class="attribution-entry"></div>');
 				wrapper.append($('<span class="attribution-source"></span>').text(dataSourceName));
 				wrapper.append($('<span></span>').html(text));

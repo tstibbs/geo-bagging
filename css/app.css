@@ -184,6 +184,14 @@ body.landing {
 	}
 }
 
+.attribution-entry {
+    padding-top: 4px;
+    padding-bottom: 4px;
+}
+
+.attribution-source {
+    font-weight: bold;
+}
 .attribution-source::after {
 	content: ": "
 }
