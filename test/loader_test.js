@@ -10,8 +10,11 @@ define(['loader'],
 				var urlBase = "../";
 				
 				var oldRequire = window.require;
+				function endsWith(str, suffix) {
+					return str.indexOf(suffix, str.length - suffix.length) !== -1;
+				}
 				window.require = function(module, callback){
-					if (module[0].endsWith('js/app.js')) {
+					if (endsWith(module[0], 'js/app.js')) {
 						callback();
 					} else if (module[0] == 'map_loader') {
 						oldRequire(module, callback);
