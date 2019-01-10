@@ -62,7 +62,8 @@ define([
 			_addAttribution: function(bundleName, model) {
 				var attribution = model.getAttribution();
 				if (attribution != null && attribution.length > 0) {
-					this._controls.addAttribution(bundleName, attribution);
+					var dataSourceLabel = model.getBundleConfig().aspectLabel;
+					this._controls.addAttribution(dataSourceLabel, attribution);
 				}
 			},
 			

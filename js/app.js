@@ -25,32 +25,64 @@ var versions = {
 	sinon: '1.17.5',
 	font_awesome: '4.5.0'
 };
+var packages = {
+	leaflet_bing: 'leaflet-plugins',
+	proj4: 'proj4js',
+	leaflet_cluster: 'leaflet.markercluster',
+	leaflet_mouseposition: 'tstibbs/Leaflet.MousePosition',
+	leaflet_screenposition: 'xguaita/Leaflet.MapCenterCoord',
+	leaflet_subgroup: 'leaflet.featuregroup.subgroup',
+	leaflet_matrixlayers: 'tstibbs/Leaflet.MatrixLayersControl',
+	leaflet_locate: 'leaflet.locatecontrol',
+	leaflet_controlHider: 'tstibbs/Leaflet.ControlHider',
+	leaflet_boxSelector: 'tstibbs/Leaflet.BoxSelector',
+	leaflet_geosearch: 'tstibbs/L.GeoSearch',
+	leaflet_sidebar: 'sidebar-v2',
+	toGeoJson: '@mapbox/togeojson',
+	file_saver: 'file-saver',
+	font_awesome: 'font-awesome',
+	underscore: 'underscore.js',
+	Squire: 'squirejs',
+};
+
+function pkg(package) {
+	return packages[package] || package;
+}
+function unpkg(package, path) {
+	return 'https://unpkg.com/' + pkg(package) + '@' + versions[package] + '/' + path;
+}
+function cloudflare(package, path) {
+	return 'https://cdnjs.cloudflare.com/ajax/libs/' + pkg(package) + '/' + versions[package] + '/' + path;
+}
+function jsdelivrGh(package, path) {
+	return 'https://cdn.jsdelivr.net/gh/' + pkg(package) + '@' + versions[package] + '/' + path;
+}
 
 var paths = {
-	leaflet: 'https://unpkg.com/leaflet@' + versions.leaflet + '/dist/leaflet',
-	leaflet_bing: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet-plugins/' + versions.leaflet_bing + '/layer/tile/Bing',
-	proj4: 'https://cdnjs.cloudflare.com/ajax/libs/proj4js/' + versions.proj4 + '/proj4',
-	leaflet_cluster: 'https://unpkg.com/leaflet.markercluster@' + versions.leaflet_cluster + '/dist/leaflet.markercluster-src',
-	leaflet_mouseposition: 'https://cdn.jsdelivr.net/gh/tstibbs/Leaflet.MousePosition@' + versions.leaflet_mouseposition + '/src/L.Control.MousePosition',
-	leaflet_screenposition: 'https://cdn.jsdelivr.net/gh/xguaita/Leaflet.MapCenterCoord@' + versions.leaflet_screenposition + '/src/L.Control.MapCenterCoord',
-	leaflet_subgroup: 'https://unpkg.com/leaflet.featuregroup.subgroup@' + versions.leaflet_subgroup + '/dist/leaflet.featuregroup.subgroup',
-	leaflet_matrixlayers: 'https://cdn.jsdelivr.net/gh/tstibbs/Leaflet.MatrixLayersControl@' + versions.leaflet_matrixlayers + '/src/matrixControl',
-	leaflet_locate: 'https://cdn.jsdelivr.net/npm/leaflet.locatecontrol@' + versions.leaflet_locate + '/dist/L.Control.Locate.min',
-	leaflet_controlHider: 'https://cdn.jsdelivr.net/gh/tstibbs/Leaflet.ControlHider@' + versions.leaflet_controlHider + '/src/hider',
-	leaflet_boxSelector: 'https://cdn.jsdelivr.net/gh/tstibbs/Leaflet.BoxSelector@' + versions.leaflet_boxSelector + '/src/selector',
-	leaflet_boxSelector_Gpx: 'https://cdn.jsdelivr.net/gh/tstibbs/Leaflet.BoxSelector@' + versions.leaflet_boxSelector + '/src/gpx',
-	leaflet_geosearch: 'https://cdn.jsdelivr.net/gh/tstibbs/L.GeoSearch@' + versions.leaflet_geosearch + '/src/js/l.control.geosearch',
-	leaflet_geosearch_bing: 'https://cdn.jsdelivr.net/gh/tstibbs/L.GeoSearch@' + versions.leaflet_geosearch + '/src/js/l.geosearch.provider.bing',
-	leaflet_sidebar: 'https://unpkg.com/sidebar-v2@' + versions.leaflet_sidebar + '/js/leaflet-sidebar',
-	toGeoJson: 'https://unpkg.com/@mapbox/togeojson@' + versions.toGeoJson + '/togeojson',   
-	file_saver: 'https://unpkg.com/file-saver@' + versions.file_saver + '/FileSaver.min',
-	underscore: 'https://cdnjs.cloudflare.com/ajax/libs/underscore.js/' + versions.underscore + '/underscore-min',
+	leaflet: unpkg('leaflet', 'dist/leaflet'),
+	leaflet_bing: cloudflare('leaflet_bing', 'layer/tile/Bing'),
+	proj4: cloudflare('proj4', 'proj4'),
+	leaflet_cluster: unpkg('leaflet_cluster', 'dist/leaflet.markercluster-src'),
+	leaflet_mouseposition: jsdelivrGh('leaflet_mouseposition', 'src/L.Control.MousePosition'),
+	leaflet_screenposition: jsdelivrGh('leaflet_screenposition', 'src/L.Control.MapCenterCoord'),
+	leaflet_subgroup: unpkg('leaflet_subgroup', 'dist/leaflet.featuregroup.subgroup'),
+	leaflet_matrixlayers: jsdelivrGh('leaflet_matrixlayers', 'src/matrixControl'),
+	leaflet_locate: unpkg('leaflet_locate', 'dist/L.Control.Locate.min'),
+	leaflet_controlHider: jsdelivrGh('leaflet_controlHider', 'src/hider'),
+	leaflet_boxSelector: jsdelivrGh('leaflet_boxSelector', 'src/selector'),
+	leaflet_boxSelector_Gpx: jsdelivrGh('leaflet_boxSelector', 'src/gpx'),
+	leaflet_geosearch: jsdelivrGh('leaflet_geosearch', 'src/js/l.control.geosearch'),
+	leaflet_geosearch_bing: jsdelivrGh('leaflet_geosearch', 'src/js/l.geosearch.provider.bing'),
+	leaflet_sidebar: unpkg('leaflet_sidebar', 'js/leaflet-sidebar'),
+	toGeoJson: unpkg('toGeoJson', 'togeojson'), 
+	file_saver: unpkg('file_saver', 'FileSaver.min'),
+	underscore: cloudflare('underscore', 'underscore-min'),
 	jquery: 'https://code.jquery.com/jquery-' + versions.jquery
 };
 
 var testingPaths = {
-	Squire: 'https://unpkg.com/squirejs@' + versions.Squire + '/src/Squire',
-	sinon: 'https://unpkg.com/sinon@' + versions.sinon + '/pkg/sinon'
+	Squire: unpkg('Squire', 'src/Squire'),
+	sinon: unpkg('sinon', 'pkg/sinon'),
 };
 
 if (window.location.search.indexOf("dev=true") !== -1) {
@@ -123,12 +155,12 @@ function loadCss(url) {
 }
 
 [
-	'https://cdn.jsdelivr.net/gh/tstibbs/L.GeoSearch@' + versions.leaflet_geosearch + '/src/css/l.geosearch.css',
-	'https://maxcdn.bootstrapcdn.com/font-awesome/' + versions.font_awesome + '/css/font-awesome.min.css',
-	'https://cdn.jsdelivr.net/gh/Leaflet/Leaflet.markercluster@' + versions.leaflet_cluster + '/dist/MarkerCluster.Default.css',
-	'https://cdn.jsdelivr.net/gh/Leaflet/Leaflet.markercluster@' + versions.leaflet_cluster + '/dist/MarkerCluster.css',
-	'https://unpkg.com/leaflet@' + versions.leaflet + '/dist/leaflet.css',
-	'https://unpkg.com/sidebar-v2@' + versions.leaflet_sidebar + '/css/leaflet-sidebar.css',
+	jsdelivrGh('leaflet_geosearch', 'src/css/l.geosearch.css'),
+	'https://maxcdn.bootstrapcdn.com/' + packages.font_awesome + '/' + versions.font_awesome + '/css/font-awesome.min.css',
+	unpkg('leaflet_cluster', 'dist/MarkerCluster.Default.css'),
+	unpkg('leaflet_cluster', 'dist/MarkerCluster.css'),
+	unpkg('leaflet', 'dist/leaflet.css'),
+	unpkg('leaflet_sidebar', 'css/leaflet-sidebar.css'),
 	urlBase + 'css/app.css',
 ].forEach(loadCss);
 

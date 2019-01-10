@@ -1,5 +1,29 @@
 define(["leaflet", "jquery", "mouseposition_osgb"],
 	function(leaflet, $, Mouseposition_Osgb) {
+		//polyfill for IE
+		(function (window) {
+			try {
+				new MouseEvent('test');
+				return false; // No need to polyfill
+			} catch (e) {
+				// Need to polyfill - fall through
+			}
+
+			// Polyfills DOM4 MouseEvent
+
+			var MouseEvent = function (eventType, params) {
+				params = params || { bubbles: false, cancelable: false };
+				var mouseEvent = document.createEvent('MouseEvent');
+				mouseEvent.initMouseEvent(eventType, params.bubbles, params.cancelable, window, 0, params.screenX || 0, params.screenY || 0, params.clientX || 0, params.clientY || 0, false, false, false, false, 0, null);
+
+				return mouseEvent;
+			}
+
+			MouseEvent.prototype = Event.prototype;
+
+			window.MouseEvent = MouseEvent;
+		})(window);
+		
 		QUnit.test("mouseposition_osgb - should display", function(assert) {
 			var $mapElement = $('<div id="map" style="height: 200px; width: 200px;"></div>');
 			$('#qunit-fixture').append($mapElement);

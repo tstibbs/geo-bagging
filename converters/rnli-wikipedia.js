@@ -1,5 +1,5 @@
 const fs = require('fs');
-const wtfWikipedia = require("wtf_wikipedia")
+const wtfWikipedia = require("wtf_wikipedia");
 const ifCmd = require('./utils').doIfCmdCall;
 const constants = require('./constants');
 require('global-tunnel-ng').initialize();
