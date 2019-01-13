@@ -23,7 +23,7 @@
     "karma-chrome-launcher": "^2.2.0",
     "karma-qunit": "^2.1.0",
     "karma-requirejs": "^1.1.0",
-    "karma-sauce-launcher": "^2.0.2",
+    "karma-sauce-launcher": "^1.2.0",
     "karma-spec-reporter": "^0.0.32",
     "karma-coverage": "^1.1.2",
     "qunit": "^2.8.0"
