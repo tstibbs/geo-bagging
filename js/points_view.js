@@ -2,7 +2,7 @@ define(["underscore", "jquery", "leaflet", "leaflet_cluster", "leaflet_subgroup"
 	function(_, $, leaflet, leaflet_cluster, leaflet_subgroup, Leaflet_MatrixLayers, markerView) {
 	
 		var PointsView = leaflet.Class.extend({
-			initialize: function (map, config, modelsByAspect, matrixLayerControl, controls, bundles) {
+			initialize: function (map, config, modelsByAspect, matrixLayerControl, controls, bundles, manager) {
 				this._map = map;
 				this._config = config;
 				this._modelsByAspect = modelsByAspect;
@@ -10,17 +10,18 @@ define(["underscore", "jquery", "leaflet", "leaflet_cluster", "leaflet_subgroup"
 				this._controls = controls;
 				this._bundles = bundles;
 				this._parentGroup = null;
+				this._manager = manager;
 			},
 
-			_translateMarkerGroup: function(group, bundleConfig) {
+			_translateMarkerGroup: function(group, bundleConfig, aspect) {
 				if (group != null) {
 					if (group.constructor === Array) {
 						group.forEach(function(markerConfig, i, group) {
-							group[i] = markerView.translateMarker(markerConfig, bundleConfig);
+							group[i] = markerView.translateMarker(markerConfig, bundleConfig, aspect, this._manager);
 						}, this);
 					} else { //is hash
 						for (var dimension in group) {
-							group[dimension] = this._translateMarkerGroup(group[dimension], bundleConfig);
+							group[dimension] = this._translateMarkerGroup(group[dimension], bundleConfig, aspect);
 						}
 					}
 				}
@@ -52,7 +53,7 @@ define(["underscore", "jquery", "leaflet", "leaflet_cluster", "leaflet_subgroup"
 				if (!this._config.dimensional_layering) {
 					var markerLists = Object.keys(this._modelsByAspect).map(function(aspect) {
 						var model = this._modelsByAspect[aspect];
-						return this._translateMarkerGroup(model.getMarkerList(), model.getBundleConfig());
+						return this._translateMarkerGroup(model.getMarkerList(), model.getBundleConfig(), aspect);
 					}.bind(this)).filter(function(value) {
 						return value != null;
 					});
@@ -99,7 +100,7 @@ define(["underscore", "jquery", "leaflet", "leaflet_cluster", "leaflet_subgroup"
 			
 			addClusteredModel: function(aspect, model) {
 				if (model.getMarkerList() != null) {
-					var markerList = this._translateMarkerGroup(model.getMarkerList(), model.getBundleConfig());
+					var markerList = this._translateMarkerGroup(model.getMarkerList(), model.getBundleConfig(), aspect);
 					var matrixOverlays = {};
 					this.depthFirstIteration(markerList, '', matrixOverlays);
 					var aspectOptions = this._bundles[aspect];//will have other options, but collisions are unlikely

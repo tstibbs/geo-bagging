@@ -28,6 +28,7 @@ define(['./abstract_bundle_builder'],
 			
 			addMarker: function (id, lat, lng, url, name, extraTexts, icon, dimensionValues, layerId) {
 				var latLng = [parseFloat(lat), parseFloat(lng)];
+				var visited = this.getVisits().includes(id);
 				var marker = {
 					id: id, // for filtering purposes
 					latLng: latLng,
@@ -36,7 +37,8 @@ define(['./abstract_bundle_builder'],
 					exportName: name,
 					url: url,
 					icon: icon,
-					layerId: layerId
+					layerId: layerId,
+					visited: visited
 				};
 				
 				if (this._config.dimensional_layering || dimensionValues == null || dimensionValues.length === 0) {

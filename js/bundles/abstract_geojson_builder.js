@@ -30,7 +30,8 @@ define(['leaflet', './abstract_bundle_builder', 'popup_view'],
 					
 					var geoLayer = leaflet.geoJSON(geojson, {
 						onEachFeature: function(feature, layer) {
-							var popup = popupView.buildPopup(name, url, null, extraInfos);
+							var visited = null;//not supported on geojson sources for now
+							var popup = popupView.buildPopup(this._manager, name, url, null, extraInfos, visited);
 							layer.bindPopup(popup);
 						}.bind(this)
 					});
