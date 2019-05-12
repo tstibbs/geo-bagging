@@ -2,26 +2,44 @@ define([
 	'jquery',
 	'leaflet',
 	'controls',
-	'layers'
+	'layers',
+	'constants'
 ],
 	function(
 		$,
 		leaflet,
 		Controls,
-		layersBuilder
+		layersBuilder,
+		constants
 	) {
 	
 		//basic manager class that simplifies interoperation between other components
 		return leaflet.Class.extend({
-			initialize: function (map, config) {
-				this._authenticated = false;
-				this._map = map;
-				this._config = config;
-				this._layers = layersBuilder(map, config);
-				this._controls = new Controls(config, this._layers, map, this);
+			initialize: function(map, config) {
+				this._authenticated = false;//default
+				this._initializePromise = $.get({
+					url: constants.backendBaseUrl + 'isAuthenticated',
+					xhrFields: {
+						withCredentials: true
+					}
+				}).then(function(data) {
+					this._authenticated = data;
+				}.bind(this)).fail(function(xhr, textError, error) {
+					console.error("Failed to check authentication status - this can be ignored unless trying to record visits: " + textError);
+					console.log(error);
+				}).always(function() {
+					this._map = map;
+					this._config = config;
+					this._layers = layersBuilder(map, config);
+					this._controls = new Controls(config, this._layers, map, this);
+				}.bind(this));
 			},
 			
-			setViewConstraints: function (limitFunction) {
+			waitForInitialization: function() {
+				return this._initializePromise;
+			},
+			
+			setViewConstraints: function(limitFunction) {
 				this._limitFunction = limitFunction;//function(latLng) {return true or false}
 			},
 			
@@ -49,9 +67,13 @@ define([
 				this._authenticated = authenticated;
 			},
 			
+			isAuthenticated: function() {
+				return this._authenticated;
+			},
+			
 			shouldManageVisits: function() {
 				//currently just checks that we're authenticated
-				return this._authenticated;
+				return this.isAuthenticated();
 			}
 		});
 	}
