@@ -5,7 +5,8 @@ define([
 	'mobile',
 	'./attribution',
 	'./user',
-	'./constraints/view'
+	'./constraints/view',
+	'params'
 ],
     function(
 		$,
@@ -14,7 +15,8 @@ define([
 		mobile,
 		AttributionView,
 		UserView,
-		ConstraintsView
+		ConstraintsView,
+		params
 	) {
         var MenuView = leaflet.Class.extend({
 			initialize: function(manager) {
@@ -31,6 +33,8 @@ define([
 					classes.push('mobile');
 				}
 				
+				var showUserSettings = (params.test('testing') == 'true');
+				
 				//top of the navigation bar
 				view += '<div id="sidebar" class="' + classes.join(' ') + '">';
 				view += '    <div class="sidebar-tabs">';
@@ -41,7 +45,9 @@ define([
 
 				//bottom of the navigation bar
 				view += '        <ul role="tablist">';
-				view += '            <li><a href="#sidebar-user" role="tab"><i class="fa fa-user"></i></a></li>';
+				if (showUserSettings) {
+					view += '            <li><a href="#sidebar-user" role="tab"><i class="fa fa-user"></i></a></li>';
+				}
 				view += '            <li><a href="#sidebar-attribution" role="tab"><i class="fa fa-copyright"></i></a></li>';
 				view += '        </ul>';
 				view += '    </div>';
@@ -57,9 +63,11 @@ define([
 				view += '        <div id="sidebar-attribution" class="sidebar-pane">';
 				view += '            <h1 class="sidebar-header">Attribution<span class="sidebar-close"><i class="fa fa-caret-left"></i></span></h1>';
 				view += '        </div>';
-				view += '        <div id="sidebar-user" class="sidebar-pane">';
-				view += '            <h1 class="sidebar-header">User Settings<span class="sidebar-close"><i class="fa fa-caret-left"></i></span></h1>';
-				view += '        </div>';
+				if (showUserSettings) {
+					view += '        <div id="sidebar-user" class="sidebar-pane">';
+					view += '            <h1 class="sidebar-header">User Settings<span class="sidebar-close"><i class="fa fa-caret-left"></i></span></h1>';
+					view += '        </div>';
+				}
 				view += '    </div>';
 				view += '</div>';
 				
@@ -70,9 +78,10 @@ define([
 				$('#sidebar-attribution', this._view).append(attributionContainer);
 				this._attributionView = new AttributionView(attributionContainer);
 				
-				//TODO only show in dev mode for now
-				var userView = new UserView(this._manager);
-				$('#sidebar-user', this._view).append(userView.getView())
+				if (showUserSettings) {
+					var userView = new UserView(this._manager);
+					$('#sidebar-user', this._view).append(userView.getView());
+				}
 				
 				var constraintsView = new ConstraintsView(this._manager);
 				$('#sidebar-constraints', this._view).append(constraintsView.getView())
