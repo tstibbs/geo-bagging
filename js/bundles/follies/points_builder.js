@@ -20,7 +20,7 @@ define(['../abstract_points_builder'],
 					'Images': this.buildImageLinks(imageLinks)
 				};
 				
-				this.addMarker(null, lat, lng, url, name, extraInfos, null, [type]);
+				this.addMarker(name, lat, lng, url, name, extraInfos, null, [type]);
 			}
 		});
 	}

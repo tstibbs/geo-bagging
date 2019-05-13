@@ -27,6 +27,7 @@ define(['./abstract_bundle_builder'],
 			},
 			
 			addMarker: function (id, lat, lng, url, name, extraTexts, icon, dimensionValues, layerId) {
+				id = encodeURIComponent(id);
 				var latLng = [parseFloat(lat), parseFloat(lng)];
 				var visited = this.getVisits().includes(id);
 				var marker = {
