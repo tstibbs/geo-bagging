@@ -23,8 +23,14 @@ define([
 						withCredentials: true
 					}
 				}).then(function(data) {
-					this._authenticated = data;
+					if (data == false) {
+						this._authenticated = false;
+					} else {
+						this._authenticated = true;
+						this._loggedInUser = data.email;
+					}
 				}.bind(this)).fail(function(xhr, textError, error) {
+					this._authenticated = false;
 					console.error("Failed to check authentication status - this can be ignored unless trying to record visits: " + textError);
 					console.log(error);
 				}).always(function() {
@@ -74,6 +80,10 @@ define([
 			shouldManageVisits: function() {
 				//currently just checks that we're authenticated
 				return this.isAuthenticated();
+			},
+			
+			getLoggedInUser: function() {
+				return this._loggedInUser;
 			}
 		});
 	}
