@@ -3,37 +3,45 @@ define([
 	'leaflet',
 	'controls',
 	'layers',
-	'constants'
+	'constants',
+	'params'
 ],
 	function(
 		$,
 		leaflet,
 		Controls,
 		layersBuilder,
-		constants
+		constants,
+		params
 	) {
 	
 		//basic manager class that simplifies interoperation between other components
 		return leaflet.Class.extend({
 			initialize: function(map, config) {
 				this._authenticated = false;//default
-				this._initializePromise = $.get({
-					url: constants.backendBaseUrl + 'isAuthenticated',
-					xhrFields: {
-						withCredentials: true
-					}
-				}).then(function(data) {
-					if (data == false) {
+				var showUserSettings = (params.test('testing') == 'true');
+				if (showUserSettings) {
+					this._initializePromise = $.get({
+						url: constants.backendBaseUrl + 'isAuthenticated',
+						xhrFields: {
+							withCredentials: true
+						}
+					}).then(function(data) {
+						if (data == false) {
+							this._authenticated = false;
+						} else {
+							this._authenticated = true;
+							this._loggedInUser = data.email;
+						}
+					}.bind(this)).fail(function(xhr, textError, error) {
 						this._authenticated = false;
-					} else {
-						this._authenticated = true;
-						this._loggedInUser = data.email;
-					}
-				}.bind(this)).fail(function(xhr, textError, error) {
-					this._authenticated = false;
-					console.error("Failed to check authentication status - this can be ignored unless trying to record visits: " + textError);
-					console.log(error);
-				}).always(function() {
+						console.error("Failed to check authentication status - this can be ignored unless trying to record visits: " + textError);
+						console.log(error);
+					});
+				} else {
+					this._initializePromise = jQuery.Deferred().resolve();
+				}
+				this._initializePromise = this._initializePromise.always(function() {
 					this._map = map;
 					this._config = config;
 					this._layers = layersBuilder(map, config);

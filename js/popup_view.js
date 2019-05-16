@@ -91,8 +91,10 @@ define(['underscore'],
 					popupText = '<span class="popup-title">' + name + '</span>';
 				}
 				if (manager.shouldManageVisits() && visited != null) {
-					popupText += '<br />';
-					popupText += '<label><input type="checkbox" name="checkbox" value="value"' + (visited ? ' checked' : '') + '>Visited?</label>';
+					popupText += '<label class="fancy-checkbox" title="Visited?">';
+					popupText += '    <input type="checkbox"' + (visited ? ' checked' : '') + '/>';
+					popupText += '    <i class="fa fa-check"></i>';
+					popupText += '</label>';
 				}
 				if (extraTexts != null) {
 					if (popupText.length > 0) {

@@ -223,3 +223,23 @@ input[type="checkbox"] {
 	vertical-align: bottom;
 	margin-left: 0px;
 }
+
+/* fancy checkbox that looks like a tick*/
+
+label.fancy-checkbox > input {
+	display: none;
+}
+
+label.fancy-checkbox > input:checked + i {
+	color: #12B000;
+}
+label.fancy-checkbox > input + i, label.fancy-checkbox > input:checked:hover + i {
+	color: #CECECE;
+}
+label.fancy-checkbox > input:hover + i {
+	color: #18EE00;
+}
+
+label.fancy-checkbox {
+	cursor: pointer;
+}
