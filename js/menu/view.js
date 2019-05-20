@@ -2,7 +2,6 @@ define([
 	'jquery',
 	'leaflet',
 	'leaflet_sidebar',
-	'mobile',
 	'./attribution',
 	'./user',
 	'./constraints/view',
@@ -12,7 +11,6 @@ define([
 		$,
 		leaflet,
 		Leaflet_Sidebar,
-		mobile,
 		AttributionView,
 		UserView,
 		ConstraintsView,
@@ -28,10 +26,7 @@ define([
 			_buildView: function() {
 				var view = '';
 				
-				var classes = ['sidebar', 'collapsed', 'leaflet-container']
-				if (mobile.isMobile()) {
-					classes.push('mobile');
-				}
+				var classes = ['sidebar', 'collapsed', 'leaflet-container'];
 				
 				var showUserSettings = (params.test('testing') == 'true');
 				
