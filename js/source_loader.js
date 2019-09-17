@@ -2,13 +2,15 @@ define([
 	'jquery',
 	'leaflet',
 	'constants',
-	'model_views'
+	'model_views',
+	'params'
 ],
 	function(
 		$,
 		leaflet,
 		constants,
-		ModelViews
+		ModelViews,
+		params
 	) {
 	
 		var SourceLoader = leaflet.Class.extend({
@@ -18,7 +20,9 @@ define([
 			},
 			
 			loadSources: function(selectedSourceIds) {
-				var sourceIds = $.uniqueSort(selectedSourceIds.concat(constants.dataSources));
+				var extraDataSourcesString = params.test('extra-datasources');
+				var extraDataSources = (extraDataSourcesString != null && extraDataSourcesString.length > 0) ? extraDataSourcesString.split(',') : [];
+				var sourceIds = $.uniqueSort(selectedSourceIds.concat(constants.dataSources, extraDataSources));
 				var sourceModuleIds = this._sourceIdsToDataSources(sourceIds);
 				sourceModuleIds = sourceModuleIds.map(function(sourceId){
 					return 'bundles/' + sourceId;

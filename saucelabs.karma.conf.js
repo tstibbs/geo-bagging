@@ -1,86 +1,37 @@
 var baseConfig = require('./karma.conf.js')
 
 //browser
-var chrome = 'chrome';
-var firefox = 'firefox';
-var ie = 'internet explorer';
-var edge = 'MicrosoftEdge';
-var opera = 'opera';
-var safari = 'safari';
-var safari_iphone = 'Safari';
-var android_browser = 'Browser';
+const base = { base: 'SauceLabs' }
+const chrome = { ...base, browserName: 'chrome', version: '71' }
+const firefox = { ...base, browserName: 'firefox', version: '64' }
+const ie = { ...base, browserName: 'internet explorer', version: '11' }
+const edge = { ...base, browserName: 'MicrosoftEdge', version: '18' }
 //OS
-var win7 = 'Windows 7';
-var win10 = 'Windows 10';
-var linux = 'Linux';
-var osx = 'OS X 10.11';
+const win7 = { platform: 'Windows 7' }
+const win10 = { platform: 'Windows 10' }
+const linux = { platform: 'Linux' }
+const osx = { platform: 'OS X 10.11' }
 
 var browsers = {
-  sl_chrome: {
-	base: 'SauceLabs',
-	browserName: chrome,
-	platform: win7,
-	version: '51'
-  },
-  sl_firefox: {
-	base: 'SauceLabs',
-	browserName: firefox,
-	platform: win7,
-	version: '47'
-  },
-  sl_ie: {
-	base: 'SauceLabs',
-	browserName: ie,
-	platform: win7,
-	version: '11'
-  }
+  sl_chrome_win10:  { ...chrome,  ...win10 },
+  sl_chrome_win7:   { ...chrome,  ...win7  },
+  sl_firefox_win10: { ...firefox, ...win10 },
+  sl_edge_win10:    { ...edge,    ...win10 },
+  sl_ie_win7:       { ...ie,      ...win7  }
 };
 
 var extraBrowsers = {
-  sl_edge: {
-	base: 'SauceLabs',
-	browserName: edge,
-	platform: win10,
-	version: '13'
-  },
-  //something odd happens in the tests which is probably impossible to diagnose without access to a safari instance
-  //sl_win7_safari: {
-	//base: 'SauceLabs',
-	//browserName: safari,
-	//platform: win7,
-	//version: '5.1'
-  //},
-  //there is a problem with opera causing requirejs to time out, so commenting out until I have chance to look into it further
-  //sl_opera: {
-  //  base: 'SauceLabs',
-  //  browserName: opera,
-  //  platform: win7,
-  //  version: '12.12'
-  //},
-  sl_linux_chrome: {
-	base: 'SauceLabs',
-	browserName: chrome,
-	platform: linux,
-	version: '48'
-  },
-  //something odd happens in the tests which is probably impossible to diagnose without access to a safari instance
-  // sl_osx_safari: {
-	// base: 'SauceLabs',
-	// browserName: safari,
-	// platform: osx,
-	// version: '9'
-  // },
-  sl_osx_chrome: {
-	base: 'SauceLabs',
-	browserName: chrome,
-	platform: osx,
-	version: '51'
-  }
+  sl_firefox_win7:  { ...firefox, ...win7  },
+  sl_ie_win10:      { ...ie,      ...win10 },
+  sl_chrome_linux:  { ...chrome,  ...linux, version: '48' },//linux doesn't have the most recent chrome
+  sl_chrome_osx:    { ...chrome,  ...osx   }
+  //sl_safari_win7: //something odd happens in the tests which is probably impossible to diagnose without access to a safari instance
+  //sl_safari_osx: //something odd happens in the tests which is probably impossible to diagnose without access to a safari instance
+  //sl_opera: //there is a problem with opera causing requirejs to time out, so commenting out until I have chance to look into it further
 };
 
 var mobileBrowsers = {
   sl_iphone6: {
-	base: 'SauceLabs',
 	browserName: 'Safari',
 	deviceName: 'iPhone 6 Simulator',
 	deviceOrientation: 'portrait',
@@ -88,7 +39,6 @@ var mobileBrowsers = {
 	platformName: 'iOS'
   },
   sl_iphone4s: {
-	base: 'SauceLabs',
 	browserName: 'Safari',
 	deviceName: 'iPhone 4s Simulator',
 	deviceOrientation: 'portrait',
@@ -96,7 +46,6 @@ var mobileBrowsers = {
 	platformName: 'iOS'
   },
   sl_ipad: {
-	base: 'SauceLabs',
 	browserName: 'Safari',
 	deviceName: 'iPad Simulator',
 	deviceOrientation: 'portrait',
@@ -104,7 +53,6 @@ var mobileBrowsers = {
 	platformName: 'iOS'
   },
   sl_s4: {
-	base: 'SauceLabs',
 	browserName: 'Browser',
 	deviceName: 'Samsung Galaxy S4 Emulator',
 	deviceOrientation: 'portrait',
@@ -112,7 +60,6 @@ var mobileBrowsers = {
 	platformName: 'Android'
   },
   sl_android51: {
-	base: 'SauceLabs',
 	browserName: 'Browser',
 	deviceName: 'Android Emulator',
 	deviceType: 'tablet',
@@ -123,9 +70,9 @@ var mobileBrowsers = {
 }
 
 //if doing an extended test
-for (var browser in extraBrowsers) { browsers[browser] = extraBrowsers[browser]; }
+browsers = { ...browsers, ...extraBrowsers}
 //if doing a mobile test
-//for (var browser in mobileBrowsers) { browsers[browser] = mobileBrowsers[browser]; }
+//browsers = { ...browsers, ...mobileBrowsers}
 
 module.exports = function(config) {
   baseConfig(config);
@@ -142,7 +89,7 @@ module.exports = function(config) {
 
 	customLaunchers: browsers,
 	
-	concurrency: 3,
+	concurrency: 1,
 	
 	browserNoActivityTimeout: 60000,
 	browserDisconnectTimeout: 10000,

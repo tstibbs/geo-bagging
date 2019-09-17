@@ -57,7 +57,9 @@ define([
 				
 				var mapView = this._buildMap(options);
 				var manager = new Manager(mapView.getMap(), this._config);
-				return (new SourceLoader(manager, this._config)).loadSources(allBundles).then(function() {
+				return manager.waitForInitialization().then(function() {
+					return (new SourceLoader(manager, this._config)).loadSources(allBundles);
+				}.bind(this)).then(function() {
 					return manager;
 				});
 			},

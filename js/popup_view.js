@@ -70,7 +70,7 @@ define(['underscore'],
 				return popupText;
 			},
 			
-			buildPopup: function(unescapedName, unescapedUrl, latLng, unescapedExtraTexts) {
+			buildPopup: function(manager, unescapedName, unescapedUrl, latLng, unescapedExtraTexts, visited) {
 				//get everything from the model - anything that gets put into the dom needs to be escaped to prevent XSS
 				var name = _.escape(unescapedName);
 				var url = _.escape(unescapedUrl);
@@ -84,11 +84,17 @@ define(['underscore'],
 					}.bind(this));
 				}
 				
-				var popupText = "";
+				var popupText = "<div>";
 				if (this.notEmpty(url)) {
 					popupText = '<a href="' + url + '" class="popup-title">' + name + '</a>';
 				} else if (this.notEmpty(name)) {
 					popupText = '<span class="popup-title">' + name + '</span>';
+				}
+				if (manager.shouldManageVisits() && visited != null) {
+					popupText += '<label class="fancy-checkbox" title="Visited?">';
+					popupText += '    <input type="checkbox"' + (visited ? ' checked' : '') + '/>';
+					popupText += '    <i class="fa fa-check"></i>';
+					popupText += '</label>';
 				}
 				if (extraTexts != null) {
 					if (popupText.length > 0) {
@@ -114,7 +120,8 @@ define(['underscore'],
 						popupText += '</div>';
 					popupText += '</div>';
 				}
-
+				
+				popupText += '</div>';
 				return popupText;
 			}
 		};

@@ -2,17 +2,19 @@ define([
 	'jquery',
 	'leaflet',
 	'leaflet_sidebar',
-	'mobile',
 	'./attribution',
-	'./constraints/view'
+	'./user',
+	'./constraints/view',
+	'params'
 ],
     function(
 		$,
 		leaflet,
 		Leaflet_Sidebar,
-		mobile,
 		AttributionView,
-		ConstraintsView
+		UserView,
+		ConstraintsView,
+		params
 	) {
         var MenuView = leaflet.Class.extend({
 			initialize: function(manager) {
@@ -24,10 +26,9 @@ define([
 			_buildView: function() {
 				var view = '';
 				
-				var classes = ['sidebar', 'collapsed', 'leaflet-container']
-				if (mobile.isMobile()) {
-					classes.push('mobile');
-				}
+				var classes = ['sidebar', 'collapsed', 'leaflet-container'];
+				
+				var showUserSettings = (params.test('testing') == 'true');
 				
 				//top of the navigation bar
 				view += '<div id="sidebar" class="' + classes.join(' ') + '">';
@@ -39,6 +40,9 @@ define([
 
 				//bottom of the navigation bar
 				view += '        <ul role="tablist">';
+				if (showUserSettings) {
+					view += '            <li><a href="#sidebar-user" role="tab"><i class="fa fa-user"></i></a></li>';
+				}
 				view += '            <li><a href="#sidebar-attribution" role="tab"><i class="fa fa-copyright"></i></a></li>';
 				view += '        </ul>';
 				view += '    </div>';
@@ -48,12 +52,17 @@ define([
 				view += '        <div id="sidebar-layers" class="sidebar-pane">';
 				view += '            <h1 class="sidebar-header">Layers<span class="sidebar-close"><i class="fa fa-caret-left"></i></span></h1>';
 				view += '        </div>';
-				view += '        <div id="sidebar-attribution" class="sidebar-pane">';
-				view += '            <h1 class="sidebar-header">Attribution<span class="sidebar-close"><i class="fa fa-caret-left"></i></span></h1>';
-				view += '        </div>';
 				view += '        <div id="sidebar-constraints" class="sidebar-pane">';
 				view += '            <h1 class="sidebar-header">Data Limits<span class="sidebar-close"><i class="fa fa-caret-left"></i></span></h1>';
 				view += '        </div>';
+				view += '        <div id="sidebar-attribution" class="sidebar-pane">';
+				view += '            <h1 class="sidebar-header">Attribution<span class="sidebar-close"><i class="fa fa-caret-left"></i></span></h1>';
+				view += '        </div>';
+				if (showUserSettings) {
+					view += '        <div id="sidebar-user" class="sidebar-pane">';
+					view += '            <h1 class="sidebar-header">User Settings<span class="sidebar-close"><i class="fa fa-caret-left"></i></span></h1>';
+					view += '        </div>';
+				}
 				view += '    </div>';
 				view += '</div>';
 				
@@ -63,6 +72,11 @@ define([
 				var attributionContainer = $('<div></div>');
 				$('#sidebar-attribution', this._view).append(attributionContainer);
 				this._attributionView = new AttributionView(attributionContainer);
+				
+				if (showUserSettings) {
+					var userView = new UserView(this._manager);
+					$('#sidebar-user', this._view).append(userView.getView());
+				}
 				
 				var constraintsView = new ConstraintsView(this._manager);
 				$('#sidebar-constraints', this._view).append(constraintsView.getView())

@@ -2,25 +2,58 @@ define([
 	'jquery',
 	'leaflet',
 	'controls',
-	'layers'
+	'layers',
+	'constants',
+	'params'
 ],
 	function(
 		$,
 		leaflet,
 		Controls,
-		layersBuilder
+		layersBuilder,
+		constants,
+		params
 	) {
 	
 		//basic manager class that simplifies interoperation between other components
 		return leaflet.Class.extend({
-			initialize: function (map, config) {
-				this._map = map;
-				this._config = config;
-				this._layers = layersBuilder(map, config);
-				this._controls = new Controls(config, this._layers, map, this);
+			initialize: function(map, config) {
+				this._authenticated = false;//default
+				var showUserSettings = (params.test('testing') == 'true');
+				if (showUserSettings) {
+					this._initializePromise = $.get({
+						url: constants.backendBaseUrl + 'isAuthenticated',
+						xhrFields: {
+							withCredentials: true
+						}
+					}).then(function(data) {
+						if (data == false) {
+							this._authenticated = false;
+						} else {
+							this._authenticated = true;
+							this._loggedInUser = data.email;
+						}
+					}.bind(this)).fail(function(xhr, textError, error) {
+						this._authenticated = false;
+						console.error("Failed to check authentication status - this can be ignored unless trying to record visits: " + textError);
+						console.log(error);
+					});
+				} else {
+					this._initializePromise = jQuery.Deferred().resolve();
+				}
+				this._initializePromise = this._initializePromise.always(function() {
+					this._map = map;
+					this._config = config;
+					this._layers = layersBuilder(map, config);
+					this._controls = new Controls(config, this._layers, map, this);
+				}.bind(this));
 			},
 			
-			setViewConstraints: function (limitFunction) {
+			waitForInitialization: function() {
+				return this._initializePromise;
+			},
+			
+			setViewConstraints: function(limitFunction) {
 				this._limitFunction = limitFunction;//function(latLng) {return true or false}
 			},
 			
@@ -42,6 +75,23 @@ define([
 			
 			getConfig: function() {
 				return this._config;
+			},
+			
+			setAuthenticated: function(/*boolean*/ authenticated) {
+				this._authenticated = authenticated;
+			},
+			
+			isAuthenticated: function() {
+				return this._authenticated;
+			},
+			
+			shouldManageVisits: function() {
+				//currently just checks that we're authenticated
+				return this.isAuthenticated();
+			},
+			
+			getLoggedInUser: function() {
+				return this._loggedInUser;
 			}
 		});
 	}
