@@ -80,7 +80,7 @@ define([
 					});
 				}
 				
-				var pointsView = new PointsView(this._manager.getMap(), config, pointsModels, this._matrixLayerControl, this._controls, this._bundles);
+				var pointsView = new PointsView(this._manager.getMap(), config, pointsModels, this._matrixLayerControl, this._controls, this._bundles, this._manager);
 				var geojsonView = new GeojsonView(this._manager.getMap(), config, geojsonModels, this._matrixLayerControl, this._bundles);
 				var promises = [
 					pointsView.finish(),

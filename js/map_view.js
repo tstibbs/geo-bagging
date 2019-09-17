@@ -1,12 +1,14 @@
 define([
 	'leaflet',
 	'jquery',
-	'fullscreen_link'
+	'fullscreen_link',
+	'mobile'
 ],
 	function(
 		leaflet,
 		$,
-		fullscreen_link
+		fullscreen_link,
+		mobile
 	) {
 		return leaflet.Class.extend({
 			initialize: function (config) {
@@ -64,6 +66,9 @@ define([
 
 				if (this._config.map_style == 'full') {
 					this._config.map_outer_container_element.addClass('full-screen');
+				}
+				if (mobile.isMobile()) {
+					this._config.map_outer_container_element.addClass('mobile');
 				}
 				this._config.map_outer_container_element.prepend($(content));
 			},
