@@ -1,6 +1,6 @@
 const fs = require('fs');
-const unzip = require('unzip');
-const ifCmd = require('./utils').doIfCmdCall;
+const unzipper = require('unzipper');
+const {ifCmd} = require('./utils');
 const downloadFiles = require('./downloader').download;
 const constants = require('./constants');
 
@@ -11,15 +11,16 @@ const fileName = 'doc.kml';
 function download() {
 	return downloadFiles('defence', {[source]: tempFile}).then(() => {
 		const outputDir = `${constants.tmpInputDir}/defence`;
+		if (!fs.existsSync(outputDir)){
+			fs.mkdirSync(outputDir);
+		}
 		let outputFile = fs.createWriteStream(outputDir + '/' + fileName);
 		fs.createReadStream(outputDir + '/' + tempFile)
-			.pipe(unzip.Parse())
+			.pipe(unzipper.Parse())
 			.on('entry', function (entry) {
 				entry.pipe(outputFile);
 			});
-	}).catch(err => {
-		console.log(err);
-	});
+	})
 }
 
 ifCmd(module, download)

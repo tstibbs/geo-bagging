@@ -1,4 +1,6 @@
 const request = require('request');
+const util = require("util");
+const fs = require('fs');
 
 function get(path) {
 	return new Promise((resolve, reject) => {
@@ -19,5 +21,10 @@ function doIfCmdCall(module, doit) {
 	}
 }
 
+
+module.exports.readFile = util.promisify(fs.readFile);
+module.exports.writeFile = util.promisify(fs.writeFile);
+module.exports.readdir = util.promisify(fs.readdir);
+
 module.exports.get = get;
-module.exports.doIfCmdCall = doIfCmdCall;
+module.exports.ifCmd = doIfCmdCall;

@@ -3,7 +3,7 @@ const xml2js = require('xml2js');
 const streamify = require('stream-array');
 const Stream = require('stream');
 const constants = require('./constants');
-const ifCmd = require('./utils').doIfCmdCall;
+const {ifCmd, readFile} = require('./utils');
 const Converter = require('./converter');
 const xslt = require('./xslt');
 
@@ -56,15 +56,11 @@ class DobConverter extends Converter {
 const converter = new DobConverter();
 const parser = new xml2js.Parser();
 
-function buildDataFile() {
-	xslt('defence-extract.xslt', 'defence/doc.kml', 'defence/out.xml').then(() => {
-		fs.readFile(`${constants.tmpInputDir}/defence/out.xml`, (err, data) => {
-			parser.parseString(data, (err, result) => {
-				let points = result.points.point;
-				converter.writeOutCsv(points, '../js/bundles/defence/data.json');
-			});
-		});
-	});
+async function buildDataFile() {
+	await xslt('defence-extract.xslt', 'defence/doc.kml', 'defence/out.xml');
+	let data = await readFile(`${constants.tmpInputDir}/defence/out.xml`);
+	let result = await parser.parseStringPromise(data);
+	await converter.writeOutCsv(result.points.point, '../js/bundles/defence/data.json');
 }
 
 ifCmd(module, buildDataFile)

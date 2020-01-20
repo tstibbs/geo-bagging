@@ -6,7 +6,7 @@ const constants = require('./constants');
 const artifact = `Saxon-HE`
 const version = `9.8.0-6`
 const jarName = `${artifact}-${version}.jar`
-const downloadPath = `http://repo1.maven.org/maven2/net/sf/saxon/${artifact}/${version}/${jarName}`
+const downloadPath = `https://repo1.maven.org/maven2/net/sf/saxon/${artifact}/${version}/${jarName}`
 const jarPath = `${constants.tmpInputDir}/${jarName}`
 
 let downloadInProgress = null;

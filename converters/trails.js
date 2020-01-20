@@ -2,7 +2,7 @@ const proj4 = require('proj4');
 const fs = require('fs');
 const Converter = require('./converter');
 const constants = require('./constants');
-const ifCmd = require('./utils').doIfCmdCall;
+const {ifCmd} = require('./utils');
 
 const inputDirectory = `${constants.tmpInputDir}/trails`;
 
@@ -148,7 +148,7 @@ function buildDataFile() {
 		return combineReducer(features);
 	});
 
-	Promise.all([pEngNatTrails, pWelshNatTrails, pWalesCoastPath, pEnglandCoastPath]).then(values => {
+	return Promise.all([pEngNatTrails, pWelshNatTrails, pWalesCoastPath, pEnglandCoastPath]).then(values => {
 		let allFeatures = values.reduce((allFeatures, fileFeatures) => 
 			[...allFeatures, ...fileFeatures]
 		, []);
@@ -165,7 +165,7 @@ function buildDataFile() {
 		
 		const converter = new Converter();
 		let lastUpdated = converter.getLastUpdatedString();
-		converter.writeMetaData(fileName, totalFeatures, lastUpdated)
+		return converter.writeMetaData(fileName, totalFeatures, lastUpdated)
 	}).catch(err => {
 		console.error(err);
 	});

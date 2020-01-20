@@ -1,8 +1,9 @@
-const unzip = require('unzip');
+const unzipper = require('unzipper');
 const fs = require('fs');
+const Readable = require('stream').Readable;
 
 const constants = require('./constants');
-const ifCmd = require('./utils').doIfCmdCall;
+const {ifCmd} = require('./utils');
 const Converter = require('./converter');
 
 const attributionString = "This file adapted from the The Database of British and Irish Hills (http://www.hills-database.co.uk/downloads.html), licenced under CC BY 3.0 (https://creativecommons.org/licenses/by/3.0/deed.en_GB)";
@@ -86,14 +87,28 @@ class HillConverter extends Converter {
 	}
 }
 
+function toStream(buffer) {
+	let stream = new Readable();
+	stream.push(buffer);
+	stream.push(null);
+	return stream;
+}
+
 function buildDataFile() {
-	fs.createReadStream(`${constants.tmpInputDir}/hills/hillcsv.zip`)
-		.pipe(unzip.Parse())
-		.on('entry', function (entry) {
-			var fileName = entry.path;
-			(new HillConverter(true)).writeOutStream(entry, '../js/bundles/hills/data.json');
-			(new HillConverter(false)).writeOutStream(entry, '../js/bundles/hills/data_all.json');
-		});
+	return fs
+	.createReadStream(`${constants.tmpInputDir}/hills/hillcsv.zip`)
+	.pipe(unzipper.Parse())
+	.on('entry', async (entry) => {
+		console.log('entry');
+		let fileName = entry.path;
+		let chunks = []
+		for await (let chunk of entry) {
+			chunks.push(chunk)
+		}
+		let buffer = Buffer.concat(chunks);
+		await (new HillConverter(true)).writeOutStream(toStream(buffer), '../js/bundles/hills/data.json');
+		await (new HillConverter(false)).writeOutStream(toStream(buffer), '../js/bundles/hills/data_all.json');
+	}).promise();
 }
 
 ifCmd(module, buildDataFile)

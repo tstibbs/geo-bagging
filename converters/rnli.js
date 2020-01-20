@@ -1,6 +1,6 @@
 const fs = require('fs');
 const Converter = require('./converter');
-const ifCmd = require('./utils').doIfCmdCall;
+const {ifCmd, readFile} = require('./utils');
 const constants = require('./constants');
 
 const attributionString = "Contains (https://hub.arcgis.com/datasets/7dad2e58254345c08dfde737ec348166_0) licensed under the GIS Open Data Licence &copy; RNLI and data from (https://en.wikipedia.org/wiki/List_of_RNLI_stations)";
@@ -69,12 +69,11 @@ class RnliConverter extends Converter {
 	}
 }
 
-function buildDataFile() {
+async function buildDataFile() {
 	const inputDir = `${constants.tmpInputDir}/rnli`;
-	fs.readFile(`${inputDir}/wiki.json`, (err, data) => {
-		let wikiData = JSON.parse(data);
-		(new RnliConverter(wikiData)).writeOut(`${inputDir}/lifeboatStations.csv`, `../js/bundles/rnli/data.json`);
-	});
+	let data = await readFile(`${inputDir}/wiki.json`);
+	let wikiData = JSON.parse(data);
+	await (new RnliConverter(wikiData)).writeOut(`${inputDir}/lifeboatStations.csv`, `../js/bundles/rnli/data.json`);
 }
 
 ifCmd(module, buildDataFile)

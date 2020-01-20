@@ -2,7 +2,7 @@ const fs = require('fs');
 require('global-tunnel-ng').initialize();
 const constants = require('./constants');
 const Converter = require('./converter');
-const ifCmd = require('./utils').doIfCmdCall;
+const {ifCmd} = require('./utils');
 const inputDir = `${constants.tmpInputDir}/coastallandmarks`;
 
 const attributionString = "Adapted from data from wikipedia licenced under CC BY-SA (https://creativecommons.org/licenses/by-sa/3.0/)";
@@ -47,17 +47,21 @@ function processLighthouses() {
 				}
 				let yearBuilt = row['Year built'] ? row['Year built'].text : '';
 				let coordMatches = /(-?\d+\.\d+)°N, (-?\d+\.\d+)°W/.exec(coordContainer.text);
-				let north = coordMatches[1];
-				let west = coordMatches[2];
-				return [
-					west,
-					north,
-					name,
-					link,
-					'Lighthouse',
-					yearBuilt
-				];
-			});
+				if (coordMatches != null) {
+					let north = coordMatches[1];
+					let west = coordMatches[2];
+					return [
+						west,
+						north,
+						name,
+						link,
+						'Lighthouse',
+						yearBuilt
+					];
+				} else {
+					return null;
+				}
+			}).filter(record => record != null);
 			resolve(csv);
 		});
 	});
@@ -142,12 +146,12 @@ function processPiers() {
 
 function processData() {
 	let csvsPromises = [processLighthouses(), processPiers()];
-	Promise.all(csvsPromises).then(csvs => {
+	return Promise.all(csvsPromises).then(csvs => {
 		let csv = flatten(csvs).sort((rowA, rowB) => {
 			return rowA[2].localeCompare(rowB[2]);
 		});
 		const converter = new Converter(attributionString, columnHeaders);
-		converter.writeOutCsv(csv, '../js/bundles/coastallandmarks/data.json');
+		return converter.writeOutCsv(csv, '../js/bundles/coastallandmarks/data.json');
 	});
 }
 
