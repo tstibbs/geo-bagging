@@ -2,9 +2,7 @@ const cheerio = require('cheerio');
 const request = require('request');
 const Stream = require('stream');
 const Converter = require('./converter');
-const utils = require('./utils');
-const ifCmd = utils.doIfCmdCall;
-const get = utils.get;
+const {ifCmd, get} = require('./utils');
 
 const attributionString = "This file adapted from data available on www.nationaltrust.org.uk which is copyright © National Trust";
 const columnHeaders = "[Longitude,Latitude,Id,Name,Link,type,facilities]"
@@ -41,7 +39,7 @@ function getIdsForAspect(aspect) {
 }
 
 function buildDataFile() {
-	getHtml(basePath).then($ => {
+	return getHtml(basePath).then($ => {
 		let placeTypes = $("input[name='PlaceFilter']").toArray().map(elem => $(elem).attr('value'));
 		let facilityTypes = $("input[name='FacilityFilter']").toArray().map(elem => $(elem).attr('value'));
 		return {
@@ -101,7 +99,7 @@ function buildDataFile() {
 			});
 
 		const converter = new Converter(attributionString, columnHeaders);
-		converter.writeOutCsv(csv, '../js/bundles/nt/data.json');
+		return converter.writeOutCsv(csv, '../js/bundles/nt/data.json');
 	}).catch(error => console.error(error));
 }
 

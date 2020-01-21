@@ -1,9 +1,17 @@
 const fs = require('fs');
+const util = require("util");
 const wtf = require('wtf_wikipedia');
+
+const {ifCmd} = require('./utils');
 require('global-tunnel-ng').initialize();
-const ifCmd = require('./utils').doIfCmdCall;
+const writeFile = util.promisify(fs.writeFile);
+
 const constants = require('./constants');
 const inputDir = `${constants.tmpInputDir}/coastallandmarks`;
+
+if (!fs.existsSync(inputDir)){
+	fs.mkdirSync(inputDir);
+}
 
 function downloadLighthouses() {
 	const allPages = [
@@ -14,13 +22,9 @@ function downloadLighthouses() {
 		'List_of_lighthouses_in_the_Isle_of_Man',
 		'List_of_lighthouses_in_Ireland'
 	];
-	wtf.fetch(allPages).then(pageDocs => {
+	return wtf.fetch(allPages).then(pageDocs => {
 		let data = JSON.stringify(pageDocs, null, 2);
-		fs.writeFile(`${inputDir}/lighthouses.json`, data, function(err) {
-			if (err) {
-				console.error(err);
-			}
-		});
+		return writeFile(`${inputDir}/lighthouses.json`, data);
 	});
 }
 
@@ -44,24 +48,22 @@ function downloadPiers() {
 	return fetchCategories('Category:Piers_in_the_United_Kingdom').then(() => {
 		let pageNames = [].concat(...(Object.entries(categoryPages).map(([category, pages]) => pages))).map(page => page.title);
 		if (pageNames.length > 0) {
-			wtf.fetch(pageNames).then(docs => {
+			return wtf.fetch(pageNames).then(docs => {
 				let data = {
 					categories: categoryPages,
 					docs: docs
 				};
-				fs.writeFile(`${inputDir}/piers.json`, JSON.stringify(data, null, 2), function(err) {
-					if (err) {
-						console.error(err);
-					}
-				});
+				return writeFile(`${inputDir}/piers.json`, JSON.stringify(data, null, 2));
 			});
 		}
 	});
 }
 
 function fetchData() {
-	downloadLighthouses();
-	downloadPiers();
+	return Promise.all([
+		downloadLighthouses(),
+		downloadPiers()
+	]);
 }
 
 ifCmd(module, fetchData);

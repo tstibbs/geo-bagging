@@ -1,10 +1,9 @@
-const fs = require('fs');
 const xlsx = require('xlsx');
 const CombinedStream = require('combined-stream2');
 const stream = require('stream');
 
 const constants = require('./constants');
-const ifCmd = require('./utils').doIfCmdCall;
+const {ifCmd, readdir} = require('./utils');
 const Converter = require('./converter');
 
 const inputDir = `${constants.tmpInputDir}/milestones`;
@@ -80,17 +79,16 @@ class WaypointsConverter extends Converter {
 		return this._streamString(body);
 	}
 	
-	writeOut2(inputs, output) {
+	async writeOut2(inputs, output) {
 		var combinedStream = CombinedStream.create();
 		inputs.forEach(input => combinedStream.append(this._readSheet(input)));
-		this.writeOutStream(combinedStream, output);
+		await this.writeOutStream(combinedStream, output);
 	}
 }
 
-function buildDataFile() {
-	fs.readdir(inputDir, (err, files) => {
-		(new WaypointsConverter()).writeOut2(files, '../js/bundles/milestones/data.json');
-	})
+async function buildDataFile() {
+	let files = await readdir(inputDir);
+	await (new WaypointsConverter()).writeOut2(files, '../js/bundles/milestones/data.json');
 }
 
 ifCmd(module, buildDataFile)

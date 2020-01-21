@@ -4,6 +4,7 @@ const csv = require('csv');
 const fs = require('fs');
 const cheerio = require('cheerio');
 const gridconversion = require('./gridconversion');
+const {ifCmd, writeFile} = require('./utils');
 
 function header(attributionString, columnHeaders) {
 return `{
@@ -117,46 +118,54 @@ class Converter {
 		}
 	}
 
-	writeOut(input, fileName) {
-		this.writeOutStream(fs.createReadStream(input), fileName);
+	async writeOut(input, fileName) {
+		await this.writeOutStream(fs.createReadStream(input), fileName);
 	}
 
-	writeOutStream(readable, fileName) {
-		this.writeOutParsedStream(readable.pipe(csv.parse()), fileName);
+	async writeOutStream(readable, fileName) {
+		let csvParser = csv.parse({
+			relax_column_count: true // extraneous spaces in the headers of the milestones spreadsheets cause it to think some sheets have more columns than they do
+		});
+		await this.writeOutParsedStream(readable.pipe(csvParser), fileName);
 	}
 
 	writeOutParsedStream(readable, fileName) {
-		this._lineCount = 0;
-		let writeStream = fs.createWriteStream(fileName);
-		readable
-			.pipe(csv.transform(this._formatLine.bind(this)))
-			.pipe(new HeaderFooterTransformer(this._header))
-			.pipe(writeStream);
-		writeStream.on('finish', () => {
-			this.writeMetaData(fileName, this._lineCount, this._lastUpdated);
+		return new Promise((resolve, reject) => {
 			this._lineCount = 0;
-			console.log(this._axes);
+			let writeStream = fs.createWriteStream(fileName);
+			readable
+				.pipe(csv.transform({parallel: 1}, this._formatLine.bind(this)))
+				.pipe(new HeaderFooterTransformer(this._header))
+				.pipe(writeStream);
+			writeStream.on('finish', async () => {
+				console.log('write finished');
+				await this.writeMetaData(fileName, this._lineCount, this._lastUpdated);
+				this._lineCount = 0;
+				console.log(this._axes);
+				resolve();
+			});
+			writeStream.on('error', error => {
+				reject(error);
+			});
 		});
 	}
 	
-	writeOutCsv(csvContent, fileName) {
+	async writeOutCsv(csvContent, fileName) {
 		const readable = new Stream.Readable({objectMode: true});
 		csvContent.forEach(entry => readable.push(entry));
 		// end the stream
 		readable.push(null);
 
-		this.writeOutParsedStream(readable, fileName);
+		await this.writeOutParsedStream(readable, fileName);
 	}
 	
-	writeMetaData(fileName, recordCount, lastUpdated) {
+	async writeMetaData(fileName, recordCount, lastUpdated) {
 		let data = {
 			recordCount,
 			lastUpdated
 		};
 		let contents = JSON.stringify(data);
-		fs.writeFile(`${fileName}.meta`, contents, function(err){
-			if (err) console.log(err);
-		});
+		await writeFile(`${fileName}.meta`, contents);
 	}
 }
 

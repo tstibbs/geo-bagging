@@ -4,16 +4,16 @@
   "dependencies": {
     "cheerio": "^0.22.0",
     "combined-stream2": "^1.1.2",
-    "csv": "^1.1.0",
-    "global-tunnel-ng": "^2.5.4",
+    "csv": "^5.3.1",
+    "global-tunnel-ng": "^2.7.1",
     "html-entities": "^1.2.1",
-    "proj4": "^2.3.17",
-    "request": "^2.81.0",
+    "proj4": "^2.6.0",
+    "request": "^2.88.0",
     "requirejs": "^2.3.2",
     "stream-array": "^1.1.2",
-    "unzip": "^0.1.11",
-    "wtf_wikipedia": "^7.2.6",
-    "xlsx": "^0.8.1",
-    "xml2js": "^0.4.17"
+    "unzipper": "^0.10.5",
+    "wtf_wikipedia": "^7.8.1",
+    "xlsx": "^0.15.4",
+    "xml2js": "^0.4.23"
   }
 }

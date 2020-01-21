@@ -1,4 +1,4 @@
-const ifCmd = require('./utils').doIfCmdCall;
+const {ifCmd} = require('./utils');
 const downloadFiles = require('./downloader').download;
 const rnliWikipedia = require('./rnli-wikipedia')
 

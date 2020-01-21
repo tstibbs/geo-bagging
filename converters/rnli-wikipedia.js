@@ -1,6 +1,6 @@
 const fs = require('fs');
 const wtfWikipedia = require("wtf_wikipedia");
-const ifCmd = require('./utils').doIfCmdCall;
+const {ifCmd} = require('./utils');
 const constants = require('./constants');
 require('global-tunnel-ng').initialize();
 const inputDir = `${constants.tmpInputDir}/rnli`;

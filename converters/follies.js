@@ -1,7 +1,7 @@
 const fs = require('fs');
 const xml2js = require('xml2js');
 const Stream = require('stream');
-const ifCmd = require('./utils').doIfCmdCall;
+const {ifCmd, readFile} = require('./utils');
 const Converter = require('./converter');
 const xslt = require('./xslt');
 const constants = require('./constants');
@@ -173,15 +173,11 @@ class FolliesConverter extends Converter {
 const converter = new FolliesConverter();
 const parser = new xml2js.Parser();
 
-function buildDataFile() {
-	xslt('follies-extract.xslt', 'follies/follies.kml', 'follies/out.xml').then(() => {
-		fs.readFile(`${constants.tmpInputDir}/follies/out.xml`, (err, data) => {
-			parser.parseString(data, (err, result) => {
-				let points = result.points.point;
-				converter.writeOutCsv(points, '../js/bundles/follies/data.json');
-			});
-		});
-	});
+async function buildDataFile() {
+	await xslt('follies-extract.xslt', 'follies/follies.kml', 'follies/out.xml');
+	let data = await readFile(`${constants.tmpInputDir}/follies/out.xml`);
+	let result = await parser.parseStringPromise(data);
+	await converter.writeOutCsv(result.points.point, '../js/bundles/follies/data.json');
 }
 
 ifCmd(module, buildDataFile)
