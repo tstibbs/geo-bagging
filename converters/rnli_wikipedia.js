@@ -1,46 +1,39 @@
 const fs = require('fs');
 const wtfWikipedia = require("wtf_wikipedia");
-const {ifCmd} = require('./utils');
+const {ifCmd, readFile, writeFile} = require('./utils');
 const constants = require('./constants');
 require('global-tunnel-ng').initialize();
 const inputDir = `${constants.tmpInputDir}/rnli`;
 
-function fetchWikiData() {
-	return new Promise((resolve, reject) => {
-		wtfWikipedia.fetch("List_of_RNLI_stations", "en", function(err, doc){
-			let stations = doc.tables().reduce((allStations, division) => {
-				let divisionStations = division.json().map(station => {
-					let typesString = station['Lifeboat type(s)'].text;
-					let launchString = station['Launch method'].text;
-					let types = parseTypes(typesString)
-					let launchMethods = parseLaunchMethods(launchString)
-					let name = parseStation(station['Station'].text)
-					return {
-						types,
-						name,
-						launchMethods
-					}
-				})
-				return allStations.concat(divisionStations)
-			}, []).reduce((stationsByName, station) => {
-				stationsByName[station.name] = {
-					types: station.types,
-					launchMethods: station.launchMethods
-				}
-				return stationsByName
-			}, {});
-			
-			let stationsString = JSON.stringify(stations, null, 2);
-			fs.writeFile(`${inputDir}/wiki.json`, stationsString, function(err) {
-				if (err) {
-					reject(err);
-				} else {
-					resolve();
-				}
-			}); 
-			
-		});
-	});
+const flatten = arrays => {return [].concat.apply([], arrays);}
+
+async function convertWikiData() {
+	let data = await readFile(`${inputDir}/wiki.json`);
+	let doc = JSON.parse(data);
+	let tables = flatten(doc.sections.map(section => section.tables).filter(tables => tables != null));
+	let stations = tables.reduce((allStations, division) => {
+		let divisionStations = division.map(station => {
+			let typesString = station['Lifeboat type(s)'].text;
+			let launchString = station['Launch method'].text;
+			let types = parseTypes(typesString)
+			let launchMethods = parseLaunchMethods(launchString)
+			let name = parseStation(station['Station'].text)
+			return {
+				types,
+				name,
+				launchMethods
+			}
+		})
+		return allStations.concat(divisionStations)
+	}, []).reduce((stationsByName, station) => {
+		stationsByName[station.name] = {
+			types: station.types,
+			launchMethods: station.launchMethods
+		}
+		return stationsByName
+	}, {});
+	
+	return stations;
 }
 
 function parseStation(stationText) {
@@ -102,6 +95,6 @@ function replace(input, replacements) {
     , input).trim()
 }
 
-ifCmd(module, fetchWikiData)
+ifCmd(module, convertWikiData)
 
-module.exports.fetchWikiData = fetchWikiData;
+module.exports.convertWikiData = convertWikiData;
