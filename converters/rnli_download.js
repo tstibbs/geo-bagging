@@ -12,7 +12,7 @@ function downloadStationsList() {
 }
 
 async function downloadEnrichingData() {
-	let data = await wtfWikipedia.fetch("List_of_RNLI_stations", "en")
+	let data = await wtfWikipedia.fetch("List_of_RNLI_stations", "en", constants.wikipediaOptions)
 	let dataString = JSON.stringify(data, null, 2);
 	await writeFile(`${inputDir}/wiki.json`, dataString);
 }

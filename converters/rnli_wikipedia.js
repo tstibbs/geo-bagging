@@ -1,5 +1,4 @@
 const fs = require('fs');
-const wtfWikipedia = require("wtf_wikipedia");
 const {ifCmd, readFile, writeFile} = require('./utils');
 const constants = require('./constants');
 require('global-tunnel-ng').initialize();
@@ -56,23 +55,20 @@ function parseTypes(typesString) {
 	let replacements = [
 		['Atlantic 75', 'Atlantic75'],
 		['Atlantic 85', 'Atlantic85'],
-		['Shannon class 13-06 RNLB', 'Shannon'],
 		['Shannon Class', 'Shannon'],
 		['Arancia IRB \\(A-76\\)', 'Arancia'],
 		['Tamar-class', 'Tamar'],
 		['Tyne-class', 'Tyne'],
 		['H\\-class', 'H'],
 		['E\\-class', 'E'],
-		['D\\-class \\(1B1\\)', 'D'],
 		['D\\-class \\(IB1\\)', 'D'],
-		['D\\-class', 'D']		
+		['D\\-class', 'D'],
 	];
     return multiReplace(typesString, replacements)
 }
 
 function parseLaunchMethods(launchString) {
     let replacements = [
-        ['W\\.E\\.F\\. 8 December 2014', ''], //I have no idea what this is
         ['Moored afloat', 'MooredAfloat'],
         ['Floating cradle', 'FloatingCradle'],
         ['Floating house', 'FloatingHouse'],

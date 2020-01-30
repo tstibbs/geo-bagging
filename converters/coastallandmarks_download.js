@@ -22,7 +22,7 @@ function downloadLighthouses() {
 		'List_of_lighthouses_in_the_Isle_of_Man',
 		'List_of_lighthouses_in_Ireland'
 	];
-	return wtf.fetch(allPages).then(pageDocs => {
+	return wtf.fetch(allPages, 'en', constants.wikipediaOptions).then(pageDocs => {
 		let data = JSON.stringify(pageDocs, null, 2);
 		return writeFile(`${inputDir}/lighthouses.json`, data);
 	});
@@ -31,7 +31,7 @@ function downloadLighthouses() {
 let categoryPages = {};
 
 function fetchCategories(category) {
-	return wtf.category(category).then(result => {
+	return wtf.category(category, 'en', constants.wikipediaOptions).then(result => {
 		if (result.pages != null && result.pages.length > 0) {
 			categoryPages[category] = result.pages;
 		}
@@ -48,7 +48,7 @@ function downloadPiers() {
 	return fetchCategories('Category:Piers_in_the_United_Kingdom').then(() => {
 		let pageNames = [].concat(...(Object.entries(categoryPages).map(([category, pages]) => pages))).map(page => page.title);
 		if (pageNames.length > 0) {
-			return wtf.fetch(pageNames).then(docs => {
+			return wtf.fetch(pageNames, 'en', constants.wikipediaOptions).then(docs => {
 				let data = {
 					categories: categoryPages,
 					docs: docs
