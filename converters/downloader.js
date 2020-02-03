@@ -1,6 +1,7 @@
 const fs = require('fs');
 const request = require('request');
 const constants = require('./constants');
+const {createTempDir} = require('./utils');
 
 function _downloadSingle(source, destination) {
 	return new Promise((resolve, reject) => {
@@ -18,17 +19,13 @@ function _downloadSingle(source, destination) {
 	});
 }
 
-function download(bundleName, urls) {
-	if (!fs.existsSync(constants.tmpInputDir)){
-		fs.mkdirSync(constants.tmpInputDir);
-	}
+async function download(bundleName, urls) {
+    await createTempDir(constants.tmpInputDir);
 	let outputDir = `${constants.tmpInputDir}`;
 	if (bundleName != null) {
 		outputDir += `/${bundleName}`;
 	}
-	if (!fs.existsSync(outputDir)){
-		fs.mkdirSync(outputDir);
-	}
+    await createTempDir(outputDir);
 	let promises = Object.entries(urls).map(([url, fileName]) => 
 		_downloadSingle(url, outputDir + '/' + fileName)
 	);

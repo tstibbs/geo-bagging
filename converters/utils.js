@@ -21,6 +21,13 @@ function doIfCmdCall(module, doit) {
 	}
 }
 
+async function createTempDir(inputDir) {
+    let exists = await util.promisify(fs.exists)(inputDir);
+    if (!exists) {
+        await util.promisify(fs.mkdir)(inputDir);
+    }
+}
+
 
 module.exports.readFile = util.promisify(fs.readFile);
 module.exports.writeFile = util.promisify(fs.writeFile);
@@ -28,3 +35,4 @@ module.exports.readdir = util.promisify(fs.readdir);
 
 module.exports.get = get;
 module.exports.ifCmd = doIfCmdCall;
+module.exports.createTempDir = createTempDir;

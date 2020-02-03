@@ -2,6 +2,7 @@ const fs = require('fs');
 require('global-tunnel-ng').initialize();
 const constants = require('./constants');
 const Converter = require('./converter');
+const wikiUtils = require('./wikiUtils');
 const {ifCmd} = require('./utils');
 const inputDir = `${constants.tmpInputDir}/coastallandmarks`;
 
@@ -75,53 +76,42 @@ function processPiers() {
 				reject(err);
 			}
 			let data = JSON.parse(rawData);
-			//pre-process categories
-			let categories = Object.keys(data.categories).map(category => 
-				category.replace(/^Category:/, '').replace(/_/g, ' ')
-			);
-			let csv = data.docs.map(doc => {
-				let name = doc.title;
-				let hasPierCategory = doc.categories.some(category => {
-					return categories.includes(category);
-				});
-				if (hasPierCategory) {
-					let docCoords = flatten(doc.sections.filter(section =>
-						section.templates != null
-					).map(section => {
-						return section.templates.filter(template => 
-							template.template == "coord"
-						);
-					})).filter(sectionCoords => 
-						sectionCoords != null
+			let docs = wikiUtils.filterPages(data);
+			let csv = docs.map(doc => {
+				let docCoords = flatten(doc.sections.filter(section =>
+					section.templates != null
+				).map(section => {
+					return section.templates.filter(template => 
+						template.template == "coord"
 					);
-					let openings = flatten(doc.sections.filter(section =>
-						section.infoboxes != null
-					).map(section => {
-						return section.infoboxes.filter(infobox => 
-							infobox.open != null && infobox.open.text != null
-						).map(infobox =>
-							infobox.open.text
-						);
-					})).filter(opening => 
-						opening != null
+				})).filter(sectionCoords => 
+					sectionCoords != null
+				);
+				let openings = flatten(doc.sections.filter(section =>
+					section.infoboxes != null
+				).map(section => {
+					return section.infoboxes.filter(infobox => 
+						infobox.open != null && infobox.open.text != null
+					).map(infobox =>
+						infobox.open.text
 					);
-					if (docCoords.length > 0) {
-						if (docCoords.length > 1) {
-							console.log(`Multiple coords found for "${name}"`)
-						}
-						if (openings.length > 1) {
-							console.log(`Multiple open dates for "${name}"`)
-						}
-						let docCoord = docCoords[0];
-						let opening = openings.length > 0 ? openings[0] : null;
-						return {
-							name: doc.title,
-							lat: docCoord.lat,
-							lng: docCoord.lon,
-							opening: opening
-						}
-					} else {
-						return null;
+				})).filter(opening => 
+					opening != null
+				);
+				if (docCoords.length > 0) {
+					if (docCoords.length > 1) {
+						console.log(`Multiple coords found for "${name}"`)
+					}
+					if (openings.length > 1) {
+						console.log(`Multiple open dates for "${name}"`)
+					}
+					let docCoord = docCoords[0];
+					let opening = openings.length > 0 ? openings[0] : null;
+					return {
+						name: doc.title,
+						lat: docCoord.lat,
+						lng: docCoord.lon,
+						opening: opening
 					}
 				} else {
 					return null;
