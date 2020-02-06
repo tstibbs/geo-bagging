@@ -1,5 +1,4 @@
-const fs = require('fs');
-const {ifCmd, readFile, writeFile} = require('./utils');
+const {ifCmd, readFile} = require('./utils');
 const constants = require('./constants');
 require('global-tunnel-ng').initialize();
 const inputDir = `${constants.tmpInputDir}/rnli`;

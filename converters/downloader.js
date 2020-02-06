@@ -6,16 +6,28 @@ const {createTempDir} = require('./utils');
 function _downloadSingle(source, destination) {
 	return new Promise((resolve, reject) => {
 		let file = fs.createWriteStream(destination);
-		request(source)
-		.pipe(file)
-		.on('finish', () => {
-			file.close(() => {
-				resolve();
-			});
-		}).on('error', (err) => {
-			console.log(err);
-			fs.unlink(destination, reject);
-		});
+        let req = request(source);  
+        req
+        .on('error', err => { //request error
+                req.abort();
+                reject(err);
+        })
+        .on('response', response => {
+            if (response.statusCode != 200) {
+                req.abort();
+                reject(response.statusCode);
+            }
+        })
+        .pipe(file)
+        .on('finish', () => {
+            file.close(() => {
+                resolve();
+            });
+        })
+        .on('error', (err) => { //stream error
+            console.log(err);
+            fs.unlink(destination, reject);
+        });
 	});
 }
 
@@ -30,11 +42,9 @@ async function download(bundleName, urls) {
 		_downloadSingle(url, outputDir + '/' + fileName)
 	);
 	let from = bundleName != null ? bundleName : Object.keys(urls).join(';');
-	return Promise.all(promises).then(values => {
-		console.log(`Finished downloading '${from}'.`);
-		return values;
-	}).catch(reason => { 
-		console.log(`Error downloading '${from}': ${reason}`)
+	return Promise.all(promises).catch(error => { 
+        console.log(`Error downloading '${from}': ${error}`)
+        throw error;
 	});
 }
 
