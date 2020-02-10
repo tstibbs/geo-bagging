@@ -14,10 +14,15 @@ function get(path) {
 	});
 }
 
-function doIfCmdCall(module, doit) {
+async function doIfCmdCall(module, doit) {
 	//execute if run from command line
 	if (!module.parent) {
-		doit();
+        try {
+            await doit();
+        } catch (err) {
+            console.log(err);
+            process.exit(1);
+        }
 	}
 }
 
@@ -25,6 +30,13 @@ async function createTempDir(inputDir) {
     let exists = await util.promisify(fs.exists)(inputDir);
     if (!exists) {
         await util.promisify(fs.mkdir)(inputDir);
+    }
+}
+
+async function deleteFile(file) {
+    let exists = await util.promisify(fs.exists)(file);
+    if (exists) {
+        await util.promisify(fs.unlink)(file);
     }
 }
 
@@ -36,3 +48,4 @@ module.exports.readdir = util.promisify(fs.readdir);
 module.exports.get = get;
 module.exports.ifCmd = doIfCmdCall;
 module.exports.createTempDir = createTempDir;
+module.exports.deleteFile = deleteFile;
