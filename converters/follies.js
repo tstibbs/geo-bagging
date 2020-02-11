@@ -1,6 +1,4 @@
-const fs = require('fs');
 const xml2js = require('xml2js');
-const Stream = require('stream');
 const {ifCmd, readFile} = require('./utils');
 const Converter = require('./converter');
 const xslt = require('./xslt');

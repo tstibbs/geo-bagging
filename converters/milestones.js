@@ -42,7 +42,7 @@ class WaypointsConverter extends Converter {
 	}
 	
 	_streamString(str) {
-		var s = new stream.Readable();
+		let s = new stream.Readable();
 		s.push(str);
 		s.push('\n');
 		s.push(null);
@@ -53,24 +53,24 @@ class WaypointsConverter extends Converter {
 		if (fileName.startsWith('MSS_Summary_Sheet_Milestones')) {
 			return 'Milestones';
 		} else {
-			var match = /MSS_Summary_Sheet_(.*)\.xls/.exec(fileName);
+			let match = /MSS_Summary_Sheet_(.*)\.xls/.exec(fileName);
 			return match[1];
 		}
 	}
 
 	_readSheet(fileName) {
-		var type = this._extractType(fileName);
-		var workbook = xlsx.readFile(inputDir + '/' + fileName);
-		var sheets = Object.keys(workbook.Sheets).filter(sheet => !/^Sheet\d$/.test(sheet));
+		let type = this._extractType(fileName);
+		let workbook = xlsx.readFile(inputDir + '/' + fileName);
+		let sheets = Object.keys(workbook.Sheets).filter(sheet => !/^Sheet\d$/.test(sheet));
 		if (sheets.length > 1) {
 			throw new Error(`We only know how to deal with a single sheet of data: ${sheets}`);
 		}
 		if (sheets.length == 0) {
 			sheets = ['Sheet1']; //Milesmarkers (at least) doesn't name its sheets
 		}
-		var str = xlsx.utils.sheet_to_csv(workbook.Sheets[sheets[0]]);
+		let str = xlsx.utils.sheet_to_csv(workbook.Sheets[sheets[0]]);
 		//remove first line
-		var body = str.substring(str.indexOf('\n') + 1, str.length)
+		let body = str.substring(str.indexOf('\n') + 1, str.length)
 		if (body.endsWith('\n')) {
 			body = body.substring(0, body.length - 1);
 		}
@@ -80,7 +80,7 @@ class WaypointsConverter extends Converter {
 	}
 	
 	async writeOut2(inputs, output) {
-		var combinedStream = CombinedStream.create();
+		let combinedStream = CombinedStream.create();
 		inputs.forEach(input => combinedStream.append(this._readSheet(input)));
 		await this.writeOutStream(combinedStream, output);
 	}

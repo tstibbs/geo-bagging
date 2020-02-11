@@ -125,7 +125,7 @@ async function buildDataFile() {
 		return name != null && name.trim() != "Pembrokeshire"
 	});
 
-	let pEnglandCoastPath = parse('England_Coast_Path_Route.geojson', properties => 
+	let pEnglandCoastPath = parse('England_Coast_Path_Route.geojson', () => 
 		englandCoastPathDetails
 	, crsTransformer, feature => {
 		return feature.properties["Alt_Route"].trim() == "No"
@@ -133,7 +133,7 @@ async function buildDataFile() {
 		return combineReducer(features);
 	});
 
-	let pWalesCoastPath = parse('WalesCoastPath.json', properties => 
+	let pWalesCoastPath = parse('WalesCoastPath.json', () => 
 		walesCoastPathDetails
 	, crsTransformer, feature => {
 		let status = feature.properties["STATUS"]

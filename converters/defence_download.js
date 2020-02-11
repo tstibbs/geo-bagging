@@ -15,7 +15,7 @@ async function download() {
     let outputFile = fs.createWriteStream(outputDir + '/' + fileName);
     fs.createReadStream(outputDir + '/' + tempFile)
         .pipe(unzipper.Parse())
-        .on('entry', function (entry) {
+        .on('entry', entry => {
             entry.pipe(outputFile);
         });
 }

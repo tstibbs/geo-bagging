@@ -22,29 +22,28 @@ function _downloadJar() {
 	return downloadInProgress;
 }
 
-function transform(xslt, input, output) {
-	return _downloadJar().then(() => {
-		return new Promise((resolve, reject) => {
-			//assumes java is on the path
-			var child = spawn(`java`, [
-				`-jar`,
-				`${constants.tmpInputDir}/Saxon-HE-9.8.0-6.jar`,
-				`-xsl:${xslt}`,
-				`-s:${constants.tmpInputDir}/${input}`,
-				`-o:${constants.tmpInputDir}/${output}`
-			], {
-				stdio: 'inherit'
-			});
-			child.on('close', function (exitCode) {
-				if (exitCode == 0) {
-					resolve();
-				} else {
-					console.error(`Non-zero exit code: ${exitCode}`);
-					reject(exitCode);
-				}
-			});
-		});
-	});
+async function transform(xslt, input, output) {
+	await _downloadJar();
+    return new Promise((resolve, reject) => {
+        //assumes java is on the path
+        let child = spawn(`java`, [
+            `-jar`,
+            `${constants.tmpInputDir}/Saxon-HE-9.8.0-6.jar`,
+            `-xsl:${xslt}`,
+            `-s:${constants.tmpInputDir}/${input}`,
+            `-o:${constants.tmpInputDir}/${output}`
+        ], {
+            stdio: 'inherit'
+        });
+        child.on('close', exitCode => {
+            if (exitCode == 0) {
+                resolve();
+            } else {
+                console.error(`Non-zero exit code: ${exitCode}`);
+                reject(exitCode);
+            }
+        });
+    });
 }
 
 module.exports = transform;

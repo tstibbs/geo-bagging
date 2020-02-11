@@ -1,32 +1,30 @@
 const wtf = require('wtf_wikipedia');
 const constants = require('./constants');
 
-function fetchCategories(category, exclusions) {
+async function fetchCategories(category, exclusions) {
 	let categories = [];
 	let pages = [];
-	return wtf.category(category, 'en', constants.wikipediaOptions).then(result => {
-		if (result.pages != null && result.pages.length > 0) {
-			categories = [category];
-			pages = result.pages.map(page => page.title);
-		}
-		let subCats = result.categories;
-		if (exclusions) {
-			subCats = subCats.filter(category => 
-				!exclusions.includes(category.title)
-			)
-		}
-		let promises = subCats.map(category => {
-			return fetchCategories(category.title, exclusions)
-		})
-		return Promise.all(promises).then(results => {
-			categories = categories.concat(...results.map(result => result.categories));
-			pages = pages.concat(...results.map(result => result.pageNames));
-			return {
-				categories: categories,
-				pageNames: pages
-			};
-		});
-	});
+	let result = await wtf.category(category, 'en', constants.wikipediaOptions);
+    if (result.pages != null && result.pages.length > 0) {
+        categories = [category];
+        pages = result.pages.map(page => page.title);
+    }
+    let subCats = result.categories;
+    if (exclusions) {
+        subCats = subCats.filter(category => 
+            !exclusions.includes(category.title)
+        )
+    }
+    let promises = subCats.map(category =>
+        fetchCategories(category.title, exclusions)
+    );
+    const results = await Promise.all(promises);
+    categories = categories.concat(...results.map(result => result.categories));
+    pages = pages.concat(...results.map(result => result.pageNames));
+    return {
+        categories: categories,
+        pageNames: pages
+    };
 }
 
 async function fetchPages(pageNames) {

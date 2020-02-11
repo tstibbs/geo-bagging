@@ -41,11 +41,13 @@ async function download(bundleName, urls) {
 	let promises = Object.entries(urls).map(([url, fileName]) => 
 		_downloadSingle(url, outputDir + '/' + fileName)
 	);
-	let from = bundleName != null ? bundleName : Object.keys(urls).join(';');
-	return Promise.all(promises).catch(error => { 
-        console.log(`Error downloading '${from}': ${error}`)
+    let from = bundleName != null ? bundleName : Object.keys(urls).join(';');
+    try {
+        await Promise.all(promises);
+    } catch (err) { 
+        console.log(`Error downloading '${from}': ${err}`)
         throw error;
-	});
+	}
 }
 
 module.exports.download = download;

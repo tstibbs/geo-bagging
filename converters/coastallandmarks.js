@@ -119,7 +119,6 @@ function processPiers() {
 			}).filter(coord =>
 				coord != null
 			).map(pier => {
-				let link = wikify(pier.name);
 				return [
 					pier.lng,
 					pier.lat,
@@ -134,15 +133,14 @@ function processPiers() {
 	});
 }
 
-function processData() {
+async function processData() {
 	let csvsPromises = [processLighthouses(), processPiers()];
-	return Promise.all(csvsPromises).then(csvs => {
-		let csv = flatten(csvs).sort((rowA, rowB) => {
-			return rowA[2].localeCompare(rowB[2]);
-		});
-		const converter = new Converter(attributionString, columnHeaders);
-		return converter.writeOutCsv(csv, '../js/bundles/coastallandmarks/data.json');
-	});
+	let csvs = await Promise.all(csvsPromises);
+    let csv = flatten(csvs).sort((rowA, rowB) => {
+        return rowA[2].localeCompare(rowB[2]);
+    });
+    const converter = new Converter(attributionString, columnHeaders);
+    return converter.writeOutCsv(csv, '../js/bundles/coastallandmarks/data.json');
 }
 
 ifCmd(module, processData);

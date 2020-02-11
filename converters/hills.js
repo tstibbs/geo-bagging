@@ -43,14 +43,14 @@ class HillConverter extends Converter {
 	
 	extractColumns(record) {
 		if (record.length > 1) {
-			var classification = record[10];
+			let classification = record[10];
 			if (classification == null) {
 				console.log(record)
 			}
 			if (classification.indexOf(';') > -1) {
 				throw new Error("Classification string already contains semi-colons; our replacement could break something. String is: " + classification);
 			}
-			var classes = classification.split(',');
+			let classes = classification.split(',');
 			let allClasses = [];
 			classes.forEach((classString) => {
 				if (classString.endsWith('=')) {
@@ -100,7 +100,6 @@ function buildDataFile() {
 	.pipe(unzipper.Parse())
 	.on('entry', async (entry) => {
 		console.log('entry');
-		let fileName = entry.path;
 		let chunks = []
 		for await (let chunk of entry) {
 			chunks.push(chunk)
