@@ -1,4 +1,3 @@
-const fs = require('fs');
 const {ifCmd} = require('./utils');
 const downloadFiles = require('./downloader').download;
 

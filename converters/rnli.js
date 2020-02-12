@@ -1,6 +1,5 @@
-const fs = require('fs');
 const Converter = require('./converter');
-const {ifCmd, readFile} = require('./utils');
+const {ifCmd} = require('./utils');
 const constants = require('./constants');
 const rnliWiki = require('./rnli_wikipedia');
 
@@ -43,10 +42,10 @@ class RnliConverter extends Converter {
 	extractColumns(record) {
 		if (record.length > 1) {
 			//X,Y,OBJECTID_1,OBJECTID,SAP_ID,Station,Station_Ty,County,Region,Division,Country,Lifesaving,Lifesavi_1,Lat_Dec_De,Long_Dec_D,URL
-			var lng = parseFloat(record[0]);
-			var lat = parseFloat(record[1]);
-			var stationName = record[5];
-			var url = record[15];
+			let lng = parseFloat(record[0]);
+			let lat = parseFloat(record[1]);
+			let stationName = record[5];
+			let url = record[15];
 			
 			let lifeboatTypes = 'Unknown';
 			let launchMethods = 'Unknown';

@@ -1,7 +1,4 @@
-const fs = require('fs');
 const xml2js = require('xml2js');
-const streamify = require('stream-array');
-const Stream = require('stream');
 const constants = require('./constants');
 const {ifCmd, readFile} = require('./utils');
 const Converter = require('./converter');

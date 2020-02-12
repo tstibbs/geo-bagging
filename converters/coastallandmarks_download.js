@@ -1,19 +1,12 @@
-const fs = require('fs');
-const util = require("util");
-const wtf = require('wtf_wikipedia');
+const wikiUtils = require('./wikiUtils');
 
-const {ifCmd} = require('./utils');
+const {ifCmd, writeFile, createTempDir} = require('./utils');
 require('global-tunnel-ng').initialize();
-const writeFile = util.promisify(fs.writeFile);
 
 const constants = require('./constants');
 const inputDir = `${constants.tmpInputDir}/coastallandmarks`;
 
-if (!fs.existsSync(inputDir)){
-	fs.mkdirSync(inputDir);
-}
-
-function downloadLighthouses() {
+async function downloadLighthouses() {
 	const allPages = [
 		'List_of_lighthouses_in_Scotland',
 		'List_of_lighthouses_in_England',
@@ -22,48 +15,25 @@ function downloadLighthouses() {
 		'List_of_lighthouses_in_the_Isle_of_Man',
 		'List_of_lighthouses_in_Ireland'
 	];
-	return wtf.fetch(allPages, 'en', constants.wikipediaOptions).then(pageDocs => {
-		let data = JSON.stringify(pageDocs, null, 2);
-		return writeFile(`${inputDir}/lighthouses.json`, data);
-	});
+	let pageDocs = await wikiUtils.fetchPages(allPages);
+	await writeFile(`${inputDir}/lighthouses.json`, JSON.stringify(pageDocs, null, 2));
 }
 
-let categoryPages = {};
-
-function fetchCategories(category) {
-	return wtf.category(category, 'en', constants.wikipediaOptions).then(result => {
-		if (result.pages != null && result.pages.length > 0) {
-			categoryPages[category] = result.pages;
-		}
-		return Promise.all(result.categories.filter(category => 
-			//exclude piers in London, as few of them are piers of any interest (just floating ferry pontoons really)
-			category.title != "Category:Piers in London"
-		).map(category => {
-			return fetchCategories(category.title)
-		}));
-	});
+async function downloadPiers() {
+    let exclusions = ['Category:Piers in London'];//exclude piers in London, as few of them are piers of any interest (just floating ferry pontoons really)
+	let categoryPages = await wikiUtils.fetchCategories('Category:Piers_in_the_United_Kingdom', exclusions);;
+	if (categoryPages.pageNames.length > 0) {
+		categoryPages.pages = await wikiUtils.fetchPages(categoryPages.pageNames);
+		await writeFile(`${inputDir}/piers.json`, JSON.stringify(categoryPages, null, 2));
+	}
 }
 
-function downloadPiers() {
-	return fetchCategories('Category:Piers_in_the_United_Kingdom').then(() => {
-		let pageNames = [].concat(...(Object.entries(categoryPages).map(([category, pages]) => pages))).map(page => page.title);
-		if (pageNames.length > 0) {
-			return wtf.fetch(pageNames, 'en', constants.wikipediaOptions).then(docs => {
-				let data = {
-					categories: categoryPages,
-					docs: docs
-				};
-				return writeFile(`${inputDir}/piers.json`, JSON.stringify(data, null, 2));
-			});
-		}
-	});
-}
-
-function fetchData() {
-	return Promise.all([
-		downloadLighthouses(),
-		downloadPiers()
-	]);
+async function fetchData() {
+	await createTempDir(inputDir);
+    await Promise.all([
+        downloadLighthouses(),
+        downloadPiers()
+    ]);
 }
 
 ifCmd(module, fetchData);

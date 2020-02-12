@@ -4,7 +4,7 @@ const csv = require('csv');
 const fs = require('fs');
 const cheerio = require('cheerio');
 const gridconversion = require('./gridconversion');
-const {ifCmd, writeFile} = require('./utils');
+const {writeFile} = require('./utils');
 
 function header(attributionString, columnHeaders) {
 return `{
@@ -138,10 +138,8 @@ class Converter {
 				.pipe(new HeaderFooterTransformer(this._header))
 				.pipe(writeStream);
 			writeStream.on('finish', async () => {
-				console.log('write finished');
 				await this.writeMetaData(fileName, this._lineCount, this._lastUpdated);
 				this._lineCount = 0;
-				console.log(this._axes);
 				resolve();
 			});
 			writeStream.on('error', error => {

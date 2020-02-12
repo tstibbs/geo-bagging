@@ -1,65 +1,56 @@
-//automated download and processing
-const coastallandmarksDownload = require('./coastallandmarks_download');
-const coastallandmarksProcessing = require('./coastallandmarks');
-const hillsDownload = require('./hills_download');
-const hillsProcessing = require('./hills');
-const milestonesDownload = require('./milestones_download');
-const milestonesProcessing = require('./milestones');
-const trailsDownload = require('./trails_download');
-const trailsProcessing = require('./trails');
-const defenceDownload = require('./defence_download');
-const defenceProcessing = require('./defence');
-const folliesDownload = require('./follies_download');
-const folliesProcessing = require('./follies');
-const rnliDownload = require('./rnli_download');
-const rnliProcessing = require('./rnli');
-const nationalparksDownload = require('./nationalparks_download');
-const nationalparksProcessing = require('./nationalparks');
-//don't require seperate download
-const ntProcessing = require('./nt');
-//require manual download
-const trigsProcessing = require('./trigs');
+const downloadSources = [
+    'defence',
+    'hills',
+    'milestones',
+    'trails',
+    'follies',
+    'rnli',
+    'nationalparks',
+    'coastallandmarks',
+]
+const downloaders = new Map(downloadSources.map(processor =>
+    [processor, require(`./${processor}_download`)]
+));
+const processors = new Map([
+    ...downloadSources,
+    //downloading and processing together
+    'nt',
+    //processing manually downloaded stuff
+    'trigs'
+].map(processor => [processor, require(`./${processor}`)]));
 
+let errored = [];
 
-let allDownloads = [
-	defenceDownload(),
-	hillsDownload(),
-	milestonesDownload(),
-	trailsDownload(),
-	folliesDownload(),
-	rnliDownload(),
-	nationalparksDownload(),
-	coastallandmarksDownload()
-];
-Promise.all(allDownloads).then(() => {
-	console.log("");
-	console.log("Initial download finished.");
-	console.log("");
-}).then(async () => {
-	//processing downloaded stuff
-	let processors = [
-		'defence',
-		'hills',
-		'milestones',
-		'trails',
-		'follies',
-		'rnli',
-		'nationalparks',
-		'coastallandmarks',
-		//downloading and processing together
-		'nt',
-		//processing manually downloaded stuff
-		'trigs'
-	];
-	for (const processorName of processors) {
-		console.log(`Starting processing ${processorName}.`);
-		let processor = eval(`${processorName}Processing`);
-		try {
-			await processor();
-			console.log(`Processing ${processorName} completed.`);
-		} catch (err) {
-			console.log(`Processing ${processorName} errored.`);
-			console.log(err);
-		}
-	}
-});
+async function single(action, name, processor) {
+    console.log(`${action} ${name}: started.`);
+    try {
+        await processor();
+        console.log(`${action} ${name}: completed.`);
+    } catch (err) {
+        console.log(`${action} ${name}: errored.`);
+        console.log(err);
+        errored.push(`${action} ${name}`)
+    }
+}
+
+async function run() {
+    for (const [name, processor] of downloaders) {
+        await single('Downloading', name, processor)
+    }
+    if (errored.length == 0) {//only continue if none of the download have errored
+        console.log("");
+        console.log("Initial download finished, starting processing.");
+        console.log("");
+        //processing downloaded stuff
+        for (const [name, processor] of processors) {
+            await single('Processing', name, processor)
+        }
+    }
+    if (errored.length > 0) {
+        console.log("");
+        console.log(['Some things errored: ', ...errored].join('\n * '))
+        process.exit(1)
+    }
+}
+
+run();

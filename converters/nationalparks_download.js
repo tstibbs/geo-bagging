@@ -1,9 +1,9 @@
-const fs = require('fs');
 const {ifCmd} = require('./utils');
 const downloadFiles = require('./downloader').download;
 
 const urls = {
-	'http://geoportal1-ons.opendata.arcgis.com/datasets/df607d4ffa124cdca8317e3e63d45d78_2.geojson': 'NationalParks.json', //https://data.gov.uk/dataset/31c4e3b8-11bc-4eb9-be62-c281a3dc5c7f/national-parks-august-2016-generalised-clipped-boundaries-in-great-britain
+    // https://opendata.arcgis.com/datasets/f41bd8ff39ce4a2393c2f454006ea60a_0.geojson -> http://geoportal1-ons.opendata.arcgis.com/datasets/f41bd8ff39ce4a2393c2f454006ea60a_0/data
+	'https://opendata.arcgis.com/datasets/f41bd8ff39ce4a2393c2f454006ea60a_0.geojson': 'NationalParks.json', 
 };
 
 function download() {
