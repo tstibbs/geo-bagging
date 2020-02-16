@@ -1,26 +1,15 @@
-const cheerio = require('cheerio');
 const Converter = require('./converter');
-const {ifCmd, get} = require('./utils');
+const {ifCmd, readFile} = require('./utils');
+const constants = require('./constants');
 
 const attributionString = "This file adapted from data available on www.nationaltrust.org.uk which is copyright © National Trust";
 const columnHeaders = "[Longitude,Latitude,Id,Name,Link,type,facilities]"
 
-const allDataPath = 'https://www.nationaltrust.org.uk/search/data/all-places';
-const basePath = 'https://www.nationaltrust.org.uk/search?query=&type=place&view=map';
-
-async function getHtml(path) {
-	let [body, retrievedPath] = await get(path);
-    return cheerio.load(body);
-}
-
-async function getIdsForAspect(aspect) {
-	let placePromises = aspect.values.map(type => 
-		get(`${basePath}&${aspect.param}=${type}`)
-	);
-	const values = await Promise.all(placePromises);
+function getIdsForAspect(values, ) {
     let placeIds = {};
-    values.forEach(([body, path], i) => {
-        let attribute = aspect.values[i];
+    values.filter(([body, attribute]) => 
+        attribute != 'fifty-things'//This doesn't really add any value as an attribute, so let's just filter it out
+    ).forEach(([body, attribute]) => {
         let result = /<script>var nt_searchResultsPlaceIds = \[(\d+(, \d+)*)\]<\/script>/.exec(body);
         if (result == null) {
             console.log('result null');
@@ -28,26 +17,20 @@ async function getIdsForAspect(aspect) {
             console.log(body);
             placeIds[attribute] = [];
         } else {
-            placeIds[attribute] = JSON.parse('[' + result[1] + ']');
+            placeIds[attribute] = result[1].split(', ').map(str => parseInt(str));
         }
     });
     return placeIds;
 }
 
 async function buildDataFile() {
-    let $ = await getHtml(basePath);
-    let placeTypes = $("input[name='PlaceFilter']").toArray().map(elem => $(elem).attr('value'));
-    let facilityTypes = $("input[name='FacilityFilter']").toArray().map(elem => $(elem).attr('value'));
-    let aspects = {
-        placeTypes: {values: placeTypes, param: 'PlaceFilter'},
-        facilityTypes: {values: facilityTypes, param: 'FacilityFilter'}
-    };
-    let placePromises = getIdsForAspect(aspects.placeTypes);
-    let facilityPromises = getIdsForAspect(aspects.facilityTypes);
-    let datas = await Promise.all([placePromises, facilityPromises]);
+    let input = await readFile(`${constants.tmpInputDir}/nt/data.json`)
+    let {places, facilities, allData} = JSON.parse(input);
+    places = getIdsForAspect(places);
+    facilities = getIdsForAspect(facilities);
     let idsByAspect = {
-        places: datas[0],
-        facilities: datas[1]
+        places: places,
+        facilities: facilities
     };
     let aspectsById = {};
     Object.entries(idsByAspect).forEach(([aspect, attributesToIds]) => {
@@ -63,8 +46,7 @@ async function buildDataFile() {
             });
         });
     });
-    let [body, path] = await get(allDataPath);
-    let data = JSON.parse(body);
+    let data = JSON.parse(allData);
     let csv = Object.entries(data)
         .filter(([id, details]) => details.location != null)
         .map(([id, details]) => [parseInt(id), details])
