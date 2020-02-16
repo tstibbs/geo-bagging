@@ -29,7 +29,7 @@ async function doIfCmdCall(module, doit) {
 async function createTempDir(inputDir) {
     let exists = await util.promisify(fs.exists)(inputDir);
     if (!exists) {
-        await util.promisify(fs.mkdir)(inputDir);
+        await util.promisify(fs.mkdir)(inputDir, {recursive: true});
     }
 }
 

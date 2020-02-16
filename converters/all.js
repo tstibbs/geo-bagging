@@ -7,14 +7,13 @@ const downloadSources = [
     'rnli',
     'nationalparks',
     'coastallandmarks',
+    'nt',
 ]
 const downloaders = new Map(downloadSources.map(processor =>
     [processor, require(`./${processor}_download`)]
 ));
 const processors = new Map([
     ...downloadSources,
-    //downloading and processing together
-    'nt',
     //processing manually downloaded stuff
     'trigs'
 ].map(processor => [processor, require(`./${processor}`)]));
