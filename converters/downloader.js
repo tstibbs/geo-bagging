@@ -32,7 +32,6 @@ function _downloadSingle(source, destination) {
 }
 
 async function download(bundleName, urls) {
-    await createTempDir(constants.tmpInputDir);
 	let outputDir = `${constants.tmpInputDir}`;
 	if (bundleName != null) {
 		outputDir += `/${bundleName}`;
