@@ -13,8 +13,6 @@ mapnik.register_default_input_plugins();
 
 async function visualise(datasource, qualifier) {
     let outputDir = `tmp-input/comparisons/${datasource}`;
-    await createTempDir('tmp-input');
-    await createTempDir('tmp-input/comparisons');
     await createTempDir(outputDir);
     let outputPath = `${outputDir}/output-${qualifier}.png`;
     let geojson = await readFile(`../js/bundles/${datasource}/data.geojson`);
