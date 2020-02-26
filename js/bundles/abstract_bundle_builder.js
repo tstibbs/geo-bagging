@@ -8,6 +8,7 @@ define(['leaflet', 'jquery', 'constants'],
 				this._bundleConfig = bundleConfig;
 				this._bundleName = bundleName.indexOf('/') == -1 ? bundleName : bundleName.substring(0, bundleName.lastIndexOf('/'));
 				this._urlPrefix = urlPrefix;
+                this._visits = [];
 			},
 			
 			_buildDataUrl: function() {
@@ -45,7 +46,6 @@ define(['leaflet', 'jquery', 'constants'],
 						return datas[0];//only need to pass the actual data on, not the visits
 					});
 				} else {
-					this._visits = [];
 					return dataLoadPromise;
 				}
 			},
