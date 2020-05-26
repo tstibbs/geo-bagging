@@ -12,10 +12,10 @@ define(['../abstract_points_builder'],
 				
 				var url = 'http://www.hill-bagging.co.uk/mountaindetails.php?rf=' + id;
 
-				var extraInfos = {
-					'Height': height,
-					'Classifications': this.split(classification, this._bundleConfig.hillDisplayNames)
-				};
+				var extraInfos = [
+					['Height', height],
+					['Classifications', this.split(classification, this._bundleConfig.hillDisplayNames)]
+                ];
 				this.addMarker(id, lat, lng, url, name, extraInfos, null, [classification]);
 			},
 		});

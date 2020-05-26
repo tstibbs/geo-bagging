@@ -44,9 +44,10 @@ define(['underscore'],
 			},
 			
 			buildDescription: function(extraTexts) {
-				var popupText = "";
-				Object.keys(extraTexts).forEach(function(key) {
-					var value = extraTexts[key];
+                var popupText = "";
+                extraTexts.forEach(function(keyAndVal) {
+                    var key = keyAndVal[0]
+                    var value = keyAndVal[1]
 					if (value != null && value != "") {
 						if (popupText.length > 0) {
 							popupText += '<br />';
@@ -76,11 +77,10 @@ define(['underscore'],
 				var url = _.escape(unescapedUrl);
 				var extraTexts = null;
 				if (unescapedExtraTexts != null) {
-					extraTexts = {};
-					Object.keys(unescapedExtraTexts).forEach(function(key) {
-						var escapedKey = _.escape(key);
-						var value = unescapedExtraTexts[key];
-						extraTexts[escapedKey] = this._escapeValue(value);
+                    extraTexts = unescapedExtraTexts.map(function(keyAndVal) {
+                        var key = keyAndVal[0]
+                        var value = keyAndVal[1]
+						return [_.escape(key), this._escapeValue(value)]
 					}.bind(this));
 				}
 				

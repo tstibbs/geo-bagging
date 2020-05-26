@@ -8,14 +8,14 @@ define(['../abstract_geojson_builder'],
 					"type": "FeatureCollection",
 					"features": [feature]
 				};
-				var extraInfos = {
-					"Length (miles)": feature.properties.length,
-					"Notes": feature.properties.notes
-				};
+				var extraInfos = [
+					["Length (miles)", feature.properties.length],
+					["Notes", feature.properties.notes]
+                ];
 				var openedDate = feature.properties['openedDate'];
 				if (openedDate != null) {
 					var formattedDate = new Date(openedDate).toLocaleDateString();
-					extraInfos['Opened'] = formattedDate;
+					extraInfos.push(['Opened', formattedDate]);
 				}
 				return {
 					name: name,

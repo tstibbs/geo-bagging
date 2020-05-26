@@ -23,12 +23,12 @@ define(['../abstract_points_builder'],
 					}
 				}
 				
-				var extraInfos = {
-					'Notes': nullIfEmpty(category),
-					'Design': nullIfEmpty(design),
-					'Location': nullIfEmpty(location),
-					'Position': nullIfEmpty(position)
-				};
+				var extraInfos = [
+					['Notes', nullIfEmpty(category)],
+					['Design', nullIfEmpty(design)],
+					['Location', nullIfEmpty(location)],
+					['Position', nullIfEmpty(position)]
+                ];
 				this.addMarker(id, lat, lng, url, id, extraInfos, null, [type]);
 			},
 		});

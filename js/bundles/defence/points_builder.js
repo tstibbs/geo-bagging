@@ -16,19 +16,20 @@ define(['../abstract_points_builder'],
 				var description = point[10];
                 var imageLinks = point[11];
 
-				var extraInfos = {
-                    'Style': style,
-                    'Purpose': purpose,
-					'Position': location,
-					'Notes': description,
-                    'Images': this.buildImageLinks(imageLinks)
-                };
-                if (!style.includes(type)) { //if type is included in style, don't display
-                    extraInfos['Type'] = type
+				var extraInfos = [
+                    ['Style', style],
+					['Position', location],
+					['Notes', description],
+                    ['Purpose', purpose]
+                ];
+                if (!style.includes(type) || category != null) { //if type is included in style and category is null, don't display
+                    var typeString = type
+                    if (category != null) {
+                        typeString += " / " + category
+                    }
+                    extraInfos.push(['Type', typeString])
                 }
-                if (category != null) {
-                    extraInfos['Category'] = category
-                }
+                extraInfos.push(['Images', this.buildImageLinks(imageLinks)]);
 				this.addMarker(id, lat, lng, url, id, extraInfos, null, [purpose, type, condition]);
 			},
 		});
