@@ -1,3 +1,4 @@
+const assert = require('assert')
 const xml2js = require('xml2js');
 const constants = require('./constants');
 const {ifCmd, readFile} = require('./utils');
@@ -6,7 +7,7 @@ const xslt = require('./xslt');
 const {guessType} = require('./defence-type-calculation')
 
 const attributionString = "This file adapted from the database of the Defence of Britain project (http://archaeologydataservice.ac.uk/archives/view/dob/download.cfm). Copyright of the Council for British Archaeology (2006) Defence of Britain Archive [data-set]. York: Archaeology Data Service [distributor] https://doi.org/10.5284/1000327";
-const columnHeaders = "[Longitude,Latitude,Id,Type,Purpose,Categories,Link,location,Condition,description,imageLinks]"
+const columnHeaders = "[Longitude,Latitude,Id,Type,Purpose,Category,Style,Link,location,Condition,description,imageLinks]"
 
 class DobConverter extends Converter {
 	constructor() {
@@ -68,7 +69,21 @@ class DobConverter extends Converter {
         
         let type = guessType(folders)
         let purpose = folders[0]
-        folders = folders.slice(1)
+        let style = folders.slice(-1)[0]
+        let category;
+        if (folders.length == 3) {
+            category = folders[1]
+        } else if (folders.length == 2) {
+            category = null
+        } else {
+            console.error(folders)
+            assert(false)
+        }
+
+        if (category == type || category == `${type}es`) {
+            //if category is dup of type, ommit category
+            category = null
+        }
 
 		return [
 			lng,
@@ -76,7 +91,8 @@ class DobConverter extends Converter {
             id,
             type,
             purpose,
-			folders,
+            category,//optional, null if no value
+            style,
 			link,
 			location,
 			condition,
