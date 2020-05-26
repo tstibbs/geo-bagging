@@ -10,10 +10,10 @@ define(['../abstract_points_builder'],
 				var type = point[4];
 				var opened = point[5];
 
-				var extraInfos = {
-					'Type': type,
-					'Built/Opened': opened
-				};
+				var extraInfos = [
+					['Type', type],
+					['Built/Opened', opened]
+                ];
 				this.addMarker(name, lat, lng, link, name, extraInfos, null, [type]);
 			},
 		});

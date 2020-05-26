@@ -13,10 +13,10 @@ define(['../abstract_points_builder'],
 				var typeLabels = this._bundleConfig.typeData;
 				var launchMethodLabels = this._bundleConfig.dimensionValueLabels[this._bundleConfig.dimensionNames[1]];
 
-				var extraInfos = {
-					'Types': this.split(types, typeLabels),
-					'Launch Methods': this.split(launchMethods, launchMethodLabels)
-				};
+				var extraInfos = [
+					['Types', this.split(types, typeLabels)],
+					['Launch Methods', this.split(launchMethods, launchMethodLabels)]
+                ];
 				this.addMarker(name, lat, lng, link, name, extraInfos, null, [types, launchMethods]);
 			},
 		});

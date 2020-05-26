@@ -15,10 +15,10 @@ define(['../abstract_points_builder'],
 					typeDisplay = type;
 				}
 
-				var extraInfos = {
-					'Type': typeDisplay,
-					'Images': this.buildImageLinks(imageLinks)
-				};
+				var extraInfos = [
+					['Type', typeDisplay],
+					['Images', this.buildImageLinks(imageLinks)]
+                ];
 				
 				this.addMarker(name, lat, lng, url, name, extraInfos, null, [type]);
 			}
