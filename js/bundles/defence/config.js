@@ -1,7 +1,7 @@
 define(['./points_builder'],
 	function(PointsBuilder) {
 
-		var dimensionNames = ['DOB'];
+		var dimensionNames = ['Purpose', 'Type', 'Condition'];
 
 		return {
 			aspectLabel: "Defence of Britain",

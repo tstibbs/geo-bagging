@@ -3,9 +3,10 @@ const constants = require('./constants');
 const {ifCmd, readFile} = require('./utils');
 const Converter = require('./converter');
 const xslt = require('./xslt');
+const {guessType} = require('./defence-type-calculation')
 
 const attributionString = "This file adapted from the database of the Defence of Britain project (http://archaeologydataservice.ac.uk/archives/view/dob/download.cfm). Copyright of the Council for British Archaeology (2006) Defence of Britain Archive [data-set]. York: Archaeology Data Service [distributor] https://doi.org/10.5284/1000327";
-const columnHeaders = "[Longitude,Latitude,Id,Categories,Link,location,condition,description,imageLinks]"
+const columnHeaders = "[Longitude,Latitude,Id,Type,Purpose,Categories,Link,location,Condition,description,imageLinks]"
 
 class DobConverter extends Converter {
 	constructor() {
@@ -64,11 +65,17 @@ class DobConverter extends Converter {
                 .replace(' Of ', ' of ')
                 .replace(' And ', ' and ')
             )
+        
+        let type = guessType(folders)
+        let purpose = folders[0]
+        folders = folders.slice(1)
 
 		return [
 			lng,
 			lat,
-			id,
+            id,
+            type,
+            purpose,
 			folders,
 			link,
 			location,
