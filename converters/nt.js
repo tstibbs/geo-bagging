@@ -5,10 +5,12 @@ const constants = require('./constants');
 const attributionString = "This file adapted from data available on www.nationaltrust.org.uk which is copyright © National Trust";
 const columnHeaders = "[Longitude,Latitude,Id,Name,Link,type,facilities]"
 
+const attributeExcludes = ['fifty-things', 'available-for-weddings']
+
 function getIdsForAspect(values, ) {
     let placeIds = {};
     values.filter(([body, attribute]) => 
-        attribute != 'fifty-things'//This doesn't really add any value as an attribute, so let's just filter it out
+        !attributeExcludes.includes(attribute) //This doesn't really add any value as an attribute, so let's just filter it out
     ).forEach(([body, attribute]) => {
         let result = /<script>var nt_searchResultsPlaceIds = \[(\d+(, \d+)*)\]<\/script>/.exec(body);
         if (result == null) {
