@@ -6,7 +6,6 @@ The data files (i.e. anything matching `/js/bundles/**/data*.json`) are not cove
 
 Datasource name | Origin | Licence
 --------------- | ------ | -------
-
 defence | The Defence of Britain archive (http://archaeologydataservice.ac.uk/archives/view/dob/download.cfm) | ADS terms of use (http://archaeologydataservice.ac.uk/advice/termsOfUseAndAccess/TermsAndConditionsSummary), clarified by email. Citation: Council for British Archaeology (2006) Defence of Britain Archive [data-set]. York: Archaeology Data Service [distributor] https://doi.org/10.5284/1000327
 follies | The Folly Fellowship (http://www.follies.org.uk/follymaps.htm) | Specific permission for reuse in this project granted by email.
 hills | The Database of British and Irish Hills (http://www.hills-database.co.uk/downloads.html) | CC BY 3.0 (https://creativecommons.org/licenses/by/3.0/deed.en_GB)
