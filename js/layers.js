@@ -2,16 +2,16 @@ define(['leaflet', 'leaflet_bing', 'constants'],
 	function(leaflet, Leaflet_bing, constants) {
 
         var defaults = {
-            key: constants.bingKey,
-            detectRetina: true
+            key: constants.bingKey
         };
+        var bingDefaults = leaflet.extend({maxZoom: 18, minZoom: 0, detectRetina: true}, defaults)
 
 		//OS
-		var bingOsLayer = new Leaflet_bing(leaflet.extend({imagerySet: "OrdnanceSurvey", minZoom: 12, maxZoom: 18, maxNativeZoom: 17}, defaults));
-		var bingFallbackLayer = new Leaflet_bing(leaflet.extend({imagerySet: "Road", maxZoom: 11, minZoom: 0}, defaults)); //fallback layer because the OS maps don't scale well when you zoom out
+		var bingOsLayer = new Leaflet_bing(leaflet.extend({imagerySet: "OrdnanceSurvey", minZoom: 12, maxZoom: 18, maxNativeZoom: 17}, defaults));//note OS doesn't support retina
+        //fallback layer because the OS maps don't scale well when you zoom out
+		var bingFallbackLayer = new Leaflet_bing(leaflet.extend({imagerySet: "RoadOnDemand", maxZoom: 11, minZoom: 0}, defaults));//note even though this layer supports retetina, having a group with a mix of retina and non-retina screws up the zooming
 		var bingOsGroup = leaflet.layerGroup([bingOsLayer, bingFallbackLayer]);
         //Bing standard maps
-        var bingDefaults = leaflet.extend({maxZoom: 18, minZoom: 0}, defaults)
 		var bingRoads = new Leaflet_bing(leaflet.extend({imagerySet: "RoadOnDemand"}, bingDefaults));
 		var bingHybrid = new Leaflet_bing(leaflet.extend({imagerySet: "AerialWithLabelsOnDemand"}, bingDefaults));
 		var bingAerial = new Leaflet_bing(leaflet.extend({imagerySet: "Aerial"}, bingDefaults));
