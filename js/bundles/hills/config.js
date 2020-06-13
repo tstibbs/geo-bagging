@@ -1,6 +1,7 @@
 import leaflet from 'leaflet';
 import PointsBuilder from './points_builder';
-import CustomDefaultIcon from 'custom_default_icon';
+import CustomDefaultIcon from '../../custom_default_icon';
+import hillIcon from '../../../img/hill.png'
 
 		var dimensionNames = ['Hills'];
 		var dimensionValueLabels = {};
@@ -50,7 +51,7 @@ import CustomDefaultIcon from 'custom_default_icon';
 			hillValueLabels[key] = '<a href="http://www.hill-bagging.co.uk/' + urlPaths[key] + '.php">' + displayNames[key] + '</a>';
 		});
 
-		var redIconPath = window.os_map_base + 'img/hill.png';
+		var redIconPath = hillIcon
 
 		export default {
 			aspectLabel: "Hills",

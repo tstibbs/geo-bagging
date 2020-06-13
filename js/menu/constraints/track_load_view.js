@@ -1,5 +1,5 @@
-import leaflet from 'leaflet';
-import toGeoJSON from 'toGeoJson';
+import $ from 'jquery';
+import toGeoJSON from '@mapbox/togeojson';
 import TracksView from './tracks_view';
 	export default leaflet.Class.extend({
 		initialize: function (manager, constraintsView) {

@@ -1,4 +1,3 @@
-import conversion from 'conversion';
 import AbstractPointsBuilder from '../abstract_points_builder';
 		export default AbstractPointsBuilder.extend({
 			parse: function(point) {

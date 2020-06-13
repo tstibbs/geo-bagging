@@ -1,6 +1,6 @@
 import leaflet from 'leaflet';
-import conversion from 'conversion';
 import pointsBuilder from './points_builder';
+import pillarIcon from '../../../img/pillar.png'
 		var dimensionNames = ['Type', 'Condition'];
 		var dimensionValueKeys = ['Pillar', 'Bolt', 'Surface Block', 'Rivet', 'Buried Block', 'Cut', 'Other', 'Berntsen', 'FBM', 'Intersected Station', 'Disc', 'Brass Plate', 'Active station', 'Block', 'Concrete Ring', 'Curry Stool', 'Fenomark', 'Platform Bolt', 'Cannon', 'Spider', 'Pipe'];
 		var dimensionValueLabels = {};
@@ -15,7 +15,7 @@ import pointsBuilder from './points_builder';
 			aspectLabel: "Trig Points",
 			icons: {
 				Pillar: leaflet.icon({
-					iconUrl: window.os_map_base + 'img/pillar.png',
+					iconUrl: pillarIcon,
 					iconAnchor: [10, 40], // point of the icon which will correspond to marker's location
 					popupAnchor: [1, -38] // point from which the popup should open relative to the iconAnchor
 				})

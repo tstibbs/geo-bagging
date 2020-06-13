@@ -1,4 +1,4 @@
-import leaflet from 'leaflet';
+import $ from 'jquery';
 	export default leaflet.Class.extend({
 		initialize: function (manager, constraintsView) {
 			this._manager = manager;

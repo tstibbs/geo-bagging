@@ -1,5 +1,6 @@
 import PointsBuilder from './points_builder';
-import CustomDefaultIcon from 'custom_default_icon';
+import CustomDefaultIcon from '../../custom_default_icon';
+import milestoneIcon from '../../../img/milestone.png'
 
 		var dimensionNames = ['Waymarks'];
 		var dimensionValueLabels = {};
@@ -9,7 +10,7 @@ import CustomDefaultIcon from 'custom_default_icon';
 			'Canal_Milemarkers': 'Canal Milemarkers'
 		};
 		
-		var milestonesIcon = window.os_map_base + 'img/milestone.png';
+		var milestonesIcon = milestoneIcon;
 
 		export default {
 			aspectLabel: "Waymarks",

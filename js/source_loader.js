@@ -1,8 +1,7 @@
 import $ from 'jquery';
-import leaflet from 'leaflet';
-import constants from 'constants';
-import ModelViews from 'model_views';
-import params from 'params';
+import constants from './constants';
+import ModelViews from './model_views';
+import params from './params';
 	
 		var SourceLoader = leaflet.Class.extend({
 			initialize: function (manager, config) {

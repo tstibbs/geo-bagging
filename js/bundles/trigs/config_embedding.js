@@ -1,6 +1,6 @@
 import $ from 'jquery';
-import conversion from 'conversion';
-import CustomDefaultIcon from 'custom_default_icon';
+import conversion from '../../conversion';
+import CustomDefaultIcon from '../../custom_default_icon';
 import trigpointingBase from './config_base';
 import TrigsPointsBuilder from './points_builder';
 		var redIconPath = window.os_map_base + 'img/hill.png';
