@@ -30,7 +30,7 @@ import Manager from './manager';
 				if (options == null) {
 					options = {};
 				}
-				allBundles = this.getBundleIds(bundleIds);
+				var allBundles = this.getBundleIds(bundleIds);
 				if (this.hasUrlData()) {
 					alert('Loading data from URL is no longer an option.');
 					throw new Error('Loading data from URL is no longer an option.');

@@ -18,13 +18,13 @@ import PointsBuilder from './points_builder';
 		
 		var baseUrl = "https://rnli.org/what-we-do/lifeboats-and-stations/our-lifeboat-fleet/";
 		Object.keys(typeData).forEach(function(key) {
-			label = typeData[key]
+			var label = typeData[key]
 			typeData[key] = [label[0], baseUrl + label[1]]
 		});
 		
 		var typeLabels = {};
 		Object.keys(typeData).forEach(function(key) {
-			label = typeData[key]
+			var label = typeData[key]
 			typeLabels[key] = '<a href="' + label[1] + '">' + label[0] + '</a>';
 		});
 		
