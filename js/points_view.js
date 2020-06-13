@@ -1,5 +1,10 @@
-define(["underscore", "jquery", "leaflet", "leaflet_cluster", "leaflet_subgroup", "leaflet_matrixlayers", "marker_view"],
-	function(_, $, leaflet, leaflet_cluster, leaflet_subgroup, Leaflet_MatrixLayers, markerView) {
+import _ from "underscore";
+import $ from "jquery";
+import leaflet from "leaflet";
+import leaflet_cluster from "leaflet_cluster";
+import leaflet_subgroup from "leaflet_subgroup";
+import Leaflet_MatrixLayers from "leaflet_matrixlayers";
+import markerView from "./marker_view";
 	
 		var PointsView = leaflet.Class.extend({
 			initialize: function (map, config, modelsByAspect, matrixLayerControl, controls, bundles, manager) {
@@ -123,6 +128,5 @@ define(["underscore", "jquery", "leaflet", "leaflet_cluster", "leaflet_subgroup"
 			}
 		});
 
-		return PointsView;
-	}
-);
+		export default PointsView;
+	

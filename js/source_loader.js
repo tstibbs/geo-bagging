@@ -1,17 +1,8 @@
-define([
-	'jquery',
-	'leaflet',
-	'constants',
-	'model_views',
-	'params'
-],
-	function(
-		$,
-		leaflet,
-		constants,
-		ModelViews,
-		params
-	) {
+import $ from 'jquery';
+import leaflet from 'leaflet';
+import constants from 'constants';
+import ModelViews from 'model_views';
+import params from 'params';
 	
 		var SourceLoader = leaflet.Class.extend({
 			initialize: function (manager, config) {
@@ -84,6 +75,5 @@ define([
 			}
 		});
 
-		return SourceLoader;
-	}
-);
+		export default SourceLoader;
+	

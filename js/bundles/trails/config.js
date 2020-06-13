@@ -1,5 +1,4 @@
-define(['./builder'],
-	function(Builder) {
+import Builder from './builder';
 		var dimensionNames = ["National Trails"];
 		
 		var keys = [
@@ -26,7 +25,7 @@ define(['./builder'],
 		});
 		urls["Wales Coast Path"] = "http://www.walescoastpath.gov.uk";
 		
-		return {
+		export default {
 			aspectLabel: "National Trails",
 			dimensionNames: dimensionNames,
 			dataToLoad: 'data.geojson',
@@ -34,5 +33,4 @@ define(['./builder'],
 			attribution: 'Natural England Open Data (<a href="http://www.nationalarchives.gov.uk/doc/open-government-licence/version/">OGL</a>)',
 			urls: urls
 		};
-	}
-);
+	

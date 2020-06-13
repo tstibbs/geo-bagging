@@ -1,21 +1,10 @@
-define([
-	'jquery',
-	'leaflet',
-	'leaflet_sidebar',
-	'./attribution',
-	'./user',
-	'./constraints/view',
-	'params'
-],
-    function(
-		$,
-		leaflet,
-		Leaflet_Sidebar,
-		AttributionView,
-		UserView,
-		ConstraintsView,
-		params
-	) {
+import $ from 'jquery';
+import leaflet from 'leaflet';
+import Leaflet_Sidebar from 'leaflet_sidebar';
+import AttributionView from './attribution';
+import UserView from './user';
+import ConstraintsView from './constraints/view';
+import params from '../params';
         var MenuView = leaflet.Class.extend({
 			initialize: function(manager) {
 				this._manager = manager;
@@ -102,6 +91,5 @@ define([
 				this._attributionView.addAttribution(dataSourceName, text);
 			}
 		});
-		return MenuView;
-    }
-);
+		export default MenuView;
+    

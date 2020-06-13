@@ -1,6 +1,6 @@
-define(['jquery', 'leaflet'],
-	function($, leaflet) {
-		return leaflet.Class.extend({
+import $ from 'jquery';
+import leaflet from 'leaflet';
+		export default leaflet.Class.extend({
 			initialize: function(container) {
 				this._container = container;
 			},
@@ -12,5 +12,4 @@ define(['jquery', 'leaflet'],
 				this._container.append(wrapper);
 			},
 		});
-	}
-);
+	

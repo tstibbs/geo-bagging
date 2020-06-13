@@ -1,5 +1,5 @@
-define(['global', 'params'],
-	function(global, params) {
+import global from './global';
+import params from './params';
 	
 		//all taken from http://detectmobilebrowsers.com/ (licence is UNLICENSE - http://unlicense.org/)
 	
@@ -9,7 +9,7 @@ define(['global', 'params'],
 		
 		var devHack = params.test('mobile');
 		
-		return {
+		export default {
 			isMobile: function() {
 				if (devHack) {
 					return true;
@@ -19,5 +19,4 @@ define(['global', 'params'],
 				}
 			}
 		};
-	}
-);
+	

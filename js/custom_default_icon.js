@@ -1,6 +1,5 @@
-define(["leaflet"],
-	function(leaflet) {
-		return leaflet.Icon.Default.extend({
+import leaflet from "leaflet";
+		export default leaflet.Icon.Default.extend({
 			initialize: function (customIconPath, options) {
 				this._customIconPath = customIconPath;
 				if (options.iconUrl != null && options.iconRetinaUrl == null) {
@@ -18,5 +17,4 @@ define(["leaflet"],
 				}
 			}
 		});
-	}
-);
+	

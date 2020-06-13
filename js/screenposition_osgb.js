@@ -1,6 +1,7 @@
-define(["leaflet_screenposition", "conversion", "jquery"],
-	function(Leaflet_ScreenPosition, conversion, $) {
-		return Leaflet_ScreenPosition.extend({
+import Leaflet_ScreenPosition from "leaflet_screenposition";
+import conversion from "./conversion";
+import $ from "jquery";
+		export default Leaflet_ScreenPosition.extend({
 			options: {
 				onMove: true,
 				icon: true,
@@ -40,5 +41,4 @@ define(["leaflet_screenposition", "conversion", "jquery"],
 				hideIcon();
 			}
 		});
-	}
-);
+	

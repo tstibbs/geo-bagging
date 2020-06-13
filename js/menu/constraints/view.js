@@ -1,18 +1,9 @@
-define([
-	'jquery',
-	'leaflet',
-	'./track_load_view',
-	'./current_location_view',
-	'./current_area_view'
-],
-	function(
-		$,
-		leaflet,
-		FileConstraintsLoadView,
-		CurrentLocationView,
-		CurrentAreaView
-	) {
-		return leaflet.Class.extend({
+import $ from 'jquery';
+import leaflet from 'leaflet';
+import FileConstraintsLoadView from './track_load_view';
+import CurrentLocationView from './current_location_view';
+import CurrentAreaView from './current_area_view';
+		export default leaflet.Class.extend({
 			initialize: function(manager) {
 				this._manager = manager;
 				this._limitOriginView = null;//the view that triggered the current limits
@@ -98,5 +89,4 @@ define([
 				return this._view;
 			}
 		});
-	}
-);
+	

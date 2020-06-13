@@ -1,14 +1,12 @@
-define(['./points_builder'],
-	function(PointsBuilder) {
+import PointsBuilder from './points_builder';
 
 		var dimensionNames = ['Purpose', 'Type', 'Condition'];
 
-		return {
+		export default {
 			aspectLabel: "Defence of Britain",
 			dimensionNames: dimensionNames,
 			dataToLoad: 'data.json',
 			parser: PointsBuilder,
 			attribution: '"Defence of Britain" data &copy; <a href="https://doi.org/10.5284/1000327">Council for British Archaeology</a> 2006'
 		};
-	}
-);
+	

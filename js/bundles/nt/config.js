@@ -1,5 +1,6 @@
-define(['leaflet', './points_builder', 'custom_default_icon'],
-	function(leaflet, PointsBuilder, CustomDefaultIcon) {
+import leaflet from 'leaflet';
+import PointsBuilder from './points_builder';
+import CustomDefaultIcon from 'custom_default_icon';
 
 		var dimensionNames = ["Type", "Facilities"];
 		
@@ -27,7 +28,7 @@ define(['leaflet', './points_builder', 'custom_default_icon'],
 			'fifty-things': "50 things to do before you're 11 ¾"
 		};
 		
-		return {
+		export default {
 			aspectLabel: "National Trust",
 			dimensionNames: dimensionNames,
 			dimensionValueLabels: dimensionValueLabels,
@@ -35,5 +36,4 @@ define(['leaflet', './points_builder', 'custom_default_icon'],
 			parser: PointsBuilder,
 			attribution: '&copy; National Trust'
 		};
-	}
-);
+	

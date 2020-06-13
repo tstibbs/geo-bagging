@@ -1,5 +1,4 @@
-define(['./points_builder'],
-	function(PointsBuilder) {
+import PointsBuilder from './points_builder';
 
 		var dimensionNames = ["Lifeboat Types", "Launch Methods"];
 
@@ -37,7 +36,7 @@ define(['./points_builder'],
 			'FloatingCradle': 'Floating Cradle',
 		};
 		
-		return {
+		export default {
 			aspectLabel: "RNLI",
 			dimensionNames: dimensionNames,
 			dimensionValueLabels: dimensionValueLabels,
@@ -46,5 +45,4 @@ define(['./points_builder'],
 			attribution: 'Contains <a href="https://hub.arcgis.com/datasets/7dad2e58254345c08dfde737ec348166_0">Open Data</a> licensed under the GIS Open Data Licence &copy; RNLI and data from <a href="https://en.wikipedia.org/wiki/List_of_RNLI_stations">Wikipedia</a>',
 			typeData: typeData
 		};
-	}
-);
+	

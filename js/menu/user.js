@@ -1,14 +1,7 @@
-define([
-	'jquery',
-	'leaflet',
-	'constants'
-],
-	function(
-		$,
-		leaflet,
-		constants
-	) {
-		return leaflet.Class.extend({
+import $ from 'jquery';
+import leaflet from 'leaflet';
+import constants from '../constants';
+		export default leaflet.Class.extend({
 			initialize: function(manager) {
 				this._view = $('<div class="setting"></div>');
 				if (manager.isAuthenticated()) {
@@ -22,5 +15,4 @@ define([
 				return this._view;
 			}
 		});
-	}
-);
+	

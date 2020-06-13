@@ -1,5 +1,5 @@
-define(['leaflet', 'params'],
-	function(leaflet, params) {
+import leaflet from 'leaflet';
+import params from '../params';
 	
 		var UrlHandler = leaflet.Class.extend({
 			initialize: function () {
@@ -22,6 +22,5 @@ define(['leaflet', 'params'],
 			}
 		});
 
-		return UrlHandler;
-	}
-);
+		export default UrlHandler;
+	

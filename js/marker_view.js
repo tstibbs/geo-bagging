@@ -1,19 +1,10 @@
-define([
-	'jquery',
-	'underscore',
-	'leaflet',
-	'popup_view',
-	'constants'
-],
-	function(
-		$,
-		_,
-		leaflet,
-		popupView,
-		constants
-	) {
+import $ from 'jquery';
+import _ from 'underscore';
+import leaflet from 'leaflet';
+import popupView from './popup_view';
+import constants from './constants';
 	
-		return {
+		export default {
 			translateMarker: function(markerConfig, bundleConfig, aspectName, manager) {
 				var latLng = markerConfig.latLng;
 				var name = markerConfig.name;
@@ -87,5 +78,4 @@ define([
 				return marker;
 			}
 		};
-	}
-);
+	

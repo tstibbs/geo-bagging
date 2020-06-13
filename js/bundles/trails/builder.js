@@ -1,6 +1,5 @@
-define(['../abstract_geojson_builder'],
-	function(AbstractGeojsonBuilder) {
-		return AbstractGeojsonBuilder.extend({
+import AbstractGeojsonBuilder from '../abstract_geojson_builder';
+		export default AbstractGeojsonBuilder.extend({
 			parse: function(feature) {
 				var name = feature.properties.name;
 				var url = this.getBundleConfig().urls[name];
@@ -25,5 +24,4 @@ define(['../abstract_geojson_builder'],
 				}
 			}
 		});
-	}
-);
+	

@@ -1,5 +1,8 @@
-define(["leaflet", "jquery", "global", "params", "conversion"],
-	function(leaflet, $, global, params, conversion) {
+import leaflet from "leaflet";
+import $ from "jquery";
+import global from "./global";
+import params from "./params";
+import conversion from "./conversion";
 		
 		var defaultPageId = global.location.pathname.split("/").pop();
 		
@@ -137,6 +140,5 @@ define(["leaflet", "jquery", "global", "params", "conversion"],
 			}
 		});
 
-		return Config;
-	}
-);
+		export default Config;
+	

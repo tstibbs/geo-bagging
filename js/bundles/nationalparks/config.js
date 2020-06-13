@@ -1,13 +1,11 @@
-define(['./builder'],
-	function(Builder) {
+import Builder from './builder';
 		var name = "National Parks";
 
-		return {
+		export default {
 			aspectLabel: name,
 			dimensionNames: [name],
 			dataToLoad: 'data.geojson',
 			parser: Builder,
 			attribution: 'Office for National Statistics (<a href="http://www.nationalarchives.gov.uk/doc/open-government-licence/version/">OGL</a>)'
 		};
-	}
-);
+	

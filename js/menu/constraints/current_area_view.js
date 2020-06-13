@@ -1,9 +1,5 @@
-define([
-	'leaflet'
-], function(
-	leaflet
-) {
-	return leaflet.Class.extend({
+import leaflet from 'leaflet';
+	export default leaflet.Class.extend({
 		initialize: function (manager, constraintsView) {
 			this._manager = manager;
 			this._constraintsView = constraintsView;
@@ -32,4 +28,4 @@ define([
 			this._currentAreaLimit.prop('checked', false);
 		}
 	});
-});
+

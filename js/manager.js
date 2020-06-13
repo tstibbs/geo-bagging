@@ -1,22 +1,12 @@
-define([
-	'jquery',
-	'leaflet',
-	'controls',
-	'layers',
-	'constants',
-	'params'
-],
-	function(
-		$,
-		leaflet,
-		Controls,
-		layersBuilder,
-		constants,
-		params
-	) {
+import $ from 'jquery';
+import leaflet from 'leaflet';
+import Controls from './controls';
+import layersBuilder from './layers';
+import constants from './constants';
+import params from './params';
 	
 		//basic manager class that simplifies interoperation between other components
-		return leaflet.Class.extend({
+		export default leaflet.Class.extend({
 			initialize: function(map, config) {
 				this._authenticated = false;//default
 				var showUserSettings = (params.test('testing') == 'true');
@@ -94,5 +84,4 @@ define([
 				return this._loggedInUser;
 			}
 		});
-	}
-);
+	

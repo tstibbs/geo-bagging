@@ -1,5 +1,6 @@
-define(['leaflet', 'leaflet_bing', 'constants'],
-	function(leaflet, Leaflet_bing, constants) {
+import leaflet from 'leaflet';
+import Leaflet_bing from 'leaflet_bing';
+import constants from './constants';
 
         var defaults = {
             key: constants.bingKey
@@ -34,7 +35,7 @@ define(['leaflet', 'leaflet_bing', 'constants'],
 			}.bind(this));
 		}
 
-		return function(map, config) {
+		export default function(map, config) {
 			//if we have a default layer set, select that now
 			var layerToSelect = layers[config.defaultLayer];
 			if (layerToSelect != null) {
@@ -50,5 +51,4 @@ define(['leaflet', 'leaflet_bing', 'constants'],
 			
 			return layers;
 		};
-	}
-);
+	

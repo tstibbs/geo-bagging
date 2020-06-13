@@ -1,5 +1,6 @@
-define(['leaflet', './points_builder', 'custom_default_icon'],
-	function(leaflet, PointsBuilder, CustomDefaultIcon) {
+import leaflet from 'leaflet';
+import PointsBuilder from './points_builder';
+import CustomDefaultIcon from 'custom_default_icon';
 
 		var dimensionNames = ['Hills'];
 		var dimensionValueLabels = {};
@@ -51,7 +52,7 @@ define(['leaflet', './points_builder', 'custom_default_icon'],
 
 		var redIconPath = window.os_map_base + 'img/hill.png';
 
-		return {
+		export default {
 			aspectLabel: "Hills",
 			defaultIcon: new CustomDefaultIcon(redIconPath, {iconUrl: redIconPath}),
 			dimensionNames: dimensionNames,
@@ -61,5 +62,4 @@ define(['leaflet', './points_builder', 'custom_default_icon'],
 			parser: PointsBuilder,
 			attribution: '&copy; <a href="http://www.hills-database.co.uk/downloads.html">The Database of British and Irish Hills</a>'
 		};
-	}
-);
+	

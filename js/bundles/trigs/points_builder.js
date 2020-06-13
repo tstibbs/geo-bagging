@@ -1,6 +1,6 @@
-define(['conversion', '../abstract_points_builder'],
-	function(conversion, AbstractPointsBuilder) {
-		return AbstractPointsBuilder.extend({
+import conversion from 'conversion';
+import AbstractPointsBuilder from '../abstract_points_builder';
+		export default AbstractPointsBuilder.extend({
 			parse: function(point) {
 				//[Longitude,Latitude,Id,Name,physical_type,condition]
 				var lng = point[0];
@@ -31,5 +31,4 @@ define(['conversion', '../abstract_points_builder'],
 				this.addMarker(null, lngLat[1], lngLat[0], url, name, null, icon, [null], icon);
 			}
 		});
-	}
-);
+	

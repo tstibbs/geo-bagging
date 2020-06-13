@@ -1,5 +1,5 @@
-define(['jquery', 'leaflet'],
-	function($, leaflet) {
+import $ from 'jquery';
+import leaflet from 'leaflet';
 	
 		var GeojsonView = leaflet.Class.extend({
 			initialize: function (map, config, modelsByAspect, matrixLayerControl, bundles) {
@@ -34,6 +34,5 @@ define(['jquery', 'leaflet'],
 			}
 		});
 
-		return GeojsonView;
-	}
-);
+		export default GeojsonView;
+	

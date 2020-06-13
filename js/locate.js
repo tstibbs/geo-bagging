@@ -1,10 +1,8 @@
-define(["leaflet_locate"],
-	function(leaflet_locate) {
-		return L.Control.Locate.extend({
+import leaflet_locate from "leaflet_locate";
+		export default leaflet_locate.extend({
 			options: {
 				keepCurrentZoomLevel: true,
 				setView: 'once'
 			}
 		});
-	}
-);
+	

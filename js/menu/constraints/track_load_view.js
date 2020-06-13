@@ -1,13 +1,7 @@
-define([
-	'leaflet',
-	'toGeoJson',
-	'./tracks_view'
-], function(
-	leaflet,
-	toGeoJSON,
-	TracksView
-) {
-	return leaflet.Class.extend({
+import leaflet from 'leaflet';
+import toGeoJSON from 'toGeoJson';
+import TracksView from './tracks_view';
+	export default leaflet.Class.extend({
 		initialize: function (manager, constraintsView) {
 			this._constraintsView = constraintsView;
 			this._tracksView = new TracksView(manager);
@@ -105,4 +99,4 @@ define([
 			this._tracksView.showTracks([]);
 		}
 	});
-});
+

@@ -1,21 +1,11 @@
-define([
-	'config',
-	'params',
-	'jquery',
-	'map_view',
-	'source_loader',
-	'manager'
-],
-	function(
-		Config,
-		params,
-		$,
-		MapView,
-		SourceLoader,
-		Manager
-	) {
+import Config from './config';
+import params from './params';
+import $ from 'jquery';
+import MapView from './map_view';
+import SourceLoader from './source_loader';
+import Manager from './manager';
 			
-		return {			
+		export default {			
 			getBundleIds: function(bundles) {
 				var allBundles = [];
 				if (bundles != null) {
@@ -93,5 +83,4 @@ define([
 				return params.test('trigs') != null;
 			}
 		};
-	}
-);
+	

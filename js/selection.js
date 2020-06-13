@@ -1,6 +1,6 @@
-define(["leaflet_boxSelector", "leaflet_boxSelector_Gpx"],
-	function(Leaflet_boxSelector, leaflet_boxSelector_Gpx) {
-		return Leaflet_boxSelector.extend({
+import Leaflet_boxSelector from "leaflet_boxSelector";
+import leaflet_boxSelector_Gpx from "leaflet_boxSelector_Gpx";
+		export default Leaflet_boxSelector.extend({
 			options: {
 				actions: {
 					gpx: {
@@ -15,5 +15,4 @@ define(["leaflet_boxSelector", "leaflet_boxSelector_Gpx"],
 				}
 			}
 		});
-	}
-);
+	

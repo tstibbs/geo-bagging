@@ -1,5 +1,6 @@
-define(['leaflet', './abstract_bundle_builder', 'popup_view'],
-	function(leaflet, AbstractBundleBuilder, popupView) {
+import leaflet from 'leaflet';
+import AbstractBundleBuilder from './abstract_bundle_builder';
+import popupView from '../popup_view';
 	
 		var GeojsonLayer = AbstractBundleBuilder.extend({
 			initialize: function (manager, bundleConfig, bundleName, urlPrefix) {
@@ -50,6 +51,5 @@ define(['leaflet', './abstract_bundle_builder', 'popup_view'],
 			}
 		});
 
-		return GeojsonLayer;
-	}
-);
+		export default GeojsonLayer;
+	

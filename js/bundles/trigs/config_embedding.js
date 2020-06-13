@@ -1,19 +1,10 @@
-define([
-	'jquery',
-	'conversion',
-	'custom_default_icon',
-	'./config_base',
-	'./points_builder'
-], 
-	function(
-		$,
-		conversion,
-		CustomDefaultIcon,
-		trigpointingBase,
-		TrigsPointsBuilder
-	) {
+import $ from 'jquery';
+import conversion from 'conversion';
+import CustomDefaultIcon from 'custom_default_icon';
+import trigpointingBase from './config_base';
+import TrigsPointsBuilder from './points_builder';
 		var redIconPath = window.os_map_base + 'img/hill.png';
-		return $.extend(true, {}, trigpointingBase, {
+		export default $.extend(true, {}, trigpointingBase, {
 			icons: {
 				searchResult: new CustomDefaultIcon(redIconPath, {iconUrl: redIconPath})
 			},
@@ -45,5 +36,4 @@ define([
 				}
 			})
 		});
-	}
-);
+	

@@ -1,5 +1,6 @@
-define(['leaflet', 'conversion', './points_builder'],
-	function(leaflet, conversion, pointsBuilder) {
+import leaflet from 'leaflet';
+import conversion from 'conversion';
+import pointsBuilder from './points_builder';
 		var dimensionNames = ['Type', 'Condition'];
 		var dimensionValueKeys = ['Pillar', 'Bolt', 'Surface Block', 'Rivet', 'Buried Block', 'Cut', 'Other', 'Berntsen', 'FBM', 'Intersected Station', 'Disc', 'Brass Plate', 'Active station', 'Block', 'Concrete Ring', 'Curry Stool', 'Fenomark', 'Platform Bolt', 'Cannon', 'Spider', 'Pipe'];
 		var dimensionValueLabels = {};
@@ -10,7 +11,7 @@ define(['leaflet', 'conversion', './points_builder'],
 			typeValueLabels[value] = '<a href="http://trigpointing.uk/wiki/' + value + '">' + value + '</a>';
 		});
 
-		return {
+		export default {
 			aspectLabel: "Trig Points",
 			icons: {
 				Pillar: leaflet.icon({
@@ -24,5 +25,4 @@ define(['leaflet', 'conversion', './points_builder'],
 			parser: pointsBuilder,
 			attribution: '&copy; <a href="http://trigpointing.uk">trigpointing.uk</a> and licenced by Ordnance Survey under the <a href="http://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/">Open Government Licence</a>.'
 		};
-	}
-);
+	

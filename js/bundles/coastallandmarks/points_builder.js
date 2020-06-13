@@ -1,6 +1,5 @@
-define(['../abstract_points_builder'],
-	function(AbstractPointsBuilder) {
-		return AbstractPointsBuilder.extend({
+import AbstractPointsBuilder from '../abstract_points_builder';
+		export default AbstractPointsBuilder.extend({
 			//[Longitude,Latitude,Name,Link,Type,YearBuilt]
 			parse: function(point) {
 				var lng = point[0];
@@ -17,5 +16,4 @@ define(['../abstract_points_builder'],
 				this.addMarker(name, lat, lng, link, name, extraInfos, null, [type]);
 			},
 		});
-	}
-);
+	

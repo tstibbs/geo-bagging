@@ -1,5 +1,4 @@
-define(['./abstract_bundle_builder'],
-	function(AbstractBundleBuilder) {
+import AbstractBundleBuilder from './abstract_bundle_builder';
 	
 		var PointsBuilder = AbstractBundleBuilder.extend({
 			initialize: function (manager, bundleConfig, bundleName, urlPrefix) {
@@ -97,6 +96,5 @@ define(['./abstract_bundle_builder'],
 			}
 		});
 
-		return PointsBuilder;
-	}
-);
+		export default PointsBuilder;
+	

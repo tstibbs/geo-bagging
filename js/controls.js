@@ -1,31 +1,15 @@
-define([
-	'leaflet',
-	'leaflet_controlHider',
-	'selection',
-	'locate',
-	'mobile',
-	'leaflet_geosearch',
-	'leaflet_geosearch_bing',
-	'mouseposition_osgb',
-	'screenposition_osgb',
-	'constants',
-	'./menu/view',
-	'leaflet_matrixlayers'
-],
-	function(
-		leaflet,
-		Leaflet_ControlHider,
-		Selection,
-		Locate,
-		mobile,
-		Leaflet_Geosearch,
-		Leaflet_Geosearch_Bing,
-		Mouseposition_Osgb,
-		Screenposition_Osgb,
-		constants,
-		MenuView,
-		Leaflet_MatrixLayers
-	) {
+import leaflet from 'leaflet';
+import Leaflet_ControlHider from 'leaflet_controlHider';
+import Selection from './selection';
+import Locate from './locate';
+import mobile from './mobile';
+import Leaflet_Geosearch from 'leaflet_geosearch';
+import Leaflet_Geosearch_Bing from 'leaflet_geosearch_bing';
+import Mouseposition_Osgb from './mouseposition_osgb';
+import Screenposition_Osgb from './screenposition_osgb';
+import constants from './constants';
+import MenuView from './menu/view';
+import Leaflet_MatrixLayers from 'leaflet_matrixlayers';
 
 		//even if some items aren't used in this particular configuration, we'll stick to a given order (resulting gaps are fine)
 		var order = [
@@ -155,6 +139,5 @@ define([
 			}
 		});
 
-		return Controls;
-	}
-);
+		export default Controls;
+	

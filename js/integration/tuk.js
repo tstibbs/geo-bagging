@@ -1,6 +1,7 @@
-define(['jquery', 'conversion', 'map_loader'],
-	function($, conversion, mapLoader) {
-		return {
+import $ from 'jquery';
+import conversion from './conversion';
+import mapLoader from './map_loader';
+		export default {
 			showMap: function() {
 				if (/^https?:\/\/trigpointing\.uk\/trig\/\d+/.test(window.location.href)) {
 					//e.g. http://trigpointing.uk/trig/2614 - single trig page
@@ -141,5 +142,4 @@ define(['jquery', 'conversion', 'map_loader'],
 				});
 			}
 		}
-	}
-);
+	

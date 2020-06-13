@@ -1,5 +1,5 @@
-define(['global', 'leaflet'],
-	function(global, leaflet) {
+import global from './global';
+import leaflet from 'leaflet';
 		var ParamChecker = leaflet.Class.extend({
 			initialize: function () {
 				this.update();
@@ -28,12 +28,11 @@ define(['global', 'leaflet'],
 		});
 
 		var defaultInstance = new ParamChecker();
-		return {
+		export default {
 			//bit dirty, but 'test' function makes it easy to check params, while the 'tester' gives you a class you can instantiate to check stuff at the relevant time.
 			test: function(key) {
 				return defaultInstance.test(key);
 			},
 			tester: ParamChecker
 		}
-	}
-);
+	

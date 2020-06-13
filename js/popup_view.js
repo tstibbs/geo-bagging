@@ -1,7 +1,6 @@
-define(['underscore'],
-	function(_) {
+import _ from 'underscore';
 	
-		return {
+		export default {
 			notEmpty: function(input) {
 				return input !== undefined && input !== null && input.length > 0;
 			},
@@ -125,5 +124,4 @@ define(['underscore'],
 				return popupText;
 			}
 		};
-	}
-);
+	

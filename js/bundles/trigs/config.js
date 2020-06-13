@@ -1,3 +1,4 @@
-define(['jquery', './config_base'], function($, trigpointingBase) {
-	return $.extend({}, trigpointingBase, {dataToLoad: 'data_all.json'});
-});
+import $ from 'jquery';
+import trigpointingBase from './config_base';
+	export default $.extend({}, trigpointingBase, {dataToLoad: 'data_all.json'});
+

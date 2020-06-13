@@ -1,5 +1,6 @@
-define(['leaflet', 'jquery', 'constants'],
-	function(leaflet, $, constants) {
+import leaflet from 'leaflet';
+import $ from 'jquery';
+import constants from '../constants';
 		var AbstractBundleBuilder = leaflet.Class.extend({
 			initialize: function (manager, bundleConfig, bundleName, urlPrefix) {
 				this._markerList = null;
@@ -75,6 +76,5 @@ define(['leaflet', 'jquery', 'constants'],
 				return this._bundleConfig;
 			}
 		});
-		return AbstractBundleBuilder;
-	}
-);
+		export default AbstractBundleBuilder;
+	

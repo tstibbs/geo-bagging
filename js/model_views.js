@@ -1,23 +1,11 @@
-define([
-	'leaflet',
-	'jquery',
-	'points_view',
-	'geojson_view',
-	'bundles/abstract_points_builder',
-	'bundles/abstract_geojson_builder',
-	'leaflet_matrixlayers',
-	'./utils/url_handler'
-],
-	function(
-		leaflet,
-		$,
-		PointsView,
-		GeojsonView,
-		AbstractPointsBuilder,
-		AbstractGeojsonBuilder,
-		Leaflet_MatrixLayers,
-		UrlHandler
-	) {
+import leaflet from 'leaflet';
+import $ from 'jquery';
+import PointsView from './points_view';
+import GeojsonView from './geojson_view';
+import AbstractPointsBuilder from './bundles/abstract_points_builder';
+import AbstractGeojsonBuilder from './bundles/abstract_geojson_builder';
+import Leaflet_MatrixLayers from 'leaflet_matrixlayers';
+import UrlHandler from './utils/url_handler';
 		var ModelViews = leaflet.Class.extend({
 			initialize: function (bundles, manager) {
 				this._bundles = bundles;
@@ -110,6 +98,5 @@ define([
 				}.bind(this));
 			}
 		});
-		return ModelViews;
-	}
-);
+		export default ModelViews;
+	

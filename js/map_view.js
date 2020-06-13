@@ -1,16 +1,8 @@
-define([
-	'leaflet',
-	'jquery',
-	'fullscreen_link',
-	'mobile'
-],
-	function(
-		leaflet,
-		$,
-		fullscreen_link,
-		mobile
-	) {
-		return leaflet.Class.extend({
+import leaflet from 'leaflet';
+import $ from 'jquery';
+import fullscreen_link from './fullscreen_link';
+import mobile from './mobile';
+		export default leaflet.Class.extend({
 			initialize: function (config) {
 				this._config = config;
 				this._createView();
@@ -90,5 +82,4 @@ define([
 				return this._map;
 			}
 		});
-	}
-);
+	

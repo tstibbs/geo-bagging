@@ -1,5 +1,5 @@
-define(['leaflet', './points_builder'],
-	function(leaflet, PointsBuilder) {
+import leaflet from 'leaflet';
+import PointsBuilder from './points_builder';
 
 		var dimensionNames = ['Follies'];
 		
@@ -8,7 +8,7 @@ define(['leaflet', './points_builder'],
 			'Arch_Gateway': 'Arch/Gateway'
 		};
 
-		return {
+		export default {
 			aspectLabel: "Follies",
 			dimensionNames: dimensionNames,
 			dimensionValueLabels: dimensionValueLabels,
@@ -16,5 +16,4 @@ define(['leaflet', './points_builder'],
 			parser: PointsBuilder,
 			attribution: 'Reproduced with the kind permission of Paul from <a href="http://www.follies.org.uk/follymaps.htm">The Folly Fellowship</a>'
 		};
-	}
-);
+	
