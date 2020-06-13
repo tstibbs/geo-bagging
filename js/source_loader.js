@@ -3,6 +3,16 @@ import leaflet from 'VendorWrappers/leaflet';
 import constants from './constants';
 import ModelViews from './model_views';
 import params from './params';
+
+const cache = {};
+
+function importAll (r) {
+    r.keys().forEach(key => {
+        cache[key] = r(key).default
+    });
+}
+
+importAll(require.context('./bundles/', true, /config.*\.js$/));
 	
 		var SourceLoader = leaflet.Class.extend({
 			initialize: function (manager, config) {
@@ -18,13 +28,14 @@ import params from './params';
 				sourceModuleIds = sourceModuleIds.map(function(sourceId){
 					return 'bundles/' + sourceId;
 				});
-				var deferredObject = $.Deferred();
-				require(sourceModuleIds, function(/*sources...*/) {
-					var sources = {};
-					for (var i = 0; i < arguments.length; i++) {
-						sources[sourceIds[i]] = arguments[i];
-					}
-				
+                var deferredObject = $.Deferred();
+                var sources = {}
+                sourceModuleIds.forEach(function(source) {
+                    var name = source.substring(7)
+                    sources[name] = cache['.' + name + '.js']
+                    //will require all at compile time and therefore all will be bundled for the client, but we only put in the code into the running vm that is from the source
+                })
+
 					//https://cdn.jsdelivr.net/gh/tstibbs/geo-bagging@gh-pages/js/bundles/nt/data.json
 					var sourceDataPrefix = (this._config.remoteData ? 'https://cdn.jsdelivr.net/gh/tstibbs/geo-bagging@gh-pages' : window.os_map_base);//some mobile browsers don't support local ajax, so this provides a workaround for dev on mobile devices.
 					
@@ -50,9 +61,13 @@ import params from './params';
 						modelViews.loadModelViews(sourceModels, lazyModels, this._config, this._finish);
 						//don't need to wait for ModelViews to finish, callback will update UI when the time comes, but can safely return after this call
 						deferredObject.resolve();
-					}.bind(this));
-				}.bind(this));
-				return deferredObject.promise();
+                    }.bind(this));
+                    
+                setTimeout(() => {
+                    this._finish()
+                    deferredObject.resolve();
+                }, 1)
+				return deferredObject.promise();//TODO if one of the bundles is missing, we error, but the error is hidden...
 			},
 			
 			_sourceIdsToDataSources: function(allSources) {

@@ -41,7 +41,10 @@
     "underscore": "^1.10.2"
   },
   "scripts": {
+    "prebuild": "rm -rf dist/* && (cd js && cp --parents bundles/**/*.json ../dist && cp --parents bundles/**/*.json.meta ../dist && cp --parents bundles/**/*.geojson ../dist && cp --parents bundles/**/*.geojson.meta ../dist)",
     "build": "webpack",
-    "dev": "webpack-dev-server --disable-host-check --public $(gp url 8080):443"
+    "serve": "npx http-server dist",
+    "dev": "npm run prebuild && npx webpack-dev-server",
+    "dev-gitpod": "npm run prebuild && npx webpack-dev-server --disable-host-check --public $(gp url 8080):443"
   }
 }
