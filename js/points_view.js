@@ -2,9 +2,9 @@ import _ from "underscore";
 import $ from "jquery";
 import leaflet from "leaflet";
 import leaflet_cluster from "leaflet.markercluster";
-import LeafletSubgroup from "leaflet.featuregroup.subgroup";
+import {SubGroup as LeafletSubgroup} from "leaflet.featuregroup.subgroup";
 import markerView from "./marker_view";
-	
+
 var PointsView = leaflet.Class.extend({
 	initialize: function (map, config, modelsByAspect, matrixLayerControl, controls, bundles, manager) {
 		this._map = map;

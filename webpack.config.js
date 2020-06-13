@@ -78,6 +78,10 @@ module.exports = {
             {
                 test: require.resolve('./node_modules/sidebar-v2/js/leaflet-sidebar.js'),
                 use: 'exports-loader?Sidebar=L.Control.Sidebar',
+            },
+            {
+                test: require.resolve('./node_modules/leaflet.featuregroup.subgroup/dist/leaflet.featuregroup.subgroup.js'),
+                use: 'exports-loader?SubGroup=L.FeatureGroup.SubGroup',
             }
         ]
     }
