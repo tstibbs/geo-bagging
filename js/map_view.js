@@ -1,4 +1,4 @@
-import leaflet from 'leaflet';
+import leaflet from 'VendorWrappers/leaflet';
 import $ from 'jquery';
 import fullscreen_link from './fullscreen_link';
 import mobile from './mobile';

@@ -1,3 +1,4 @@
+import leaflet from 'VendorWrappers/leaflet';
 import $ from 'jquery';
 import toGeoJSON from '@mapbox/togeojson';
 import TracksView from './tracks_view';

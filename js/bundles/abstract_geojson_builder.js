@@ -1,4 +1,4 @@
-import leaflet from 'leaflet';
+import leaflet from 'VendorWrappers/leaflet';
 import AbstractBundleBuilder from './abstract_bundle_builder';
 import popupView from '../popup_view';
 	

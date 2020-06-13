@@ -1,9 +1,8 @@
 import _ from "underscore";
 import $ from "jquery";
 import leaflet from "leaflet";
-import leaflet_cluster from "leaflet_cluster";
-import leaflet_subgroup from "leaflet_subgroup";
-import Leaflet_MatrixLayers from "leaflet_matrixlayers";
+import leaflet_cluster from "leaflet.markercluster";
+import LeafletSubgroup from "leaflet.featuregroup.subgroup";
 import markerView from "./marker_view";
 	
 		var PointsView = leaflet.Class.extend({
@@ -115,7 +114,7 @@ import markerView from "./marker_view";
 			
 			depthFirstIteration: function(markers, path, overlays) {
 				if (markers.constructor === Array) {
-					var subGroup = leaflet.featureGroup.subGroup(this._parentGroup, markers);
+					var subGroup = new LeafletSubgroup(this._parentGroup, markers);
 					//don't add to the map yet - let the layer control do that if it thinks it needs to - otherwise we could add all layers then immediately try to remove them all, which can cause UI weirdness
 					overlays[path] = subGroup;
 				} else {

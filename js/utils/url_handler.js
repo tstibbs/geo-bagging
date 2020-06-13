@@ -1,4 +1,4 @@
-import leaflet from 'leaflet';
+import leaflet from 'VendorWrappers/leaflet';
 import params from '../params';
 	
 		var UrlHandler = leaflet.Class.extend({

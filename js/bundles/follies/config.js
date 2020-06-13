@@ -1,4 +1,4 @@
-import leaflet from 'leaflet';
+import leaflet from 'VendorWrappers/leaflet';
 import PointsBuilder from './points_builder';
 
 		var dimensionNames = ['Follies'];

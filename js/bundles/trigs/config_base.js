@@ -1,4 +1,4 @@
-import leaflet from 'leaflet';
+import leaflet from 'VendorWrappers/leaflet';
 import pointsBuilder from './points_builder';
 import pillarIcon from '../../../img/pillar.png'
 		var dimensionNames = ['Type', 'Condition'];

@@ -1,10 +1,10 @@
-import leaflet from 'leaflet';
+import leaflet from 'VendorWrappers/leaflet';
 import $ from 'jquery';
 import PointsView from './points_view';
 import GeojsonView from './geojson_view';
 import AbstractPointsBuilder from './bundles/abstract_points_builder';
 import AbstractGeojsonBuilder from './bundles/abstract_geojson_builder';
-import Leaflet_MatrixLayers from 'leaflet_matrixlayers';
+import Leaflet_MatrixLayers from 'VendorWrappers/leaflet-matrix-layers-control';
 import UrlHandler from './utils/url_handler';
 		var ModelViews = leaflet.Class.extend({
 			initialize: function (bundles, manager) {

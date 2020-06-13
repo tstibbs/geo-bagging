@@ -1,3 +1,4 @@
+import leaflet from 'VendorWrappers/leaflet';
 import $ from 'jquery';
 	export default leaflet.Class.extend({
 		initialize: function (manager, constraintsView) {

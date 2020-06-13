@@ -1,5 +1,5 @@
 import $ from 'jquery';
-import leaflet from 'leaflet';
+import leaflet from 'VendorWrappers/leaflet';
 		export default leaflet.Class.extend({
 			initialize: function(container) {
 				this._container = container;

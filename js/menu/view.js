@@ -1,6 +1,6 @@
 import $ from 'jquery';
-import leaflet from 'leaflet';
-import Leaflet_Sidebar from 'leaflet_sidebar';
+import leaflet from 'VendorWrappers/leaflet';
+import LeafletSidebar from 'VendorWrappers/sidebar';
 import AttributionView from './attribution';
 import UserView from './user';
 import ConstraintsView from './constraints/view';
@@ -72,7 +72,7 @@ import params from '../params';
 			},
 			
 			_buildControl: function() {
-				this._control = new Leaflet_Sidebar('sidebar');
+				this._control = new LeafletSidebar('sidebar');
 			},
 			
 			addTo: function(map) {

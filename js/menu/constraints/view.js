@@ -1,5 +1,5 @@
 import $ from 'jquery';
-import leaflet from 'leaflet';
+import leaflet from 'VendorWrappers/leaflet';
 import FileConstraintsLoadView from './track_load_view';
 import CurrentLocationView from './current_location_view';
 import CurrentAreaView from './current_area_view';

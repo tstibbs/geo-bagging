@@ -1,4 +1,4 @@
-import leaflet from 'leaflet';
+import leaflet from 'VendorWrappers/leaflet';
 import PointsBuilder from './points_builder';
 import CustomDefaultIcon from '../../custom_default_icon';
 import hillIcon from '../../../img/hill.png'

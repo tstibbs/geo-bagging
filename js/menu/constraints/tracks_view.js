@@ -1,4 +1,4 @@
-import leaflet from 'leaflet';
+import leaflet from 'VendorWrappers/leaflet';
 	export default leaflet.Class.extend({
 		initialize: function (manager) {
 			this._manager = manager;

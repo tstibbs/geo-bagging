@@ -1,6 +1,5 @@
-import leaflet from 'leaflet';
+import leaflet from 'VendorWrappers/leaflet';
 import PointsBuilder from './points_builder';
-import CustomDefaultIcon from 'custom_default_icon';
 
 		var dimensionNames = ["Type", "Facilities"];
 		

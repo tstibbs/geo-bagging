@@ -1,5 +1,5 @@
 import $ from 'jquery';
-import leaflet from 'leaflet';
+import leaflet from 'VendorWrappers/leaflet';
 import Controls from './controls';
 import layersBuilder from './layers';
 import constants from './constants';
@@ -29,7 +29,7 @@ import params from './params';
 						console.log(error);
 					});
 				} else {
-					this._initializePromise = jQuery.Deferred().resolve();
+					this._initializePromise = $.Deferred().resolve();
 				}
 				this._initializePromise = this._initializePromise.always(function() {
 					this._map = map;

@@ -1,4 +1,5 @@
 const path = require('path')
+const webpack = require('webpack')
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 module.exports = {
@@ -9,8 +10,19 @@ module.exports = {
     output: {
         path: path.resolve(__dirname, 'dist')
     },
+    resolve: {
+        alias: {
+            VendorWrappers: path.resolve(__dirname, 'js/vendor-wrappers'),
+        },
+    },
     plugins: [
         new HtmlWebpackPlugin({
+            title: 'GeoBagging',
+        }),
+        new webpack.ProvidePlugin({
+            'L': 'leaflet',
+        }),
+    ],
     module: {
         rules: [
             { test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: "url-loader?limit=10000&mimetype=application/font-woff" },
@@ -38,6 +50,35 @@ module.exports = {
                     },
                 ],
             },
-    ]
-}
+            {
+                test: require.resolve('./node_modules/leaflet-plugins/layer/tile/Bing.js'),
+                use: 'exports-loader?BingLayer=L.BingLayer',
+            },
+            {
+                test: require.resolve('./node_modules/leaflet-mouse-position/src/L.Control.MousePosition.js'),
+                use: 'exports-loader?MousePosition=L.Control.MousePosition',
+            },
+             
+            {
+                test: require.resolve('./node_modules/leaflet-map-center-coord/src/L.Control.MapCenterCoord.js'),
+                use: 'exports-loader?MapCenterCoord=L.Control.MapCenterCoord',
+            },
+            {
+                test: require.resolve('./node_modules/leaflet-control-hider/src/hider.js'),
+                use: 'exports-loader?ControlHider=L.Control.ControlHider',
+            },
+            {
+                test: require.resolve('./node_modules/leaflet-geosearch/src/js/l.control.geosearch.js'),
+                use: 'exports-loader?GeoSearch=L.Control.GeoSearch',
+            },
+            {
+                test: require.resolve('./node_modules/leaflet-geosearch/src/js/l.geosearch.provider.bing.js'),
+                use: 'exports-loader?GeoSearchBing=L.GeoSearch.Provider.Bing',
+            },
+            {
+                test: require.resolve('./node_modules/sidebar-v2/js/leaflet-sidebar.js'),
+                use: 'exports-loader?Sidebar=L.Control.Sidebar',
+            }
+        ]
+    }
 }

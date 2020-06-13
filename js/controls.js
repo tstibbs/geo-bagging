@@ -1,15 +1,15 @@
-import leaflet from 'leaflet';
-import Leaflet_ControlHider from 'leaflet_controlHider';
+import leaflet from 'VendorWrappers/leaflet';
+import $ from 'jquery';
+import Leaflet_ControlHider from 'VendorWrappers/leaflet-control-hider';
 import Selection from './selection';
 import Locate from './locate';
 import mobile from './mobile';
-import Leaflet_Geosearch from 'leaflet_geosearch';
-import Leaflet_Geosearch_Bing from 'leaflet_geosearch_bing';
+import {GeosearchControl, GeosearchBing} from 'VendorWrappers/leaflet-geosearch'
 import Mouseposition_Osgb from './mouseposition_osgb';
 import Screenposition_Osgb from './screenposition_osgb';
 import constants from './constants';
 import MenuView from './menu/view';
-import Leaflet_MatrixLayers from 'leaflet_matrixlayers';
+import Leaflet_MatrixLayers from 'VendorWrappers/leaflet-matrix-layers-control';
 
 		//even if some items aren't used in this particular configuration, we'll stick to a given order (resulting gaps are fine)
 		var order = [
@@ -17,7 +17,7 @@ import Leaflet_MatrixLayers from 'leaflet_matrixlayers';
 			MenuView,
 			leaflet.Control.Zoom,
 			Locate,
-			Leaflet_Geosearch,
+			GeosearchControl,
 			leaflet.Control.Layers, //matrix layers extends this, so will appear in the same slot
 			Selection,
 			Mouseposition_Osgb,
@@ -54,9 +54,9 @@ import Leaflet_MatrixLayers from 'leaflet_matrixlayers';
 					this.addControl(new Selection());
 				}
 				if (this._config.show_search_control) {
-					this.addControl(new Leaflet_Geosearch($.extend({
+					this.addControl(new GeosearchControl($.extend({
 						showPopup: true,
-						provider: new Leaflet_Geosearch_Bing({
+						provider: new GeosearchBing({
 							key: constants.bingKey
 						}),
 					}, configOverrides)));

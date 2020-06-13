@@ -1,6 +1,6 @@
 import $ from 'jquery';
 import _ from 'underscore';
-import leaflet from 'leaflet';
+import leaflet from 'VendorWrappers/leaflet';
 import popupView from './popup_view';
 import constants from './constants';
 	

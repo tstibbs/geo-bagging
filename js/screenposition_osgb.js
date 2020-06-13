@@ -1,4 +1,4 @@
-import Leaflet_ScreenPosition from "leaflet_screenposition";
+import Leaflet_ScreenPosition from "VendorWrappers/leaflet-map-center-coord";
 import conversion from "./conversion";
 import $ from "jquery";
 		export default Leaflet_ScreenPosition.extend({
