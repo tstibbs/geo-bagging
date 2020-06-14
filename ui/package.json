@@ -5,6 +5,7 @@
   "license": "Apache-2.0",
   "homepage": "https://github.com/tstibbs/geo-bagging",
   "devDependencies": {
+    "copy-webpack-plugin": "^6.0.2",
     "css-loader": "^3.5.3",
     "dynamic-cdn-webpack-plugin": "^5.0.0",
     "exports-loader": "^0.7.0",
@@ -41,7 +42,7 @@
     "underscore": "^1.10.2"
   },
   "scripts": {
-    "prebuild": "rm -rf dist/* && (cd js && cp --parents bundles/**/*.json ../dist && cp --parents bundles/**/*.json.meta ../dist && cp --parents bundles/**/*.geojson ../dist && cp --parents bundles/**/*.geojson.meta ../dist)",
+    "prebuild": "rm -rf dist/*",
     "build": "webpack",
     "serve": "npx http-server dist",
     "dev": "npm run prebuild && npx webpack-dev-server",

@@ -1,18 +1,20 @@
 const path = require('path')
 const webpack = require('webpack')
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const CopyPlugin = require('copy-webpack-plugin');
 
 module.exports = {
     devServer: {
-        contentBase: './dist'
+        contentBase: './dist',
+        writeToDisk: true
     },
-    entry: './js/app.js',
+    entry: './src/js/app.js',
     output: {
         path: path.resolve(__dirname, 'dist')
     },
     resolve: {
         alias: {
-            VendorWrappers: path.resolve(__dirname, 'js/vendor-wrappers'),
+            VendorWrappers: path.resolve(__dirname, 'src/js/vendor-wrappers'),
         },
     },
     plugins: [
@@ -22,6 +24,14 @@ module.exports = {
         new webpack.ProvidePlugin({
             'L': 'leaflet',
         }),
+        new CopyPlugin({
+            patterns: [
+                { from: 'bundles/**/*.json', context: 'src/js'},
+                { from: 'bundles/**/*.json.meta', context: 'src/js'},
+                { from: 'bundles/**/*.geojson', context: 'src/js'},
+                { from: 'bundles/**/*.geojson.meta', context: 'src/js'}
+            ]
+        })
     ],
     module: {
         rules: [

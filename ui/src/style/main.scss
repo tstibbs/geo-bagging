@@ -1,10 +1,9 @@
-@import "../css/app.css";
-
 @import "~leaflet.markercluster/dist/MarkerCluster.Default.css";
 @import "~leaflet.markercluster/dist/MarkerCluster.css";
 @import "~leaflet.locatecontrol/dist/L.Control.Locate.min.css";
 
 @import "~font-awesome/css/font-awesome.min.css";
+
 body.full-screen {
 	/* Make the body actually fill the screen, so that our map can too */
 	height: 100%;
@@ -203,7 +202,11 @@ body.landing {
 	content: ": "
 }
 
-div.info {	margin-top: 15px;	margin-right: 5px;	margin-bottom: 5px;	margin-left: 5px;
+div.info {
+	margin-top: 15px;
+	margin-right: 5px;
+	margin-bottom: 5px;
+	margin-left: 5px;
 }
 
 hr.info {
