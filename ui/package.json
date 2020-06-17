@@ -5,6 +5,7 @@
   "license": "Apache-2.0",
   "homepage": "https://github.com/tstibbs/geo-bagging",
   "devDependencies": {
+    "chai": "^4.2.0",
     "copy-webpack-plugin": "^6.0.2",
     "css-loader": "^3.5.3",
     "dynamic-cdn-webpack-plugin": "^5.0.0",
@@ -19,7 +20,8 @@
     "url-loader": "^4.1.0",
     "webpack": "^4.43.0",
     "webpack-cli": "^3.3.11",
-    "webpack-dev-server": "^3.11.0"
+    "webpack-dev-server": "^3.11.0",
+    "webpack-merge": "^4.2.2"
   },
   "dependencies": {
     "@mapbox/togeojson": "^0.16.0",
@@ -43,9 +45,8 @@
   },
   "scripts": {
     "prebuild": "rm -rf dist/*",
-    "build": "webpack",
+    "build": "npx webpack",
     "serve": "npx http-server dist",
-    "dev": "npm run prebuild && npx webpack-dev-server",
-    "dev-gitpod": "npm run prebuild && npx webpack-dev-server --disable-host-check --public $(gp url 8080):443"
+    "dev": "npm run prebuild &&  && npx webpack-dev-server --config webpack.config.test.js"
   }
 }

@@ -3,14 +3,18 @@ const webpack = require('webpack')
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const CopyPlugin = require('copy-webpack-plugin');
 
+const outputDir = path.resolve(__dirname, 'dist')
+
 module.exports = {
     devServer: {
-        contentBase: './dist',
+        contentBase: outputDir,
         writeToDisk: true
     },
-    entry: './src/js/app.js',
+    entry: {
+        main: './src/js/app.js'
+    },
     output: {
-        path: path.resolve(__dirname, 'dist')
+        path: outputDir
     },
     resolve: {
         alias: {
@@ -20,6 +24,7 @@ module.exports = {
     plugins: [
         new HtmlWebpackPlugin({
             title: 'GeoBagging',
+            chunks: ['main']
         }),
         new webpack.ProvidePlugin({
             'L': 'leaflet',

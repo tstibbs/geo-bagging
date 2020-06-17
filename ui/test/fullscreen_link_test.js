@@ -1,17 +1,18 @@
-define(['fullscreen_link'],
-	function(fullscreenLink) {
-		QUnit.module('fullscreen_link', function() {
-			QUnit.test('should display if container exists', function (assert) {
-				var $container = $('<div class="full-screen-link"></div>');
-				$('#qunit-fixture').append($container);
-				fullscreenLink(null);
-				assert.equal($('a', $container).length, 1);
-			});
-			
-			QUnit.test('should not error if container does not exist', function (assert) {
-				fullscreenLink(null);
-				assert.expect(0);
-			});
-		});
-	}
-);
+import $ from 'jquery'
+import {assert} from 'chai'
+
+import fullscreenLink from '../src/js/fullscreen_link';
+
+describe('fullscreen_link', function() {
+    it('should display if container exists', function() {
+        var $container = $('<div class="full-screen-link"></div>');
+        $('#test-fixture').append($container);
+        fullscreenLink(null);
+        assert.equal($('a', $container).length, 1);
+    });
+
+    it('should not error if container does not exist', function() {
+        fullscreenLink(null);
+        //assert.expect(0);
+    });
+});
