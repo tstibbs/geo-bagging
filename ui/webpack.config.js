@@ -3,18 +3,12 @@ const webpack = require('webpack')
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const CopyPlugin = require('copy-webpack-plugin');
 
-const outputDir = path.resolve(__dirname, 'dist')
-
 module.exports = {
     devServer: {
-        contentBase: outputDir,
-        writeToDisk: true
+        writeToDisk: (filePath) => /\/bundles\//.test(filePath)
     },
     entry: {
         main: './src/js/app.js'
-    },
-    output: {
-        path: outputDir
     },
     resolve: {
         alias: {

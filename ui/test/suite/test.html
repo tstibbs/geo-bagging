@@ -4,18 +4,18 @@
     <meta charset="utf-8" />
     <title>Mocha Tests</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<link rel="stylesheet" href="https://unpkg.com/mocha@8.0.1/mocha.css" />
+	<link rel="stylesheet" href="mocha.css" />
 	<%= htmlWebpackPlugin.tags.headTags %>
   </head>
   <body>
     <div id="mocha"></div>
 
-    <script src="https://unpkg.com/mocha@8.0.1/mocha.js"></script>
+    <script src="mocha.js"></script>
 
     <script class="mocha-init">
       mocha.setup('bdd');
       mocha.checkLeaks();
-	</script>
+	  </script>
     <%= htmlWebpackPlugin.tags.bodyTags %>
     <script class="mocha-exec">
       mocha.run();
