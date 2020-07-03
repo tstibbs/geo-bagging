@@ -3,7 +3,7 @@ module.exports = function (config) {
 		frameworks: ['mocha'],
 
 		files: [
-			'dist/test.js'
+			'dist/*.js'
 		],
 
 		browsers: ['Chrome_fixedSize'],

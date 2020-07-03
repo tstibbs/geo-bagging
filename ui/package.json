@@ -51,7 +51,7 @@
     "prebuild": "rm -rf dist/*",
     "build": "npx webpack",
     "serve": "npx http-server dist",
-    "dev": "npm run prebuild && npx webpack-dev-server --config webpack.config.test.js",
-    "test": "npm run prebuild && npx webpack --config webpack.config.test.js && npx karma start --no-auto-watch --single-run"
+    "dev": "npm run prebuild && npx webpack-dev-server --config webpack.config.dev.js",
+    "test": "npm run build && npx karma start --no-auto-watch --single-run"
   }
 }

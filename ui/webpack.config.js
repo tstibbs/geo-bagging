@@ -4,11 +4,17 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const CopyPlugin = require('copy-webpack-plugin');
 
 module.exports = {
+    mode: 'production',
+    devtool: 'source-map',
     devServer: {
-        writeToDisk: (filePath) => /\/bundles\//.test(filePath)
+        writeToDisk: (filePath) => /\/bundles\//.test(filePath) || /\/mocha.(js|css)$/.test(filePath)
     },
     entry: {
-        main: './src/js/app.js'
+        main: './src/js/app.js',
+        test: './test/suite/suite.js'
+    },
+    output: {
+        filename: '[name].[contenthash].js'
     },
     resolve: {
         alias: {
@@ -20,6 +26,12 @@ module.exports = {
             title: 'GeoBagging',
             chunks: ['main']
         }),
+        new HtmlWebpackPlugin({
+            filename: 'test.html',
+            inject: false,
+            template: "test/suite/test.html",
+            chunks: ['test']
+        }),
         new webpack.ProvidePlugin({
             'L': 'leaflet',
         }),
@@ -28,10 +40,27 @@ module.exports = {
                 { from: 'bundles/**/*.json', context: 'src/js'},
                 { from: 'bundles/**/*.json.meta', context: 'src/js'},
                 { from: 'bundles/**/*.geojson', context: 'src/js'},
-                { from: 'bundles/**/*.geojson.meta', context: 'src/js'}
+                { from: 'bundles/**/*.geojson.meta', context: 'src/js'},
+                { from: 'mocha.js', context: './node_modules/mocha/'},
+                { from: 'mocha.css', context: './node_modules/mocha/'},
             ]
         })
     ],
+    optimization: {
+        moduleIds: 'hashed',
+        runtimeChunk: 'single',
+        splitChunks: {
+            maxSize: 500*1024,
+            chunks: 'all',
+            cacheGroups: {
+                vendor: {
+                    test: /[\\/]node_modules[\\/]/,
+                    name: 'vendors',
+                    chunks: 'all'
+                }
+            }
+        }
+    },
     module: {
         rules: [
             { test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: "url-loader?limit=10000&mimetype=application/font-woff" },
