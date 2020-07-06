@@ -1,27 +1,41 @@
 import $ from 'jquery'
 
-beforeEach(function(done) {
-    let fixture = $('<div></div')
-    fixture.attr("id","test-fixture");
-    $('body').append(fixture)
-    done();
-})
-afterEach(function(done) {
-    $('#test-fixture', $('body')).empty()
-    done();
-})
+const karmaMode = global['describe'] != undefined
 
-import '../config_test'
-import '../conversion_test.js'
-//import '../controls_test'
-//import '../error_handler_test.js'
-import '../fullscreen_link_test.js'
-//import '../layers_test.js'
-//import '../loader_test.js'
-//import '../map_view_test.js'
-//import '../mobile_test.js'
-//import '../mouseposition_osgb_test.js'
-//import '../params_test.js'
-//import '../points_view_test.js'
-//import '../screenposition_osgb_test.js'
+async function runTests() {
+    let mocha = null
+    if (!karmaMode) {
+        mocha = await import('./mocha-wrapper');//it puts everything into global, but just needs to be loaded before the tests
+    }
 
+    beforeEach(function(done) {
+        let fixture = $('<div></div')
+        fixture.attr("id","test-fixture");
+        $('body').append(fixture)
+        done();
+    })
+    afterEach(function(done) {
+        $('#test-fixture', $('body')).empty()
+        done();
+    })
+
+    await import('../config_test');
+    await import('../conversion_test');
+    await import('../fullscreen_link_test');
+    //'../controls_test'
+    //'../error_handler_test.js'
+    //'../layers_test.js'
+    //'../loader_test.js'
+    //'../map_view_test.js'
+    //'../mobile_test.js'
+    //'../mouseposition_osgb_test.js'
+    //'../params_test.js'
+    //'../points_view_test.js'
+    //'../screenposition_osgb_test.js'
+
+    if (!karmaMode) {
+        mocha.run()
+    }
+}
+
+runTests()

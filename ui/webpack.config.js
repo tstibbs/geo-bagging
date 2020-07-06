@@ -7,7 +7,7 @@ module.exports = {
     mode: 'production',
     devtool: 'source-map',
     devServer: {
-        writeToDisk: (filePath) => /\/bundles\//.test(filePath) || /\/mocha.(js|css)$/.test(filePath)
+        writeToDisk: (filePath) => /\/bundles\//.test(filePath)
     },
     entry: {
         main: './src/js/app.js',
@@ -27,9 +27,8 @@ module.exports = {
             chunks: ['main']
         }),
         new HtmlWebpackPlugin({
+            title: 'GeoBaggingTests',
             filename: 'test.html',
-            inject: false,
-            template: "test/suite/test.html",
             chunks: ['test']
         }),
         new webpack.ProvidePlugin({
@@ -41,8 +40,6 @@ module.exports = {
                 { from: 'bundles/**/*.json.meta', context: 'src/js'},
                 { from: 'bundles/**/*.geojson', context: 'src/js'},
                 { from: 'bundles/**/*.geojson.meta', context: 'src/js'},
-                { from: 'mocha.js', context: './node_modules/mocha/'},
-                { from: 'mocha.css', context: './node_modules/mocha/'},
             ]
         })
     ],
@@ -120,6 +117,10 @@ module.exports = {
             {
                 test: require.resolve('./node_modules/leaflet.featuregroup.subgroup/dist/leaflet.featuregroup.subgroup.js'),
                 use: 'exports-loader?SubGroup=L.FeatureGroup.SubGroup',
+            },
+            {
+                test: require.resolve('./node_modules/mocha/browser-entry.js'),
+                use: 'exports-loader?exports=window',
             }
         ]
     }
