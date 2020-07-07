@@ -9,7 +9,7 @@ var AbstractBundleBuilder = leaflet.Class.extend({
 		this._config = manager.getConfig();
 		this._bundleConfig = bundleConfig;
 		this._bundleName = bundleName.indexOf('/') == -1 ? bundleName : bundleName.substring(0, bundleName.lastIndexOf('/'));
-		this._urlPrefix = urlPrefix != null ? urlPrefix + '/' : '';
+		this._urlPrefix = urlPrefix != null ? urlPrefix : '';
 		this._visits = [];
 	},
 	

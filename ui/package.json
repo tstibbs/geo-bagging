@@ -52,7 +52,7 @@
   "scripts": {
     "prebuild": "rm -rf dist/*",
     "build": "npx webpack",
-    "serve": "npx http-server dist",
+    "serve": "npx http-server -c-1 --cors dist",
     "dev": "npm run prebuild && npx webpack-dev-server --config webpack.config.dev.js",
     "test": "npm run build && npx karma start --no-auto-watch --single-run"
   }
