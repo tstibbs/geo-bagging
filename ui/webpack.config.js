@@ -2,6 +2,9 @@ const path = require('path')
 const webpack = require('webpack')
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const CopyPlugin = require('copy-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+const TerserPlugin = require('terser-webpack-plugin');
 
 module.exports = {
     mode: 'production',
@@ -41,7 +44,8 @@ module.exports = {
                 { from: 'bundles/**/*.geojson', context: 'src/js'},
                 { from: 'bundles/**/*.geojson.meta', context: 'src/js'},
             ]
-        })
+        }),
+        new MiniCssExtractPlugin()
     ],
     optimization: {
         moduleIds: 'hashed',
@@ -56,7 +60,10 @@ module.exports = {
                     chunks: 'all'
                 }
             }
-        }
+        },
+        minimizer: [new TerserPlugin({
+            sourceMap: true,
+        }), new OptimizeCssAssetsPlugin({})]
     },
     module: {
         rules: [
@@ -64,13 +71,12 @@ module.exports = {
             { test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: "file-loader" },
             {
                 test: /\.css$/i,
-                use: ['style-loader', 'css-loader'],
+                use: [MiniCssExtractPlugin.loader, 'css-loader'],
             },
             {
                 test: /\.s[ac]ss$/i,
                 use: [
-                    // Creates `style` nodes from JS strings
-                    'style-loader',
+                    MiniCssExtractPlugin.loader,
                     // Translates CSS into CommonJS
                     'css-loader',
                     // Compiles Sass to CSS
