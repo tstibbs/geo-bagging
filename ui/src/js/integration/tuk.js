@@ -1,6 +1,6 @@
 import $ from 'jquery';
-import conversion from './conversion';
-import mapLoader from './map_loader';
+import conversion from '../conversion';
+import mapLoader from '../map_loader';
 
 export default {
 	showMap: function() {

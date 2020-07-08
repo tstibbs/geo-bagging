@@ -54,9 +54,9 @@ export default {
 		});
 	},
 	
-	loadMiniMap: function(options, bundles) {
+	loadMiniMap: function() {
 		//set some defaults that can be overriden by the page
-		options = $.extend({
+		var options = {
 			cluster: false,
 			dimensional_layering: false,
 			initial_zoom: 10,
@@ -67,10 +67,8 @@ export default {
 			hider_control_start_visible: false,
 			map_style: 'mini',
 			use_sidebar: false
-		}, options);
-		if (bundles == null) { //default if we haven't passed one in
-			bundles = ['trigs/config_mini'];
-		}
+		};
+		var bundles = ['trigs/config_mini'];
 		this.loadMap(options, bundles);
 	},
 

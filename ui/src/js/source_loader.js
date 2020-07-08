@@ -25,19 +25,19 @@ var SourceLoader = leaflet.Class.extend({
 		var extraDataSources = (extraDataSourcesString != null && extraDataSourcesString.length > 0) ? extraDataSourcesString.split(',') : [];
 		var sourceIds = $.uniqueSort(selectedSourceIds.concat(constants.dataSources, extraDataSources));
 		var sourceModuleIds = this._sourceIdsToDataSources(sourceIds);
-		sourceModuleIds = sourceModuleIds.map(function(sourceId){
-			return 'bundles/' + sourceId;
-		});
 		var deferredObject = $.Deferred();
 		var sources = {}
 		sourceModuleIds.forEach(function(source) {
-			var name = source.substring(7)
-			sources[name] = cache['.' + name + '.js']
+			var sourceModule = cache['./' + source + '.js']
+			if (typeof sourceModule == 'function') {
+				sourceModule = sourceModule(this._config)
+			}
+			sources[source] = sourceModule
 			//will require all at compile time and therefore all will be bundled for the client, but we only put in the code into the running vm that is from the source
-		})
+		}.bind(this))
 
 			//https://cdn.jsdelivr.net/gh/tstibbs/geo-bagging@gh-pages/js/bundles/nt/data.json
-			var sourceDataPrefix = (this._config.remoteData ? 'https://cdn.jsdelivr.net/gh/tstibbs/geo-bagging@gh-pages' : window.os_map_base);//some mobile browsers don't support local ajax, so this provides a workaround for dev on mobile devices.
+			var sourceDataPrefix = (this._config.remoteData ? 'https://cdn.jsdelivr.net/gh/tstibbs/geo-bagging@gh-pages' : this._config.baseUrl);//some mobile browsers don't support local ajax, so this provides a workaround for dev on mobile devices.
 			
 			var sourceModels = {};
 			var lazyModels = {};

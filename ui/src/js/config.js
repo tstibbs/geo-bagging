@@ -7,6 +7,7 @@ import conversion from "./conversion";
 var defaultPageId = global.location.pathname.split("/").pop();
 
 var defaults = {
+	baseUrl: window.geoBaggingBaseUrl != null ? window.geoBaggingBaseUrl : '',
 	remoteData: false,
 	map_style: 'full',//full, mini, embedded
 	cluster: true,

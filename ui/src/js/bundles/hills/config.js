@@ -53,13 +53,15 @@ Object.keys(displayNames).forEach(function(key) {
 
 var redIconPath = hillIcon
 
-export default {
-	aspectLabel: "Hills",
-	defaultIcon: new CustomDefaultIcon(redIconPath, {iconUrl: redIconPath}),
-	dimensionNames: dimensionNames,
-	dimensionValueLabels: dimensionValueLabels,
-	hillDisplayNames: displayNames,
-	dataToLoad: 'data.json',
-	parser: PointsBuilder,
-	attribution: '&copy; <a href="http://www.hills-database.co.uk/downloads.html">The Database of British and Irish Hills</a>'
+export default function build(config) {
+	return {
+		aspectLabel: "Hills",
+		defaultIcon: new CustomDefaultIcon(config, redIconPath, {iconUrl: redIconPath}),
+		dimensionNames: dimensionNames,
+		dimensionValueLabels: dimensionValueLabels,
+		hillDisplayNames: displayNames,
+		dataToLoad: 'data.json',
+		parser: PointsBuilder,
+		attribution: '&copy; <a href="http://www.hills-database.co.uk/downloads.html">The Database of British and Irish Hills</a>'
+	}
 };

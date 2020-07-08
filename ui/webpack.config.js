@@ -9,11 +9,10 @@ const TerserPlugin = require('terser-webpack-plugin');
 module.exports = {
     mode: 'production',
     devtool: 'source-map',
-    devServer: {
-        writeToDisk: (filePath) => /\/bundles\//.test(filePath)
-    },
     entry: {
-        main: './src/js/app.js',
+        main: './src/js/entry/app.js',
+        mini: './src/js/entry/mini.js',
+        integration: './src/js/entry/integration.js',
         test: './test/suite/suite.js'
     },
     output: {
@@ -30,9 +29,21 @@ module.exports = {
             chunks: ['main']
         }),
         new HtmlWebpackPlugin({
+            title: 'GeoBagging',
+            filename: 'examples/mini.html',
+            template: './src/templates/mini.html.ejs',
+            chunks: ['mini']
+        }),
+        new HtmlWebpackPlugin({
             title: 'GeoBaggingTests',
             filename: 'test.html',
             chunks: ['test']
+        }),
+        new HtmlWebpackPlugin({
+            filename: 'integration/trigpointing.js',
+            template: './src/templates/integration.js.ejs',
+            inject: false,
+            chunks: ['integration']
         }),
         new webpack.ProvidePlugin({
             'L': 'leaflet',

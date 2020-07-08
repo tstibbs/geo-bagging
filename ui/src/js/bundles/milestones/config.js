@@ -12,12 +12,14 @@ dimensionValueLabels[dimensionNames[0]] = {
 
 var milestonesIcon = milestoneIcon;
 
-export default {
-	aspectLabel: "Waymarks",
-	defaultIcon: new CustomDefaultIcon(milestonesIcon, {iconUrl: milestonesIcon}),
-	dimensionNames: dimensionNames,
-	dimensionValueLabels: dimensionValueLabels,
-	dataToLoad: 'data.json',
-	parser: PointsBuilder,
-	attribution: '&copy; <a href="http://www.msocrepository.co.uk/">The Milestone Society</a>'
+export default function build(config) {
+	return {
+		aspectLabel: "Waymarks",
+		defaultIcon: new CustomDefaultIcon(config, milestonesIcon, {iconUrl: milestonesIcon}),
+		dimensionNames: dimensionNames,
+		dimensionValueLabels: dimensionValueLabels,
+		dataToLoad: 'data.json',
+		parser: PointsBuilder,
+		attribution: '&copy; <a href="http://www.msocrepository.co.uk/">The Milestone Society</a>'
+	}
 };

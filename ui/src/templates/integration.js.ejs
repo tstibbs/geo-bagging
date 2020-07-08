@@ -1,0 +1,19 @@
+window.geoBaggingBaseUrl = "https://tstibbs.github.io/geo-bagging/";
+var defaultOptions = {
+    dataType: "script",
+    cache: true
+};
+<%= htmlWebpackPlugin
+    .tags
+    .headTags
+    .map(tag =>
+        `\$("head").append('<link rel="stylesheet" type="text/css" href="' + window.geoBaggingBaseUrl + '${tag.attributes.href.replace(/^..\//, '')}">');\n`
+    )
+%>
+<%= htmlWebpackPlugin
+    .tags
+    .bodyTags
+    .map(tag =>
+        `$.ajax($.extend({url: window.geoBaggingBaseUrl + "${tag.attributes.src.replace(/^..\//, '')}"}, defaultOptions));\n`
+    )
+%>
