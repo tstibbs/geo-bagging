@@ -26,6 +26,7 @@ module.exports = {
     plugins: [
         new HtmlWebpackPlugin({
             title: 'GeoBagging',
+            template: './src/templates/index.html.ejs',
             chunks: ['main']
         }),
         new HtmlWebpackPlugin({

@@ -1,19 +1,22 @@
-window.geoBaggingBaseUrl = "https://tstibbs.github.io/geo-bagging/";
-var defaultOptions = {
-    dataType: "script",
-    cache: true
-};
-<%= htmlWebpackPlugin
-    .tags
-    .headTags
-    .map(tag =>
-        `\$("head").append('<link rel="stylesheet" type="text/css" href="' + window.geoBaggingBaseUrl + '${tag.attributes.href.replace(/^..\//, '')}">');\n`
-    )
-%>
-<%= htmlWebpackPlugin
-    .tags
-    .bodyTags
-    .map(tag =>
-        `$.ajax($.extend({url: window.geoBaggingBaseUrl + "${tag.attributes.src.replace(/^..\//, '')}"}, defaultOptions));\n`
-    )
-%>
+<%= require('html-loader!./check-for-ie.js') %>
+} else {
+    window.geoBaggingBaseUrl = /^(.*)\/integration\/trigpointing\.js.*$/.exec(document.currentScript.src)[1] + '/';
+    var defaultOptions = {
+        dataType: "script",
+        cache: true
+    };
+    <%= htmlWebpackPlugin
+        .tags
+        .headTags
+        .map(tag =>
+            `\$("head").append('<link rel="stylesheet" type="text/css" href="' + window.geoBaggingBaseUrl + '${tag.attributes.href.replace(/^..\//, '')}">');\n`
+        )
+    %>
+    <%= htmlWebpackPlugin
+        .tags
+        .bodyTags
+        .map(tag =>
+            `$.ajax($.extend({url: window.geoBaggingBaseUrl + "${tag.attributes.src.replace(/^..\//, '')}"}, defaultOptions));\n`
+        )
+    %>
+}
