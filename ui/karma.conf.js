@@ -1,3 +1,5 @@
+let wslFlags = process.env.WSL_DISTRO_NAME != null ? ['--no-sandbox'] : []
+
 module.exports = function (config) {
 	config.set({
 		frameworks: ['mocha'],
@@ -11,7 +13,7 @@ module.exports = function (config) {
 		customLaunchers: {
 			'Chrome_fixedSize': {
 				base: 'ChromeHeadless',
-				flags: ['--window-size=1152,864']
+				flags: ['--window-size=1152,864', ...wslFlags]
 			}
 		}
 	});
