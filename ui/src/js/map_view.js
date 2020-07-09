@@ -15,7 +15,7 @@ var MapView = leaflet.Class.extend({
 
 		//set start point
 		this._map.setView(new leaflet.LatLng(this._config.start_position[0], this._config.start_position[1]), this._config.initial_zoom);
-		fullscreen_link(this._map);
+		fullscreen_link(this._config, this._map);
 		
 		//hook up listener to save the location when we move it
 		this._map.on('zoomend moveend dragend', function() {
