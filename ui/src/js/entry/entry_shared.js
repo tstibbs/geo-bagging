@@ -3,7 +3,7 @@
 
 //third party
 import 'leaflet/dist/leaflet.css'
-import 'leaflet-map-center-coord/src/L.Control.MapCenterCoord.css'
+import 'Leaflet.MapCenterCoord/src/L.Control.MapCenterCoord.css'
 import 'leaflet-mouse-position/src/L.Control.MousePosition.css'
 import 'leaflet.locatecontrol/dist/L.Control.Locate.min.css'
 import 'leaflet.markercluster/dist/MarkerCluster.Default.css'

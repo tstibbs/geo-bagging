@@ -111,9 +111,8 @@ module.exports = {
                 test: require.resolve('./node_modules/leaflet-mouse-position/src/L.Control.MousePosition.js'),
                 use: 'exports-loader?MousePosition=L.Control.MousePosition',
             },
-             
             {
-                test: require.resolve('./node_modules/leaflet-map-center-coord/src/L.Control.MapCenterCoord.js'),
+                test: require.resolve('./node_modules/Leaflet.MapCenterCoord/src/L.Control.MapCenterCoord.js'),
                 use: 'exports-loader?MapCenterCoord=L.Control.MapCenterCoord',
             },
             {

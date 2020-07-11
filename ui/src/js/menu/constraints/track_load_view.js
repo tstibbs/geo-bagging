@@ -1,6 +1,6 @@
 import leaflet from 'VendorWrappers/leaflet';
 import $ from 'jquery';
-import toGeoJSON from '@mapbox/togeojson';
+import toGeoJSON from '@tmcw/togeojson';
 import TracksView from './tracks_view';
 
 var TrackLoadView = leaflet.Class.extend({
