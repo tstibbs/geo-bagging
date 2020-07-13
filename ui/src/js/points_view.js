@@ -2,7 +2,7 @@ import _ from "underscore";
 import $ from "jquery";
 import leaflet from "leaflet";
 import leaflet_cluster from "VendorWrappers/leaflet-marker-cluster";
-import {SubGroup as LeafletSubgroup} from "leaflet.featuregroup.subgroup";
+import LeafletSubgroup from "VendorWrappers/leaflet-subgroup";
 import markerView from "./marker_view";
 
 var PointsView = leaflet.Class.extend({
