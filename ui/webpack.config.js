@@ -21,6 +21,7 @@ module.exports = {
     resolve: {
         alias: {
             VendorWrappers: path.resolve(__dirname, 'src/js/vendor-wrappers'),
+            leaflet: path.resolve(__dirname, 'node_modules/leaflet')//force everything to use the same version of leaflet
         },
     },
     plugins: [
@@ -63,7 +64,7 @@ module.exports = {
         moduleIds: 'hashed',
         runtimeChunk: 'single',
         splitChunks: {
-            maxSize: 500*1024,
+            //maxSize: 500*1024,//breaks css ordering - see https://github.com/webpack-contrib/mini-css-extract-plugin/issues/548
             chunks: 'all',
             cacheGroups: {
                 vendor: {
