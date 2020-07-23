@@ -56,6 +56,7 @@ module.exports = {
                 { from: 'bundles/**/*.json.meta', context: 'src/js'},
                 { from: 'bundles/**/*.geojson', context: 'src/js'},
                 { from: 'bundles/**/*.geojson.meta', context: 'src/js'},
+                { from: 'src/includes'},
             ]
         }),
         new MiniCssExtractPlugin()
