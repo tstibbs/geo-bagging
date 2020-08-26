@@ -36,11 +36,6 @@ var MapView = leaflet.Class.extend({
 			mapClass = ' class="embedded-map"';
 		}
 
-		content+= 	'<div id="error-container" style="display: none;">';
-		content+= 		'<p class="title">Some errors have occurred:</p>';
-		content+= 		'<div id="errors-list"></div>';
-		content+= 		'<a id="dismiss-button" href="#">Hide</a>';
-		content+= 	'</div>';
 		if (this._config.map_style == 'mini' || this._config.map_style == 'mini_embedded') {
 			content+= 	'<div class="mini-map">';
 		}

@@ -9,9 +9,11 @@
                 document.execCommand('Stop')
             }
         </script>
+        <script src="error_handler.js"></script>
         <!-- stylesheets -->
     </head>
     <body>
+        <%= require('html-loader!./error-display.html') %>
         <!--scripts-->
     </body>
 </html>
