@@ -4,17 +4,25 @@
         <meta charset="utf-8">
         <title>GeoBagging</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <%if (baseUrl != undefined) { %>
+            <script type="text/javascript">
+                window.geoBaggingBaseUrl = '<%= baseUrl %>'
+            </script>
+        <% } %>
         <script type="text/javascript">
-            <%= require('html-loader!./check-for-ie.js') %>
-                document.execCommand('Stop')
+            function showError(errorMessage) {
+                document.write(errorMessage)
             }
+            <%= require('raw-loader!./feature-detect.js').default %>
         </script>
-        <script src="error_handler.js"></script>
+        <script type="text/javascript">
+            <%= require('raw-loader!./error_handler.js').default %>
+        </script>
         <!-- stylesheets -->
     </head>
     <body>
-        <%= require('html-loader!./error-display.html') %>
-        <%= require('html-loader!./loading.html') %>
+        <%= require('raw-loader!./error-display.html').default %>
+        <%= require('raw-loader!./loading.html').default %>
         <!--scripts-->
     </body>
 </html>

@@ -28,13 +28,19 @@ module.exports = {
         new HtmlWebpackPlugin({
             title: 'GeoBagging',
             template: './src/templates/index.html.ejs',
-            chunks: ['main']
+            chunks: ['main'],
+            templateParameters: {
+                baseUrl: undefined
+            }
         }),
         new HtmlWebpackPlugin({
             title: 'GeoBagging',
             filename: 'examples/mini.html',
-            template: './src/templates/mini.html.ejs',
-            chunks: ['mini']
+            template: './src/templates/index.html.ejs',
+            chunks: ['mini'],
+            templateParameters: {
+                baseUrl: '../'
+            }
         }),
         new HtmlWebpackPlugin({
             title: 'GeoBaggingTests',
@@ -45,7 +51,8 @@ module.exports = {
             filename: 'integration/trigpointing.js',
             template: './src/templates/integration.js.ejs',
             inject: false,
-            chunks: ['integration']
+            chunks: ['integration'],
+            minify: false
         }),
         new webpack.ProvidePlugin({
             'L': 'leaflet',
