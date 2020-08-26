@@ -39,13 +39,6 @@ var MapView = leaflet.Class.extend({
 		if (this._config.map_style == 'mini' || this._config.map_style == 'mini_embedded') {
 			content+= 	'<div class="mini-map">';
 		}
-		content+= 		'<div id="loading-message-pane" class="full-screen">';
-		content+= 			'<div class="loading-message-container">';
-		content+= 				'<div class="loading-message-text">';
-		content+= 					'<p>Loading...</p>';
-		content+= 				'</div>';
-		content+= 			'</div>';
-		content+= 		'</div>';
 		content+= 		'<div id="' + this._config.map_element_id + '"' + mapClass + '></div>';
 		if (this._config.map_style == 'mini') {
 			content+= 	'</div>';
