@@ -12,7 +12,7 @@ var TracksView = leaflet.Class.extend({
 			layer.remove();
 		});
 		this._layers = tracks.map(function(features) {
-			geoJsonLayer = leaflet.geoJSON(features, {
+			let geoJsonLayer = leaflet.geoJSON(features, {
 				color: this._colour,
 				onEachFeature: function(feature, layer) {
 					if (feature.properties && feature.properties.name) {

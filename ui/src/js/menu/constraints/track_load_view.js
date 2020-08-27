@@ -1,6 +1,6 @@
 import leaflet from 'VendorWrappers/leaflet';
 import $ from 'jquery';
-import toGeoJSON from '@tmcw/togeojson';
+import {gpx as toGeoJSON} from '@tmcw/togeojson';
 import TracksView from './tracks_view';
 
 var TrackLoadView = leaflet.Class.extend({
@@ -46,7 +46,7 @@ var TrackLoadView = leaflet.Class.extend({
 	
 	_loadTrack: function(xmlString) {
 		var dom = (new DOMParser()).parseFromString(xmlString, 'text/xml');
-		var geoJson = toGeoJSON.gpx(dom);
+		var geoJson = toGeoJSON(dom);
 		var bounds = this._geoJsonBounds(geoJson);
 		return {
 			features: geoJson,
