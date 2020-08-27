@@ -1,0 +1,101 @@
+<!doctype html><html><head><meta charset="utf-8"><title>GeoBagging</title><meta name="viewport" content="width=device-width,initial-scale=1"><script>window.geoBaggingBaseUrl = '../'</script><script>function showError(errorMessage) {
+                document.write(errorMessage)
+            }
+            var unsupportedFeatures = [];
+
+function test(script, name) {
+    try {
+        eval(script);
+    } catch (err) {
+        unsupportedFeatures.push(name);
+        console.error(err);
+    }
+}
+
+test("let val = 'a'", 'let');
+test("const arr = 'a'", 'const');
+test("var str = `abc`", 'backticks');
+test("'a'.includes('b')", 'String.prototype.includes');
+test("['a'].includes('b')", 'Array.prototype.includes');
+test("['a'].map(elem => elem + 'b')", 'arrow functions');
+test("document.createElement('div').remove()", 'ChildNode.remove');
+test("var a = document.currentScript.src", 'document.currentScript')
+
+if (unsupportedFeatures.length > 0) {
+    var errorMessage = "Browser does not support some features required by geo-bagging (" + unsupportedFeatures.join(', ') + "), please either use a more modern browser (ideally Chrome) or report a bug at https://github.com/tstibbs/geo-bagging/issues/new.";
+    try {
+        console.log(errorMessage);
+        console.log(typeof showError);
+        if (typeof showError === 'function') {
+            showError(errorMessage);
+        }
+        document.execCommand('Stop');
+    } catch (err) {
+        console.error(err);
+        //catch but just log so we can continue to try to throw the more helpful error message
+    }
+    throw Error(errorMessage);
+}</script><script>// This file must have no dependencies and must be loaded first, so it can warn of any issues loading dependent libraries
+
+var functionsToWrap = ['log', 'error', 'warn'];
+
+var outerThis = this;
+var bufferedMessages = [];//if the dom isn't ready yet, we'll buffer up the messages to replay later
+
+document.addEventListener("DOMContentLoaded", function(event) {
+	//document.onload = function() {
+	addErrorHandler();
+});
+
+function addErrorHandler() {
+	var dismissButton = document.querySelector('div#error-container a#dismiss-button');
+	if (dismissButton != null) {
+		dismissButton.onclick = function () {
+			document.getElementById('error-container').style.display = 'none';
+			return false;
+		};
+		for (var i = 0; i < bufferedMessages.length; i++) {
+			displayError(bufferedMessages);
+		}
+	} else {
+		setTimeout(addErrorHandler.bind(this), 1000);//just keep checking, it won't be long
+	}
+}
+
+function displayError() {
+	var args = Array.prototype.slice.call(arguments);
+	var container = document.getElementById('error-container');
+	if (container != null) {
+		var elem = document.createElement('p');
+		elem.className = 'error';
+		var message = args.join(" | ");
+		elem.innerHTML = message;
+		var list = document.getElementById('errors-list');
+		list.appendChild(elem);
+		container.style.display = 'block'; //may already be showing, but that's fine
+	} else {
+		//if the dom isn't ready yet, let's buffer the messages up for now
+		bufferedMessages.push(args);
+	}
+}
+
+if (window.console != null) {
+	for (var i = 0; i < functionsToWrap.length; i++) {
+		var func = functionsToWrap[i];
+		if (window.console[func] != null) {
+			(function(func, old) {//scoping old
+				window.console[func] = function() {
+					old.apply(this, arguments);//log first in case our displayer mucks something up
+					displayError.apply(outerThis, arguments);
+				}
+			})(func, window.console[func]);
+		}
+	}
+}
+
+window.onerror = function (message, file, line, col, error) {
+	displayError.apply(outerThis, [message, file, error]);
+};
+window.addEventListener("error", function (e) {
+	displayError.apply(outerThis, e);
+});</script><link href="../vendors.css" rel="stylesheet"><link href="../integration~main~mini.css" rel="stylesheet"></head><body><div id="error-container" style="display: none;"><p class="title">Some errors have occurred:</p><div id="errors-list"></div><div>You may wish to report these errors by raising a <a href="https://github.com/tstibbs/geo-bagging/issues/new">bug report</a>.</div><a id="dismiss-button" href="#">Hide</a></div><div id="loading-message-pane" class="full-screen"><div class="loading-message-container"><div class="loading-message-text"><p>Loading...</p></div></div></div><script src="../runtime.5925e5b2648956189cd7.js"></script><script src="../vendors.e00374bb0a42f504a51f.js"></script><script src="../integration~main~mini.1cd166252da6c586e1b3.js"></script><script src="../mini.ac6b0555332033e2a693.js"></script></body></html>
