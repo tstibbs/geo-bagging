@@ -1,4 +1,6 @@
 import $ from 'jquery';
-import config from './config';
+import configBase from './config';
 
-export default $.extend({}, config, {dataToLoad: 'data_all.json'});	
+export default function build(config) {
+	return $.extend({}, configBase(config), {dataToLoad: 'data_all.json'});
+}
