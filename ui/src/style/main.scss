@@ -1,0 +1,248 @@
+@import "~font-awesome/css/font-awesome.min.css";
+
+body.full-screen {
+	/* Make the body actually fill the screen, so that our map can too */
+	height: 100%;
+	width: 100%;
+	height: 100vh;
+	width: 100vw;
+	margin: 0;
+	font-family: sans-serif;
+}
+
+div.full-screen {
+	height: 100%;
+	width: 100%;
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+
+div.mini-map {
+	width: 300px;
+	height: 300px
+}
+
+div.embedded-map {
+	width: 100%;
+	height: 100%;
+}
+
+.loading-message-container {
+	width:100%;
+	height:100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.loading-message-text{
+	display:block;
+	padding-left: 28px;
+	padding-right: 28px;
+	background-color: rgba(255, 255, 255, 0.9);
+	border-radius: 10px;
+	font-size: large;
+}
+
+#loading-message-pane {
+	z-index: 2001;
+}
+
+.leaflet-container .leaflet-control-mapcentercoord, .leaflet-container .leaflet-control-mouseposition {
+	background-color: rgba(255, 255, 255, 0.85);
+}
+
+div.leaflet-control-attribution {
+	text-align: end;
+}
+
+/* for now, hide the attribution control on the mini map */
+div.mini-map .leaflet-container .leaflet-control-attribution {
+	display: none;
+}
+
+div#error-container {
+	background-color: rgba(255, 143, 143, 0.9);
+	position: absolute;
+	left: 0;
+	top: 0;
+	z-index: 2002;
+	margin: 5px;
+	padding: 10px;
+	border-color: black;
+	border-style: solid;
+	border-width: 2px;
+	overflow: auto;
+}
+
+div#error-container p.title {
+	font-style: italic;
+	font-size: smaller;
+	margin-top: 0px;
+	margin-bottom: 8px;
+}
+
+div#error-container p.error {
+	font-family: monospace;
+	margin-top: 3px;
+	margin-bottom: 3px;
+}
+
+div#error-container a#dismiss-button {
+	font-size: smaller;
+	float: right;
+}
+
+.full-screen-link a {
+    font-size: smaller;
+}
+
+/* marker popups */
+
+.popup-title {
+    text-decoration: underline;
+}
+
+.popup-entry-key {
+    font-weight: bold;
+}
+
+.popup-entry-list {
+    list-style-position: inside;
+    padding-left: 8px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+
+/* links section */
+
+.expandable-links {
+	text-align: right;
+}
+
+.expandable-checkbox {
+	display: none;
+}
+
+.expandable-checkbox-label {
+	cursor: pointer;
+}
+
+.expandable-checkbox:not(checked) ~ .expandable-content {
+	visibility: hidden;
+	/* when not showing, hide links but keep their width to ensure the popup is appropriately sized when they do appear */
+	height: 0px;
+}
+.expandable-checkbox:checked ~ .expandable-content {
+	visibility: initial;
+	height: initial;
+}
+
+/* landing page */
+
+body.landing {
+	height: calc(100vh - 16px);
+	/* this seems to be the default in chrome at least, we just need to force it to ensure the above calc works */
+	margin: 8px;
+}
+
+.landing .landing-container {
+	height: 100%;
+	display: flex;
+	flex-flow: column;
+}
+
+.landing #map-container {
+	flex: 1;
+}
+
+/* controls */
+
+.sidebar-pane {
+	padding: 10px !important;
+}
+
+.leaflet-control-layers-list {
+	padding-top: 10px;
+}
+
+.sidebar.collapsed {
+	bottom: 16px;
+}
+.mobile > .sidebar.collapsed {
+	top: 28px;
+}
+@media (min-width: 768px) {
+	/* repetition is a hack to get around the style above winning due to higher specificity */
+	.sidebar.collapsed, .sidebar {
+		bottom: 26px;
+	}
+	.mobile > .sidebar.collapsed, .mobile > .sidebar {
+		top: 38px;
+	}
+}
+
+.attribution-entry {
+    padding-top: 4px;
+    padding-bottom: 4px;
+}
+
+.attribution-source {
+    font-weight: bold;
+}
+.attribution-source::after {
+	content: ": "
+}
+
+div.info {
+	margin-top: 15px;
+	margin-right: 5px;
+	margin-bottom: 5px;
+	margin-left: 5px;
+}
+
+hr.info {
+	margin-left: 5px;
+	margin-right: 5px;
+	margin-bottom: 15px;
+	border-color: lightgrey;
+	border-style: solid;
+}
+
+div.setting {
+    padding-left: 2px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+/* general */
+
+.hidden {
+	visibility: hidden;
+}
+
+input[type="checkbox"] {
+	vertical-align: bottom;
+	margin-left: 0px;
+}
+
+/* fancy checkbox that looks like a tick*/
+
+label.fancy-checkbox > input {
+	display: none;
+}
+
+label.fancy-checkbox > input:checked + i {
+	color: #12B000; /*mid green*/
+}
+label.fancy-checkbox > input + i {
+	color: #CECECE; /*light grey*/
+}
+body:not(.mobile) label.fancy-checkbox > i:hover { /*touch devices tend to latch the hover on, which isn't what we want*/
+	color: #18EE00; /*light green*/
+}
+
+label.fancy-checkbox {
+	cursor: pointer;
+}
