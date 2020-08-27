@@ -46,8 +46,8 @@ var defaultOptions = {
 $("head").append('<link rel="stylesheet" type="text/css" href="' + window.geoBaggingBaseUrl + 'vendors.css">');
 $("head").append('<link rel="stylesheet" type="text/css" href="' + window.geoBaggingBaseUrl + 'integration~main~mini.css">');
 
-$.ajax($.extend({url: window.geoBaggingBaseUrl + "runtime.5925e5b2648956189cd7.js"}, defaultOptions));
-$.ajax($.extend({url: window.geoBaggingBaseUrl + "vendors.e00374bb0a42f504a51f.js"}, defaultOptions));
-$.ajax($.extend({url: window.geoBaggingBaseUrl + "integration~main~mini.1cd166252da6c586e1b3.js"}, defaultOptions));
+$.ajax($.extend({url: window.geoBaggingBaseUrl + "runtime.b4b924df7bb9d7a8d80b.js"}, defaultOptions));
+$.ajax($.extend({url: window.geoBaggingBaseUrl + "vendors.e97cce86d1dbe52a7e53.js"}, defaultOptions));
+$.ajax($.extend({url: window.geoBaggingBaseUrl + "integration~main~mini.1c92403850335563a8e5.js"}, defaultOptions));
 $.ajax($.extend({url: window.geoBaggingBaseUrl + "integration.d2c5f7e0d0babd45718d.js"}, defaultOptions));
 
