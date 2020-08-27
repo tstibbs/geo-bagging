@@ -66,7 +66,19 @@ module.exports = {
                 { from: 'src/includes'},
             ]
         }),
-        new MiniCssExtractPlugin()
+        new MiniCssExtractPlugin(),
+        //replace the 'current directory' context (which won't exist in the browser) with something that doesn't exist now. It may still break, but at least webpack won't keep telling us about mocha.
+        new webpack.ContextReplacementPlugin(
+            /^\.$/,
+            (context) => {
+                if (/\/node_modules\/mocha\/lib/.test(context.context)) {//ensure we're only doing this for modules we know about
+                    context.regExp = /this_should_never_exist/
+                    for (const d of context.dependencies) {
+                        if (d.critical) d.critical = false;
+                    }
+                }
+            }
+        )
     ],
     optimization: {
         moduleIds: 'hashed',
