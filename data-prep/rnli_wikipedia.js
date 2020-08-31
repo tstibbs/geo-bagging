@@ -1,6 +1,6 @@
 import {ifCmd, readFile} from './utils.js';
-import constants from './constants.js';
-const inputDir = `${constants.tmpInputDir}/rnli`;
+import {tmpInputDir} from './constants.js';
+const inputDir = `${tmpInputDir}/rnli`;
 
 const flatten = arrays => {return [].concat.apply([], arrays);}
 

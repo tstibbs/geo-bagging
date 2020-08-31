@@ -2,7 +2,7 @@ import xml2js from 'xml2js';
 import {ifCmd, readFile} from './utils.js';
 import Converter from './converter.js';
 import xslt from './xslt.js';
-import constants from './constants.js';
+import {tmpInputDir, outputDir} from './constants.js';
 
 const gardenStructure = 'Garden structure';
 const arch = 'Arch_Gateway';
@@ -173,9 +173,9 @@ const parser = new xml2js.Parser();
 
 async function buildDataFile() {
 	await xslt('follies-extract.xslt', 'follies/follies.kml', 'follies/out.xml');
-	let data = await readFile(`${constants.tmpInputDir}/follies/out.xml`);
+	let data = await readFile(`${tmpInputDir}/follies/out.xml`);
 	let result = await parser.parseStringPromise(data);
-	await converter.writeOutCsv(result.points.point, '../js/bundles/follies/data.json');
+	await converter.writeOutCsv(result.points.point, `${outputDir}/follies/data.json`);
 }
 
 ifCmd(import.meta, buildDataFile)

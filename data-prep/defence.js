@@ -1,6 +1,6 @@
 import assert from 'assert'
 import xml2js from 'xml2js';
-import constants from './constants.js';
+import {tmpInputDir, outputDir} from './constants.js';
 import {ifCmd, readFile} from './utils.js';
 import Converter from './converter.js';
 import xslt from './xslt.js';
@@ -107,9 +107,9 @@ const parser = new xml2js.Parser();
 
 async function buildDataFile() {
 	await xslt('defence-extract.xslt', 'defence/doc.kml', 'defence/out.xml');
-	let data = await readFile(`${constants.tmpInputDir}/defence/out.xml`);
+	let data = await readFile(`${tmpInputDir}/defence/out.xml`);
 	let result = await parser.parseStringPromise(data);
-	await converter.writeOutCsv(result.points.point, '../js/bundles/defence/data.json');
+	await converter.writeOutCsv(result.points.point, `${outputDir}/defence/data.json`);
 }
 
 ifCmd(import.meta, buildDataFile)

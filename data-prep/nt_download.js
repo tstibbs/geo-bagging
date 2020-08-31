@@ -1,10 +1,10 @@
 import cheerio from 'cheerio';
 import {ifCmd, get, writeFile, createTempDir} from './utils.js';
-import constants from './constants.js';
+import {tmpInputDir} from './constants.js';
 
 const allDataPath = 'https://www.nationaltrust.org.uk/search/data/all-places';
 const basePath = 'https://www.nationaltrust.org.uk/search?query=&type=place&view=map';
-const tmpDir = `${constants.tmpInputDir}/nt`;
+const tmpDir = `${tmpInputDir}/nt`;
 
 async function download() {
     await createTempDir(tmpDir);

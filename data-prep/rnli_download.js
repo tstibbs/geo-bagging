@@ -1,8 +1,8 @@
 import {ifCmd, writeFile} from './utils.js';
-import constants from './constants.js';
+import {tmpInputDir, wikipediaOptions} from './constants.js';
 import { download as downloadFiles } from './downloader.js';
 import wtfWikipedia from "wtf_wikipedia";
-const inputDir = `${constants.tmpInputDir}/rnli`;
+const inputDir = `${tmpInputDir}/rnli`;
 
 function downloadStationsList() {
 	const urls = {
@@ -12,7 +12,7 @@ function downloadStationsList() {
 }
 
 async function downloadEnrichingData() {
-	let data = await wtfWikipedia.fetch("List_of_RNLI_stations", "en", constants.wikipediaOptions)
+	let data = await wtfWikipedia.fetch("List_of_RNLI_stations", "en", wikipediaOptions)
 	let dataString = JSON.stringify(data, null, 2);
 	await writeFile(`${inputDir}/wiki.json`, dataString);
 }

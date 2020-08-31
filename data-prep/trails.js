@@ -1,10 +1,10 @@
 import proj4 from 'proj4';
 import {visualise as visualiseGeoJson, compare as compareGeoJson} from './geojson-comparer.js';
 import Converter from './converter.js';
-import constants from './constants.js';
+import {tmpInputDir, outputDir} from './constants.js';
 import {ifCmd, writeFile, readFile} from './utils.js';
 
-const inputDirectory = `${constants.tmpInputDir}/trails`;
+const inputDirectory = `${tmpInputDir}/trails`;
 
 //additional data not included in the input files
 const walesNatTrailsDetails = {
@@ -152,7 +152,7 @@ async function buildDataFile() {
         "features": allFeatures,
         "totalFeatures": totalFeatures
     };
-    const fileName = '../js/bundles/trails/data.geojson'
+    const fileName = `${outputDir}/trails/data.geojson`
     await writeFile(fileName, JSON.stringify(output) , 'utf-8');
     await visualiseGeoJson('trails', 'new');
     await compareGeoJson('trails');

@@ -1,9 +1,9 @@
 import fs from 'fs';
-import constants from './constants.js';
+import {tmpInputDir, outputDir} from './constants.js';
 import Converter from './converter.js';
 import {filterPages} from './wikiUtils.js';
 import { ifCmd } from './utils.js';
-const inputDir = `${constants.tmpInputDir}/coastallandmarks`;
+const inputDir = `${tmpInputDir}/coastallandmarks`;
 
 const attributionString = "Adapted from data from wikipedia licenced under CC BY-SA (https://creativecommons.org/licenses/by-sa/3.0/)";
 const columnHeaders = "[Longitude,Latitude,Name,Link,Type,YearBuilt]"
@@ -139,7 +139,7 @@ async function processData() {
         return rowA[2].localeCompare(rowB[2]);
     });
     const converter = new Converter(attributionString, columnHeaders);
-    return converter.writeOutCsv(csv, '../js/bundles/coastallandmarks/data.json');
+    return converter.writeOutCsv(csv, `${outputDir}/coastallandmarks/data.json`);
 }
 
 ifCmd(import.meta, processData)

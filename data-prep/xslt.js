@@ -1,13 +1,13 @@
 import { spawn } from 'child_process';
 import fs from 'fs';
 import { download as downloadFiles } from './downloader.js';
-import constants from './constants.js';
+import {tmpInputDir} from './constants.js';
 
 const artifact = `Saxon-HE`
 const version = `9.8.0-6`
 const jarName = `${artifact}-${version}.jar`
 const downloadPath = `https://repo1.maven.org/maven2/net/sf/saxon/${artifact}/${version}/${jarName}`
-const jarPath = `${constants.tmpInputDir}/${jarName}`
+const jarPath = `${tmpInputDir}/${jarName}`
 
 let downloadInProgress = null;
 
@@ -28,10 +28,10 @@ async function transform(xslt, input, output) {
         //assumes java is on the path
         let child = spawn(`java`, [
             `-jar`,
-            `${constants.tmpInputDir}/Saxon-HE-9.8.0-6.jar`,
+            `${tmpInputDir}/Saxon-HE-9.8.0-6.jar`,
             `-xsl:${xslt}`,
-            `-s:${constants.tmpInputDir}/${input}`,
-            `-o:${constants.tmpInputDir}/${output}`
+            `-s:${tmpInputDir}/${input}`,
+            `-o:${tmpInputDir}/${output}`
         ], {
             stdio: 'inherit'
         });

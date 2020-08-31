@@ -1,6 +1,6 @@
 import Converter from './converter.js';
 import {ifCmd, readFile} from './utils.js';
-import constants from './constants.js';
+import {tmpInputDir, outputDir} from './constants.js';
 
 const attributionString = "This file adapted from data available on www.nationaltrust.org.uk which is copyright © National Trust";
 const columnHeaders = "[Longitude,Latitude,Id,Name,Link,type,facilities]"
@@ -26,7 +26,7 @@ function getIdsForAspect(values, ) {
 }
 
 async function buildDataFile() {
-    let input = await readFile(`${constants.tmpInputDir}/nt/data.json`)
+    let input = await readFile(`${tmpInputDir}/nt/data.json`)
     let {places, facilities, allData} = JSON.parse(input);
     places = getIdsForAspect(places);
     facilities = getIdsForAspect(facilities);
@@ -74,7 +74,7 @@ async function buildDataFile() {
             ];
         });
     let converter = new Converter(attributionString, columnHeaders);
-    await converter.writeOutCsv(csv, '../js/bundles/nt/data.json');
+    await converter.writeOutCsv(csv, `${outputDir}/nt/data.json`);
 }
 
 ifCmd(import.meta, buildDataFile)

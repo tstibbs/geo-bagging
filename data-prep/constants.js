@@ -1,8 +1,5 @@
-const constants = {
-	tmpInputDir: 'tmp-input',
-	wikipediaOptions: {
-		'User-Agent': 'geo-bagging (https://github.com/tstibbs/geo-bagging) wtf_wikipedia/latest)'
-	}
-};
-
-export default constants;
+export const tmpInputDir = 'tmp-input'
+export const outputDir = '../ui/src/js/bundles'
+export const wikipediaOptions = {
+	'User-Agent': 'geo-bagging (https://github.com/tstibbs/geo-bagging) wtf_wikipedia/latest)'
+}

@@ -1,6 +1,6 @@
 import fs from 'fs';
 import request from 'request';
-import constants from './constants.js';
+import {tmpInputDir} from './constants.js';
 import { createTempDir } from './utils.js';
 
 function _downloadSingle(source, destination) {
@@ -32,7 +32,7 @@ function _downloadSingle(source, destination) {
 }
 
 async function download(bundleName, urls) {
-	let outputDir = `${constants.tmpInputDir}`;
+	let outputDir = `${tmpInputDir}`;
 	if (bundleName != null) {
 		outputDir += `/${bundleName}`;
 	}

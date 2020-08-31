@@ -1,6 +1,6 @@
 import Converter from './converter.js';
 import {ifCmd, readdir} from './utils.js';
-import constants from './constants.js';
+import {tmpInputDir, outputDir} from './constants.js';
 
 const attributionString = "This file adapted from data available on http://trigpointing.uk/ which is a mixture of Public Domain and OGL from Ordnance Survey";
 const columnHeaders = "[Longitude,Latitude,Id,Name,physical_type,condition]"
@@ -34,7 +34,7 @@ class TrigConverter extends Converter {
 }
 
 async function buildDataFile() {
-	const inputDir = `${constants.tmpInputDir}/trigs`;
+	const inputDir = `${tmpInputDir}/trigs`;
 	let files = await readdir(inputDir);
 	let foundFiles = files.filter((file) => /trigpoints-\d+.csv/.test(file) );
 	if (foundFiles.length != 1) {
@@ -45,7 +45,7 @@ async function buildDataFile() {
 	
 	//generate the 'all' data
 	
-	await (new TrigConverter()).writeOut(`${inputDir}/` + foundFiles[0], `../js/bundles/trigs/data_all.json`);
+	await (new TrigConverter()).writeOut(`${inputDir}/` + foundFiles[0], `${outputDir}/trigs/data_all.json`);
 	
 	
 	//generate the 'mini' data
@@ -62,7 +62,7 @@ async function buildDataFile() {
 		let lat = lngLat[1];
 		return lng > minLng && lat > minLat && lng < maxLng && lat < maxLat && conditions.includes(condition);
 	});
-	await miniConverter.writeOut(`${inputDir}/` + foundFiles[0], `../js/bundles/trigs/data_mini.json`);
+	await miniConverter.writeOut(`${inputDir}/` + foundFiles[0], `${outputDir}/trigs/data_mini.json`);
 }
 
 ifCmd(import.meta, buildDataFile)

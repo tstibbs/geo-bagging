@@ -2,7 +2,7 @@ import unzipper from 'unzipper';
 import fs from 'fs';
 import { Readable as Readable } from 'stream';
 
-import constants from './constants.js';
+import {tmpInputDir, outputDir} from './constants.js';
 import { ifCmd } from './utils.js';
 import Converter from './converter.js';
 
@@ -96,7 +96,7 @@ function toStream(buffer) {
 
 function buildDataFile() {
 	return fs
-	.createReadStream(`${constants.tmpInputDir}/hills/hillcsv.zip`)
+	.createReadStream(`${tmpInputDir}/hills/hillcsv.zip`)
 	.pipe(unzipper.Parse())
 	.on('entry', async (entry) => {
 		console.log('entry');
@@ -105,8 +105,8 @@ function buildDataFile() {
 			chunks.push(chunk)
 		}
 		let buffer = Buffer.concat(chunks);
-		await (new HillConverter(true)).writeOutStream(toStream(buffer), '../js/bundles/hills/data.json');
-		await (new HillConverter(false)).writeOutStream(toStream(buffer), '../js/bundles/hills/data_all.json');
+		await (new HillConverter(true)).writeOutStream(toStream(buffer), `${outputDir}/hills/data.json`);
+		await (new HillConverter(false)).writeOutStream(toStream(buffer), `${outputDir}/hills/data_all.json`);
 	}).promise();
 }
 

@@ -1,10 +1,10 @@
 import wtf from 'wtf_wikipedia';
-import constants from './constants.js';
+import {wikipediaOptions} from './constants.js';
 
 async function fetchCategories(category, exclusions) {
 	let categories = [];
 	let pages = [];
-	let result = await wtf.category(category, 'en', constants.wikipediaOptions);
+	let result = await wtf.category(category, 'en', wikipediaOptions);
     if (result.pages != null && result.pages.length > 0) {
         categories = [category];
         pages = result.pages.map(page => page.title);
@@ -30,7 +30,7 @@ async function fetchCategories(category, exclusions) {
 async function fetchPages(pageNames) {
 	if (pageNames.length > 0) {
 		pageNames = [...new Set(pageNames)];//use the set to de-dupe
-		return await wtf.fetch(pageNames, 'en', constants.wikipediaOptions);
+		return await wtf.fetch(pageNames, 'en', wikipediaOptions);
 	} else {
 		return []
 	}

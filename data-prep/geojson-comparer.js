@@ -6,19 +6,20 @@ import assert from 'assert';
 import pngjs from 'pngjs';
 import pixelmatch from 'pixelmatch';
 import {createTempDir, readFile, writeFile, deleteFile} from './utils.js';
+import {tmpInputDir, outputDir as sourceDataDir} from './constants.js';
 
 // register fonts and datasource plugins
 mapnik.register_default_fonts();
 mapnik.register_default_input_plugins();
 
 async function visualise(datasource, qualifier) {
-    let outputDir = `tmp-input/comparisons/${datasource}`;
+    let outputDir = `${tmpInputDir}/comparisons/${datasource}`;
     await createTempDir(outputDir);
     let outputPath = `${outputDir}/output-${qualifier}.png`;
-    let geojson = await readFile(`../js/bundles/${datasource}/data.geojson`);
+    let geojson = await readFile(`${sourceDataDir}/${datasource}/data.geojson`);
     geojson = JSON.parse(geojson);
     let xml = await util.promisify(mapnikify)(geojson, false);
-    let outputXmlPath = `tmp-input/comparisons/${datasource}/tmp.xml`
+    let outputXmlPath = `${tmpInputDir}/comparisons/${datasource}/tmp.xml`
     await writeFile(outputXmlPath, xml);
     await toPng(outputXmlPath, outputPath);
 }
@@ -59,9 +60,9 @@ function readPng(filename) {
 }
 
 async function compare(datasource) {
-    let oldImg = `tmp-input/comparisons/${datasource}/output-old.png`;
-    let newImg = `tmp-input/comparisons/${datasource}/output-new.png`;
-    let diffFile = `tmp-input/comparisons/${datasource}/output-diff.png`;
+    let oldImg = `${tmpInputDir}/comparisons/${datasource}/output-old.png`;
+    let newImg = `${tmpInputDir}/comparisons/${datasource}/output-new.png`;
+    let diffFile = `${tmpInputDir}/comparisons/${datasource}/output-diff.png`;
     await deleteFile(diffFile);
     let img1 = await readPng(oldImg);
     let img2 = await readPng(newImg);

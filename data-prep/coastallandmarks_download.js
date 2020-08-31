@@ -1,9 +1,8 @@
 import {fetchPages, fetchCategories} from './wikiUtils.js';
-
 import {ifCmd, writeFile, createTempDir} from './utils.js';
+import {tmpInputDir} from './constants.js';
 
-import constants from './constants.js';
-const inputDir = `${constants.tmpInputDir}/coastallandmarks`;
+const inputDir = `${tmpInputDir}/coastallandmarks`;
 
 async function downloadLighthouses() {
 	const allPages = [

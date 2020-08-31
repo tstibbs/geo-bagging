@@ -1,9 +1,9 @@
 import Converter from './converter.js';
-import constants from './constants.js';
+import {tmpInputDir, outputDir} from './constants.js';
 import {visualise as visualiseGeoJson, compare as compareGeoJson} from './geojson-comparer.js';
 import {ifCmd, readFile, writeFile} from './utils.js';
 
-const inputDirectory = `${constants.tmpInputDir}/nationalparks`;
+const inputDirectory = `${tmpInputDir}/nationalparks`;
 
 async function buildDataFile() {
     await visualiseGeoJson('nationalparks', 'old');
@@ -20,7 +20,7 @@ async function buildDataFile() {
 		};
 		return feature;
 	});
-	const fileName = '../js/bundles/nationalparks/data.geojson'
+	const fileName = `${outputDir}/nationalparks/data.geojson`
 	await writeFile(fileName, JSON.stringify(data), 'utf-8')
 	
 	const converter = new Converter();

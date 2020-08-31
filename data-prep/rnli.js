@@ -1,6 +1,6 @@
 import Converter from './converter.js';
 import { ifCmd } from './utils.js';
-import constants from './constants.js';
+import {tmpInputDir, outputDir} from './constants.js';
 import {convertWikiData} from './rnli_wikipedia.js';
 
 const attributionString = "Contains (https://hub.arcgis.com/datasets/7dad2e58254345c08dfde737ec348166_0) licensed under the GIS Open Data Licence &copy; RNLI and data from (https://en.wikipedia.org/wiki/List_of_RNLI_stations)";
@@ -71,8 +71,8 @@ class RnliConverter extends Converter {
 
 async function buildDataFile() {
 	let wikiData = await convertWikiData();
-	const inputDir = `${constants.tmpInputDir}/rnli`;
-	await (new RnliConverter(wikiData)).writeOut(`${inputDir}/lifeboatStations.csv`, `../js/bundles/rnli/data.json`);
+	const inputDir = `${tmpInputDir}/rnli`;
+	await (new RnliConverter(wikiData)).writeOut(`${inputDir}/lifeboatStations.csv`, `${outputDir}/rnli/data.json`);
 }
 
 ifCmd(import.meta, buildDataFile)

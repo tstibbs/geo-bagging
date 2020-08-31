@@ -2,11 +2,11 @@ import xlsx from 'xlsx';
 import CombinedStream from 'combined-stream2';
 import stream from 'stream';
 
-import constants from './constants.js';
+import {tmpInputDir, outputDir} from './constants.js';
 import {ifCmd, readdir} from './utils.js';
 import Converter from './converter.js';
 
-const inputDir = `${constants.tmpInputDir}/milestones`;
+const inputDir = `${tmpInputDir}/milestones`;
 
 const attributionString = "This file adapted from the the database of 'The Milestone Society' (http://www.milestonesociety.co.uk/database.html).";
 const columnHeaders = "[Longitude,Latitude,Id,Type,Category,Location,Position,Design,Repository_Photo_Hyperlink,Additional_Photo_Hyperlink_1,Additional_Photo_Hyperlink_2]"
@@ -88,7 +88,7 @@ class WaypointsConverter extends Converter {
 
 async function buildDataFile() {
 	let files = await readdir(inputDir);
-	await (new WaypointsConverter()).writeOut2(files, '../js/bundles/milestones/data.json');
+	await (new WaypointsConverter()).writeOut2(files, `${outputDir}/milestones/data.json`);
 }
 
 ifCmd(import.meta, buildDataFile)
