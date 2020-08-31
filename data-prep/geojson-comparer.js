@@ -100,6 +100,9 @@ async function compare(datasource) {
 		})
 
 		await writeFile(diffFile, pngjs.PNG.sync.write(diff))
+		return `mismatched by ${mismatchedPixels}/1,000,000 pixels - please review ${diffFile}`
+	} else {
+		return null
 	}
 }
 

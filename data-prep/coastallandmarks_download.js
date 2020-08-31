@@ -27,7 +27,7 @@ async function downloadPiers() {
 		exclusions
 	)
 	if (categoryPages.pageNames.length > 0) {
-		categoryPages.pages = fetchPages(categoryPages.pageNames)
+		categoryPages.pages = await fetchPages(categoryPages.pageNames)
 		await writeFile(
 			`${inputDir}/piers.json`,
 			JSON.stringify(categoryPages, null, 2)

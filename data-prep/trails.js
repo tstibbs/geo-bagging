@@ -201,11 +201,13 @@ async function buildDataFile() {
 	const fileName = `${outputDir}/trails/data.geojson`
 	await writeFile(fileName, JSON.stringify(output), 'utf-8')
 	await visualiseGeoJson('trails', 'new')
-	await compareGeoJson('trails')
+	let comparisonResult = await compareGeoJson('trails')
 
 	const converter = new Converter()
 	let lastUpdated = converter.getLastUpdatedString()
 	await converter.writeMetaData(fileName, totalFeatures, lastUpdated)
+
+	return comparisonResult
 }
 
 ifCmd(import.meta, buildDataFile)

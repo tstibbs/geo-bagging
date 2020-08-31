@@ -30,7 +30,7 @@ async function buildDataFile() {
 	let lastUpdated = converter.getLastUpdatedString()
 	await converter.writeMetaData(fileName, data.features.length, lastUpdated)
 	await visualiseGeoJson('nationalparks', 'new')
-	await compareGeoJson('nationalparks')
+	return await compareGeoJson('nationalparks')
 }
 
 ifCmd(import.meta, buildDataFile)

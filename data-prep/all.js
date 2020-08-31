@@ -1,7 +1,7 @@
 const downloadSources = [
 	'defence',
 	'hills',
-	//'milestones',
+	'milestones',
 	'trails',
 	'follies',
 	'rnli',
@@ -27,9 +27,9 @@ async function importAll(input, namer) {
 async function single(action, name, processor) {
 	console.log(`${action} ${name}: started.`)
 	try {
-		await processor()
+		let result = await processor()
 		console.log(`${action} ${name}: completed.`)
-		return null
+		return result == null ? null : `${action} ${name}: ${result}`
 	} catch (err) {
 		console.log(`${action} ${name}: errored.`)
 		console.log(err)
@@ -62,7 +62,10 @@ async function run() {
 		console.log('')
 		//processing downloaded stuff
 		for (const [name, processor] of processors) {
-			await single('Processing', name, processor)
+			let errorInfo = await single('Processing', name, processor)
+			if (errorInfo !== null) {
+				errored.push(errorInfo)
+			}
 		}
 	}
 	if (errored.length > 0) {
