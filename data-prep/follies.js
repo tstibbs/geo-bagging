@@ -1,8 +1,8 @@
-const xml2js = require('xml2js');
-const {ifCmd, readFile} = require('./utils');
-const Converter = require('./converter');
-const xslt = require('./xslt');
-const constants = require('./constants');
+import xml2js from 'xml2js';
+import {ifCmd, readFile} from './utils.js';
+import Converter from './converter.js';
+import xslt from './xslt.js';
+import constants from './constants.js';
 
 const gardenStructure = 'Garden structure';
 const arch = 'Arch_Gateway';
@@ -178,6 +178,6 @@ async function buildDataFile() {
 	await converter.writeOutCsv(result.points.point, '../js/bundles/follies/data.json');
 }
 
-ifCmd(module, buildDataFile)
+ifCmd(import.meta, buildDataFile)
 
-module.exports = buildDataFile;
+export default buildDataFile;

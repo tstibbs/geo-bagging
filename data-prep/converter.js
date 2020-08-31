@@ -1,10 +1,10 @@
-const Transform = require('stream').Transform;
-const Stream = require('stream');
-const csv = require('csv');
-const fs = require('fs');
-const cheerio = require('cheerio');
-const gridconversion = require('./gridconversion');
-const {writeFile} = require('./utils');
+import { Transform as Transform } from 'stream';
+import Stream from 'stream';
+import csv from 'csv';
+import fs from 'fs';
+import cheerio from 'cheerio';
+import gridconversion from './gridconversion.js';
+import { writeFile } from './utils.js';
 
 function header(attributionString, columnHeaders) {
 return `{
@@ -167,4 +167,4 @@ class Converter {
 	}
 }
 
-module.exports = Converter;
+export default Converter;

@@ -1,12 +1,12 @@
-const Converter = require('./converter');
-const constants = require('./constants');
-const geojsonComparer = require('./geojson-comparer');
-const {ifCmd, readFile, writeFile} = require('./utils');
+import Converter from './converter.js';
+import constants from './constants.js';
+import {visualise as visualiseGeoJson, compare as compareGeoJson} from './geojson-comparer.js';
+import {ifCmd, readFile, writeFile} from './utils.js';
 
 const inputDirectory = `${constants.tmpInputDir}/nationalparks`;
 
 async function buildDataFile() {
-    await geojsonComparer.visualise('nationalparks', 'old');
+    await visualiseGeoJson('nationalparks', 'old');
 	let contents = await readFile(`${inputDirectory}/NationalParks.json`);
 	let data = JSON.parse(contents);
 	data.features = data.features.map(feature => {
@@ -26,10 +26,10 @@ async function buildDataFile() {
 	const converter = new Converter();
 	let lastUpdated = converter.getLastUpdatedString();
 	await converter.writeMetaData(fileName, data.features.length, lastUpdated)
-    await geojsonComparer.visualise('nationalparks', 'new');
-    await geojsonComparer.compare('nationalparks');
+    await visualiseGeoJson('nationalparks', 'new');
+    await compareGeoJson('nationalparks');
 }
 
-ifCmd(module, buildDataFile)
+ifCmd(import.meta, buildDataFile)
 
-module.exports = buildDataFile;
+export default buildDataFile;

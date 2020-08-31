@@ -1,3 +1,3 @@
-const requirejs = require('requirejs');
+import conversion from '../ui/src/js/conversion.js';
 
-module.exports = requirejs('../js/conversion');
+export default conversion

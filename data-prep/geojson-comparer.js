@@ -1,11 +1,11 @@
-const util = require('util');
-const mapnik = require('mapnik');
-const mapnikify = require('@mapbox/geojson-mapnikify');
-const fs = require('fs');
-const assert = require('assert');
-const {PNG} = require('pngjs');
-const pixelmatch = require('pixelmatch');
-const {createTempDir, readFile, writeFile, deleteFile} = require('./utils');
+import util from 'util';
+import mapnik from 'mapnik';
+import mapnikify from'@mapbox/geojson-mapnikify'
+import fs from 'fs';
+import assert from 'assert';
+import pngjs from 'pngjs';
+import pixelmatch from 'pixelmatch';
+import {createTempDir, readFile, writeFile, deleteFile} from './utils.js';
 
 // register fonts and datasource plugins
 mapnik.register_default_fonts();
@@ -49,7 +49,7 @@ function toPng(inputXmlPath, outputPngPath) {
 function readPng(filename) {
     return new Promise((resolve, reject) => {
         let stream = fs.createReadStream(filename)
-            .pipe(new PNG({
+            .pipe(new pngjs.PNG({
                 filterType: 4
             }))
             .on('parsed', data => {
@@ -86,15 +86,15 @@ async function compare(datasource) {
     if (!matches) {
         console.log(`${mismatchedPixels} pixels were different (out of 1,000,000).`);
         let { width, height } = img1;
-        let diff = new PNG({ width, height });
+        let diff = new pngjs.PNG({ width, height });
 
         pixelmatch(img1.data, img2.data, diff.data, width, height, { includeAA: true });
 
-        await writeFile(diffFile, PNG.sync.write(diff));
+        await writeFile(diffFile, pngjs.PNG.sync.write(diff));
     }
 }
 
-module.exports = {
+export {
     visualise,
     compare
 }

@@ -1,6 +1,6 @@
-const cheerio = require('cheerio');
-const {ifCmd, get, writeFile, createTempDir} = require('./utils');
-const constants = require('./constants');
+import cheerio from 'cheerio';
+import {ifCmd, get, writeFile, createTempDir} from './utils.js';
+import constants from './constants.js';
 
 const allDataPath = 'https://www.nationaltrust.org.uk/search/data/all-places';
 const basePath = 'https://www.nationaltrust.org.uk/search?query=&type=place&view=map';
@@ -33,6 +33,6 @@ async function getAspect(values, param) {
 	return await Promise.all(placePromises);
 }
 
-ifCmd(module, download)
+ifCmd(import.meta, download)
 
-module.exports = download;
+export default download;

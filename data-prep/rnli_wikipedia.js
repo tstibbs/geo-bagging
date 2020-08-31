@@ -1,6 +1,5 @@
-const {ifCmd, readFile} = require('./utils');
-const constants = require('./constants');
-require('global-tunnel-ng').initialize();
+import {ifCmd, readFile} from './utils.js';
+import constants from './constants.js';
 const inputDir = `${constants.tmpInputDir}/rnli`;
 
 const flatten = arrays => {return [].concat.apply([], arrays);}
@@ -90,6 +89,6 @@ function replace(input, replacements) {
     , input).trim()
 }
 
-ifCmd(module, convertWikiData)
+ifCmd(import.meta, convertWikiData)
 
-module.exports.convertWikiData = convertWikiData;
+export {convertWikiData}

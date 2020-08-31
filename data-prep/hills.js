@@ -1,10 +1,10 @@
-const unzipper = require('unzipper');
-const fs = require('fs');
-const Readable = require('stream').Readable;
+import unzipper from 'unzipper';
+import fs from 'fs';
+import { Readable as Readable } from 'stream';
 
-const constants = require('./constants');
-const {ifCmd} = require('./utils');
-const Converter = require('./converter');
+import constants from './constants.js';
+import { ifCmd } from './utils.js';
+import Converter from './converter.js';
 
 const attributionString = "This file adapted from the The Database of British and Irish Hills (http://www.hills-database.co.uk/downloads.html), licenced under CC BY 3.0 (https://creativecommons.org/licenses/by/3.0/deed.en_GB)";
 const columnHeaders = "[Longitude,Latitude,Id,Name,Classification,Height(m)]"
@@ -110,6 +110,6 @@ function buildDataFile() {
 	}).promise();
 }
 
-ifCmd(module, buildDataFile)
+ifCmd(import.meta, buildDataFile)
 
-module.exports = buildDataFile;
+export default buildDataFile;

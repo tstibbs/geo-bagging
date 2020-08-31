@@ -1,8 +1,8 @@
-const proj4 = require('proj4');
-const geojsonComparer = require('./geojson-comparer');
-const Converter = require('./converter');
-const constants = require('./constants');
-const {ifCmd, writeFile, readFile} = require('./utils');
+import proj4 from 'proj4';
+import {visualise as visualiseGeoJson, compare as compareGeoJson} from './geojson-comparer.js';
+import Converter from './converter.js';
+import constants from './constants.js';
+import {ifCmd, writeFile, readFile} from './utils.js';
 
 const inputDirectory = `${constants.tmpInputDir}/trails`;
 
@@ -103,7 +103,7 @@ function combineReducer(features) {
 }
 
 async function buildDataFile() {
-    await geojsonComparer.visualise('trails', 'old');
+    await visualiseGeoJson('trails', 'old');
 	let pEngNatTrails = parse('National_Trails_England.geojson', properties => {
 		return {
 			openedDate: properties['Opened'],
@@ -154,14 +154,14 @@ async function buildDataFile() {
     };
     const fileName = '../js/bundles/trails/data.geojson'
     await writeFile(fileName, JSON.stringify(output) , 'utf-8');
-    await geojsonComparer.visualise('trails', 'new');
-    await geojsonComparer.compare('trails');
+    await visualiseGeoJson('trails', 'new');
+    await compareGeoJson('trails');
     
     const converter = new Converter();
     let lastUpdated = converter.getLastUpdatedString();
     await converter.writeMetaData(fileName, totalFeatures, lastUpdated)
 }
 
-ifCmd(module, buildDataFile)
+ifCmd(import.meta, buildDataFile)
 
-module.exports = buildDataFile;
+export default buildDataFile;

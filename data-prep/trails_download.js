@@ -1,5 +1,5 @@
-const {ifCmd} = require('./utils');
-const downloadFiles = require('./downloader').download;
+import { ifCmd } from './utils.js';
+import { download as downloadFiles } from './downloader.js';
 
 const urls = {
 	'http://lle.gov.wales/catalogue/item/NationalTrails.json': 'WalesNationalTrails.json', //http://lle.gov.wales/catalogue/item/NationalTrails/
@@ -12,6 +12,6 @@ function download() {
 	return downloadFiles('trails', urls);
 }
 
-ifCmd(module, download)
+ifCmd(import.meta, download)
 
-module.exports = download;
+export default download;

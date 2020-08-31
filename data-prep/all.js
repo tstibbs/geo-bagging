@@ -9,32 +9,44 @@ const downloadSources = [
     'coastallandmarks',
     'nt',
 ]
-const downloaders = new Map(downloadSources.map(processor =>
-    [processor, require(`./${processor}_download`)]
-));
-const processors = new Map([
-    ...downloadSources,
-    //processing manually downloaded stuff
-    'trigs'
-].map(processor => [processor, require(`./${processor}`)]));
 
-let errored = [];
+async function importAll(input, namer) {
+    let modules = await Promise.all(input.map(moduleName =>
+        import(namer(moduleName))//returns a promise
+    ))
+    return new Map(modules.map((module, i) =>
+        [input[i], module.default]
+    ))
+}
 
 async function single(action, name, processor) {
     console.log(`${action} ${name}: started.`);
     try {
         await processor();
         console.log(`${action} ${name}: completed.`);
+        return null
     } catch (err) {
         console.log(`${action} ${name}: errored.`);
         console.log(err);
-        errored.push(`${action} ${name}`)
+        return `${action} ${name}`
     }
 }
 
 async function run() {
+    const downloaders = await importAll(downloadSources, processor => `./${processor}_download.js`)
+    const processors = await importAll([
+        ...downloadSources,
+        //processing manually downloaded stuff
+        'trigs'
+    ], processor => `./${processor}.js`)
+
+    let errored = [];
+
     for (const [name, processor] of downloaders) {
-        await single('Downloading', name, processor)
+        let errorInfo = await single('Downloading', name, processor)
+        if (errorInfo !== null) {
+            errored.push(errorInfo)
+        }
     }
     if (errored.length == 0) {//only continue if none of the download have errored
         console.log("");

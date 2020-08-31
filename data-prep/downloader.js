@@ -1,7 +1,7 @@
-const fs = require('fs');
-const request = require('request');
-const constants = require('./constants');
-const {createTempDir} = require('./utils');
+import fs from 'fs';
+import request from 'request';
+import constants from './constants.js';
+import { createTempDir } from './utils.js';
 
 function _downloadSingle(source, destination) {
 	return new Promise((resolve, reject) => {
@@ -45,8 +45,8 @@ async function download(bundleName, urls) {
         await Promise.all(promises);
     } catch (err) { 
         console.log(`Error downloading '${from}': ${err}`)
-        throw error;
+        throw err;
 	}
 }
 
-module.exports.download = download;
+export {download}

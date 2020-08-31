@@ -1,8 +1,8 @@
-const fs = require('fs');
-const unzipper = require('unzipper');
-const {ifCmd, createTempDir} = require('./utils');
-const downloadFiles = require('./downloader').download;
-const constants = require('./constants');
+import fs from 'fs';
+import unzipper from 'unzipper';
+import {ifCmd, createTempDir} from './utils.js';
+import { download as downloadFiles } from './downloader.js';
+import constants from './constants.js';
 
 const source = 'http://archaeologydataservice.ac.uk/catalogue/adsdata/dob_cba_2005/ahds/dissemination/kmz/DoB_Google_Earth.kmz';
 const tempFile = 'defence.kmz';
@@ -20,6 +20,6 @@ async function download() {
         });
 }
 
-ifCmd(module, download)
+ifCmd(import.meta, download)
 
-module.exports = download;
+export default download;

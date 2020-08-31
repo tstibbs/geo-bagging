@@ -1,5 +1,5 @@
-const wtf = require('wtf_wikipedia');
-const constants = require('./constants');
+import wtf from 'wtf_wikipedia';
+import constants from './constants.js';
 
 async function fetchCategories(category, exclusions) {
 	let categories = [];
@@ -48,7 +48,7 @@ function filterPages(data) {
 	)
 }
 
-module.exports = {
+export {
 	fetchCategories,
 	fetchPages,
 	filterPages

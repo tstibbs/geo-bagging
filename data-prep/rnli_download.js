@@ -1,7 +1,7 @@
-const {ifCmd, writeFile} = require('./utils');
-const constants = require('./constants');
-const downloadFiles = require('./downloader').download;
-const wtfWikipedia = require("wtf_wikipedia");
+import {ifCmd, writeFile} from './utils.js';
+import constants from './constants.js';
+import { download as downloadFiles } from './downloader.js';
+import wtfWikipedia from "wtf_wikipedia";
 const inputDir = `${constants.tmpInputDir}/rnli`;
 
 function downloadStationsList() {
@@ -23,6 +23,6 @@ function download() {
 	return Promise.all([p1, p2]);
 }
 
-ifCmd(module, download)
+ifCmd(import.meta, download)
 
-module.exports = download;
+export default download;

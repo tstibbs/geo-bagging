@@ -1,7 +1,7 @@
-const Converter = require('./converter');
-const {ifCmd} = require('./utils');
-const constants = require('./constants');
-const rnliWiki = require('./rnli_wikipedia');
+import Converter from './converter.js';
+import { ifCmd } from './utils.js';
+import constants from './constants.js';
+import {convertWikiData} from './rnli_wikipedia.js';
 
 const attributionString = "Contains (https://hub.arcgis.com/datasets/7dad2e58254345c08dfde737ec348166_0) licensed under the GIS Open Data Licence &copy; RNLI and data from (https://en.wikipedia.org/wiki/List_of_RNLI_stations)";
 const columnHeaders = "[Longitude,Latitude,Name,Link,LifeboatTypes,LaunchMethods]"
@@ -70,11 +70,11 @@ class RnliConverter extends Converter {
 }
 
 async function buildDataFile() {
-	let wikiData = await rnliWiki.convertWikiData();
+	let wikiData = await convertWikiData();
 	const inputDir = `${constants.tmpInputDir}/rnli`;
 	await (new RnliConverter(wikiData)).writeOut(`${inputDir}/lifeboatStations.csv`, `../js/bundles/rnli/data.json`);
 }
 
-ifCmd(module, buildDataFile)
+ifCmd(import.meta, buildDataFile)
 
-module.exports = buildDataFile;
+export default buildDataFile;

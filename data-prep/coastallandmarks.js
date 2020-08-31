@@ -1,9 +1,8 @@
-const fs = require('fs');
-require('global-tunnel-ng').initialize();
-const constants = require('./constants');
-const Converter = require('./converter');
-const wikiUtils = require('./wikiUtils');
-const {ifCmd} = require('./utils');
+import fs from 'fs';
+import constants from './constants.js';
+import Converter from './converter.js';
+import {filterPages} from './wikiUtils.js';
+import { ifCmd } from './utils.js';
 const inputDir = `${constants.tmpInputDir}/coastallandmarks`;
 
 const attributionString = "Adapted from data from wikipedia licenced under CC BY-SA (https://creativecommons.org/licenses/by-sa/3.0/)";
@@ -76,7 +75,7 @@ function processPiers() {
 				reject(err);
 			}
 			let data = JSON.parse(rawData);
-			let docs = wikiUtils.filterPages(data);
+			let docs = filterPages(data);
 			let csv = docs.map(doc => {
 				let docCoords = flatten(doc.sections.filter(section =>
 					section.templates != null
@@ -143,6 +142,6 @@ async function processData() {
     return converter.writeOutCsv(csv, '../js/bundles/coastallandmarks/data.json');
 }
 
-ifCmd(module, processData);
+ifCmd(import.meta, processData)
 
-module.exports = processData;
+export default processData;

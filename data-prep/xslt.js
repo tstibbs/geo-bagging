@@ -1,7 +1,7 @@
-const { spawn } = require('child_process');
-const fs = require('fs');
-const downloadFiles = require('./downloader').download;
-const constants = require('./constants');
+import { spawn } from 'child_process';
+import fs from 'fs';
+import { download as downloadFiles } from './downloader.js';
+import constants from './constants.js';
 
 const artifact = `Saxon-HE`
 const version = `9.8.0-6`
@@ -46,4 +46,4 @@ async function transform(xslt, input, output) {
     });
 }
 
-module.exports = transform;
+export default transform;

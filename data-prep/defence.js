@@ -1,10 +1,10 @@
-const assert = require('assert')
-const xml2js = require('xml2js');
-const constants = require('./constants');
-const {ifCmd, readFile} = require('./utils');
-const Converter = require('./converter');
-const xslt = require('./xslt');
-const {guessType} = require('./defence-type-calculation')
+import assert from 'assert'
+import xml2js from 'xml2js';
+import constants from './constants.js';
+import {ifCmd, readFile} from './utils.js';
+import Converter from './converter.js';
+import xslt from './xslt.js';
+import { guessType } from './defence-type-calculation.js'
 
 const attributionString = "This file adapted from the database of the Defence of Britain project (http://archaeologydataservice.ac.uk/archives/view/dob/download.cfm). Copyright of the Council for British Archaeology (2006) Defence of Britain Archive [data-set]. York: Archaeology Data Service [distributor] https://doi.org/10.5284/1000327";
 const columnHeaders = "[Longitude,Latitude,Id,Type,Purpose,Category,Style,Link,location,Condition,description,imageLinks]"
@@ -112,6 +112,6 @@ async function buildDataFile() {
 	await converter.writeOutCsv(result.points.point, '../js/bundles/defence/data.json');
 }
 
-ifCmd(module, buildDataFile)
+ifCmd(import.meta, buildDataFile)
 
-module.exports = buildDataFile;
+export default buildDataFile;

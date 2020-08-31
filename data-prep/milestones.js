@@ -1,10 +1,10 @@
-const xlsx = require('xlsx');
-const CombinedStream = require('combined-stream2');
-const stream = require('stream');
+import xlsx from 'xlsx';
+import CombinedStream from 'combined-stream2';
+import stream from 'stream';
 
-const constants = require('./constants');
-const {ifCmd, readdir} = require('./utils');
-const Converter = require('./converter');
+import constants from './constants.js';
+import {ifCmd, readdir} from './utils.js';
+import Converter from './converter.js';
 
 const inputDir = `${constants.tmpInputDir}/milestones`;
 
@@ -91,6 +91,6 @@ async function buildDataFile() {
 	await (new WaypointsConverter()).writeOut2(files, '../js/bundles/milestones/data.json');
 }
 
-ifCmd(module, buildDataFile)
+ifCmd(import.meta, buildDataFile)
 
-module.exports = buildDataFile;
+export default buildDataFile;

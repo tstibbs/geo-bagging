@@ -1,6 +1,6 @@
-const Converter = require('./converter');
-const {ifCmd, readdir} = require('./utils');
-const constants = require('./constants');
+import Converter from './converter.js';
+import {ifCmd, readdir} from './utils.js';
+import constants from './constants.js';
 
 const attributionString = "This file adapted from data available on http://trigpointing.uk/ which is a mixture of Public Domain and OGL from Ordnance Survey";
 const columnHeaders = "[Longitude,Latitude,Id,Name,physical_type,condition]"
@@ -65,6 +65,6 @@ async function buildDataFile() {
 	await miniConverter.writeOut(`${inputDir}/` + foundFiles[0], `../js/bundles/trigs/data_mini.json`);
 }
 
-ifCmd(module, buildDataFile)
+ifCmd(import.meta, buildDataFile)
 
-module.exports = buildDataFile;
+export default buildDataFile;

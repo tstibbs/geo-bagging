@@ -1,6 +1,6 @@
-const Converter = require('./converter');
-const {ifCmd, readFile} = require('./utils');
-const constants = require('./constants');
+import Converter from './converter.js';
+import {ifCmd, readFile} from './utils.js';
+import constants from './constants.js';
 
 const attributionString = "This file adapted from data available on www.nationaltrust.org.uk which is copyright © National Trust";
 const columnHeaders = "[Longitude,Latitude,Id,Name,Link,type,facilities]"
@@ -77,6 +77,6 @@ async function buildDataFile() {
     await converter.writeOutCsv(csv, '../js/bundles/nt/data.json');
 }
 
-ifCmd(module, buildDataFile)
+ifCmd(import.meta, buildDataFile)
 
-module.exports = buildDataFile;
+export default buildDataFile;

@@ -1,10 +1,10 @@
-const {ifCmd} = require('./utils');
-const downloadFiles = require('./downloader').download;
+import { ifCmd } from './utils.js';
+import { download as downloadFiles } from './downloader.js';
 
 function download() {
 	return downloadFiles('hills', {'http://www.hills-database.co.uk/hillcsv.zip': 'hillcsv.zip'});
 }
 
-ifCmd(module, download)
+ifCmd(import.meta, download)
 
-module.exports = download;
+export default download;

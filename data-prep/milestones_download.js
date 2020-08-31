@@ -1,5 +1,5 @@
-const {ifCmd} = require('./utils');
-const downloadFiles = require('./downloader').download;
+import { ifCmd } from './utils.js';
+import { download as downloadFiles } from './downloader.js';
 
 const allFiles = [
 	'MSS_Summary_Sheet_Milestones_East.xls',
@@ -32,6 +32,6 @@ function download() {
 	return downloadFiles('milestones', urls);
 }
 
-ifCmd(module, download)
+ifCmd(import.meta, download)
 
-module.exports = download;
+export default download;

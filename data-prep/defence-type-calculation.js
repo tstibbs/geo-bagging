@@ -34,6 +34,6 @@ function guessType(categories) {
     return newType
 }
 
-module.exports = {
+export {
     guessType
 }

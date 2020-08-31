@@ -1,6 +1,7 @@
-const request = require('request');
-const util = require("util");
-const fs = require('fs');
+import request from 'request';
+import util from "util";
+import fs from 'fs';
+import esMain from 'es-main'
 
 function get(path) {
 	return new Promise((resolve, reject) => {
@@ -14,9 +15,9 @@ function get(path) {
 	});
 }
 
-async function doIfCmdCall(module, doit) {
+async function doIfCmdCall(importMeta, doit) {
 	//execute if run from command line
-	if (!module.parent) {
+	if (esMain(importMeta)) {
         try {
             await doit();
         } catch (err) {
@@ -41,11 +42,10 @@ async function deleteFile(file) {
 }
 
 
-module.exports.readFile = util.promisify(fs.readFile);
-module.exports.writeFile = util.promisify(fs.writeFile);
-module.exports.readdir = util.promisify(fs.readdir);
+export const readFile = util.promisify(fs.readFile);
+export const writeFile = util.promisify(fs.writeFile);
+export const readdir = util.promisify(fs.readdir);
 
-module.exports.get = get;
-module.exports.ifCmd = doIfCmdCall;
-module.exports.createTempDir = createTempDir;
-module.exports.deleteFile = deleteFile;
+export const ifCmd = doIfCmdCall;
+
+export {get, createTempDir, deleteFile}
