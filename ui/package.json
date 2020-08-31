@@ -4,6 +4,7 @@
   "author": "tstibbs",
   "license": "Apache-2.0",
   "homepage": "https://github.com/tstibbs/geo-bagging",
+  "type": "module",
   "devDependencies": {
     "chai": "^4.2.0",
     "copy-webpack-plugin": "^6.0.3",
@@ -49,9 +50,9 @@
   },
   "scripts": {
     "prebuild": "rm -rf dist/*",
-    "build": "npx webpack",
+    "build": "npx webpack --config webpack.config.cjs",
     "serve": "npx http-server -c-1 --cors dist",
-    "dev": "npm run prebuild && npx webpack-dev-server --config webpack.config.dev.js",
+    "dev": "npm run prebuild && npx webpack-dev-server --config webpack.config.dev.cjs",
     "test": "npm run build && npx karma start --no-auto-watch --single-run",
     "deploy": "npm run build && ./deploy.sh"
   }
