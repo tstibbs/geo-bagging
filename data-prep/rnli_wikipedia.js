@@ -6,8 +6,8 @@ const flatten = arrays => {return [].concat.apply([], arrays);}
 
 async function convertWikiData() {
 	let data = await readFile(`${inputDir}/wiki.json`);
-	let doc = JSON.parse(data);
-	let tables = flatten(doc.sections.map(section => section.tables).filter(tables => tables != null));
+	let docs = JSON.parse(data);
+	let tables = [].concat(...docs.map(doc => flatten(doc.sections.map(section => section.tables).filter(tables => tables != null))))
 	let stations = tables.reduce((allStations, division) => {
 		let divisionStations = division.map(station => {
 			let typesString = station['Lifeboat type(s)'].text;

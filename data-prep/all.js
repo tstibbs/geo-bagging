@@ -9,6 +9,11 @@ const downloadSources = [
     'coastallandmarks',
     'nt',
 ]
+const processingSources = [
+    ...downloadSources,
+    //processing manually downloaded stuff
+    'trigs'
+]
 
 async function importAll(input, namer) {
     let modules = await Promise.all(input.map(moduleName =>
@@ -34,11 +39,7 @@ async function single(action, name, processor) {
 
 async function run() {
     const downloaders = await importAll(downloadSources, processor => `./${processor}_download.js`)
-    const processors = await importAll([
-        ...downloadSources,
-        //processing manually downloaded stuff
-        'trigs'
-    ], processor => `./${processor}.js`)
+    const processors = await importAll(processingSources, processor => `./${processor}.js`)
 
     let errored = [];
 

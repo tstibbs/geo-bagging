@@ -14,7 +14,7 @@ async function downloadLighthouses() {
 		'List_of_lighthouses_in_Ireland'
 	];
 	let pageDocs = await fetchPages(allPages);
-	await writeFile(`${inputDir}/lighthouses.json`, JSON.stringify(pageDocs.map(doc => doc.json()), null, 2));
+	await writeFile(`${inputDir}/lighthouses.json`, JSON.stringify(pageDocs, null, 2));
 }
 
 async function downloadPiers() {

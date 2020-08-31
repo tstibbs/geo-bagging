@@ -12,7 +12,7 @@ function downloadStationsList() {
 }
 
 async function downloadEnrichingData() {
-	let data = await fetchPages("List_of_RNLI_stations")
+	let data = await fetchPages(["List_of_RNLI_stations"])
 	let dataString = JSON.stringify(data, null, 2);
 	await writeFile(`${inputDir}/wiki.json`, dataString);
 }

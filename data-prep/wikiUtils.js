@@ -37,7 +37,7 @@ async function fetchPages(pageNames) {
 		let chunkedPageNames = _.chunk(pageNames, 50)
 		let promises = chunkedPageNames.map(chunk => wtfFetch(chunk, wikipediaOptions))
 		let responses = await Promise.all(promises)
-		return [].concat([], ...responses)
+		return [].concat([], ...responses).map(doc => doc.json())
 	} else {
 		return []
 	}
