@@ -1,6 +1,9 @@
-import { ifCmd } from './utils.js';
-import { download as downloadFiles } from './downloader.js';
+import {ifCmd} from './utils.js'
+import {download as downloadFiles} from './downloader.js'
 
+//TODO these files have moved, and appear to have a date in their url
+//we'll probably have to scrape https://www.msocrepository.co.uk/excel-spreadsheet-files/ and extract the links from that
+//or is it all just on geograph now? If so, what about the ones that didn't have photos?
 const allFiles = [
 	'MSS_Summary_Sheet_Milestones_East.xls',
 	'MSS_Summary_Sheet_Milestones_Wales.xls',
@@ -22,16 +25,18 @@ const allFiles = [
 	'MSS_Summary_Sheet_Milestones_New.xls',
 	'MSS_Summary_Sheet_Milestones_Out_of_Place.xls',
 	'MSS_Summary_Sheet_Tollhouses.xls'
-];
+]
 
 function download() {
 	let urls = allFiles.reduce((urls, fileName) => {
-		urls[`http://www.msocrepository.co.uk/Excel%20Spreadsheets/${fileName}`] = fileName;
+		urls[
+			`http://www.msocrepository.co.uk/Excel%20Spreadsheets/${fileName}`
+		] = fileName
 		return urls
 	}, {})
-	return downloadFiles('milestones', urls);
+	return downloadFiles('milestones', urls)
 }
 
 ifCmd(import.meta, download)
 
-export default download;
+export default download

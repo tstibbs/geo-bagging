@@ -1,115 +1,130 @@
-import unzipper from 'unzipper';
-import fs from 'fs';
-import { Readable as Readable } from 'stream';
+import unzipper from 'unzipper'
+import fs from 'fs'
+import {Readable} from 'stream'
 
-import {tmpInputDir, outputDir} from './constants.js';
-import { ifCmd } from './utils.js';
-import Converter from './converter.js';
+import {tmpInputDir, outputDir} from './constants.js'
+import {ifCmd} from './utils.js'
+import Converter from './converter.js'
 
-const attributionString = "This file adapted from the The Database of British and Irish Hills (http://www.hills-database.co.uk/downloads.html), licenced under CC BY 3.0 (https://creativecommons.org/licenses/by/3.0/deed.en_GB)";
-const columnHeaders = "[Longitude,Latitude,Id,Name,Classification,Height(m)]"
+const attributionString =
+	'This file adapted from the The Database of British and Irish Hills (http://www.hills-database.co.uk/downloads.html), licenced under CC BY 3.0 (https://creativecommons.org/licenses/by/3.0/deed.en_GB)'
+const columnHeaders = '[Longitude,Latitude,Id,Name,Classification,Height(m)]'
 
-const classesMap = { //used for mapping and filtering, by filtering in only the things we want
-	'Ma': 'Ma',
-	'Hu': 'Hu',
-	'4': 'TU',
-	'3': 'TU',
-	'2': 'TU',
-	'1': 'TU',
-	'0': 'TU',
-	'Sim': 'Sim',
-	'M': 'M',
-	'C': 'C',
-	'G': 'G',
-	'D': 'D',
+const classesMap = {
+	//used for mapping and filtering, by filtering in only the things we want
+	Ma: 'Ma',
+	Hu: 'Hu',
+	4: 'TU',
+	3: 'TU',
+	2: 'TU',
+	1: 'TU',
+	0: 'TU',
+	Sim: 'Sim',
+	M: 'M',
+	C: 'C',
+	G: 'G',
+	D: 'D',
 	'5D': '5D',
 	'5H': '5H',
-	'Hew': 'Hew',
-	'N': 'N',
-	'5': '5',
-	'W': 'W',
-	'WO': 'W',
-	'SIB': 'SIB',
-	'CoU': 'CouT',
-	'CoA': 'CouT',
-	'CoL': 'CouT'
+	Hew: 'Hew',
+	N: 'N',
+	5: '5',
+	W: 'W',
+	WO: 'W',
+	SIB: 'SIB',
+	CoU: 'CouT',
+	CoA: 'CouT',
+	CoL: 'CouT'
 }
 
 class HillConverter extends Converter {
 	constructor(filtering) {
-		super(attributionString, columnHeaders);
-		this._filtering = filtering;
+		super(attributionString, columnHeaders)
+		this._filtering = filtering
 	}
-	
+
 	extractColumns(record) {
 		if (record.length > 1) {
-			let classification = record[10];
+			let classification = record[10]
 			if (classification == null) {
 				console.log(record)
 			}
 			if (classification.indexOf(';') > -1) {
-				throw new Error("Classification string already contains semi-colons; our replacement could break something. String is: " + classification);
+				throw new Error(
+					'Classification string already contains semi-colons; our replacement could break something. String is: ' +
+						classification
+				)
 			}
-			let classes = classification.split(',');
-			let allClasses = [];
-			classes.forEach((classString) => {
+			let classes = classification.split(',')
+			let allClasses = []
+			classes.forEach(classString => {
 				if (classString.endsWith('=')) {
-					classString = classString.substring(0, classString.length - 1);
+					classString = classString.substring(0, classString.length - 1)
 				}
 				if (classString.length > 0) {
-					if (this._filtering && !classString.startsWith('s') 
-							&& !classString.startsWith('x') //i.e. it isn't a sub or a deletion
-							&& (classString in classesMap)) {
-						allClasses.push(classesMap[classString]);
+					if (
+						this._filtering &&
+						!classString.startsWith('s') &&
+						!classString.startsWith('x') && //i.e. it isn't a sub or a deletion
+						classString in classesMap
+					) {
+						allClasses.push(classesMap[classString])
 					} else if (!this._filtering) {
-						allClasses.push(classString);
+						allClasses.push(classString)
 					}
 				}
-			});
-			allClasses = Array.from(new Set(allClasses));
+			})
+			allClasses = Array.from(new Set(allClasses))
 			if (allClasses.length > 0) {
-				classification = allClasses.join(';');
+				classification = allClasses.join(';')
 				return [
 					record[34], //Longitude
 					record[33], //Latitude
 					record[0], //Number
 					record[1], //Name
 					classification, //Classification
-					record[13], //Metres
+					record[13] //Metres
 					//record[30], //hill-bagging link //they appear to all just be http://www.hill-bagging.co.uk/googlemaps.php?qu=S&rf=[id] but some of them are different - so we'll construct them ourselves on the front end
-				];
+				]
 			} else {
-				return null;
+				return null
 			}
 		} else {
-			return null;
+			return null
 		}
 	}
 }
 
 function toStream(buffer) {
-	let stream = new Readable();
-	stream.push(buffer);
-	stream.push(null);
-	return stream;
+	let stream = new Readable()
+	stream.push(buffer)
+	stream.push(null)
+	return stream
 }
 
 function buildDataFile() {
 	return fs
-	.createReadStream(`${tmpInputDir}/hills/hillcsv.zip`)
-	.pipe(unzipper.Parse())
-	.on('entry', async (entry) => {
-		console.log('entry');
-		let chunks = []
-		for await (let chunk of entry) {
-			chunks.push(chunk)
-		}
-		let buffer = Buffer.concat(chunks);
-		await (new HillConverter(true)).writeOutStream(toStream(buffer), `${outputDir}/hills/data.json`);
-		await (new HillConverter(false)).writeOutStream(toStream(buffer), `${outputDir}/hills/data_all.json`);
-	}).promise();
+		.createReadStream(`${tmpInputDir}/hills/hillcsv.zip`)
+		.pipe(unzipper.Parse())
+		.on('entry', async entry => {
+			console.log('entry')
+			let chunks = []
+			for await (let chunk of entry) {
+				chunks.push(chunk)
+			}
+			let buffer = Buffer.concat(chunks)
+			await new HillConverter(true).writeOutStream(
+				toStream(buffer),
+				`${outputDir}/hills/data.json`
+			)
+			await new HillConverter(false).writeOutStream(
+				toStream(buffer),
+				`${outputDir}/hills/data_all.json`
+			)
+		})
+		.promise()
 }
 
 ifCmd(import.meta, buildDataFile)
 
-export default buildDataFile;
+export default buildDataFile

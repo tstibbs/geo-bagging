@@ -1,9 +1,6 @@
-import BoxSelectorControl from 'leaflet-box-selector';
-import BoxSelectorGpx from 'leaflet-box-selector/src/gpx';
+import BoxSelectorControl from 'leaflet-box-selector'
+import BoxSelectorGpx from 'leaflet-box-selector/src/gpx'
 
-import "leaflet-box-selector/src/selector.css";
+import 'leaflet-box-selector/src/selector.css'
 
-export {
-    BoxSelectorControl,
-    BoxSelectorGpx
-}
+export {BoxSelectorControl, BoxSelectorGpx}
