@@ -17,6 +17,7 @@
     "request": "^2.88.2",
     "requirejs": "^2.3.6",
     "stream-array": "^1.1.2",
+    "underscore": "^1.11.0",
     "unzipper": "^0.10.11",
     "wtf_wikipedia": "^8.4.0",
     "xlsx": "^0.16.6",

@@ -14,14 +14,14 @@ async function downloadLighthouses() {
 		'List_of_lighthouses_in_Ireland'
 	];
 	let pageDocs = await fetchPages(allPages);
-	await writeFile(`${inputDir}/lighthouses.json`, JSON.stringify(pageDocs, null, 2));
+	await writeFile(`${inputDir}/lighthouses.json`, JSON.stringify(pageDocs.map(doc => doc.json()), null, 2));
 }
 
 async function downloadPiers() {
     let exclusions = ['Category:Piers in London'];//exclude piers in London, as few of them are piers of any interest (just floating ferry pontoons really)
 	let categoryPages = await fetchCategories('Category:Piers_in_the_United_Kingdom', exclusions);
 	if (categoryPages.pageNames.length > 0) {
-		categoryPages.pages = await fetchPages(categoryPages.pageNames);
+		categoryPages.pages = fetchPages(categoryPages.pageNames)
 		await writeFile(`${inputDir}/piers.json`, JSON.stringify(categoryPages, null, 2));
 	}
 }

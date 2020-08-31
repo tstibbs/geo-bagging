@@ -1,10 +1,14 @@
+import util from 'util'
+import _ from 'underscore'
 import wtf from 'wtf_wikipedia';
 import {wikipediaOptions} from './constants.js';
+
+const wtfFetch = util.promisify(wtf.fetch);
 
 async function fetchCategories(category, exclusions) {
 	let categories = [];
 	let pages = [];
-	let result = await wtf.category(category, 'en', wikipediaOptions);
+	let result = await wtf.category(category, wikipediaOptions);
     if (result.pages != null && result.pages.length > 0) {
         categories = [category];
         pages = result.pages.map(page => page.title);
@@ -29,8 +33,11 @@ async function fetchCategories(category, exclusions) {
 
 async function fetchPages(pageNames) {
 	if (pageNames.length > 0) {
-		pageNames = [...new Set(pageNames)];//use the set to de-dupe
-		return await wtf.fetch(pageNames, 'en', wikipediaOptions);
+        pageNames = [...new Set(pageNames)];//use the set to de-dupe
+		let chunkedPageNames = _.chunk(pageNames, 50)
+		let promises = chunkedPageNames.map(chunk => wtfFetch(chunk, wikipediaOptions))
+		let responses = await Promise.all(promises)
+		return [].concat([], ...responses)
 	} else {
 		return []
 	}
