@@ -31,35 +31,43 @@ const walesCoastPathDetails = {
 
 //set up the projections we support
 proj4.defs('urn:ogc:def:crs:EPSG::27700', '+proj=tmerc +lat_0=49 +lon_0=-2 +k=0.9996012717 +x_0=400000 +y_0=-100000 +ellps=airy +datum=OSGB36 +units=m +no_defs');
+proj4.defs('urn:ogc:def:crs:OGC:1.3:CRS84', proj4.defs('EPSG:4326'));
 
 async function parse(fileName, propertiesTransformer, geometryTransformer, filter, allFeaturesTransformer) {
-    let contents = await readFile(`${inputDirectory}/${fileName}`);
-    let data = JSON.parse(contents);
-    let features = data.features;
-    if (filter != null) {
-        features = features.filter(filter)
-    }
-    features = features.map(feature => {
-        let type = feature.type;
-        //filter and map properties
-        let properties = propertiesTransformer(feature.properties);
-        //convert coordinates
-        let crs = null;
-        if (data.crs && data.crs.properties && data.crs.properties.name) {
-            crs = data.crs.properties.name;
-        }
-        let geometry = geometryTransformer(crs, feature.geometry);
-        //
-        return {
-            "type": type,
-            "geometry": geometry,
-            "properties": properties
-        };
-    });
-    if (allFeaturesTransformer != null) {
-        features = allFeaturesTransformer(features);
-    }
-    return features;
+	try {
+		let contents = await readFile(`${inputDirectory}/${fileName}`);
+		let data = JSON.parse(contents);
+		let features = data.features;
+		if (filter != null) {
+			features = features.filter(filter)
+		}
+		features = features.map(feature => {
+			let type = feature.type;
+			//filter and map properties
+			let properties = propertiesTransformer(feature.properties);
+			//convert coordinates
+			let crs = null;
+			if (data.crs && data.crs.properties && data.crs.properties.name) {
+				crs = data.crs.properties.name;
+			}
+			let geometry = geometryTransformer(crs, feature.geometry);
+			//
+			return {
+				"type": type,
+				"geometry": geometry,
+				"properties": properties
+			};
+		});
+		if (allFeaturesTransformer != null) {
+			features = allFeaturesTransformer(features);
+		}
+		return features;
+	} catch (err) {
+		//catch and log because proj4 throws poor error messages
+		console.error(`error thrown for ${fileName}`)
+		console.error(err)
+		throw err
+	}
 }
 
 function crsTransformer(crs, geometry) {
@@ -142,7 +150,7 @@ async function buildDataFile() {
 		return combineReducer(features);
 	});
 
-	let allTransformed = await Promise.all([pEngNatTrails, pWelshNatTrails, pWalesCoastPath, pEnglandCoastPath]);
+	let allTransformed = await Promise.all([pEngNatTrails, pWelshNatTrails, pEnglandCoastPath, pWalesCoastPath]);
     let allFeatures = allTransformed.reduce((allFeatures, fileFeatures) => 
         [...allFeatures, ...fileFeatures]
     , []);
