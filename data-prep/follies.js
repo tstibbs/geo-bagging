@@ -109,8 +109,9 @@ function getTagForName(name) {
 }
 
 class FolliesConverter extends Converter {
-	constructor() {
+	constructor(oldGeographLinks) {
 		super(attributionString, columnHeaders)
+		this._oldGeographLinks = oldGeographLinks
 	}
 
 	extractColumns(point) {
@@ -174,17 +175,30 @@ class FolliesConverter extends Converter {
 			}
 		}
 
+		if (!url.includes('.geograph.') && this._oldGeographLinks[name] != null) {
+			console.log(
+				`${name}: replaced ${url} with ${this._oldGeographLinks[name]}`
+			)
+			url = this._oldGeographLinks[name]
+		}
+
 		return [lng, lat, name, url, type, imageLinks]
 	}
 }
 
-const converter = new FolliesConverter()
 const parser = new xml2js.Parser()
 
 async function buildDataFile() {
+	let oldRaw = await readFile(`${outputDir}/follies/data.json`)
+	let oldGeographLinks = Object.fromEntries(
+		JSON.parse(oldRaw)
+			.data.filter(row => row[3].includes('.geograph.'))
+			.map(row => [row[2], row[3]])
+	)
 	await xslt('follies-extract.xslt', 'follies/follies.kml', 'follies/out.xml')
 	let data = await readFile(`${tmpInputDir}/follies/out.xml`)
 	let result = await parser.parseStringPromise(data)
+	const converter = new FolliesConverter(oldGeographLinks)
 	await converter.writeOutCsv(
 		result.points.point,
 		`${outputDir}/follies/data.json`
