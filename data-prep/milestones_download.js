@@ -1,9 +1,13 @@
 import {ifCmd} from './utils.js'
 import {download as downloadFiles} from './downloader.js'
 
-//TODO these files have moved, and appear to have a date in their url
-//we'll probably have to scrape https://www.msocrepository.co.uk/excel-spreadsheet-files/ and extract the links from that
-//or is it all just on geograph now? If so, what about the ones that didn't have photos?
+/* NOTE
+ * The milestones database closed to updates and was effectively 'frozen' in 2018.
+ * We therefore already have the latest version, so downloading from that database is pointless.
+ * The database was replicated into historic England's database, and it seems unlikely to get updated any further in that location.
+ * The entries with photographs were replicated in to geograph (i.e. missing the 30% of the database that were without photos). It remains to be seen whether this attracts more updates and whether these maintain the same level of quality.
+ * Pausing updates of this source until it appears valuable to pull from one of the alternative sources.
+ */
 const allFiles = [
 	'MSS_Summary_Sheet_Milestones_East.xls',
 	'MSS_Summary_Sheet_Milestones_Wales.xls',
@@ -29,9 +33,7 @@ const allFiles = [
 
 function download() {
 	let urls = allFiles.reduce((urls, fileName) => {
-		urls[
-			`http://www.msocrepository.co.uk/Excel%20Spreadsheets/${fileName}`
-		] = fileName
+		urls[`http://www.msocrepository.co.uk/Excel%20Spreadsheets/${fileName}`] = fileName
 		return urls
 	}, {})
 	return downloadFiles('milestones', urls)

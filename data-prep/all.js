@@ -1,7 +1,7 @@
 const downloadSources = [
 	'defence',
 	'hills',
-	'milestones',
+	//'milestones', removed due to outdated source, see note in milestones_download.js
 	'trails',
 	'follies',
 	'rnli',
@@ -38,14 +38,8 @@ async function single(action, name, processor) {
 }
 
 async function run() {
-	const downloaders = await importAll(
-		downloadSources,
-		processor => `./${processor}_download.js`
-	)
-	const processors = await importAll(
-		processingSources,
-		processor => `./${processor}.js`
-	)
+	const downloaders = await importAll(downloadSources, processor => `./${processor}_download.js`)
+	const processors = await importAll(processingSources, processor => `./${processor}.js`)
 
 	let errored = []
 
