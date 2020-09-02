@@ -43,8 +43,7 @@ var ModelViews = leaflet.Class.extend({
 					)
 				}.bind(this)
 				var meta = model.getMeta()
-				var description =
-					meta.recordCount + ' items (last updated ' + meta.lastUpdated + ')'
+				var description = meta.recordCount + ' items (last updated ' + meta.lastUpdated + ')'
 				var bundleDetails = this._bundles[bundleName]
 				this._matrixLayerControl.addLazyAspect(bundleName, bundleDetails, {
 					description: description,
@@ -66,10 +65,7 @@ var ModelViews = leaflet.Class.extend({
 		var pointsModels = this._filterModels(bundleModels, AbstractPointsBuilder)
 		var geojsonModels = this._filterModels(bundleModels, AbstractGeojsonBuilder)
 		var lazyPointsModels = this._filterModels(lazyModels, AbstractPointsBuilder)
-		var lazyGeojsonModels = this._filterModels(
-			lazyModels,
-			AbstractGeojsonBuilder
-		)
+		var lazyGeojsonModels = this._filterModels(lazyModels, AbstractGeojsonBuilder)
 		if (config.dimensional_layering) {
 			this._matrixLayerControl = new Leaflet_MatrixLayers(
 				this._manager.getLayers(),

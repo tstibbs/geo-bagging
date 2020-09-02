@@ -2,13 +2,7 @@ import $ from 'jquery'
 import leaflet from 'VendorWrappers/leaflet'
 
 var GeojsonView = leaflet.Class.extend({
-	initialize: function (
-		map,
-		config,
-		modelsByAspect,
-		matrixLayerControl,
-		bundles
-	) {
+	initialize: function (map, config, modelsByAspect, matrixLayerControl, bundles) {
 		this._map = map
 		this._config = config
 		this._modelsByAspect = modelsByAspect
@@ -17,10 +11,7 @@ var GeojsonView = leaflet.Class.extend({
 	},
 
 	finish: function (finished) {
-		if (
-			!this._config.dimensional_layering &&
-			Object.keys(this._modelsByAspect).length > 0
-		) {
+		if (!this._config.dimensional_layering && Object.keys(this._modelsByAspect).length > 0) {
 			throw new Error('!dimensional_layering is not supported yet.')
 		} else {
 			var parentGroup = leaflet.layerGroup()

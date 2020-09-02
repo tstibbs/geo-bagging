@@ -3,8 +3,7 @@ import {ifCmd, get, writeFile, createTempDir} from './utils.js'
 import {tmpInputDir} from './constants.js'
 
 const allDataPath = 'https://www.nationaltrust.org.uk/search/data/all-places'
-const basePath =
-	'https://www.nationaltrust.org.uk/search?query=&type=place&view=map'
+const basePath = 'https://www.nationaltrust.org.uk/search?query=&type=place&view=map'
 const tmpDir = `${tmpInputDir}/nt`
 
 async function download() {
@@ -30,9 +29,7 @@ async function download() {
 }
 
 async function getAspect(values, param) {
-	let placePromises = values.map(type =>
-		get(`${basePath}&${param}=${type}`).then(([body]) => [body, type])
-	)
+	let placePromises = values.map(type => get(`${basePath}&${param}=${type}`).then(([body]) => [body, type]))
 	return await Promise.all(placePromises)
 }
 

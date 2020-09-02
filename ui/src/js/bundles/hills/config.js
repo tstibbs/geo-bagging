@@ -49,11 +49,7 @@ var urlPaths = {
 
 Object.keys(displayNames).forEach(function (key) {
 	hillValueLabels[key] =
-		'<a href="http://www.hill-bagging.co.uk/' +
-		urlPaths[key] +
-		'.php">' +
-		displayNames[key] +
-		'</a>'
+		'<a href="http://www.hill-bagging.co.uk/' + urlPaths[key] + '.php">' + displayNames[key] + '</a>'
 })
 
 var redIconPath = hillIcon

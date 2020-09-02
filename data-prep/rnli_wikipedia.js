@@ -10,13 +10,7 @@ async function convertWikiData() {
 	let data = await readFile(`${inputDir}/wiki.json`)
 	let docs = JSON.parse(data)
 	let tables = [].concat(
-		...docs.map(doc =>
-			flatten(
-				doc.sections
-					.map(section => section.tables)
-					.filter(tables => tables != null)
-			)
-		)
+		...docs.map(doc => flatten(doc.sections.map(section => section.tables).filter(tables => tables != null)))
 	)
 	let stations = tables
 		.reduce((allStations, division) => {
@@ -97,11 +91,7 @@ function multiReplace(input, replacements) {
 
 function replace(input, replacements) {
 	return replacements
-		.reduce(
-			(result, [regex, replacement]) =>
-				result.replace(new RegExp(regex, 'gi'), replacement),
-			input
-		)
+		.reduce((result, [regex, replacement]) => result.replace(new RegExp(regex, 'gi'), replacement), input)
 		.trim()
 }
 

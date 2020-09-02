@@ -22,10 +22,7 @@ describe('loader', function () {
 			} else if (module[0] == 'map_loader') {
 				oldRequire(module, callback)
 			} else {
-				throw new Error(
-					'unrecognised module request in loader, this test needs updating: ' +
-						module
-				)
+				throw new Error('unrecognised module request in loader, this test needs updating: ' + module)
 			}
 		}
 

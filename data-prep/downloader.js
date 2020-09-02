@@ -39,9 +39,7 @@ async function download(bundleName, urls) {
 		outputDir += `/${bundleName}`
 	}
 	await createTempDir(outputDir)
-	let promises = Object.entries(urls).map(([url, fileName]) =>
-		_downloadSingle(url, outputDir + '/' + fileName)
-	)
+	let promises = Object.entries(urls).map(([url, fileName]) => _downloadSingle(url, outputDir + '/' + fileName))
 	let from = bundleName != null ? bundleName : Object.keys(urls).join(';')
 	try {
 		await Promise.all(promises)

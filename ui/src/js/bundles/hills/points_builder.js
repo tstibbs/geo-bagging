@@ -14,10 +14,7 @@ var Builder = AbstractPointsBuilder.extend({
 
 		var extraInfos = [
 			['Height', height],
-			[
-				'Classifications',
-				this.split(classification, this._bundleConfig.hillDisplayNames)
-			]
+			['Classifications', this.split(classification, this._bundleConfig.hillDisplayNames)]
 		]
 		this.addMarker(id, lat, lng, url, name, extraInfos, null, [classification])
 	}

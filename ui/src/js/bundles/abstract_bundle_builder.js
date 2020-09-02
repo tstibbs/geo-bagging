@@ -8,22 +8,13 @@ var AbstractBundleBuilder = leaflet.Class.extend({
 		this._manager = manager
 		this._config = manager.getConfig()
 		this._bundleConfig = bundleConfig
-		this._bundleName =
-			bundleName.indexOf('/') == -1
-				? bundleName
-				: bundleName.substring(0, bundleName.lastIndexOf('/'))
+		this._bundleName = bundleName.indexOf('/') == -1 ? bundleName : bundleName.substring(0, bundleName.lastIndexOf('/'))
 		this._urlPrefix = urlPrefix != null ? urlPrefix : ''
 		this._visits = []
 	},
 
 	_buildDataUrl: function () {
-		return (
-			this._urlPrefix +
-			'bundles/' +
-			this._bundleName +
-			'/' +
-			this._bundleConfig.dataToLoad
-		)
+		return this._urlPrefix + 'bundles/' + this._bundleName + '/' + this._bundleConfig.dataToLoad
 	},
 
 	_doFetchData: function () {
@@ -50,9 +41,7 @@ var AbstractBundleBuilder = leaflet.Class.extend({
 						this._visits = data.map(
 							function (visit) {
 								//each visit file is named like "visits-hills-16495", so get everything after the second hyphen
-								return visit.substring(
-									visit.indexOf('-', visit.indexOf('-') + 1) + 1
-								)
+								return visit.substring(visit.indexOf('-', visit.indexOf('-') + 1) + 1)
 							}.bind(this)
 						)
 					}.bind(this)

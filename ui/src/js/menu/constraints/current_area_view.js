@@ -14,10 +14,7 @@ var CurrentAreaView = leaflet.Class.extend({
 		this._currentAreaLimit.change(
 			function (event) {
 				if (event.target.checked) {
-					this._constraintsView.limitTo(
-						this,
-						this._manager.getMap().getBounds()
-					)
+					this._constraintsView.limitTo(this, this._manager.getMap().getBounds())
 				} else {
 					this._constraintsView.unlimit()
 				}

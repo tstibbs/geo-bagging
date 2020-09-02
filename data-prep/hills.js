@@ -113,14 +113,8 @@ function buildDataFile() {
 				chunks.push(chunk)
 			}
 			let buffer = Buffer.concat(chunks)
-			await new HillConverter(true).writeOutStream(
-				toStream(buffer),
-				`${outputDir}/hills/data.json`
-			)
-			await new HillConverter(false).writeOutStream(
-				toStream(buffer),
-				`${outputDir}/hills/data_all.json`
-			)
+			await new HillConverter(true).writeOutStream(toStream(buffer), `${outputDir}/hills/data.json`)
+			await new HillConverter(false).writeOutStream(toStream(buffer), `${outputDir}/hills/data_all.json`)
 		})
 		.promise()
 }

@@ -4,13 +4,7 @@ import popupView from '../popup_view'
 
 var GeojsonLayer = AbstractBundleBuilder.extend({
 	initialize: function (manager, bundleConfig, bundleName, urlPrefix) {
-		AbstractBundleBuilder.prototype.initialize.call(
-			this,
-			manager,
-			bundleConfig,
-			bundleName,
-			urlPrefix
-		)
+		AbstractBundleBuilder.prototype.initialize.call(this, manager, bundleConfig, bundleName, urlPrefix)
 		this._data = null
 		this._bundleConfig = bundleConfig
 	},
@@ -43,14 +37,7 @@ var GeojsonLayer = AbstractBundleBuilder.extend({
 				var geoLayer = leaflet.geoJSON(geojson, {
 					onEachFeature: function (feature, layer) {
 						var visited = null //not supported on geojson sources for now
-						var popup = popupView.buildPopup(
-							this._manager,
-							name,
-							url,
-							null,
-							extraInfos,
-							visited
-						)
+						var popup = popupView.buildPopup(this._manager, name, url, null, extraInfos, visited)
 						layer.bindPopup(popup)
 					}.bind(this)
 				})

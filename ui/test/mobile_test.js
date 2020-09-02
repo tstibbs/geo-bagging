@@ -15,12 +15,7 @@ describe('mobile', function () {
 			true
 		)
 		// firefox on android
-		runTest(
-			assert,
-			Squire,
-			'Mozilla/5.0 (Android 5.0.1; Mobile; rv:48.0) Gecko/48.0 Firefox/48.0',
-			true
-		)
+		runTest(assert, Squire, 'Mozilla/5.0 (Android 5.0.1; Mobile; rv:48.0) Gecko/48.0 Firefox/48.0', true)
 		// android browser
 		runTest(
 			assert,
@@ -46,12 +41,7 @@ describe('mobile', function () {
 			false
 		)
 		// firefox on android
-		runTest(
-			assert,
-			Squire,
-			'Mozilla/5.0 (X11; Linux x86_64; rv:48.0) Gecko/20100101 Firefox/48.0',
-			false
-		)
+		runTest(assert, Squire, 'Mozilla/5.0 (X11; Linux x86_64; rv:48.0) Gecko/20100101 Firefox/48.0', false)
 		// android browser
 		runTest(
 			assert,
@@ -70,19 +60,9 @@ describe('mobile', function () {
 			false
 		)
 		// firefox on a desktop
-		runTest(
-			assert,
-			Squire,
-			'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:47.0) Gecko/20100101 Firefox/47.0',
-			false
-		)
+		runTest(assert, Squire, 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:47.0) Gecko/20100101 Firefox/47.0', false)
 		// IE on a desktop
-		runTest(
-			assert,
-			Squire,
-			'Mozilla/5.0 (Windows NT 6.1; WOW64; Trident/7.0; rv:11.0) like Gecko',
-			false
-		)
+		runTest(assert, Squire, 'Mozilla/5.0 (Windows NT 6.1; WOW64; Trident/7.0; rv:11.0) like Gecko', false)
 	})
 })
 
@@ -96,11 +76,7 @@ function runTest(assert, Squire, userAgent, expected) {
 	mockWindow.location.search = ''
 	injector.mock('global', mockWindow)
 	injector.require(['mobile'], function (mobile) {
-		assert.equal(
-			expected,
-			mobile.isMobile(),
-			'Expected: ' + expected + ' for user agent: ' + userAgent
-		)
+		assert.equal(expected, mobile.isMobile(), 'Expected: ' + expected + ' for user agent: ' + userAgent)
 		done()
 	})
 }

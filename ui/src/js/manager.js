@@ -30,8 +30,7 @@ var Manager = leaflet.Class.extend({
 				.fail(function (xhr, textError, error) {
 					this._authenticated = false
 					console.error(
-						'Failed to check authentication status - this can be ignored unless trying to record visits: ' +
-							textError
+						'Failed to check authentication status - this can be ignored unless trying to record visits: ' + textError
 					)
 					console.log(error)
 				})

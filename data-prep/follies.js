@@ -73,9 +73,7 @@ const columnHeaders = '[Longitude,Latitude,Name,Url,Type,ImageLinks]'
 
 function getTagForName(name) {
 	name = name.toLowerCase()
-	let found = Object.keys(knownTypes).filter(type =>
-		name.includes(type.toLowerCase())
-	)
+	let found = Object.keys(knownTypes).filter(type => name.includes(type.toLowerCase()))
 
 	let realType = null
 	if (found.length == 0) {
@@ -90,10 +88,7 @@ function getTagForName(name) {
 				let endIndex = name.lastIndexOf(type.toLowerCase()) + type.length
 				let matchLength = type.length
 				//get the right-most match, getting the longest if there's multiple
-				if (
-					endIndex > maxValueIndex ||
-					(endIndex == maxValueIndex && matchLength > maxMatchLength)
-				) {
+				if (endIndex > maxValueIndex || (endIndex == maxValueIndex && matchLength > maxMatchLength)) {
 					maxValueIndex = endIndex
 					selectedArrayIndex = arrayIndex
 					maxMatchLength = matchLength
@@ -136,14 +131,8 @@ class FolliesConverter extends Converter {
 		let googleLinks = this._match(description, googleRegex)
 		let geographLinks = this._match(description, geographRegex)
 		mainLinks.forEach(mainLinkElem => {
-			googleLinks.push.apply(
-				googleLinks,
-				this._match(mainLinkElem, googleRegex)
-			)
-			geographLinks.push.apply(
-				geographLinks,
-				this._match(mainLinkElem, geographRegex)
-			)
+			googleLinks.push.apply(googleLinks, this._match(mainLinkElem, googleRegex))
+			geographLinks.push.apply(geographLinks, this._match(mainLinkElem, geographRegex))
 		})
 		//de-dupe
 		googleLinks = Array.from(new Set(googleLinks))
@@ -176,9 +165,7 @@ class FolliesConverter extends Converter {
 		}
 
 		if (!url.includes('.geograph.') && this._oldGeographLinks[name] != null) {
-			console.log(
-				`${name}: replaced ${url} with ${this._oldGeographLinks[name]}`
-			)
+			console.log(`${name}: replaced ${url} with ${this._oldGeographLinks[name]}`)
 			url = this._oldGeographLinks[name]
 		}
 
@@ -199,10 +186,7 @@ async function buildDataFile() {
 	let data = await readFile(`${tmpInputDir}/follies/out.xml`)
 	let result = await parser.parseStringPromise(data)
 	const converter = new FolliesConverter(oldGeographLinks)
-	await converter.writeOutCsv(
-		result.points.point,
-		`${outputDir}/follies/data.json`
-	)
+	await converter.writeOutCsv(result.points.point, `${outputDir}/follies/data.json`)
 }
 
 ifCmd(import.meta, buildDataFile)

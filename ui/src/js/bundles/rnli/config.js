@@ -16,8 +16,7 @@ var typeData = {
 	Shannon: ['Shannon', 'shannon-class-lifeboat']
 }
 
-var baseUrl =
-	'https://rnli.org/what-we-do/lifeboats-and-stations/our-lifeboat-fleet/'
+var baseUrl = 'https://rnli.org/what-we-do/lifeboats-and-stations/our-lifeboat-fleet/'
 Object.keys(typeData).forEach(function (key) {
 	var label = typeData[key]
 	typeData[key] = [label[0], baseUrl + label[1]]

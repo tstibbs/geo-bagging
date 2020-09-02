@@ -12,19 +12,14 @@ var UrlHandler = leaflet.Class.extend({
 		var datasource = params['datasources']
 		datasource = datasource == null ? '' : datasource
 		delete params['datasources']
-		datasource =
-			datasource.length > 0 ? datasource + ',' + sourceName : sourceName
+		datasource = datasource.length > 0 ? datasource + ',' + sourceName : sourceName
 		var newParams = Object.keys(params)
 			.map(function (paramKey) {
 				return paramKey + '=' + params[paramKey]
 			})
 			.join('&')
-		newParams =
-			(newParams.length > 0 ? newParams + '&' : '') +
-			'datasources=' +
-			datasource
-		var newUrl =
-			document.location.origin + document.location.pathname + '?' + newParams
+		newParams = (newParams.length > 0 ? newParams + '&' : '') + 'datasources=' + datasource
+		var newUrl = document.location.origin + document.location.pathname + '?' + newParams
 		//history.replaceState({}, "GeoBagging", newUrl);//do nothing for now until we come up with a nice way to make this bookmarkable
 	}
 })

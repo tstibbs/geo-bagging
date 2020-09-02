@@ -25,8 +25,7 @@ export default {
 		var e = Number(Number(eastings))
 		var n = Number(Number(northings))
 
-		if (isNaN(e) || isNaN(n))
-			throw new Error('Invalid grid reference: ' + [lat, lng])
+		if (isNaN(e) || isNaN(n)) throw new Error('Invalid grid reference: ' + [lat, lng])
 
 		// use digits = 0 to return numeric format (in metres)
 		if (digits === 0) return pad(e, 6) + ',' + pad(n, 6)
@@ -44,10 +43,7 @@ export default {
 		// compensate for skipped 'I' and build grid letter-pairs
 		if (l1 > 7) l1++
 		if (l2 > 7) l2++
-		var letPair = String.fromCharCode(
-			l1 + 'A'.charCodeAt(0),
-			l2 + 'A'.charCodeAt(0)
-		)
+		var letPair = String.fromCharCode(l1 + 'A'.charCodeAt(0), l2 + 'A'.charCodeAt(0))
 
 		// strip 100km-grid indices from easting & northing, and reduce precision
 		e = Math.floor((e % 100000) / Math.pow(10, 5 - digits / 2))
@@ -89,8 +85,7 @@ export default {
 		// skip grid letters to get numeric (easting/northing) part of ref
 		var en = gridref.slice(2).trim().split(/\s+/)
 		// if e/n not whitespace separated, split half way
-		if (en.length == 1)
-			en = [en[0].slice(0, en[0].length / 2), en[0].slice(en[0].length / 2)]
+		if (en.length == 1) en = [en[0].slice(0, en[0].length / 2), en[0].slice(en[0].length / 2)]
 
 		//fix for grid refs technically part of the grid but outside of the uk
 		//this helped to work this out: https://raw.githubusercontent.com/wu-lee/dinty/master/national-grid.png
@@ -103,17 +98,9 @@ export default {
 
 		// validation
 		if (e100km < -10 || n100km < -5)
-			throw new Error(
-				'Invalid grid reference: gridref=' +
-					gridref +
-					', e100km=' +
-					e100km +
-					', n100km=' +
-					n100km
-			)
+			throw new Error('Invalid grid reference: gridref=' + gridref + ', e100km=' + e100km + ', n100km=' + n100km)
 		if (en.length != 2) throw new Error('Invalid grid reference: ' + gridref)
-		if (en[0].length != en[1].length)
-			throw new Error('Invalid grid reference: ' + gridref)
+		if (en[0].length != en[1].length) throw new Error('Invalid grid reference: ' + gridref)
 
 		// standardise to 10-digit refs (metres)
 		en[0] = (en[0] + '00000').slice(0, 5)

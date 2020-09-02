@@ -2,13 +2,7 @@ import AbstractBundleBuilder from './abstract_bundle_builder'
 
 var PointsBuilder = AbstractBundleBuilder.extend({
 	initialize: function (manager, bundleConfig, bundleName, urlPrefix) {
-		AbstractBundleBuilder.prototype.initialize.call(
-			this,
-			manager,
-			bundleConfig,
-			bundleName,
-			urlPrefix
-		)
+		AbstractBundleBuilder.prototype.initialize.call(this, manager, bundleConfig, bundleName, urlPrefix)
 		this._markerList = null
 		this._bundleConfig = bundleConfig
 	},
@@ -33,17 +27,7 @@ var PointsBuilder = AbstractBundleBuilder.extend({
 		}
 	},
 
-	addMarker: function (
-		id,
-		lat,
-		lng,
-		url,
-		name,
-		extraTexts,
-		icon,
-		dimensionValues,
-		layerId
-	) {
+	addMarker: function (id, lat, lng, url, name, extraTexts, icon, dimensionValues, layerId) {
 		id = encodeURIComponent(id)
 		var latLng = [parseFloat(lat), parseFloat(lng)]
 		var visited = this.getVisits().indexOf(id) != -1
@@ -59,11 +43,7 @@ var PointsBuilder = AbstractBundleBuilder.extend({
 			visited: visited
 		}
 
-		if (
-			this._config.dimensional_layering ||
-			dimensionValues == null ||
-			dimensionValues.length === 0
-		) {
+		if (this._config.dimensional_layering || dimensionValues == null || dimensionValues.length === 0) {
 			if (this._markerList == null) {
 				this._markerList = {}
 			}

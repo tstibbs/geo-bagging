@@ -63,13 +63,9 @@ class WaypointsConverter extends Converter {
 	_readSheet(fileName) {
 		let type = this._extractType(fileName)
 		let workbook = xlsx.readFile(inputDir + '/' + fileName)
-		let sheets = Object.keys(workbook.Sheets).filter(
-			sheet => !/^Sheet\d$/.test(sheet)
-		)
+		let sheets = Object.keys(workbook.Sheets).filter(sheet => !/^Sheet\d$/.test(sheet))
 		if (sheets.length > 1) {
-			throw new Error(
-				`We only know how to deal with a single sheet of data: ${sheets}`
-			)
+			throw new Error(`We only know how to deal with a single sheet of data: ${sheets}`)
 		}
 		if (sheets.length == 0) {
 			sheets = ['Sheet1'] //Milesmarkers (at least) doesn't name its sheets
@@ -94,10 +90,7 @@ class WaypointsConverter extends Converter {
 
 async function buildDataFile() {
 	let files = await readdir(inputDir)
-	await new WaypointsConverter().writeOut2(
-		files,
-		`${outputDir}/milestones/data.json`
-	)
+	await new WaypointsConverter().writeOut2(files, `${outputDir}/milestones/data.json`)
 }
 
 ifCmd(import.meta, buildDataFile)

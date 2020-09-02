@@ -7,18 +7,10 @@ export default {
 		if (/^https?:\/\/trigpointing\.uk\/trig\/\d+/.test(window.location.href)) {
 			//e.g. http://trigpointing.uk/trig/2614 - single trig page
 			this.embedSingleMap()
-		} else if (
-			/^https?:\/\/trigpointing\.uk\/trigs\/view-trigs\.php.*/.test(
-				window.location.href
-			)
-		) {
+		} else if (/^https?:\/\/trigpointing\.uk\/trigs\/view-trigs\.php.*/.test(window.location.href)) {
 			//e.g. http://trigpointing.uk/trigs/view-trigs.php?q=2168478 - detailed search page
 			this.showMapForSearch()
-		} else if (
-			/^https?:\/\/trigpointing\.uk\/trigtools\/find.php.*/.test(
-				window.location.href
-			)
-		) {
+		} else if (/^https?:\/\/trigpointing\.uk\/trigtools\/find.php.*/.test(window.location.href)) {
 			//e.g. http://trigpointing.uk/trigtools/find.php?t=milton - 'quick search' page (not supported)
 			alert(
 				"Map display not supported on this page, please use the 'detailed search' page instead: http://trigpointing.uk/trigs/"
@@ -75,9 +67,7 @@ export default {
 	},
 
 	embedSingleMap: function () {
-		var centreGridRef = $(
-			"div:contains('Grid reference : '):not(:has(*)) + div a"
-		).text()
+		var centreGridRef = $("div:contains('Grid reference : '):not(:has(*)) + div a").text()
 		var lngLat = conversion.gridRefToLngLat(centreGridRef)
 		var lng = lngLat[0]
 		var lat = lngLat[1]
@@ -86,9 +76,7 @@ export default {
 		$.ajax(searchUrl).done(
 			function (res, status, xhr) {
 				var $searchResult = $($.parseHTML(res))
-				var flashLink = $searchResult
-					.find("a:contains('Interactive Map')")
-					.attr('href')
+				var flashLink = $searchResult.find("a:contains('Interactive Map')").attr('href')
 				var suffix = '?' + flashLink.split('?')[1]
 				this.getPointsFromSearch(suffix, function (points) {
 					var mapDiv = $('map[name="trigmap"]').parent()
@@ -136,9 +124,7 @@ export default {
 
 			var showMap
 			if (regex.test(allText) && parseInt(regex.exec(allText)[1]) > 1000) {
-				showMap = confirm(
-					'Map will only display the first 1000 points, are you sure you want to continue?'
-				)
+				showMap = confirm('Map will only display the first 1000 points, are you sure you want to continue?')
 			} else {
 				showMap = true
 			}

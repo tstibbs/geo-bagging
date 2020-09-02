@@ -89,11 +89,7 @@ function runTest(assert, isMobile, options, verify) {
 	)
 	injector.mock('controls', function () {})
 
-	injector.require(['map_view', 'layers', 'controls'], function (
-		MapView,
-		layers,
-		controls
-	) {
+	injector.require(['map_view', 'layers', 'controls'], function (MapView, layers, controls) {
 		//run test
 		options.map_outer_container_element = testDiv
 		var map = new MapView(new Config(options))

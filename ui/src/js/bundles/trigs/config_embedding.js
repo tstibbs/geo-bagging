@@ -14,13 +14,7 @@ export default function build(config) {
 		},
 		parser: TrigsPointsBuilder.extend({
 			initialize: function (manager, bundleConfig, bundleName, urlPrefix) {
-				TrigsPointsBuilder.prototype.initialize.call(
-					this,
-					manager,
-					bundleConfig,
-					bundleName,
-					urlPrefix
-				)
+				TrigsPointsBuilder.prototype.initialize.call(this, manager, bundleConfig, bundleName, urlPrefix)
 				var generalPoints = this._config.pointsToLoad.generalPoints
 				for (var i = 0; i < generalPoints.length; i++) {
 					var point = generalPoints[i]
@@ -29,17 +23,9 @@ export default function build(config) {
 				}
 				var significantPoint = this._config.pointsToLoad.significantPoint
 				if (significantPoint != null) {
-					var lngLat = conversion.osgbToLngLat(
-						significantPoint.eastings,
-						significantPoint.northings
-					)
+					var lngLat = conversion.osgbToLngLat(significantPoint.eastings, significantPoint.northings)
 					var iconName = 'searchResult'
-					this.addWithoutDimensions(
-						lngLat,
-						significantPoint.url,
-						significantPoint.name,
-						iconName
-					)
+					this.addWithoutDimensions(lngLat, significantPoint.url, significantPoint.name, iconName)
 				}
 			},
 

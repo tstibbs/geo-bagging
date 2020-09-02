@@ -76,14 +76,7 @@ export default {
 		return popupText
 	},
 
-	buildPopup: function (
-		manager,
-		unescapedName,
-		unescapedUrl,
-		latLng,
-		unescapedExtraTexts,
-		visited
-	) {
+	buildPopup: function (manager, unescapedName, unescapedUrl, latLng, unescapedExtraTexts, visited) {
 		//get everything from the model - anything that gets put into the dom needs to be escaped to prevent XSS
 		var name = _.escape(unescapedName)
 		var url = _.escape(unescapedUrl)
@@ -106,8 +99,7 @@ export default {
 		}
 		if (manager.shouldManageVisits() && visited != null) {
 			popupText += '<label class="fancy-checkbox" title="Visited?">'
-			popupText +=
-				'    <input type="checkbox"' + (visited ? ' checked' : '') + '/>'
+			popupText += '    <input type="checkbox"' + (visited ? ' checked' : '') + '/>'
 			popupText += '    <i class="fa fa-check"></i>'
 			popupText += '</label>'
 		}
@@ -121,16 +113,7 @@ export default {
 		if (latLng != null) {
 			var lat = latLng[0]
 			var lng = latLng[1]
-			var googleUrl =
-				'https://www.google.com/maps/place/' +
-				lat +
-				'+' +
-				lng +
-				'/@' +
-				lat +
-				',' +
-				lng +
-				',15z'
+			var googleUrl = 'https://www.google.com/maps/place/' + lat + '+' + lng + '/@' + lat + ',' + lng + ',15z'
 			var bingUrl =
 				'https://www.bing.com/maps/?mkt=en-gb&v=2&cp=' +
 				lat +
@@ -152,8 +135,7 @@ export default {
 				'_E_region%3AGB_'
 
 			popupText += '<div class="expandable expandable-links">'
-			popupText +=
-				'<input type="checkbox" value="selected" id="links-checkbox" class="expandable-checkbox">'
+			popupText += '<input type="checkbox" value="selected" id="links-checkbox" class="expandable-checkbox">'
 			popupText +=
 				'<label for="links-checkbox" class="expandable-checkbox-label"><i class="fa fa-external-link" aria-hidden="true"></i></label>'
 			popupText += '<div class="expandable-content links">'

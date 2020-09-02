@@ -18,15 +18,10 @@ describe('params', function () {
 	})
 
 	it('multi-value params', function () {
-		runParamsTest(
-			assert,
-			Squire,
-			'blah=stuff,thing&more=xyz&more=abc',
-			function (params) {
-				assert.equal(params.test('blah'), 'stuff,thing')
-				assert.equal(params.test('more'), 'abc') //if the param appears multiple times, we just use the last one - this is a known limitation
-			}
-		)
+		runParamsTest(assert, Squire, 'blah=stuff,thing&more=xyz&more=abc', function (params) {
+			assert.equal(params.test('blah'), 'stuff,thing')
+			assert.equal(params.test('more'), 'abc') //if the param appears multiple times, we just use the last one - this is a known limitation
+		})
 	})
 })
 

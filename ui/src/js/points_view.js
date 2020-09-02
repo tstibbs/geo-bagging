@@ -6,15 +6,7 @@ import LeafletSubgroup from 'VendorWrappers/leaflet-subgroup'
 import markerView from './marker_view'
 
 var PointsView = leaflet.Class.extend({
-	initialize: function (
-		map,
-		config,
-		modelsByAspect,
-		matrixLayerControl,
-		controls,
-		bundles,
-		manager
-	) {
+	initialize: function (map, config, modelsByAspect, matrixLayerControl, controls, bundles, manager) {
 		this._map = map
 		this._config = config
 		this._modelsByAspect = modelsByAspect
@@ -29,21 +21,12 @@ var PointsView = leaflet.Class.extend({
 		if (group != null) {
 			if (group.constructor === Array) {
 				group.forEach(function (markerConfig, i, group) {
-					group[i] = markerView.translateMarker(
-						markerConfig,
-						bundleConfig,
-						aspect,
-						this._manager
-					)
+					group[i] = markerView.translateMarker(markerConfig, bundleConfig, aspect, this._manager)
 				}, this)
 			} else {
 				//is hash
 				for (var dimension in group) {
-					group[dimension] = this._translateMarkerGroup(
-						group[dimension],
-						bundleConfig,
-						aspect
-					)
+					group[dimension] = this._translateMarkerGroup(group[dimension], bundleConfig, aspect)
 				}
 			}
 		}
@@ -55,8 +38,7 @@ var PointsView = leaflet.Class.extend({
 
 		if (this._config.cluster) {
 			var mapElem = $('div#map')
-			var radius =
-				Math.max(mapElem[0].offsetHeight, mapElem[0].offsetWidth) / 10
+			var radius = Math.max(mapElem[0].offsetHeight, mapElem[0].offsetWidth) / 10
 			this._parentGroup = new leaflet_cluster.MarkerClusterGroup({
 				disableClusteringAtZoom: 15,
 				maxClusterRadius: radius,
@@ -78,11 +60,7 @@ var PointsView = leaflet.Class.extend({
 				.map(
 					function (aspect) {
 						var model = this._modelsByAspect[aspect]
-						return this._translateMarkerGroup(
-							model.getMarkerList(),
-							model.getBundleConfig(),
-							aspect
-						)
+						return this._translateMarkerGroup(model.getMarkerList(), model.getBundleConfig(), aspect)
 					}.bind(this)
 				)
 				.filter(function (value) {
@@ -91,10 +69,7 @@ var PointsView = leaflet.Class.extend({
 			var allMarkers = [].concat.apply([], markerLists)
 			if (this._config.cluster) {
 				var nullLayerId = 'null'
-				var markersByLayer = allMarkers.reduce(function (
-					markersByLayer,
-					marker
-				) {
+				var markersByLayer = allMarkers.reduce(function (markersByLayer, marker) {
 					var layerId = marker.options.layerId
 					layerId = layerId == null ? nullLayerId : layerId //because the Object.keys layer will coerce into a string anyway
 					if (markersByLayer[layerId] == null) {
@@ -102,8 +77,7 @@ var PointsView = leaflet.Class.extend({
 					}
 					markersByLayer[layerId].push(marker)
 					return markersByLayer
-				},
-				{})
+				}, {})
 
 				//add things that don't specify a layer to the default clustered layer
 				this._parentGroup.addLayers(markersByLayer[nullLayerId])
@@ -139,11 +113,7 @@ var PointsView = leaflet.Class.extend({
 
 	addClusteredModel: function (aspect, model) {
 		if (model.getMarkerList() != null) {
-			var markerList = this._translateMarkerGroup(
-				model.getMarkerList(),
-				model.getBundleConfig(),
-				aspect
-			)
+			var markerList = this._translateMarkerGroup(model.getMarkerList(), model.getBundleConfig(), aspect)
 			var matrixOverlays = {}
 			this.depthFirstIteration(markerList, '', matrixOverlays)
 			var aspectOptions = this._bundles[aspect] //will have other options, but collisions are unlikely

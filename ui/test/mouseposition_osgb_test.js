@@ -48,9 +48,7 @@ let assert = eval('chai.assert')(
 )(window)
 
 it('mouseposition_osgb - should display', function () {
-	var $mapElement = $(
-		'<div id="map" style="height: 200px; width: 200px;"></div>'
-	)
+	var $mapElement = $('<div id="map" style="height: 200px; width: 200px;"></div>')
 	$('#test-fixture').append($mapElement)
 	var map = leaflet.map('map')
 	map.setView([51.505, -0.09], 13) //must set view in order for the position to be calculated

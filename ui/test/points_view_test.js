@@ -9,15 +9,7 @@ import Controls from '../src/js/controls'
 let assert = eval('chai.assert')
 
 describe('points view', function () {
-	function testIcon(
-		assert,
-		type,
-		name,
-		condition,
-		url,
-		extraTexts,
-		exportName
-	) {
+	function testIcon(assert, type, name, condition, url, extraTexts, exportName) {
 		//test
 		var marker = {
 			latLng: [-0.09, 51.505],
@@ -47,10 +39,7 @@ describe('points view', function () {
 		var url = 'http://example/'
 		var pointsView = testIcon(assert, undefined, name, undefined, url)
 		$text = getOneMarkerText(assert, pointsView)
-		assert.equal(
-			$text.text(),
-			url + 'View on google mapsView on bing mapsView on geohack'
-		)
+		assert.equal($text.text(), url + 'View on google mapsView on bing mapsView on geohack')
 		assert.equal($('a', $text).attr('href'), url)
 	})
 
@@ -59,29 +48,15 @@ describe('points view', function () {
 		var url = null
 		var pointsView = testIcon(assert, undefined, name, undefined, url)
 		$text = getOneMarkerText(assert, pointsView)
-		assert.equal(
-			$text.text(),
-			name + 'View on google mapsView on bing mapsView on geohack'
-		)
-		assert.equal(
-			$('a', $text).length,
-			3,
-			'should not be any links other than the three at the bottom'
-		)
+		assert.equal($text.text(), name + 'View on google mapsView on bing mapsView on geohack')
+		assert.equal($('a', $text).length, 3, 'should not be any links other than the three at the bottom')
 	})
 
 	it('should include extra text', function () {
 		var name = null
 		var url = 'http://example/'
 		var extraTexts = ['abc', 'this is more text', 'blah', 100]
-		var pointsView = testIcon(
-			assert,
-			undefined,
-			name,
-			undefined,
-			url,
-			extraTexts
-		)
+		var pointsView = testIcon(assert, undefined, name, undefined, url, extraTexts)
 		$text = getOneMarkerText(assert, pointsView)
 		extraTexts.forEach(function (extraText) {
 			assert.notEqual($text.text().indexOf(extraText), -1) //just check it's included, we're not too concerned where
@@ -100,20 +75,14 @@ describe('points view', function () {
 	it('marker should display based on type', function () {
 		testIcon(assert, 'Pillar')
 		var markerIconSource = $('img.leaflet-marker-icon')[0].src
-		assert.ok(
-			/.*img\/pillar\.png/.test(markerIconSource),
-			'should be a pillar marker icon, was: ' + markerIconSource
-		)
+		assert.ok(/.*img\/pillar\.png/.test(markerIconSource), 'should be a pillar marker icon, was: ' + markerIconSource)
 	})
 
 	it('marker should display text', function () {
 		var name = 'this is my name'
 		var pointsView = testIcon(assert, undefined, name)
 		$text = getOneMarkerText(assert, pointsView)
-		assert.equal(
-			$text.text(),
-			name + 'View on google mapsView on bing mapsView on geohack'
-		)
+		assert.equal($text.text(), name + 'View on google mapsView on bing mapsView on geohack')
 	})
 
 	it('marker should not allow XSS', function () {
@@ -121,15 +90,7 @@ describe('points view', function () {
 		var url = '"><hr></a><a href="' //some browsers decode the html within the href so, set this to be something different so we can check for it later
 		var exportName = '<img>'
 		var extraTexts = ['<img>', '<img>']
-		var pointsView = testIcon(
-			assert,
-			undefined,
-			name,
-			undefined,
-			url,
-			extraTexts,
-			exportName
-		)
+		var pointsView = testIcon(assert, undefined, name, undefined, url, extraTexts, exportName)
 		$text = getOneMarkerText(assert, pointsView)
 		//strings may appear in the text, but not in the actual dom
 		assert.equal($('img', $text).length, 0)
@@ -169,30 +130,15 @@ describe('points view', function () {
 				)
 				pointsView.finish(function () {})
 				//check leaflet_cluster constructor is called
-				assert.ok(
-					leafletClusterSpy.MarkerClusterGroup.calledOnce,
-					'cluster layer group is needed'
-				)
+				assert.ok(leafletClusterSpy.MarkerClusterGroup.calledOnce, 'cluster layer group is needed')
 				//check all markers are added
-				assert.ok(
-					clusterLayerMock.addLayers.calledOnce,
-					'should have added layers'
-				)
+				assert.ok(clusterLayerMock.addLayers.calledOnce, 'should have added layers')
 				var markers = clusterLayerMock.addLayers.getCall(0).args[0]
 				assert.equal(2, markers.length, 'should have added both markers')
-				assert.equal(
-					getContentText(markers[0]),
-					'abc' + 'View on google mapsView on bing mapsView on geohack'
-				)
-				assert.equal(
-					getContentText(markers[1]),
-					'def' + 'View on google mapsView on bing mapsView on geohack'
-				)
+				assert.equal(getContentText(markers[0]), 'abc' + 'View on google mapsView on bing mapsView on geohack')
+				assert.equal(getContentText(markers[1]), 'def' + 'View on google mapsView on bing mapsView on geohack')
 				//check cluster layer is added to the map
-				assert.ok(
-					clusterLayerMock.addTo.calledOnce,
-					'should have added layer to map'
-				)
+				assert.ok(clusterLayerMock.addTo.calledOnce, 'should have added layer to map')
 				//tidy
 				injector.clean()
 				done()

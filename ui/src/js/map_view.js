@@ -15,10 +15,7 @@ var MapView = leaflet.Class.extend({
 
 		//set start point
 		this._map.setView(
-			new leaflet.LatLng(
-				this._config.start_position[0],
-				this._config.start_position[1]
-			),
+			new leaflet.LatLng(this._config.start_position[0], this._config.start_position[1]),
 			this._config.initial_zoom
 		)
 		fullscreen_link(this._config, this._map)
@@ -38,10 +35,7 @@ var MapView = leaflet.Class.extend({
 		var content = ''
 
 		var mapClass = ''
-		if (
-			this._config.map_style == 'mini' ||
-			this._config.map_style == 'mini_embedded'
-		) {
+		if (this._config.map_style == 'mini' || this._config.map_style == 'mini_embedded') {
 			mapClass = ' class="mini-map"'
 		} else if (this._config.map_style == 'full') {
 			mapClass = ' class="full-screen"'
@@ -49,14 +43,10 @@ var MapView = leaflet.Class.extend({
 			mapClass = ' class="embedded-map"'
 		}
 
-		if (
-			this._config.map_style == 'mini' ||
-			this._config.map_style == 'mini_embedded'
-		) {
+		if (this._config.map_style == 'mini' || this._config.map_style == 'mini_embedded') {
 			content += '<div class="mini-map">'
 		}
-		content +=
-			'<div id="' + this._config.map_element_id + '"' + mapClass + '></div>'
+		content += '<div id="' + this._config.map_element_id + '"' + mapClass + '></div>'
 		if (this._config.map_style == 'mini') {
 			content += '</div>'
 			content += '<div class="full-screen-link"></div>'

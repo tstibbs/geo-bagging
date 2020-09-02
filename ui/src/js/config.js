@@ -74,10 +74,7 @@ var Config = leaflet.Class.extend({
 		if (params.test('constraints') != null) {
 			// params takes priority
 			constraintsString = params.test('constraints')
-		} else if (
-			resolvedConfig.markerConstraints != null &&
-			typeof resolvedConfig.markerConstraints == 'string'
-		) {
+		} else if (resolvedConfig.markerConstraints != null && typeof resolvedConfig.markerConstraints == 'string') {
 			constraintsString = resolvedConfig.markerConstraints
 		}
 		if (constraintsString != null) {
@@ -106,24 +103,13 @@ var Config = leaflet.Class.extend({
 				[tlLat, brLng]
 			] //<LatLng> southWest, <LatLng> northEast
 		}
-		if (
-			resolvedConfig.markerConstraints != null &&
-			Array.isArray(resolvedConfig.markerConstraints)
-		) {
-			resolvedConfig.markerConstraints = leaflet.latLngBounds(
-				resolvedConfig.markerConstraints
-			) //[[bottom, left], [top, right]]
+		if (resolvedConfig.markerConstraints != null && Array.isArray(resolvedConfig.markerConstraints)) {
+			resolvedConfig.markerConstraints = leaflet.latLngBounds(resolvedConfig.markerConstraints) //[[bottom, left], [top, right]]
 		}
-		if (
-			resolvedConfig.markerConstraints != null &&
-			typeof resolvedConfig.markerConstraints === 'function'
-		) {
+		if (resolvedConfig.markerConstraints != null && typeof resolvedConfig.markerConstraints === 'function') {
 			resolvedConfig.markerConstraintsMatcher = resolvedConfig.markerConstraints
 		}
-		if (
-			resolvedConfig.markerConstraints != null &&
-			resolvedConfig.markerConstraintsMatcher == null
-		) {
+		if (resolvedConfig.markerConstraints != null && resolvedConfig.markerConstraintsMatcher == null) {
 			resolvedConfig.markerConstraintsMatcher = function (marker) {
 				return resolvedConfig.markerConstraints.contains(marker.latLng)
 			}
@@ -132,17 +118,8 @@ var Config = leaflet.Class.extend({
 
 	_checkForUndefaultedProperties: function (newConfig, source) {
 		for (var property in newConfig) {
-			if (
-				newConfig.hasOwnProperty(property) &&
-				!defaults.hasOwnProperty(property)
-			) {
-				console.warn(
-					'Property "' +
-						property +
-						'" (set from ' +
-						source +
-						') should have a default'
-				)
+			if (newConfig.hasOwnProperty(property) && !defaults.hasOwnProperty(property)) {
+				console.warn('Property "' + property + '" (set from ' + source + ') should have a default')
 			}
 		}
 	},

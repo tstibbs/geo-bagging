@@ -11,22 +11,15 @@ var Builder = AbstractPointsBuilder.extend({
 		var types = point[5]
 		var facilities = point[6]
 
-		var typeLabels = this._bundleConfig.dimensionValueLabels[
-			this._bundleConfig.dimensionNames[0]
-		]
-		var facilityLabels = this._bundleConfig.dimensionValueLabels[
-			this._bundleConfig.dimensionNames[1]
-		]
+		var typeLabels = this._bundleConfig.dimensionValueLabels[this._bundleConfig.dimensionNames[0]]
+		var facilityLabels = this._bundleConfig.dimensionValueLabels[this._bundleConfig.dimensionNames[1]]
 
 		var extraInfos = [
 			['Type', this.split(types, typeLabels)],
 			['Facilities', this.split(facilities, facilityLabels)]
 		]
 
-		this.addMarker(id, lat, lng, link, name, extraInfos, null, [
-			types,
-			facilities
-		])
+		this.addMarker(id, lat, lng, link, name, extraInfos, null, [types, facilities])
 	}
 })
 

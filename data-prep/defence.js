@@ -18,18 +18,9 @@ class DobConverter extends Converter {
 
 	extractColumns(point) {
 		let descriptionText = point.description[0]
-		let location = this._match(
-			descriptionText,
-			/<b>Location: <\/b>(.*?)<br \/>/g
-		)[0]
-		let condition = this._match(
-			descriptionText,
-			/<b>Condition: <\/b>(.*?)<br \/>/g
-		)[0]
-		let description = this._match(
-			descriptionText,
-			/<b>Description: <\/b>(.*?)<\/td>/g
-		)[0]
+		let location = this._match(descriptionText, /<b>Location: <\/b>(.*?)<br \/>/g)[0]
+		let condition = this._match(descriptionText, /<b>Condition: <\/b>(.*?)<br \/>/g)[0]
+		let description = this._match(descriptionText, /<b>Description: <\/b>(.*?)<\/td>/g)[0]
 		let link = this._match(
 			descriptionText,
 			/<a href="(http\:\/\/archaeologydataservice.ac.uk\/archives\/view.*?)">/g
@@ -126,10 +117,7 @@ async function buildDataFile() {
 	await xslt('defence-extract.xslt', 'defence/doc.kml', 'defence/out.xml')
 	let data = await readFile(`${tmpInputDir}/defence/out.xml`)
 	let result = await parser.parseStringPromise(data)
-	await converter.writeOutCsv(
-		result.points.point,
-		`${outputDir}/defence/data.json`
-	)
+	await converter.writeOutCsv(result.points.point, `${outputDir}/defence/data.json`)
 }
 
 ifCmd(import.meta, buildDataFile)

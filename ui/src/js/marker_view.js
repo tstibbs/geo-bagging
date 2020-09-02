@@ -21,14 +21,7 @@ export default {
 			exportName = name
 		}
 
-		var popupText = popupView.buildPopup(
-			manager,
-			name,
-			url,
-			latLng,
-			extraTexts,
-			visited
-		)
+		var popupText = popupView.buildPopup(manager, name, url, latLng, extraTexts, visited)
 
 		var markerOptions = {}
 		if (bundleConfig.icons != null && bundleConfig.icons[icon] != null) {
@@ -61,14 +54,7 @@ export default {
 					if (jqXhr.status == 401) {
 						console.log('Authentication required')
 					} else {
-						console.log(
-							'Request failed: ' +
-								jqXhr.status +
-								', ' +
-								textStatus +
-								', ' +
-								errorThrown
-						)
+						console.log('Request failed: ' + jqXhr.status + ', ' + textStatus + ', ' + errorThrown)
 					}
 				})
 			})

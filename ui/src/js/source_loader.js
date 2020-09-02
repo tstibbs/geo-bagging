@@ -23,12 +23,8 @@ var SourceLoader = leaflet.Class.extend({
 	loadSources: function (selectedSourceIds) {
 		var extraDataSourcesString = params.test('extra-datasources')
 		var extraDataSources =
-			extraDataSourcesString != null && extraDataSourcesString.length > 0
-				? extraDataSourcesString.split(',')
-				: []
-		var sourceIds = $.uniqueSort(
-			selectedSourceIds.concat(constants.dataSources, extraDataSources)
-		)
+			extraDataSourcesString != null && extraDataSourcesString.length > 0 ? extraDataSourcesString.split(',') : []
+		var sourceIds = $.uniqueSort(selectedSourceIds.concat(constants.dataSources, extraDataSources))
 		var sourceModuleIds = this._sourceIdsToDataSources(sourceIds)
 		var deferredObject = $.Deferred()
 		var sources = {}
@@ -53,12 +49,7 @@ var SourceLoader = leaflet.Class.extend({
 		var promises = Object.keys(sources).map(
 			function (sourceName) {
 				var source = sources[sourceName]
-				var parser = new source.parser(
-					this._manager,
-					source,
-					sourceName,
-					sourceDataPrefix
-				)
+				var parser = new source.parser(this._manager, source, sourceName, sourceDataPrefix)
 
 				var metaPromise = parser.fetchMeta()
 				if (selectedSourceIds.indexOf(sourceName) != -1) {
@@ -75,12 +66,7 @@ var SourceLoader = leaflet.Class.extend({
 		$.when.apply($, promises).always(
 			function () {
 				var modelViews = new ModelViews(sources, this._manager)
-				modelViews.loadModelViews(
-					sourceModels,
-					lazyModels,
-					this._config,
-					this._finish
-				)
+				modelViews.loadModelViews(sourceModels, lazyModels, this._config, this._finish)
 				//don't need to wait for ModelViews to finish, callback will update UI when the time comes, but can safely return after this call
 				deferredObject.resolve()
 			}.bind(this)

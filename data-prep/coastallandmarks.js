@@ -32,8 +32,7 @@ function processLighthouses() {
 					.filter(
 						section =>
 							section.tables != null &&
-							(section.title == 'Lighthouses' ||
-								section.title == 'Maintained by Commissioners of Irish Lights')
+							(section.title == 'Lighthouses' || section.title == 'Maintained by Commissioners of Irish Lights')
 					)
 					.map(section => section.tables[0])
 			)
@@ -50,15 +49,11 @@ function processLighthouses() {
 					let name = nameContainer.text
 					let link = null
 					if (nameContainer.links && nameContainer.links.length > 0) {
-						let pageRef = nameContainer.links
-							.map(link => link.page)
-							.filter(page => page != null && page.length > 0)[0]
+						let pageRef = nameContainer.links.map(link => link.page).filter(page => page != null && page.length > 0)[0]
 						link = wikify(pageRef)
 					}
 					let yearBuilt = row['Year built'] ? row['Year built'].text : ''
-					let coordMatches = /(-?\d+\.\d+)°N, (-?\d+\.\d+)°W/.exec(
-						coordContainer.text
-					)
+					let coordMatches = /(-?\d+\.\d+)°N, (-?\d+\.\d+)°W/.exec(coordContainer.text)
 					if (coordMatches != null) {
 						let north = coordMatches[1]
 						let west = coordMatches[2]
@@ -88,9 +83,7 @@ function processPiers() {
 						doc.sections
 							.filter(section => section.templates != null)
 							.map(section => {
-								return section.templates.filter(
-									template => template.template == 'coord'
-								)
+								return section.templates.filter(template => template.template == 'coord')
 							})
 					).filter(sectionCoords => sectionCoords != null)
 					let openings = flatten(
@@ -98,9 +91,7 @@ function processPiers() {
 							.filter(section => section.infoboxes != null)
 							.map(section => {
 								return section.infoboxes
-									.filter(
-										infobox => infobox.open != null && infobox.open.text != null
-									)
+									.filter(infobox => infobox.open != null && infobox.open.text != null)
 									.map(infobox => infobox.open.text)
 							})
 					).filter(opening => opening != null)
@@ -125,14 +116,7 @@ function processPiers() {
 				})
 				.filter(coord => coord != null)
 				.map(pier => {
-					return [
-						pier.lng,
-						pier.lat,
-						pier.name,
-						wikify(pier.name),
-						'Pier',
-						pier.opening
-					]
+					return [pier.lng, pier.lat, pier.name, wikify(pier.name), 'Pier', pier.opening]
 				})
 			resolve(csv)
 		})

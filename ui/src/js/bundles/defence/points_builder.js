@@ -31,11 +31,7 @@ var Builder = AbstractPointsBuilder.extend({
 			extraInfos.push(['Type', typeString])
 		}
 		extraInfos.push(['Images', this.buildImageLinks(imageLinks)])
-		this.addMarker(id, lat, lng, url, id, extraInfos, null, [
-			purpose,
-			type,
-			condition
-		])
+		this.addMarker(id, lat, lng, url, id, extraInfos, null, [purpose, type, condition])
 	}
 })
 

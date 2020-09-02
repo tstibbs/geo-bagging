@@ -1,9 +1,6 @@
 import Converter from './converter.js'
 import {tmpInputDir, outputDir} from './constants.js'
-import {
-	visualise as visualiseGeoJson,
-	compare as compareGeoJson
-} from './geojson-comparer.js'
+import {visualise as visualiseGeoJson, compare as compareGeoJson} from './geojson-comparer.js'
 import {ifCmd, readFile, writeFile} from './utils.js'
 
 const inputDirectory = `${tmpInputDir}/nationalparks`

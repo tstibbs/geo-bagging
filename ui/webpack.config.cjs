@@ -132,53 +132,36 @@ module.exports = {
 				]
 			},
 			{
-				test: require.resolve(
-					'./node_modules/leaflet-plugins/layer/tile/Bing.js'
-				),
+				test: require.resolve('./node_modules/leaflet-plugins/layer/tile/Bing.js'),
 				use: 'exports-loader?exports=default|L.BingLayer'
 			},
 			{
-				test: require.resolve(
-					'./node_modules/leaflet-mouse-position/src/L.Control.MousePosition.js'
-				),
+				test: require.resolve('./node_modules/leaflet-mouse-position/src/L.Control.MousePosition.js'),
 				use: 'exports-loader?exports=default|L.Control.MousePosition'
 			},
 			{
-				test: require.resolve(
-					'./node_modules/Leaflet.MapCenterCoord/src/L.Control.MapCenterCoord.js'
-				),
+				test: require.resolve('./node_modules/Leaflet.MapCenterCoord/src/L.Control.MapCenterCoord.js'),
 				use: 'exports-loader?exports=default|L.Control.MapCenterCoord'
 			},
 			{
-				test: require.resolve(
-					'./node_modules/leaflet-control-hider/src/hider.js'
-				),
+				test: require.resolve('./node_modules/leaflet-control-hider/src/hider.js'),
 				use: 'exports-loader?exports=default|L.Control.ControlHider'
 			},
 			{
-				test: require.resolve(
-					'./node_modules/leaflet-geosearch/src/js/l.control.geosearch.js'
-				),
+				test: require.resolve('./node_modules/leaflet-geosearch/src/js/l.control.geosearch.js'),
 				use: 'exports-loader?exports=default|L.Control.GeoSearch'
 			},
 			{
-				test: require.resolve(
-					'./node_modules/leaflet-geosearch/src/js/l.geosearch.provider.bing.js'
-				),
+				test: require.resolve('./node_modules/leaflet-geosearch/src/js/l.geosearch.provider.bing.js'),
 				use: 'exports-loader?exports=default|L.GeoSearch.Provider.Bing'
 			},
 			{
-				test: require.resolve(
-					'./node_modules/sidebar-v2/js/leaflet-sidebar.js'
-				),
+				test: require.resolve('./node_modules/sidebar-v2/js/leaflet-sidebar.js'),
 				use: 'exports-loader?exports=default|L.Control.Sidebar'
 			},
 			{
-				test: require.resolve(
-					'./node_modules/leaflet.featuregroup.subgroup/dist/leaflet.featuregroup.subgroup-src.js'
-				),
-				use:
-					'exports-loader?type=commonjs&exports=single|L.FeatureGroup.SubGroup'
+				test: require.resolve('./node_modules/leaflet.featuregroup.subgroup/dist/leaflet.featuregroup.subgroup-src.js'),
+				use: 'exports-loader?type=commonjs&exports=single|L.FeatureGroup.SubGroup'
 			},
 			{
 				test: require.resolve('./node_modules/mocha/browser-entry.js'),

@@ -15,9 +15,7 @@ function getIdsForAspect(values) {
 			([body, attribute]) => !attributeExcludes.includes(attribute) //This doesn't really add any value as an attribute, so let's just filter it out
 		)
 		.forEach(([body, attribute]) => {
-			let result = /<script>var nt_searchResultsPlaceIds = \[(\d+(, \d+)*)\]<\/script>/.exec(
-				body
-			)
+			let result = /<script>var nt_searchResultsPlaceIds = \[(\d+(, \d+)*)\]<\/script>/.exec(body)
 			if (result == null) {
 				console.log('result null')
 				console.log(path)

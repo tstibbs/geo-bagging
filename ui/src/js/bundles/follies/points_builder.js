@@ -10,9 +10,7 @@ var Builder = AbstractPointsBuilder.extend({
 		var type = point[4]
 		var imageLinks = point[5]
 
-		var typeDisplay = this._bundleConfig.dimensionValueLabels[
-			this._bundleConfig.dimensionNames[0]
-		][type]
+		var typeDisplay = this._bundleConfig.dimensionValueLabels[this._bundleConfig.dimensionNames[0]][type]
 		if (typeDisplay == null) {
 			typeDisplay = type
 		}

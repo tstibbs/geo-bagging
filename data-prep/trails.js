@@ -1,8 +1,5 @@
 import proj4 from 'proj4'
-import {
-	visualise as visualiseGeoJson,
-	compare as compareGeoJson
-} from './geojson-comparer.js'
+import {visualise as visualiseGeoJson, compare as compareGeoJson} from './geojson-comparer.js'
 import Converter from './converter.js'
 import {tmpInputDir, outputDir} from './constants.js'
 import {ifCmd, writeFile, readFile} from './utils.js'
@@ -39,13 +36,7 @@ proj4.defs(
 )
 proj4.defs('urn:ogc:def:crs:OGC:1.3:CRS84', proj4.defs('EPSG:4326'))
 
-async function parse(
-	fileName,
-	propertiesTransformer,
-	geometryTransformer,
-	filter,
-	allFeaturesTransformer
-) {
+async function parse(fileName, propertiesTransformer, geometryTransformer, filter, allFeaturesTransformer) {
 	try {
 		let contents = await readFile(`${inputDirectory}/${fileName}`)
 		let data = JSON.parse(contents)
@@ -112,9 +103,7 @@ function combineReducer(features) {
 			if (feature.geometry.type == 'LineString') {
 				output.geometry.coordinates.push(feature.geometry.coordinates)
 			} else if (feature.geometry.type == 'MultiLineString') {
-				output.geometry.coordinates = output.geometry.coordinates.concat(
-					feature.geometry.coordinates
-				)
+				output.geometry.coordinates = output.geometry.coordinates.concat(feature.geometry.coordinates)
 			} else {
 				throw new Error('Unhandled geometry type.')
 			}
@@ -182,16 +171,8 @@ async function buildDataFile() {
 		}
 	)
 
-	let allTransformed = await Promise.all([
-		pEngNatTrails,
-		pWelshNatTrails,
-		pEnglandCoastPath,
-		pWalesCoastPath
-	])
-	let allFeatures = allTransformed.reduce(
-		(allFeatures, fileFeatures) => [...allFeatures, ...fileFeatures],
-		[]
-	)
+	let allTransformed = await Promise.all([pEngNatTrails, pWelshNatTrails, pEnglandCoastPath, pWalesCoastPath])
+	let allFeatures = allTransformed.reduce((allFeatures, fileFeatures) => [...allFeatures, ...fileFeatures], [])
 	let totalFeatures = allFeatures.length
 	let output = {
 		type: 'FeatureCollection',

@@ -14,11 +14,8 @@ export default {
 		if (devHack) {
 			return true
 		} else {
-			var testString =
-				global.navigator.userAgent || global.navigator.vendor || global.opera
-			return (
-				firstRegex.test(testString) || secondRegex.test(testString.substr(0, 4))
-			)
+			var testString = global.navigator.userAgent || global.navigator.vendor || global.opera
+			return firstRegex.test(testString) || secondRegex.test(testString.substr(0, 4))
 		}
 	}
 }

@@ -7,9 +7,7 @@ let assert = eval('chai.assert')
 describe('screenposition_osgb', function () {
 	it('should display location', function () {
 		//set up
-		$('#test-fixture').append(
-			'<div id="map" style="height: 200px; width: 200px;"></div>'
-		)
+		$('#test-fixture').append('<div id="map" style="height: 200px; width: 200px;"></div>')
 		var map = leaflet.map('map')
 		map.setView([51.505, -0.09], 13)
 		var $positionDisplay = $('div#map div.leaflet-control-mapcentercoord')

@@ -4,10 +4,7 @@ import conversion from '../src/js/conversion'
 
 describe('conversion', function () {
 	it('latLngToGridRef - should return actual grid refs', function () {
-		assert.equal(
-			conversion.latLngToGridRef(52.657977, 1.716038),
-			'TG 51408 13177'
-		)
+		assert.equal(conversion.latLngToGridRef(52.657977, 1.716038), 'TG 51408 13177')
 	})
 
 	it('osgbToLngLat - should work for valid OSBGs', function () {
@@ -18,26 +15,14 @@ describe('conversion', function () {
 	})
 
 	it('gridRefToOsgb - should work for valid grid refs', function () {
-		assert.deepEqual(conversion.gridRefToOsgb('TG 51408 13177'), [
-			651408,
-			313177
-		]) // array is long, lat
+		assert.deepEqual(conversion.gridRefToOsgb('TG 51408 13177'), [651408, 313177]) // array is long, lat
 	})
 	it('gridRefToOsgb - should work for channel islands', function () {
-		assert.deepEqual(conversion.gridRefToOsgb('XD  83873  22339'), [
-			383873,
-			-77661
-		]) // array is long, lat
+		assert.deepEqual(conversion.gridRefToOsgb('XD  83873  22339'), [383873, -77661]) // array is long, lat
 	})
 
 	it('gridRefToLngLat - should work for valid grid refs', function () {
-		assertCloseEnough(
-			assert,
-			'TG 51408 13177',
-			1.716023690108,
-			52.657977064472,
-			0
-		)
+		assertCloseEnough(assert, 'TG 51408 13177', 1.716023690108, 52.657977064472, 0)
 	})
 
 	it('gridRefToOsgb - should error for irish grids', function () {

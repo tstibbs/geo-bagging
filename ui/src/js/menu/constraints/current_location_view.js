@@ -7,9 +7,7 @@ var CurrentLocationView = leaflet.Class.extend({
 		this._constraintsView = constraintsView
 
 		this._view = $('<div class="setting"></div>')
-		var currentLocationLimitButton = $(
-			'<button type="button">Limit to 5 miles from current location</button>'
-		)
+		var currentLocationLimitButton = $('<button type="button">Limit to 5 miles from current location</button>')
 		currentLocationLimitButton.click(this._limitToCurrentLocation.bind(this))
 		this._view.append(currentLocationLimitButton)
 	},
@@ -22,10 +20,7 @@ var CurrentLocationView = leaflet.Class.extend({
 			var lng = e.latlng.lng
 			var latExtra = 0.08 //roughly 5 miles difference in lattitude in the UK
 			var lngExtra = 0.12 //roughly 5 miles difference in longitude in the UK
-			var latLngBounds = new leaflet.latLngBounds(
-				[lat + latExtra, lng + lngExtra],
-				[lat - latExtra, lng - lngExtra]
-			)
+			var latLngBounds = new leaflet.latLngBounds([lat + latExtra, lng + lngExtra], [lat - latExtra, lng - lngExtra])
 			this._constraintsView.limitTo(this, latLngBounds)
 		}.bind(this)
 		map.on('locationfound', listener)

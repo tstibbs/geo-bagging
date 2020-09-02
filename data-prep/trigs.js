@@ -16,10 +16,7 @@ class TrigConverter extends Converter {
 		if (record.length > 1) {
 			let lngLat = this._convertGridRef(record[0])
 			let condition = record[7]
-			if (
-				lngLat != null &&
-				(this._filter == null || this._filter(lngLat, condition) === true)
-			) {
+			if (lngLat != null && (this._filter == null || this._filter(lngLat, condition) === true)) {
 				return [
 					lngLat[0], //lng
 					lngLat[1], //lat
@@ -42,18 +39,13 @@ async function buildDataFile() {
 	let files = await readdir(inputDir)
 	let foundFiles = files.filter(file => /trigpoints-\d+.csv/.test(file))
 	if (foundFiles.length != 1) {
-		console.error(
-			`Should be exactly 1 file called trigpoints-[date as numbers].csv, but were: ${foundFiles}`
-		)
+		console.error(`Should be exactly 1 file called trigpoints-[date as numbers].csv, but were: ${foundFiles}`)
 		process.exit(1)
 	}
 
 	//generate the 'all' data
 
-	await new TrigConverter().writeOut(
-		`${inputDir}/` + foundFiles[0],
-		`${outputDir}/trigs/data_all.json`
-	)
+	await new TrigConverter().writeOut(`${inputDir}/` + foundFiles[0], `${outputDir}/trigs/data_all.json`)
 
 	//generate the 'mini' data
 
@@ -63,29 +55,13 @@ async function buildDataFile() {
 	const maxLat = 54.677004
 	const minLng = -3.408519
 	const maxLng = -2.969059
-	const conditions = [
-		'Good',
-		'Remains',
-		'Toppled',
-		'Moved',
-		'Damaged',
-		'Converted'
-	]
+	const conditions = ['Good', 'Remains', 'Toppled', 'Moved', 'Damaged', 'Converted']
 	let miniConverter = new TrigConverter((lngLat, condition) => {
 		let lng = lngLat[0]
 		let lat = lngLat[1]
-		return (
-			lng > minLng &&
-			lat > minLat &&
-			lng < maxLng &&
-			lat < maxLat &&
-			conditions.includes(condition)
-		)
+		return lng > minLng && lat > minLat && lng < maxLng && lat < maxLat && conditions.includes(condition)
 	})
-	await miniConverter.writeOut(
-		`${inputDir}/` + foundFiles[0],
-		`${outputDir}/trigs/data_mini.json`
-	)
+	await miniConverter.writeOut(`${inputDir}/` + foundFiles[0], `${outputDir}/trigs/data_mini.json`)
 }
 
 ifCmd(import.meta, buildDataFile)

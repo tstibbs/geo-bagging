@@ -24,20 +24,16 @@ var MenuView = leaflet.Class.extend({
 		view += '<div id="sidebar" class="' + classes.join(' ') + '">'
 		view += '    <div class="sidebar-tabs">'
 		view += '        <ul role="tablist">'
-		view +=
-			'            <li><a href="#sidebar-layers" role="tab"><i class="fa fa-bars"></i></a></li>'
-		view +=
-			'            <li><a href="#sidebar-constraints" role="tab"><i class="fa fa-map-o"></i></a></li>'
+		view += '            <li><a href="#sidebar-layers" role="tab"><i class="fa fa-bars"></i></a></li>'
+		view += '            <li><a href="#sidebar-constraints" role="tab"><i class="fa fa-map-o"></i></a></li>'
 		view += '        </ul>'
 
 		//bottom of the navigation bar
 		view += '        <ul role="tablist">'
 		if (showUserSettings) {
-			view +=
-				'            <li><a href="#sidebar-user" role="tab"><i class="fa fa-user"></i></a></li>'
+			view += '            <li><a href="#sidebar-user" role="tab"><i class="fa fa-user"></i></a></li>'
 		}
-		view +=
-			'            <li><a href="#sidebar-attribution" role="tab"><i class="fa fa-copyright"></i></a></li>'
+		view += '            <li><a href="#sidebar-attribution" role="tab"><i class="fa fa-copyright"></i></a></li>'
 		view += '        </ul>'
 		view += '    </div>'
 

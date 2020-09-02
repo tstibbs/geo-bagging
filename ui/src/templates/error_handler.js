@@ -11,9 +11,7 @@ document.addEventListener('DOMContentLoaded', function (event) {
 })
 
 function addErrorHandler() {
-	var dismissButton = document.querySelector(
-		'div#error-container a#dismiss-button'
-	)
+	var dismissButton = document.querySelector('div#error-container a#dismiss-button')
 	if (dismissButton != null) {
 		dismissButton.onclick = function () {
 			document.getElementById('error-container').style.display = 'none'

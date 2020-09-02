@@ -20,37 +20,15 @@ var Builder = AbstractPointsBuilder.extend({
 			['Physical Type', physicalType],
 			['Condition', condition]
 		]
-		this.addMarker(id, lat, lng, url, name, extraTexts, physicalType, [
-			physicalType,
-			condition
-		])
+		this.addMarker(id, lat, lng, url, name, extraTexts, physicalType, [physicalType, condition])
 	},
 
 	add: function (lngLat, url, name, extraTexts, physicalType, condition) {
-		this.addMarker(
-			null,
-			lngLat[1],
-			lngLat[0],
-			url,
-			name,
-			extraTexts,
-			physicalType,
-			[physicalType, condition]
-		)
+		this.addMarker(null, lngLat[1], lngLat[0], url, name, extraTexts, physicalType, [physicalType, condition])
 	},
 
 	addWithoutDimensions: function (lngLat, url, name, icon) {
-		this.addMarker(
-			null,
-			lngLat[1],
-			lngLat[0],
-			url,
-			name,
-			null,
-			icon,
-			[null],
-			icon
-		)
+		this.addMarker(null, lngLat[1], lngLat[0], url, name, null, icon, [null], icon)
 	}
 })
 

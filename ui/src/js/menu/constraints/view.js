@@ -55,12 +55,7 @@ var ConstraintsView = leaflet.Class.extend({
 			bounds = [bounds]
 		}
 		bounds.forEach(function (hole) {
-			polygonPoints.push([
-				hole.getSouthWest(),
-				hole.getNorthWest(),
-				hole.getNorthEast(),
-				hole.getSouthEast()
-			]) //hole
+			polygonPoints.push([hole.getSouthWest(), hole.getNorthWest(), hole.getNorthEast(), hole.getSouthEast()]) //hole
 		})
 		this._constraintPolygon = new L.Polygon(polygonPoints, {
 			color: 'rgb(0, 0, 0, 0)',

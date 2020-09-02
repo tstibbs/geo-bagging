@@ -32,8 +32,7 @@ var typeValueLabels = {}
 dimensionValueLabels[dimensionNames[0]] = typeValueLabels
 
 dimensionValueKeys.forEach(function (value) {
-	typeValueLabels[value] =
-		'<a href="http://trigpointing.uk/wiki/' + value + '">' + value + '</a>'
+	typeValueLabels[value] = '<a href="http://trigpointing.uk/wiki/' + value + '">' + value + '</a>'
 })
 
 export default function build(config) {

@@ -8,9 +8,7 @@ var TrackLoadView = leaflet.Class.extend({
 		this._constraintsView = constraintsView
 		this._tracksView = new TracksView(manager)
 		this._view = $('<div class="setting"></div>')
-		this._view.append(
-			$('<span>Upload GPX tracks to see markers around those tracks:</span>')
-		)
+		this._view.append($('<span>Upload GPX tracks to see markers around those tracks:</span>'))
 		this._fileInput = $('<input type="file" multiple>')
 		this._view.append(this._fileInput)
 		this._fileInput.on('change', this._readFiles.bind(this))

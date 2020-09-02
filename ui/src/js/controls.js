@@ -81,11 +81,7 @@ var Controls = leaflet.Class.extend({
 		if (this._config.show_locate_control) {
 			this.addControl(new Locate(configOverrides))
 		}
-		if (
-			this._config.show_layers_control &&
-			this._layers != null &&
-			Object.keys(this._layers).length > 1
-		) {
+		if (this._config.show_layers_control && this._layers != null && Object.keys(this._layers).length > 1) {
 			this.addControl(new leaflet.Control.Layers(this._layers, null))
 		}
 		if (this._config.show_position_control) {
@@ -105,13 +101,7 @@ var Controls = leaflet.Class.extend({
 			if (control instanceof order[i]) {
 				if (this._controlsToAdd[i] != null) {
 					if (console) {
-						console.debug(
-							'Overwriting existing control "' +
-								this._controlsToAdd[i] +
-								'" with "' +
-								control +
-								'".'
-						)
+						console.debug('Overwriting existing control "' + this._controlsToAdd[i] + '" with "' + control + '".')
 					}
 					oldControl = this._controlsToAdd[i]
 				}
@@ -126,9 +116,7 @@ var Controls = leaflet.Class.extend({
 		if (!found) {
 			console.error('Unrecognised control: ' + control)
 			this._controlsToHide.push(control)
-			this._controlsToAdd[
-				Math.max(order.length, this._controlsToAdd.length)
-			] = control
+			this._controlsToAdd[Math.max(order.length, this._controlsToAdd.length)] = control
 		}
 		//won't run for anything in addDefaults because this._map won't be populated at that point
 		if (this._map != null) {
