@@ -1,6 +1,5 @@
 {
-	"name": "geo-bagging-converter",
-	"version": "0.0.1",
+	"name": "@tstibbs/geo-bagging-data-prep",
 	"private": true,
 	"type": "module",
 	"dependencies": {

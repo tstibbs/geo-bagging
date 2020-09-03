@@ -1,4 +1,5 @@
 {
+	"name": "@tstibbs/geo-bagging-root",
 	"private": "true",
 	"devDependencies": {
 		"husky": "^4.2.5",

@@ -1,6 +1,6 @@
 [![Build Status](https://github.com/tstibbs/geo-bagging/workflows/CI/badge.svg)](https://github.com/tstibbs/geo-bagging/actions?query=workflow%3ACI)
 [![GitHub issues](https://img.shields.io/github/issues/tstibbs/geo-bagging.svg)](https://github.com/tstibbs/geo-bagging/issues)
-[![GitHub license](https://img.shields.io/badge/license-Apache%202-blue.svg)](https://raw.githubusercontent.com/tstibbs/geo-bagging/master/LICENSE)
+[![License: AGPL v3](https://img.shields.io/badge/License-AGPL%20v3-blue.svg)](https://github.com/tstibbs/geo-bagging/blob/master/Licences.md)
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Ftstibbs%2Fgeo-bagging.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Ftstibbs%2Fgeo-bagging?ref=badge_shield)
 
 ## What is this?
@@ -35,4 +35,8 @@ As a demonstration of some things this project can be used for, some basic integ
 
 ## Licence
 
-Please see [here](Licences.md) for important information regarding the licence of this project.
+The _code_ of this project is licenced under AGPL, but please see [here](Licences.md) for important information regarding the licence of other parts of this project.
+
+## Contributing
+
+PRs are very welcome, but for any big changes please open an issue to discuss first.
