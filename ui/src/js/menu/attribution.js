@@ -14,6 +14,10 @@ var AttributionView = leaflet.Class.extend({
 		source code available at 
 		<a href="https://github.com/tstibbs/geo-bagging">here</a>.
 	</span>
+	<br />
+	<span>
+		Many open source libraries help make this project, see a full list in <a href="licenses.txt">licenses.txt</a>.
+	</span>
 </div>`
 		)
 		this._container.append(copyright)

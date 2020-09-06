@@ -1,3 +1,4 @@
+const fs = require('fs')
 const path = require('path')
 const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
@@ -5,6 +6,11 @@ const CopyPlugin = require('copy-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin')
 const TerserPlugin = require('terser-webpack-plugin')
+const LicenseWebpackPlugin = require('license-webpack-plugin').LicenseWebpackPlugin
+
+const isarrayLicenceText = fs.readFileSync('./src/licences/isarray-LICENSE')
+const mitLicenceText = fs.readFileSync('./src/licences/MIT-License')
+const fontAwesomeLicenceText = fs.readFileSync('./src/licences/Font-Awesome-LICENSE.txt')
 
 module.exports = {
 	mode: 'production',
@@ -75,6 +81,18 @@ module.exports = {
 				for (const d of context.dependencies) {
 					if (d.critical) d.critical = false
 				}
+			}
+		}),
+		new LicenseWebpackPlugin({
+			perChunkOutput: false,
+			licenseFileOverrides: {
+				'leaflet.markercluster': 'MIT-LICENCE.txt',
+				'leaflet-mouse-position': 'MIT-LICENCE.txt'
+			},
+			licenseTextOverrides: {
+				isarray: isarrayLicenceText,
+				'assertion-error': mitLicenceText,
+				'font-awesome': fontAwesomeLicenceText
 			}
 		})
 	],

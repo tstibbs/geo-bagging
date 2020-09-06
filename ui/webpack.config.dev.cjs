@@ -6,7 +6,7 @@ module.exports = merge(base, {
 	mode: 'development',
 	devtool: 'inline-source-map',
 	devServer: {
-		writeToDisk: filePath => /\/bundles\//.test(filePath),
+		writeToDisk: filePath => /(\/bundles\/|licenses.txt)/.test(filePath),
 		headers: {
 			'Access-Control-Allow-Origin': '*'
 		}
