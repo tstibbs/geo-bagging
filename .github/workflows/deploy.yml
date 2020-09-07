@@ -13,11 +13,12 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
     - name: Use Node.js at specific version
       uses: actions/setup-node@v1
       with:
         node-version: 14.x
     - run: npm ci
     - run: npm run build
-    - run: npm run test
     - run: npm run deploy
