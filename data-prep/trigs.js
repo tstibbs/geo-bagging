@@ -1,6 +1,7 @@
 import Converter from './converter.js'
-import {ifCmd, readdir} from './utils.js'
+import {ifCmd, backUpReferenceData, readdir} from './utils.js'
 import {tmpInputDir, outputDir} from './constants.js'
+import compareData from './csv-comparer.js'
 
 const attributionString =
 	'This file adapted from data available on http://trigpointing.uk/ which is a mixture of Public Domain and OGL from Ordnance Survey'
@@ -35,6 +36,8 @@ class TrigConverter extends Converter {
 }
 
 async function buildDataFile() {
+	await backUpReferenceData('trigs', 'data_all.json')
+	await backUpReferenceData('trigs', 'data_mini.json')
 	const inputDir = `${tmpInputDir}/trigs`
 	let files = await readdir(inputDir)
 	let foundFiles = files.filter(file => /trigpoints-\d+.csv/.test(file))
@@ -62,6 +65,7 @@ async function buildDataFile() {
 		return lng > minLng && lat > minLat && lng < maxLng && lat < maxLat && conditions.includes(condition)
 	})
 	await miniConverter.writeOut(`${inputDir}/` + foundFiles[0], `${outputDir}/trigs/data_mini.json`)
+	return await compareData('trigs', 'data_all.json')
 }
 
 ifCmd(import.meta, buildDataFile)

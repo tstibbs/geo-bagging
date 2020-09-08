@@ -1,12 +1,12 @@
 import Converter from './converter.js'
 import {tmpInputDir, outputDir} from './constants.js'
 import {visualise as visualiseGeoJson, compare as compareGeoJson} from './geojson-comparer.js'
-import {ifCmd, readFile, writeFile} from './utils.js'
+import {ifCmd, backUpReferenceData, readFile, writeFile} from './utils.js'
 
 const inputDirectory = `${tmpInputDir}/nationalparks`
 
 async function buildDataFile() {
-	await visualiseGeoJson('nationalparks', 'old')
+	await backUpReferenceData('nationalparks', 'data.geojson')
 	let contents = await readFile(`${inputDirectory}/NationalParks.json`)
 	let data = JSON.parse(contents)
 	data.features = data.features.map(feature => {
@@ -26,6 +26,7 @@ async function buildDataFile() {
 	const converter = new Converter()
 	let lastUpdated = converter.getLastUpdatedString()
 	await converter.writeMetaData(fileName, data.features.length, lastUpdated)
+	await visualiseGeoJson('nationalparks', 'old')
 	await visualiseGeoJson('nationalparks', 'new')
 	return await compareGeoJson('nationalparks')
 }

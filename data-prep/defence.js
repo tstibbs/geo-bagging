@@ -1,10 +1,11 @@
 import assert from 'assert'
 import xml2js from 'xml2js'
 import {tmpInputDir, outputDir} from './constants.js'
-import {ifCmd, readFile} from './utils.js'
+import {ifCmd, backUpReferenceData, readFile} from './utils.js'
 import Converter from './converter.js'
 import xslt from './xslt.js'
 import {guessType} from './defence-type-calculation.js'
+import compareData from './csv-comparer.js'
 
 const attributionString =
 	'This file adapted from the database of the Defence of Britain project (http://archaeologydataservice.ac.uk/archives/view/dob/download.cfm). Copyright of the Council for British Archaeology (2006) Defence of Britain Archive [data-set]. York: Archaeology Data Service [distributor] https://doi.org/10.5284/1000327'
@@ -114,10 +115,12 @@ const converter = new DobConverter()
 const parser = new xml2js.Parser()
 
 async function buildDataFile() {
+	await backUpReferenceData('defence', 'data.json')
 	await xslt('defence-extract.xslt', 'defence/doc.kml', 'defence/out.xml')
 	let data = await readFile(`${tmpInputDir}/defence/out.xml`)
 	let result = await parser.parseStringPromise(data)
 	await converter.writeOutCsv(result.points.point, `${outputDir}/defence/data.json`)
+	return await compareData('defence', 'data.json')
 }
 
 ifCmd(import.meta, buildDataFile)

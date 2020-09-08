@@ -2,7 +2,7 @@ import proj4 from 'proj4'
 import {visualise as visualiseGeoJson, compare as compareGeoJson} from './geojson-comparer.js'
 import Converter from './converter.js'
 import {tmpInputDir, outputDir} from './constants.js'
-import {ifCmd, writeFile, readFile} from './utils.js'
+import {ifCmd, backUpReferenceData, writeFile, readFile} from './utils.js'
 
 const inputDirectory = `${tmpInputDir}/trails`
 
@@ -114,7 +114,7 @@ function combineReducer(features) {
 }
 
 async function buildDataFile() {
-	await visualiseGeoJson('trails', 'old')
+	await backUpReferenceData('trails', 'data.geojson')
 	let pEngNatTrails = parse(
 		'National_Trails_England.geojson',
 		properties => {
@@ -181,6 +181,7 @@ async function buildDataFile() {
 	}
 	const fileName = `${outputDir}/trails/data.geojson`
 	await writeFile(fileName, JSON.stringify(output), 'utf-8')
+	await visualiseGeoJson('trails', 'old')
 	await visualiseGeoJson('trails', 'new')
 	let comparisonResult = await compareGeoJson('trails')
 

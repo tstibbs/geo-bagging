@@ -3,8 +3,9 @@ import fs from 'fs'
 import {Readable} from 'stream'
 
 import {tmpInputDir, outputDir} from './constants.js'
-import {ifCmd} from './utils.js'
+import {ifCmd, backUpReferenceData} from './utils.js'
 import Converter from './converter.js'
+import compareData from './csv-comparer.js'
 
 const attributionString =
 	'This file adapted from the The Database of British and Irish Hills (http://www.hills-database.co.uk/downloads.html), licenced under CC BY 3.0 (https://creativecommons.org/licenses/by/3.0/deed.en_GB)'
@@ -102,21 +103,34 @@ function toStream(buffer) {
 	return stream
 }
 
-function buildDataFile() {
-	return fs
-		.createReadStream(`${tmpInputDir}/hills/hillcsv.zip`)
-		.pipe(unzipper.Parse())
-		.on('entry', async entry => {
-			console.log('entry')
-			let chunks = []
-			for await (let chunk of entry) {
-				chunks.push(chunk)
-			}
-			let buffer = Buffer.concat(chunks)
-			await new HillConverter(true).writeOutStream(toStream(buffer), `${outputDir}/hills/data.json`)
-			await new HillConverter(false).writeOutStream(toStream(buffer), `${outputDir}/hills/data_all.json`)
-		})
-		.promise()
+async function buildDataFile() {
+	await backUpReferenceData('hills', 'data.json')
+	await backUpReferenceData('hills', 'data_all.json')
+	return new Promise((resolve, reject) => {
+		fs.createReadStream(`${tmpInputDir}/hills/hillcsv.zip`)
+			.pipe(unzipper.Parse())
+			.on('entry', async entry => {
+				let chunks = []
+				for await (let chunk of entry) {
+					chunks.push(chunk)
+				}
+				let buffer = Buffer.concat(chunks)
+				await new HillConverter(true).writeOutStream(toStream(buffer), `${outputDir}/hills/data.json`)
+				await new HillConverter(false).writeOutStream(toStream(buffer), `${outputDir}/hills/data_all.json`)
+				let result1 = await compareData('hills', 'data.json')
+				let result2 = await compareData('hills', 'data_all.json')
+				if (result1 != null && result2 != null) {
+					resolve(`${result1}; ${result2}`)
+				} else if (result1 != null) {
+					resolve(result1)
+				} else if (result2 != null) {
+					resolve(result2)
+				} else {
+					resolve()
+				}
+			})
+			.on('error', error => reject(error))
+	})
 }
 
 ifCmd(import.meta, buildDataFile)

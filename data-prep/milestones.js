@@ -3,8 +3,9 @@ import CombinedStream from 'combined-stream2'
 import stream from 'stream'
 
 import {tmpInputDir, outputDir} from './constants.js'
-import {ifCmd, readdir} from './utils.js'
+import {ifCmd, backUpReferenceData, readdir} from './utils.js'
 import Converter from './converter.js'
+import compareData from './csv-comparer.js'
 
 const inputDir = `${tmpInputDir}/milestones`
 
@@ -89,8 +90,10 @@ class WaypointsConverter extends Converter {
 }
 
 async function buildDataFile() {
+	await backUpReferenceData('milestones', 'data.json')
 	let files = await readdir(inputDir)
 	await new WaypointsConverter().writeOut2(files, `${outputDir}/milestones/data.json`)
+	return await compareData('milestones', 'data.json')
 }
 
 ifCmd(import.meta, buildDataFile)

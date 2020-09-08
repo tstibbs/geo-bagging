@@ -1,8 +1,9 @@
 import xml2js from 'xml2js'
-import {ifCmd, readFile} from './utils.js'
+import {ifCmd, backUpReferenceData, readFile} from './utils.js'
 import Converter from './converter.js'
 import xslt from './xslt.js'
 import {tmpInputDir, outputDir} from './constants.js'
+import compareData from './csv-comparer.js'
 
 const gardenStructure = 'Garden structure'
 const arch = 'Arch_Gateway'
@@ -165,7 +166,7 @@ class FolliesConverter extends Converter {
 		}
 
 		if (!url.includes('.geograph.') && this._oldGeographLinks[name] != null) {
-			console.log(`${name}: replaced ${url} with ${this._oldGeographLinks[name]}`)
+			//console.log(`${name}: replaced ${url} with ${this._oldGeographLinks[name]}`)
 			url = this._oldGeographLinks[name]
 		}
 
@@ -176,6 +177,7 @@ class FolliesConverter extends Converter {
 const parser = new xml2js.Parser()
 
 async function buildDataFile() {
+	await backUpReferenceData('follies', 'data.json')
 	let oldRaw = await readFile(`${outputDir}/follies/data.json`)
 	let oldGeographLinks = Object.fromEntries(
 		JSON.parse(oldRaw)
@@ -187,6 +189,7 @@ async function buildDataFile() {
 	let result = await parser.parseStringPromise(data)
 	const converter = new FolliesConverter(oldGeographLinks)
 	await converter.writeOutCsv(result.points.point, `${outputDir}/follies/data.json`)
+	return await compareData('follies', 'data.json')
 }
 
 ifCmd(import.meta, buildDataFile)

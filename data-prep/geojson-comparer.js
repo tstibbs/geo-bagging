@@ -6,17 +6,18 @@ import assert from 'assert'
 import pngjs from 'pngjs'
 import pixelmatch from 'pixelmatch'
 import {createTempDir, readFile, writeFile, deleteFile} from './utils.js'
-import {tmpInputDir, outputDir as sourceDataDir} from './constants.js'
+import {tmpInputDir, outputDir as sourceDataDir, referenceDataDir} from './constants.js'
 
 // register fonts and datasource plugins
 mapnik.register_default_fonts()
 mapnik.register_default_input_plugins()
 
 async function visualise(datasource, qualifier) {
+	let inputPath = `${qualifier === 'old' ? referenceDataDir : sourceDataDir}/${datasource}/data.geojson`
 	let outputDir = `${tmpInputDir}/comparisons/${datasource}`
 	await createTempDir(outputDir)
 	let outputPath = `${outputDir}/output-${qualifier}.png`
-	let geojson = await readFile(`${sourceDataDir}/${datasource}/data.geojson`)
+	let geojson = await readFile(inputPath)
 	geojson = JSON.parse(geojson)
 	let xml = await util.promisify(mapnikify)(geojson, false)
 	let outputXmlPath = `${tmpInputDir}/comparisons/${datasource}/tmp.xml`

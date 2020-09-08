@@ -1,6 +1,7 @@
 import Converter from './converter.js'
-import {ifCmd, readFile} from './utils.js'
+import {ifCmd, readFile, backUpReferenceData} from './utils.js'
 import {tmpInputDir, outputDir} from './constants.js'
+import compareData from './csv-comparer.js'
 
 const attributionString =
 	'This file adapted from data available on www.nationaltrust.org.uk which is copyright © National Trust'
@@ -29,6 +30,7 @@ function getIdsForAspect(values) {
 }
 
 async function buildDataFile() {
+	await backUpReferenceData('nt', 'data.json')
 	let input = await readFile(`${tmpInputDir}/nt/data.json`)
 	let {places, facilities, allData} = JSON.parse(input)
 	places = getIdsForAspect(places)
@@ -78,6 +80,7 @@ async function buildDataFile() {
 		})
 	let converter = new Converter(attributionString, columnHeaders)
 	await converter.writeOutCsv(csv, `${outputDir}/nt/data.json`)
+	return await compareData('nt', 'data.json')
 }
 
 ifCmd(import.meta, buildDataFile)

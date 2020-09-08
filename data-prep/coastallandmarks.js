@@ -2,7 +2,8 @@ import fs from 'fs'
 import {tmpInputDir, outputDir} from './constants.js'
 import Converter from './converter.js'
 import {filterPages} from './wikiUtils.js'
-import {ifCmd} from './utils.js'
+import {ifCmd, backUpReferenceData} from './utils.js'
+import compareData from './csv-comparer.js'
 const inputDir = `${tmpInputDir}/coastallandmarks`
 
 const attributionString =
@@ -27,15 +28,7 @@ function processLighthouses() {
 			let data = JSON.parse(rawData)
 
 			let sections = flatten(data.map(page => page.sections))
-			let rows = flatten(
-				sections
-					.filter(
-						section =>
-							section.tables != null &&
-							(section.title == 'Lighthouses' || section.title == 'Maintained by Commissioners of Irish Lights')
-					)
-					.map(section => section.tables[0])
-			)
+			let rows = flatten(sections.filter(section => section.tables != null).map(section => section.tables[0]))
 			let csv = rows
 				.map(row => {
 					let nameContainer = row.Name ? row.Name : row.Lighthouse
@@ -124,13 +117,15 @@ function processPiers() {
 }
 
 async function processData() {
+	await backUpReferenceData('coastallandmarks', 'data.json')
 	let csvsPromises = [processLighthouses(), processPiers()]
 	let csvs = await Promise.all(csvsPromises)
 	let csv = flatten(csvs).sort((rowA, rowB) => {
 		return rowA[2].localeCompare(rowB[2])
 	})
 	const converter = new Converter(attributionString, columnHeaders)
-	return converter.writeOutCsv(csv, `${outputDir}/coastallandmarks/data.json`)
+	await converter.writeOutCsv(csv, `${outputDir}/coastallandmarks/data.json`)
+	return await compareData('coastallandmarks', 'data.json')
 }
 
 ifCmd(import.meta, processData)
