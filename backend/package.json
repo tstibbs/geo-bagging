@@ -1,0 +1,34 @@
+{
+	"name": "@tstibbs/geo-bagging-backend",
+	"private": true,
+	"dependencies": {
+		"cookie": "^0.4.1",
+		"cookie-parser": "^1.4.5",
+		"cors": "^2.8.5",
+		"dotenv": "^8.2.0",
+		"express-jwt": "^6.0.0",
+		"googleapis": "^59.0.0",
+		"jsonwebtoken": "^8.5.1",
+		"modofun": "^1.2.2"
+	},
+	"devDependencies": {
+		"body-parser": "^1.19.0",
+		"express": "^4.17.1",
+		"http-server": "^0.12.3",
+		"webpack": "^4.44.1",
+		"webpack-cli": "^3.3.12",
+		"webpack-merge": "^5.1.4",
+		"webpack-shell-plugin": "^0.5.0"
+	},
+	"scripts": {
+		"dev:frontend": "http-server -p 3000 test",
+		"dev": "NODE_ENV=development webpack",
+		"dev:_serve": "nodemon --watch dist --watch ./test/index.js ./test/index.js",
+		"build": "rm -rf dist/* && webpack",
+		"_package": "cd dist && zip -r function.zip .",
+		"_upload": "AWS_PAGER=\"\" aws lambda update-function-code --function-name $functionName --zip-file fileb://dist/function.zip",
+		"_metadata": "aws lambda tag-resource --resource $functionArn --tags \"revision=$(git rev-parse --verify HEAD)\"",
+		"_clean": "rm dist/function.zip",
+		"deploy": "npm run build && npm run _package && npm run _upload && npm run _metadata && npm run _clean"
+	}
+}

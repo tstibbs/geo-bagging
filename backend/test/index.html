@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+		<script type="text/javascript">
+			function request(url, fail) {
+				return $.ajax({
+					url: url,
+					dataType: 'json',
+					xhrFields: {
+						withCredentials: true
+					}
+				}).fail(
+					fail != null
+						? fail
+						: (xhr, textError, error) => {
+								console.error(xhr.status)
+								console.error(textError)
+								console.error(error)
+						  }
+				)
+			}
+
+			function checkLoggedIn() {
+				request('https://localhost:3001/isAuthenticated', (xhr, textError, error) => {
+					if (xhr.status == 401) {
+						$('#isAuthenticated').text('false')
+					} else {
+						console.error(xhr.status)
+						console.error(textError)
+						console.error(error)
+					}
+				}).then(result => {
+					$('#isAuthenticated').text(JSON.stringify(result))
+				})
+			}
+
+			function listVisits() {
+				request('https://localhost:3001/listVisits?source=hills').then(result => {
+					console.log(result)
+				})
+			}
+		</script>
+	</head>
+
+	<body>
+		<p id="isAuthenticated">?</p>
+		<a href="https://localhost:3001/login">login</a>
+		<script type="text/javascript">
+			checkLoggedIn()
+		</script>
+	</body>
+</html>
