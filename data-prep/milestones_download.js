@@ -1,4 +1,4 @@
-import {ifCmd} from './utils.js'
+import {ifCmd} from '../shared/utils.js'
 import {download as downloadFiles} from './downloader.js'
 
 /* NOTE

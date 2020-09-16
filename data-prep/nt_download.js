@@ -1,5 +1,6 @@
 import cheerio from 'cheerio'
-import {ifCmd, get, writeFile, createTempDir} from './utils.js'
+import {ifCmd} from '../shared/utils.js'
+import {get, writeFile, createTempDir} from './utils.js'
 import {tmpInputDir} from './constants.js'
 
 const allDataPath = 'https://www.nationaltrust.org.uk/search/data/all-places'

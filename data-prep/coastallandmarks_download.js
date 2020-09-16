@@ -1,5 +1,6 @@
 import {fetchPages, fetchCategories} from './wikiUtils.js'
-import {ifCmd, writeFile, createTempDir} from './utils.js'
+import {ifCmd} from '../shared/utils.js'
+import {writeFile, createTempDir} from './utils.js'
 import {tmpInputDir} from './constants.js'
 
 const inputDir = `${tmpInputDir}/coastallandmarks`

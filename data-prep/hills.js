@@ -3,7 +3,8 @@ import fs from 'fs'
 import {Readable} from 'stream'
 
 import {tmpInputDir, outputDir} from './constants.js'
-import {ifCmd, backUpReferenceData} from './utils.js'
+import {ifCmd} from '../shared/utils.js'
+import {backUpReferenceData} from './utils.js'
 import Converter from './converter.js'
 import compareData from './csv-comparer.js'
 

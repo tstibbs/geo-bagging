@@ -2,7 +2,8 @@ import fs from 'fs'
 import {tmpInputDir, outputDir} from './constants.js'
 import Converter from './converter.js'
 import {filterPages} from './wikiUtils.js'
-import {ifCmd, backUpReferenceData} from './utils.js'
+import {ifCmd} from '../shared/utils.js'
+import {backUpReferenceData} from './utils.js'
 import compareData from './csv-comparer.js'
 const inputDir = `${tmpInputDir}/coastallandmarks`
 

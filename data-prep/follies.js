@@ -1,5 +1,6 @@
 import xml2js from 'xml2js'
-import {ifCmd, backUpReferenceData, readFile} from './utils.js'
+import {ifCmd} from '../shared/utils.js'
+import {backUpReferenceData, readFile} from './utils.js'
 import Converter from './converter.js'
 import xslt from './xslt.js'
 import {tmpInputDir, outputDir} from './constants.js'

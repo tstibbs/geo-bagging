@@ -1,4 +1,5 @@
-import {ifCmd, readFile} from './utils.js'
+import {ifCmd} from '../shared/utils.js'
+import {readFile} from './utils.js'
 import {tmpInputDir} from './constants.js'
 const inputDir = `${tmpInputDir}/rnli`
 

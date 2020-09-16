@@ -1,4 +1,5 @@
-import {ifCmd, writeFile} from './utils.js'
+import {ifCmd} from '../shared/utils.js'
+import {writeFile} from './utils.js'
 import {fetchPages} from './wikiUtils.js'
 import {tmpInputDir} from './constants.js'
 import {download as downloadFiles} from './downloader.js'

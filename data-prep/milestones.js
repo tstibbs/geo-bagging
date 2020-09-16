@@ -3,7 +3,8 @@ import CombinedStream from 'combined-stream2'
 import stream from 'stream'
 
 import {tmpInputDir, outputDir} from './constants.js'
-import {ifCmd, backUpReferenceData, readdir} from './utils.js'
+import {ifCmd} from '../shared/utils.js'
+import {backUpReferenceData, readdir} from './utils.js'
 import Converter from './converter.js'
 import compareData from './csv-comparer.js'
 
