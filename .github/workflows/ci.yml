@@ -7,15 +7,45 @@ jobs:
 
     runs-on: ubuntu-latest
 
-    defaults:
-      run:
-        working-directory: ./ui
-
     steps:
     - uses: actions/checkout@v2
-    - name: Use Node.js at specific version
-      uses: actions/setup-node@v1
+    - uses: actions/setup-node@v1
       with:
-        node-version: 14.x
-    - run: npm ci
-    - run: npm run test
+        node-version: 12.x
+
+    # the ordering is weird, because we're trying to get information about fundamental failures quicker - i.e. breadth-first not depth-first
+
+    # get all deps
+    - name: "get deps: root"
+      run: npm ci
+    - name: "get deps: shared"
+      run: npm ci
+      working-directory: ./shared
+    - name: "get deps: data-prep"
+      run: npm ci
+      working-directory: ./data-prep
+    - name: "get deps: backend"
+      run: npm ci
+      working-directory: ./backend
+    - name: "get deps: UI"
+      run: npm ci
+      working-directory: ./ui
+
+    # build
+    - name: "build: backend"
+      run: npm run build
+      working-directory: ./backend
+    - name: "build: UI"
+      run: npm run build
+      working-directory: ./ui
+
+    # test
+    - name: "test: data-prep"
+      run: npm run test
+      working-directory: ./data-prep
+    - name: "test: backend"
+      run: npm run test
+      working-directory: ./backend
+    - name: "test: UI"
+      run: npm run test
+      working-directory: ./ui

@@ -1,3 +1,5 @@
+import {ifCmd} from './utils.js'
+
 const downloadSources = [
 	'defence',
 	'hills',
@@ -69,4 +71,4 @@ async function run() {
 	}
 }
 
-run()
+ifCmd(import.meta, run)

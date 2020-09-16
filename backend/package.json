@@ -25,6 +25,7 @@
 		"dev": "NODE_ENV=development webpack",
 		"dev:_serve": "nodemon --watch dist --watch ./test/index.js ./test/index.js",
 		"build": "rm -rf dist/* && webpack",
+		"test": "node test/basic.mjs",
 		"_package": "cd dist && zip -r function.zip .",
 		"_upload": "AWS_PAGER=\"\" aws lambda update-function-code --function-name $functionName --zip-file fileb://dist/function.zip",
 		"_metadata": "aws lambda tag-resource --resource $functionArn --tags \"revision=$(git rev-parse --verify HEAD)\"",
