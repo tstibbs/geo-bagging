@@ -8,7 +8,18 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+
+    # checkout a dependent project
     - uses: actions/checkout@v2
+      with:
+        repository: tstibbs/cloud-core
+        path: 'cloud-core' # will resolve to /home/runner/work/geo-bagging/geo-bagging/cloud-core
+
+    # checkout 'this' project
+    - uses: actions/checkout@v2
+      with:
+        path: 'geo-bagging' # will resolve to /home/runner/work/geo-bagging/geo-bagging/geo-bagging
+
     - uses: actions/setup-node@v1
       with:
         node-version: 12.x
@@ -18,34 +29,35 @@ jobs:
     # get all deps
     - name: "get deps: root"
       run: npm ci
+      working-directory: geo-bagging
     - name: "get deps: shared"
       run: npm ci
-      working-directory: ./shared
+      working-directory: geo-bagging/shared
     - name: "get deps: data-prep"
       run: npm ci
-      working-directory: ./data-prep
+      working-directory: geo-bagging/data-prep
     - name: "get deps: backend"
       run: npm ci
-      working-directory: ./backend
+      working-directory: geo-bagging/backend
     - name: "get deps: UI"
       run: npm ci
-      working-directory: ./ui
+      working-directory: geo-bagging/ui
 
     # build
     - name: "build: backend"
       run: npm run build
-      working-directory: ./backend
+      working-directory: geo-bagging/backend
     - name: "build: UI"
       run: npm run build
-      working-directory: ./ui
+      working-directory: geo-bagging/ui
 
     # test
     - name: "test: data-prep"
       run: npm run test
-      working-directory: ./data-prep
+      working-directory: geo-bagging/data-prep
     - name: "test: backend"
       run: npm run test
-      working-directory: ./backend
+      working-directory: geo-bagging/backend
     - name: "test: UI"
       run: npm run test
-      working-directory: ./ui
+      working-directory: geo-bagging/ui

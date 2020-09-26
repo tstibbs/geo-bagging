@@ -1,0 +1,148 @@
+AWSTemplateFormatVersion: "2010-09-09"
+
+Parameters:
+  ClientId:
+    Default: PLACEHOLDER
+    Type: String
+  ClientSecret:
+    Default: PLACEHOLDER
+    Type: String
+  CookieSecret:
+    Default: PLACEHOLDER
+    Type: String
+  CodeVersionWebBackEnd:
+    Type: String
+  Revision:
+    Type: String
+
+Resources: 
+
+  LogGroup: 
+    Type: AWS::Logs::LogGroup
+    Properties: 
+      LogGroupName: !Sub "/aws/lambda/${AWS::StackName}-web-back-end"
+      RetentionInDays: 120
+
+  LambdaExecutionRole: 
+    Type: "AWS::IAM::Role"
+    Properties: 
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+              - lambda.amazonaws.com
+            Action:
+              - 'sts:AssumeRole'
+      ManagedPolicyArns: 
+        - !Ref LambdaExecutionPolicy
+
+  LambdaExecutionPolicy: 
+    Type: "AWS::IAM::ManagedPolicy"
+    Properties: 
+      PolicyDocument: 
+        Version: "2012-10-17"
+        Statement: 
+          - 
+            Effect: "Allow"
+            Action: 
+              - "logs:CreateLogStream"
+              - "logs:PutLogEvents"
+            Resource: !GetAtt LogGroup.Arn
+
+  ApiExecutionRole: 
+    Type: "AWS::IAM::Role"
+    Properties: 
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+              - apigateway.amazonaws.com
+            Action:
+              - 'sts:AssumeRole'
+      ManagedPolicyArns: 
+        - "arn:aws:iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs"
+        - !Ref ApiExecutionPolicy
+
+  ApiExecutionPolicy: 
+    Type: "AWS::IAM::ManagedPolicy"
+    Properties: 
+      PolicyDocument: 
+        Version: "2012-10-17"
+        Statement: 
+          - 
+            Effect: "Allow"
+            Action: 
+              - "lambda:InvokeFunction"
+            Resource: !Sub "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:${AWS::StackName}-web-back-end"
+
+  WebBackEndFunction: 
+    Type: AWS::Lambda::Function
+    Properties: 
+      FunctionName: !Sub "${AWS::StackName}-web-back-end"
+      Handler: main.handler
+      Role: !GetAtt LambdaExecutionRole.Arn
+      Runtime: nodejs12.x
+      Timeout: 20
+      MemorySize: 128
+      Environment:
+        Variables:
+          CLIENT_ID: !Ref ClientId
+          CLIENT_SECRET: !Ref ClientSecret
+          COOKIE_SECRET: !Ref CookieSecret
+          API_GATEWAY_URL: !Sub "${WebBackEndInterfaceApi}.execute-api.${AWS::Region}.amazonaws.com"
+      Code: 
+        S3Bucket: !Sub "cloudformation-code-deploy-staging-${AWS::AccountId}"
+        S3Key: !Sub "${AWS::StackName}/web-back-end/code.zip"
+        S3ObjectVersion: !Ref CodeVersionWebBackEnd
+      Tags: 
+        - Key: revision
+          Value: !Ref Revision
+
+  WebBackEndInterfaceApi:
+    Type: AWS::ApiGateway::RestApi
+    Properties:
+      Name: !Sub "${AWS::StackName}-web-back-end-rest"
+      Parameters:
+          endpointConfigurationTypes: REGIONAL
+      Body: 
+        openapi: "3.0.1"
+        paths:
+          /{proxy+}:
+            x-amazon-apigateway-any-method:
+              parameters:
+              - name: "proxy"
+                in: "path"
+                required: true
+                schema:
+                  type: "string"
+              x-amazon-apigateway-integration:
+                credentials: !GetAtt ApiExecutionRole.Arn
+                uri: !Sub "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:${AWS::StackName}-web-back-end/invocations" #would be better to pull the arn from the lambda resource, but that causes a circular dependency
+                responses:
+                  default:
+                    statusCode: "200"
+                passthroughBehavior: "when_no_match"
+                httpMethod: "POST"
+                contentHandling: "CONVERT_TO_TEXT"
+                type: "aws_proxy"
+        components: {}
+
+  WebBackEndInterfaceDeployment:
+    Type: 'AWS::ApiGateway::Deployment'
+    Properties:
+      RestApiId: !Ref WebBackEndInterfaceApi
+
+  WebBackEndInterfaceStage: 
+    Type: AWS::ApiGateway::Stage
+    Properties:
+      StageName: default
+      RestApiId: !Ref WebBackEndInterfaceApi
+      DeploymentId: !Ref WebBackEndInterfaceDeployment
+
+Outputs:
+  AccessUrl:
+    Value: !Sub "https://${WebBackEndInterfaceApi}.execute-api.${AWS::Region}.amazonaws.com/${WebBackEndInterfaceStage}/"

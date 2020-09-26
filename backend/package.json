@@ -12,6 +12,7 @@
 		"modofun": "^1.2.2"
 	},
 	"devDependencies": {
+		"@tstibbs/cloud-core-utils": "file:../../cloud-core/aws/utils",
 		"body-parser": "^1.19.0",
 		"express": "^4.17.1",
 		"http-server": "^0.12.3",
@@ -25,11 +26,10 @@
 		"dev": "NODE_ENV=development webpack",
 		"dev:_serve": "nodemon --watch dist --watch ./test/index.js ./test/index.js",
 		"build": "rm -rf dist/* && webpack",
-		"test": "node test/basic.mjs",
+		"test": "COOKIE_SECRET=dummy CLIENT_SECRET=dummy CLIENT_ID=dummy CF_ROLE_ARN=dummy node test/basic.mjs",
 		"_package": "cd dist && zip -r function.zip .",
-		"_upload": "AWS_PAGER=\"\" aws lambda update-function-code --function-name $functionName --zip-file fileb://dist/function.zip",
-		"_metadata": "aws lambda tag-resource --resource $functionArn --tags \"revision=$(git rev-parse --verify HEAD)\"",
+		"_upload": "node deploy/deploy-stack.mjs",
 		"_clean": "rm dist/function.zip",
-		"deploy": "npm run build && npm run _package && npm run _upload && npm run _metadata && npm run _clean"
+		"deploy": "npm run build && npm run _package && npm run _upload && npm run _clean"
 	}
 }
