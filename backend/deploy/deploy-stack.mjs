@@ -1,7 +1,7 @@
 import {deploy, loadEnvs} from '@tstibbs/cloud-core-utils'
 import {ifCmd} from '../../shared/utils.js'
 
-const stackName = 'geo-bagging-pre-prod'
+const stackName = 'geo-bagging-backend'
 const templatePath = './deploy/template.yml'
 const capabilities = ['CAPABILITY_NAMED_IAM']
 const artifacts = {

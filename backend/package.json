@@ -27,9 +27,8 @@
 		"dev:_serve": "nodemon --watch dist --watch ./test/index.js ./test/index.js",
 		"build": "rm -rf dist/* && webpack",
 		"test": "COOKIE_SECRET=dummy CLIENT_SECRET=dummy CLIENT_ID=dummy CF_ROLE_ARN=dummy node test/basic.mjs",
-		"_package": "cd dist && zip -r function.zip .",
-		"_upload": "node deploy/deploy-stack.mjs",
-		"_clean": "rm dist/function.zip",
-		"deploy": "npm run build && npm run _package && npm run _upload && npm run _clean"
+		"_package": "cd dist && rm -f dist/function.zip && zip -r function.zip .",
+		"_deploy": "node deploy/deploy-stack.mjs",
+		"everything": "npm run build && npm run test && npm run _package && npm run _deploy"
 	}
 }
