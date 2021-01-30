@@ -1,5 +1,4 @@
 import {exec as nodeExec} from 'child_process'
-import esMain from 'es-main'
 
 export function exec(command) {
 	return new Promise((resolve, reject) => {
@@ -18,16 +17,4 @@ export function exec(command) {
 			}
 		})
 	})
-}
-
-export async function ifCmd(importMeta, doit) {
-	//execute only if run from command line
-	if (esMain(importMeta)) {
-		try {
-			await doit()
-		} catch (err) {
-			console.log(err)
-			process.exit(1)
-		}
-	}
 }

@@ -1,5 +1,5 @@
 import Converter from './converter.js'
-import {ifCmd} from '../shared/utils.js'
+import {ifCmd} from '@tstibbs/cloud-core-utils'
 import {backUpReferenceData} from './utils.js'
 import {tmpInputDir, outputDir} from './constants.js'
 import {convertWikiData} from './rnli_wikipedia.js'

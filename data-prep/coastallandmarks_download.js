@@ -1,5 +1,5 @@
 import {fetchPages, fetchCategories} from './wikiUtils.js'
-import {ifCmd} from '../shared/utils.js'
+import {ifCmd} from '@tstibbs/cloud-core-utils'
 import {writeFile, createTempDir} from './utils.js'
 import {tmpInputDir} from './constants.js'
 

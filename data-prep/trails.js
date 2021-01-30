@@ -2,7 +2,7 @@ import proj4 from 'proj4'
 import {visualise as visualiseGeoJson, compare as compareGeoJson} from './geojson-comparer.js'
 import Converter from './converter.js'
 import {tmpInputDir, outputDir} from './constants.js'
-import {ifCmd} from '../shared/utils.js'
+import {ifCmd} from '@tstibbs/cloud-core-utils'
 import {backUpReferenceData, writeFile, readFile} from './utils.js'
 
 const inputDirectory = `${tmpInputDir}/trails`

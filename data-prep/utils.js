@@ -1,7 +1,7 @@
 import request from 'request'
 import util from 'util'
 import fs from 'fs'
-import {exec as rawExec} from '../shared/utils.js'
+import {ifCmd} from '@tstibbs/cloud-core-utils'
 
 async function exec(command) {
 	let {stdout, stderr} = await rawExec(command)

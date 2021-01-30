@@ -1,5 +1,4 @@
-import {deploy, loadEnvs} from '@tstibbs/cloud-core-utils'
-import {ifCmd} from '../../shared/utils.js'
+import {deploy, loadEnvs, ifCmd} from '@tstibbs/cloud-core-utils'
 
 const stackName = 'geo-bagging-backend'
 const templatePath = './deploy/template.yml'
@@ -20,7 +19,7 @@ const {cfServiceRole} = loadEnvs({
 })
 
 async function run() {
-	deploy(stackName, templatePath, capabilities, cfServiceRole, artifacts, parameters)
+	await deploy(stackName, templatePath, capabilities, cfServiceRole, artifacts, parameters)
 }
 
 ifCmd(import.meta, run)

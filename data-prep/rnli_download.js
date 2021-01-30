@@ -1,4 +1,4 @@
-import {ifCmd} from '../shared/utils.js'
+import {ifCmd} from '@tstibbs/cloud-core-utils'
 import {writeFile} from './utils.js'
 import {fetchPages} from './wikiUtils.js'
 import {tmpInputDir} from './constants.js'

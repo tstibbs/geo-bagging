@@ -14,6 +14,7 @@
 	"devDependencies": {
 		"@tstibbs/cloud-core-utils": "file:../../cloud-core/aws/utils",
 		"body-parser": "^1.19.0",
+		"es-main": "^1.0.2",
 		"express": "^4.17.1",
 		"http-server": "^0.12.3",
 		"webpack": "^4.44.1",

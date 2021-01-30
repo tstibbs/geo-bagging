@@ -1,6 +1,6 @@
 import fs from 'fs'
 import unzipper from 'unzipper'
-import {ifCmd} from '../shared/utils.js'
+import {ifCmd} from '@tstibbs/cloud-core-utils'
 import {createTempDir} from './utils.js'
 import {download as downloadFiles} from './downloader.js'
 import {tmpInputDir} from './constants.js'

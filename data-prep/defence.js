@@ -1,7 +1,7 @@
 import assert from 'assert'
 import xml2js from 'xml2js'
 import {tmpInputDir, outputDir} from './constants.js'
-import {ifCmd} from '../shared/utils.js'
+import {ifCmd} from '@tstibbs/cloud-core-utils'
 import {backUpReferenceData, readFile} from './utils.js'
 import Converter from './converter.js'
 import xslt from './xslt.js'

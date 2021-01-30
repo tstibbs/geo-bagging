@@ -1,4 +1,4 @@
-import {ifCmd} from '../shared/utils.js'
+import {ifCmd} from '@tstibbs/cloud-core-utils'
 import {download as downloadFiles} from './downloader.js'
 
 function download() {
