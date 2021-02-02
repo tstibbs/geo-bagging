@@ -51,6 +51,6 @@ $("head").append('<link rel="stylesheet" type="text/css" href="' + window.geoBag
 
 $.ajax($.extend({url: window.geoBaggingBaseUrl + "runtime.3e4eac708457a510b164.js"}, defaultOptions));
 $.ajax($.extend({url: window.geoBaggingBaseUrl + "vendors.276a02870dea2451e0a0.js"}, defaultOptions));
-$.ajax($.extend({url: window.geoBaggingBaseUrl + "integration~main~mini.ac93b718728e200d3b0e.js"}, defaultOptions));
+$.ajax($.extend({url: window.geoBaggingBaseUrl + "integration~main~mini.04e1e2f8bf04c8d6f3da.js"}, defaultOptions));
 $.ajax($.extend({url: window.geoBaggingBaseUrl + "integration.991ec9cc2d1a04397f3e.js"}, defaultOptions));
 
