@@ -10,13 +10,15 @@ jobs:
     steps:
 
     # checkout a dependent project
-    - uses: actions/checkout@v2
+    - name: Checkout cloud-core
+      uses: actions/checkout@v2
       with:
         repository: tstibbs/cloud-core
         path: 'cloud-core' # will resolve to /home/runner/work/geo-bagging/geo-bagging/cloud-core
 
     # checkout 'this' project
-    - uses: actions/checkout@v2
+    - name: Checkout geo-bagging
+      uses: actions/checkout@v2
       with:
         path: 'geo-bagging' # will resolve to /home/runner/work/geo-bagging/geo-bagging/geo-bagging
 

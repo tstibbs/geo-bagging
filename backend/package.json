@@ -28,8 +28,8 @@
 		"dev:_serve": "nodemon --watch dist --watch ./test/index.js ./test/index.js",
 		"build": "rm -rf dist/* && webpack",
 		"test": "COOKIE_SECRET=dummy CLIENT_SECRET=dummy CLIENT_ID=dummy CF_ROLE_ARN=dummy node test/basic.mjs",
-		"_package": "cd dist && rm -f dist/function.zip && zip -r function.zip .",
-		"_deploy": "node deploy/deploy-stack.mjs",
-		"everything": "npm run build && npm run test && npm run _package && npm run _deploy"
+		"package": "cd dist && rm -f dist/function.zip && zip -r function.zip .",
+		"deploy": "node deploy/deploy-stack.mjs",
+		"everything": "npm run build && npm run test && npm run package && npm run deploy"
 	}
 }
