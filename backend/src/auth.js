@@ -11,15 +11,17 @@ const sign = util.promisify(jwt.sign)
 const cookieName = 'session'
 const algorithm = 'HS512'
 const cookieMaxAge = 6 * 60 * 60 //6 hours
+const removeCookieExpirationDate = new Date(0)
 
-function setCookie(res, name, value) {
-	let options = {
+function setCookie(res, name, value, options = {}) {
+	let cookieOptions = {
 		httpOnly: true,
 		maxAge: cookieMaxAge,
 		sameSite: 'None',
-		secure: true
+		secure: true,
+		...options
 	}
-	let cookieValue = cookie.serialize(name, String(value), options)
+	let cookieValue = cookie.serialize(name, String(value), cookieOptions)
 	res.setHeader('Set-Cookie', cookieValue)
 }
 
@@ -51,4 +53,10 @@ function errorHandler(err, req, res, next) {
 	}
 }
 
-export {middleware, persistSession, errorHandler}
+function logout(req, res) {
+	setCookie(res, cookieName, '', {
+		expires: removeCookieExpirationDate
+	})
+}
+
+export {middleware, persistSession, errorHandler, logout}

@@ -5,7 +5,7 @@ import cookieParser from 'cookie-parser'
 import {get, post} from './utils.js'
 import {appRedirectUrls, loginRoute} from './constants.js'
 import {wrapper, isAuthenticated, login, success, intialClientUrls} from './google-oauth.js'
-import {middleware as authMiddleware, errorHandler as authErrorHandler} from './auth.js'
+import {middleware as authMiddleware, errorHandler as authErrorHandler, logout} from './auth.js'
 import {recordVisit, removeVisit, listVisits} from './visits.js'
 import {isAWS} from './envs.js'
 
@@ -35,11 +35,18 @@ const handleRemoveVisit = post(
 		res.status(201).send('')
 	})
 )
+const handleLogout = get(
+	wrapper(async (userClient, req, res) => {
+		logout(req, res)
+		res.status(204).send('')
+	})
+)
 
 let router = modofun(
 	{
 		[isAuthenticatedRoute]: isAuthenticated,
 		[loginRoute]: login,
+		logout: handleLogout,
 		success,
 		listVisits: handleListVisits,
 		recordVisit: handleRecordVisit,

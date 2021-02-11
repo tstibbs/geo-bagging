@@ -106,7 +106,7 @@ const login = get(async (req, res) => {
 
 const success = get(async (req, res) => {
 	if (req.query.error) {
-		res.send(error)
+		res.send(req.query.error)
 	} else {
 		let code = req.query.code
 		try {
