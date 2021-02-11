@@ -26,13 +26,13 @@ const handleListVisits = get(
 const handleRecordVisit = post(
 	wrapper(async (userClient, req, res) => {
 		await recordVisit(userClient, req.body.source, req.body.name)
-		res.status(201).end()
+		res.status(201).send('')
 	})
 )
 const handleRemoveVisit = post(
 	wrapper(async (userClient, req, res) => {
 		await removeVisit(userClient, req.body.source, req.body.name)
-		res.status(201).end()
+		res.status(201).send('')
 	})
 )
 

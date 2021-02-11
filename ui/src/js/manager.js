@@ -11,29 +11,41 @@ var Manager = leaflet.Class.extend({
 		this._authenticated = false //default
 		var showUserSettings = params.test('testing') == 'true'
 		if (showUserSettings) {
-			this._initializePromise = $.get({
-				url: constants.backendBaseUrl + 'isAuthenticated',
-				xhrFields: {
-					withCredentials: true
-				}
-			})
-				.then(
-					function (data) {
-						if (data == false) {
-							this._authenticated = false
-						} else {
-							this._authenticated = true
-							this._loggedInUser = data.email
+			this._initializePromise = $.Deferred(
+				function (deferred) {
+					$.get({
+						url: constants.backendBaseUrl + 'isAuthenticated',
+						xhrFields: {
+							withCredentials: true
 						}
-					}.bind(this)
-				)
-				.fail(function (xhr, textError, error) {
-					this._authenticated = false
-					console.error(
-						'Failed to check authentication status - this can be ignored unless trying to record visits: ' + textError
-					)
-					console.log(error)
-				})
+					})
+						.then(
+							function (data) {
+								if (data == false) {
+									this._authenticated = false
+								} else {
+									this._authenticated = true
+									this._loggedInUser = data.email
+								}
+								deferred.resolve()
+							}.bind(this)
+						)
+						.fail(
+							function (xhr, textError, error) {
+								if (xhr.status != 401) {
+									//401 just means we're not logged in, it's not an error we need to report on
+									console.error(
+										'Failed to check authentication status - this can be ignored unless trying to record visits: ' +
+											textError
+									)
+									console.log(error)
+								}
+								this._authenticated = false
+								deferred.resolve()
+							}.bind(this)
+						)
+				}.bind(this)
+			).promise()
 		} else {
 			this._initializePromise = $.Deferred().resolve()
 		}

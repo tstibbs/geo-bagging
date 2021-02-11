@@ -47,7 +47,12 @@ const wrapper = delegate => {
 }
 
 const isAuthenticated = get(async (req, res) => {
-	if (req.session.token == null || req.session.token.access_token == null || req.session.origin == null) {
+	if (
+		req.session == null ||
+		req.session.token == null ||
+		req.session.token.access_token == null ||
+		req.session.origin == null
+	) {
 		res.json(false)
 	} else {
 		let tokenInfo = await intialClients[req.session.origin].getTokenInfo(req.session.token.access_token)
