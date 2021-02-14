@@ -2,7 +2,7 @@ import modofun from 'modofun'
 import cors from 'cors'
 import cookieParser from 'cookie-parser'
 
-import {get, post} from './utils.js'
+import {get, post, sendEmptyResponse} from './utils.js'
 import {appRedirectUrls, loginRoute} from './constants.js'
 import {wrapper, isAuthenticated, login, success, intialClientUrls} from './google-oauth.js'
 import {middleware as authMiddleware, errorHandler as authErrorHandler, logout} from './auth.js'
@@ -26,19 +26,19 @@ const handleListVisits = get(
 const handleRecordVisit = post(
 	wrapper(async (userClient, req, res) => {
 		await recordVisit(userClient, req.body.source, req.body.name)
-		res.status(201).send('')
+		sendEmptyResponse(res, 201)
 	})
 )
 const handleRemoveVisit = post(
 	wrapper(async (userClient, req, res) => {
 		await removeVisit(userClient, req.body.source, req.body.name)
-		res.status(201).send('')
+		sendEmptyResponse(res, 204)
 	})
 )
 const handleLogout = get(
 	wrapper(async (userClient, req, res) => {
 		logout(req, res)
-		res.status(204).send('')
+		sendEmptyResponse(res, 204)
 	})
 )
 

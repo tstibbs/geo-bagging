@@ -29,3 +29,8 @@ export function redirect(req, res, url, statusIfAjax) {
 		res.end()
 	}
 }
+
+export function sendEmptyResponse(res, code) {
+	res.setHeader('Content-Type', 'text/plain')
+	res.status(code).send('')
+}
