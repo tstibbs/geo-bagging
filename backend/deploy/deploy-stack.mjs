@@ -22,4 +22,4 @@ async function run() {
 	await deploy(stackName, templatePath, capabilities, cfServiceRole, artifacts, parameters)
 }
 
-ifCmd(import.meta, run)
+await ifCmd(import.meta, run)

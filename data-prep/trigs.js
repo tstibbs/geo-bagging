@@ -69,6 +69,6 @@ async function buildDataFile() {
 	return await compareData('trigs', 'data_all.json')
 }
 
-ifCmd(import.meta, buildDataFile)
+await ifCmd(import.meta, buildDataFile)
 
 export default buildDataFile

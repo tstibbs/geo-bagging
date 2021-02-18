@@ -32,6 +32,6 @@ async function buildDataFile() {
 	return await compareGeoJson('nationalparks')
 }
 
-ifCmd(import.meta, buildDataFile)
+await ifCmd(import.meta, buildDataFile)
 
 export default buildDataFile

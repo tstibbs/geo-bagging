@@ -124,6 +124,6 @@ async function buildDataFile() {
 	return await compareData('defence', 'data.json')
 }
 
-ifCmd(import.meta, buildDataFile)
+await ifCmd(import.meta, buildDataFile)
 
 export default buildDataFile

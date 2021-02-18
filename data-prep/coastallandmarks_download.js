@@ -32,6 +32,6 @@ async function fetchData() {
 	await Promise.all([downloadLighthouses(), downloadPiers()])
 }
 
-ifCmd(import.meta, fetchData)
+await ifCmd(import.meta, fetchData)
 
 export default fetchData

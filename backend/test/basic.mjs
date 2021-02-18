@@ -1,5 +1,5 @@
 import {strictEqual} from 'assert'
-import {validateWithExit} from '@tstibbs/cloud-core-utils'
+import {validate} from '@tstibbs/cloud-core-utils'
 
 import dist from '../dist/main.js'
 
@@ -10,4 +10,4 @@ import '../deploy/deploy-stack.mjs'
 strictEqual(typeof dist.handler, 'function')
 
 //validate cf script
-validateWithExit('deploy/template.yml')
+await validate('deploy/template.yml')

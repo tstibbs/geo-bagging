@@ -71,4 +71,4 @@ async function run() {
 	}
 }
 
-ifCmd(import.meta, run)
+await ifCmd(import.meta, run)

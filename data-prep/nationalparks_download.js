@@ -10,6 +10,6 @@ function download() {
 	return downloadFiles('nationalparks', urls)
 }
 
-ifCmd(import.meta, download)
+await ifCmd(import.meta, download)
 
 export default download

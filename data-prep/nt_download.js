@@ -34,6 +34,6 @@ async function getAspect(values, param) {
 	return await Promise.all(placePromises)
 }
 
-ifCmd(import.meta, download)
+await ifCmd(import.meta, download)
 
 export default download

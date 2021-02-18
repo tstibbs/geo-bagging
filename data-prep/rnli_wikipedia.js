@@ -96,6 +96,6 @@ function replace(input, replacements) {
 		.trim()
 }
 
-ifCmd(import.meta, convertWikiData)
+await ifCmd(import.meta, convertWikiData)
 
 export {convertWikiData}

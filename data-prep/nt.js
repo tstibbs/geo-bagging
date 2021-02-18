@@ -84,6 +84,6 @@ async function buildDataFile() {
 	return await compareData('nt', 'data.json')
 }
 
-ifCmd(import.meta, buildDataFile)
+await ifCmd(import.meta, buildDataFile)
 
 export default buildDataFile

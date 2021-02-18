@@ -129,6 +129,6 @@ async function processData() {
 	return await compareData('coastallandmarks', 'data.json')
 }
 
-ifCmd(import.meta, processData)
+await ifCmd(import.meta, processData)
 
 export default processData
