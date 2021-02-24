@@ -1,6 +1,7 @@
 import fs from 'fs'
 import unzipper from 'unzipper'
-import {ifCmd, createTempDir} from './utils.js'
+import {ifCmd} from '@tstibbs/cloud-core-utils'
+import {createTempDir} from './utils.js'
 import {download as downloadFiles} from './downloader.js'
 import {tmpInputDir} from './constants.js'
 
@@ -21,6 +22,6 @@ async function download() {
 		})
 }
 
-ifCmd(import.meta, download)
+await ifCmd(import.meta, download)
 
 export default download

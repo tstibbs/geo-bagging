@@ -1,5 +1,6 @@
 import Converter from './converter.js'
-import {ifCmd, backUpReferenceData, readdir} from './utils.js'
+import {ifCmd} from '@tstibbs/cloud-core-utils'
+import {backUpReferenceData, readdir} from './utils.js'
 import {tmpInputDir, outputDir} from './constants.js'
 import compareData from './csv-comparer.js'
 
@@ -68,6 +69,6 @@ async function buildDataFile() {
 	return await compareData('trigs', 'data_all.json')
 }
 
-ifCmd(import.meta, buildDataFile)
+await ifCmd(import.meta, buildDataFile)
 
 export default buildDataFile

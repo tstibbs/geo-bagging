@@ -1,5 +1,6 @@
 import xml2js from 'xml2js'
-import {ifCmd, backUpReferenceData, readFile} from './utils.js'
+import {ifCmd} from '@tstibbs/cloud-core-utils'
+import {backUpReferenceData, readFile} from './utils.js'
 import Converter from './converter.js'
 import xslt from './xslt.js'
 import {tmpInputDir, outputDir} from './constants.js'
@@ -192,6 +193,6 @@ async function buildDataFile() {
 	return await compareData('follies', 'data.json')
 }
 
-ifCmd(import.meta, buildDataFile)
+await ifCmd(import.meta, buildDataFile)
 
 export default buildDataFile

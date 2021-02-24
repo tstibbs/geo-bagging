@@ -1,5 +1,6 @@
 import {fetchPages, fetchCategories} from './wikiUtils.js'
-import {ifCmd, writeFile, createTempDir} from './utils.js'
+import {ifCmd} from '@tstibbs/cloud-core-utils'
+import {writeFile, createTempDir} from './utils.js'
 import {tmpInputDir} from './constants.js'
 
 const inputDir = `${tmpInputDir}/coastallandmarks`
@@ -31,6 +32,6 @@ async function fetchData() {
 	await Promise.all([downloadLighthouses(), downloadPiers()])
 }
 
-ifCmd(import.meta, fetchData)
+await ifCmd(import.meta, fetchData)
 
 export default fetchData

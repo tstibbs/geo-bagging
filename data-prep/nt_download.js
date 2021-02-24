@@ -1,5 +1,6 @@
 import cheerio from 'cheerio'
-import {ifCmd, get, writeFile, createTempDir} from './utils.js'
+import {ifCmd} from '@tstibbs/cloud-core-utils'
+import {get, writeFile, createTempDir} from './utils.js'
 import {tmpInputDir} from './constants.js'
 
 const allDataPath = 'https://www.nationaltrust.org.uk/search/data/all-places'
@@ -33,6 +34,6 @@ async function getAspect(values, param) {
 	return await Promise.all(placePromises)
 }
 
-ifCmd(import.meta, download)
+await ifCmd(import.meta, download)
 
 export default download

@@ -2,7 +2,8 @@ import fs from 'fs'
 import {tmpInputDir, outputDir} from './constants.js'
 import Converter from './converter.js'
 import {filterPages} from './wikiUtils.js'
-import {ifCmd, backUpReferenceData} from './utils.js'
+import {ifCmd} from '@tstibbs/cloud-core-utils'
+import {backUpReferenceData} from './utils.js'
 import compareData from './csv-comparer.js'
 const inputDir = `${tmpInputDir}/coastallandmarks`
 
@@ -128,6 +129,6 @@ async function processData() {
 	return await compareData('coastallandmarks', 'data.json')
 }
 
-ifCmd(import.meta, processData)
+await ifCmd(import.meta, processData)
 
 export default processData

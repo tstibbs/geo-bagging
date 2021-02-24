@@ -1,4 +1,5 @@
-import {ifCmd, writeFile} from './utils.js'
+import {ifCmd} from '@tstibbs/cloud-core-utils'
+import {writeFile} from './utils.js'
 import {fetchPages} from './wikiUtils.js'
 import {tmpInputDir} from './constants.js'
 import {download as downloadFiles} from './downloader.js'
@@ -23,6 +24,6 @@ async function download() {
 	await Promise.all([p1, p2])
 }
 
-ifCmd(import.meta, download)
+await ifCmd(import.meta, download)
 
 export default download

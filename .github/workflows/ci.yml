@@ -7,15 +7,67 @@ jobs:
 
     runs-on: ubuntu-latest
 
-    defaults:
-      run:
-        working-directory: ./ui
-
     steps:
-    - uses: actions/checkout@v2
-    - name: Use Node.js at specific version
+
+    # checkout a dependent project
+    - name: Checkout cloud-core
+      uses: actions/checkout@v2
+      with:
+        repository: tstibbs/cloud-core
+        path: 'cloud-core' # will resolve to /home/runner/work/geo-bagging/geo-bagging/cloud-core
+
+    # checkout 'this' project
+    - name: Checkout geo-bagging
+      uses: actions/checkout@v2
+      with:
+        path: 'geo-bagging' # will resolve to /home/runner/work/geo-bagging/geo-bagging/geo-bagging
+
+    - name: Set up node
       uses: actions/setup-node@v1
       with:
         node-version: 14.x
-    - run: npm ci
-    - run: npm run test
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.x'
+    - name: Install python dependencies
+      run: pip install cfn-lint
+
+    # the ordering is weird, because we're trying to get information about fundamental failures quicker - i.e. breadth-first not depth-first
+
+    # get all deps
+    - name: "get deps: root"
+      run: npm ci
+      working-directory: geo-bagging
+    - name: "get deps: shared"
+      run: npm ci
+      working-directory: geo-bagging/shared
+    - name: "get deps: data-prep"
+      run: npm ci
+      working-directory: geo-bagging/data-prep
+    - name: "get deps: backend"
+      run: npm ci
+      working-directory: geo-bagging/backend
+    - name: "get deps: UI"
+      run: npm ci
+      working-directory: geo-bagging/ui
+
+    # build
+    - name: "build: backend"
+      run: npm run build
+      working-directory: geo-bagging/backend
+    - name: "build: UI"
+      run: npm run build
+      working-directory: geo-bagging/ui
+
+    # test
+    - name: "test: data-prep"
+      run: npm run test
+      working-directory: geo-bagging/data-prep
+    - name: "test: backend"
+      run: npm run test
+      working-directory: geo-bagging/backend
+    - name: "test: UI"
+      run: npm run test
+      working-directory: geo-bagging/ui

@@ -1,0 +1,35 @@
+{
+	"name": "@tstibbs/geo-bagging-backend",
+	"private": true,
+	"dependencies": {
+		"cookie": "^0.4.1",
+		"cookie-parser": "^1.4.5",
+		"cors": "^2.8.5",
+		"dotenv": "^8.2.0",
+		"express-jwt": "^6.0.0",
+		"googleapis": "^59.0.0",
+		"jsonwebtoken": "^8.5.1",
+		"modofun": "^1.2.2"
+	},
+	"devDependencies": {
+		"@tstibbs/cloud-core-utils": "file:../../cloud-core/aws/utils",
+		"body-parser": "^1.19.0",
+		"es-main": "^1.0.2",
+		"express": "^4.17.1",
+		"http-server": "^0.12.3",
+		"webpack": "^4.44.1",
+		"webpack-cli": "^3.3.12",
+		"webpack-merge": "^5.1.4",
+		"webpack-shell-plugin": "^0.5.0"
+	},
+	"scripts": {
+		"dev:frontend": "http-server -p 3000 test",
+		"dev": "NODE_ENV=development webpack",
+		"dev:_serve": "nodemon --watch dist --watch ./test/index.js ./test/index.js",
+		"build": "rm -rf dist/* && webpack",
+		"test": "COOKIE_SECRET=dummy CLIENT_SECRET=dummy CLIENT_ID=dummy CF_ROLE_ARN=dummy node test/basic.mjs",
+		"package": "cd dist && rm -f dist/function.zip && zip -r function.zip .",
+		"deploy": "node deploy/deploy-stack.mjs",
+		"everything": "npm run build && npm run test && npm run package && npm run deploy"
+	}
+}

@@ -1,3 +1,5 @@
+import {ifCmd} from '@tstibbs/cloud-core-utils'
+
 const downloadSources = [
 	'defence',
 	'hills',
@@ -69,4 +71,4 @@ async function run() {
 	}
 }
 
-run()
+await ifCmd(import.meta, run)

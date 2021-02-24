@@ -1,4 +1,4 @@
-import {ifCmd} from './utils.js'
+import {ifCmd} from '@tstibbs/cloud-core-utils'
 import {download as downloadFiles} from './downloader.js'
 
 /* NOTE
@@ -39,6 +39,6 @@ function download() {
 	return downloadFiles('milestones', urls)
 }
 
-ifCmd(import.meta, download)
+await ifCmd(import.meta, download)
 
 export default download

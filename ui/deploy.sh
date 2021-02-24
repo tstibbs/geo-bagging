@@ -27,9 +27,14 @@ git checkout HEAD -- bundles/nt/*.json.meta
 git checkout HEAD -- bundles/trigs/*.json
 git checkout HEAD -- bundles/trigs/*.json.meta
 
-git commit -m "Deploying $revision"
-git push origin gh-pages
+if ! git diff-index --quiet HEAD
+then
+	git commit -m "Deploying $revision"
+	git push origin gh-pages
 
-cd $currentDir
+	cd $currentDir
 
-git push origin gh-pages:gh-pages
+	git push origin gh-pages:gh-pages
+else
+    echo "Skipping commit, as there are no changes."
+fi

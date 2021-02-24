@@ -1,12 +1,10 @@
 import request from 'request'
 import util from 'util'
 import fs from 'fs'
-import esMain from 'es-main'
-import childProcess from 'child_process'
-const nodeExec = util.promisify(childProcess.exec)
+import {exec as rawExec} from '@tstibbs/cloud-core-utils'
 
 async function exec(command) {
-	let {stdout, stderr} = await nodeExec(command)
+	let {stdout, stderr} = await rawExec(command)
 	if (stdout) {
 		console.log(stdout)
 	}
@@ -33,18 +31,6 @@ function get(path) {
 	})
 }
 
-async function doIfCmdCall(importMeta, doit) {
-	//execute if run from command line
-	if (esMain(importMeta)) {
-		try {
-			await doit()
-		} catch (err) {
-			console.log(err)
-			process.exit(1)
-		}
-	}
-}
-
 async function createTempDir(inputDir) {
 	let exists = await util.promisify(fs.exists)(inputDir)
 	if (!exists) {
@@ -62,7 +48,5 @@ async function deleteFile(file) {
 export const readFile = util.promisify(fs.readFile)
 export const writeFile = util.promisify(fs.writeFile)
 export const readdir = util.promisify(fs.readdir)
-
-export const ifCmd = doIfCmdCall
 
 export {get, createTempDir, deleteFile, exec, backUpReferenceData}

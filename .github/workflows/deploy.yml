@@ -6,19 +6,77 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
-
-    defaults:
-      run:
-        working-directory: ./ui
+    environment: backend
 
     steps:
-    - uses: actions/checkout@v2
+
+    # checkout a dependent project
+    - name: Checkout cloud-core
+      uses: actions/checkout@v2
       with:
+        repository: tstibbs/cloud-core
+        path: 'cloud-core' # will resolve to /home/runner/work/geo-bagging/geo-bagging/cloud-core
+
+    # checkout 'this' project
+    - name: Checkout geo-bagging
+      uses: actions/checkout@v2
+      with:
+        path: 'geo-bagging' # will resolve to /home/runner/work/geo-bagging/geo-bagging/geo-bagging
         fetch-depth: 0
-    - name: Use Node.js at specific version
+
+    - name: Set up node
       uses: actions/setup-node@v1
       with:
         node-version: 14.x
-    - run: npm ci
-    - run: npm run build
-    - run: npm run deploy
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.x'
+    - name: Install python dependencies
+      run: pip install cfn-lint
+
+    # build the UI
+
+    - name: "UI: get deps"
+      run: npm ci
+      working-directory: geo-bagging/ui
+    - name: "UI: build"
+      run: npm run build
+      working-directory: geo-bagging/ui
+    - name: "UI: test"
+      run: npm run test
+      working-directory: geo-bagging/ui
+
+    # build the back-end
+
+    - name: "backend: get deps"
+      run: npm ci
+      working-directory: geo-bagging/backend
+    - name: "backend: build"
+      run: npm run build
+      working-directory: geo-bagging/backend
+    - name: "backend: test"
+      run: npm run test
+      working-directory: geo-bagging/backend
+    - name: "backend: package"
+      run: npm run package
+      working-directory: geo-bagging/backend
+
+  # actually deploy
+
+    - name: "deploy: backend"
+      run: npm run deploy
+      working-directory: geo-bagging/backend
+      env:
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        AWS_REGION: ${{ secrets.AWS_REGION }}
+        CF_ROLE_ARN: ${{ secrets.CF_ROLE_ARN }}
+        CLIENT_ID: ${{ secrets.CLIENT_ID }}
+        CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
+        COOKIE_SECRET: ${{ secrets.COOKIE_SECRET }}
+
+    - name: "deploy: ui"
+      run: npm run deploy
+      working-directory: geo-bagging/ui

@@ -13,7 +13,7 @@
 		"karma": "^5.2.1",
 		"karma-chrome-launcher": "^3.1.0",
 		"karma-mocha": "^2.0.1",
-		"license-webpack-plugin": "^2.3.0",
+		"license-webpack-plugin": "^2.3.9",
 		"mini-css-extract-plugin": "^0.11.0",
 		"mocha": "^8.1.3",
 		"optimize-css-assets-webpack-plugin": "^5.0.4",
@@ -51,7 +51,7 @@
 		"build": "npx webpack --config webpack.config.cjs",
 		"serve": "npx http-server -c-1 --cors dist",
 		"dev": "npm run prebuild && npx webpack-dev-server --config webpack.config.dev.cjs",
-		"test": "npm run build && npx karma start karma.conf.cjs --no-auto-watch --single-run",
+		"test": "npx karma start karma.conf.cjs --no-auto-watch --single-run",
 		"deploy": "npm run build && ./deploy.sh"
 	}
 }
