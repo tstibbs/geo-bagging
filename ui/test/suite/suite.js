@@ -1,6 +1,6 @@
 import $ from 'jquery'
 
-const karmaMode = global['describe'] != undefined
+const karmaMode = globalThis['describe'] != undefined
 
 async function runTests() {
 	let mocha = null
