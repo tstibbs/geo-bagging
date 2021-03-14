@@ -1,4 +1,4 @@
-import AbstractGeojsonBuilder from '../abstract_geojson_builder'
+import AbstractGeojsonBuilder from '../abstract_geojson_builder.js'
 
 var Builder = AbstractGeojsonBuilder.extend({
 	parse: function (feature) {

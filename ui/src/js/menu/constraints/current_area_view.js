@@ -1,4 +1,4 @@
-import leaflet from 'VendorWrappers/leaflet'
+import leaflet from 'VendorWrappers/leaflet.js'
 import $ from 'jquery'
 
 var CurrentAreaView = leaflet.Class.extend({

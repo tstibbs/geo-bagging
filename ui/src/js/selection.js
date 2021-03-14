@@ -1,4 +1,4 @@
-import {BoxSelectorControl, BoxSelectorGpx} from 'VendorWrappers/leaflet-box-selector'
+import {BoxSelectorControl, BoxSelectorGpx} from 'VendorWrappers/leaflet-box-selector.js'
 
 var SelectionControl = BoxSelectorControl.extend({
 	options: {

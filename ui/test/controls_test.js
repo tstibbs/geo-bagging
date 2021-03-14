@@ -1,6 +1,6 @@
 import Squire from 'Squire'
 import sinon from 'sinon'
-import Config from '../src/js/config'
+import Config from '../src/js/config.js'
 import leaflet from 'leaflet'
 
 let assert = eval('chai.assert')

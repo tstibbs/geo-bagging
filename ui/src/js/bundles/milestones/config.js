@@ -1,5 +1,5 @@
-import PointsBuilder from './points_builder'
-import CustomDefaultIcon from '../../custom_default_icon'
+import PointsBuilder from './points_builder.js'
+import CustomDefaultIcon from '../../custom_default_icon.js'
 import milestoneIcon from '../../../img/milestone.png'
 
 var dimensionNames = ['Waymarks']

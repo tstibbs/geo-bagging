@@ -1,5 +1,5 @@
-import leaflet from 'VendorWrappers/leaflet'
-import PointsBuilder from './points_builder'
+import leaflet from 'VendorWrappers/leaflet.js'
+import PointsBuilder from './points_builder.js'
 
 var dimensionNames = ['Follies']
 

@@ -1,5 +1,5 @@
-import global from './global'
-import leaflet from 'VendorWrappers/leaflet'
+import global from './global.js'
+import leaflet from 'VendorWrappers/leaflet.js'
 
 var ParamChecker = leaflet.Class.extend({
 	initialize: function () {

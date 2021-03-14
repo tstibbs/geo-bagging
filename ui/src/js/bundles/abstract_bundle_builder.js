@@ -1,6 +1,6 @@
-import leaflet from 'VendorWrappers/leaflet'
+import leaflet from 'VendorWrappers/leaflet.js'
 import $ from 'jquery'
-import constants from '../constants'
+import constants from '../constants.js'
 
 var AbstractBundleBuilder = leaflet.Class.extend({
 	initialize: function (manager, bundleConfig, bundleName, urlPrefix) {

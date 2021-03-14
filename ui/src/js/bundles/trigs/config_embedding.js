@@ -1,8 +1,8 @@
 import $ from 'jquery'
-import conversion from '../../conversion'
-import CustomDefaultIcon from '../../custom_default_icon'
-import trigpointingBase from './config_base'
-import TrigsPointsBuilder from './points_builder'
+import conversion from '../../conversion.js'
+import CustomDefaultIcon from '../../custom_default_icon.js'
+import trigpointingBase from './config_base.js'
+import TrigsPointsBuilder from './points_builder.js'
 import redIcon from '../../../img/hill.png'
 
 export default function build(config) {

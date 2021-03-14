@@ -1,9 +1,9 @@
-import Config from './config'
-import params from './params'
+import Config from './config.js'
+import params from './params.js'
 import $ from 'jquery'
-import MapView from './map_view'
-import SourceLoader from './source_loader'
-import Manager from './manager'
+import MapView from './map_view.js'
+import SourceLoader from './source_loader.js'
+import Manager from './manager.js'
 
 export default {
 	getBundleIds: function (bundles) {

@@ -1,8 +1,8 @@
 import $ from 'jquery'
-import leaflet from 'VendorWrappers/leaflet'
-import constants from './constants'
-import ModelViews from './model_views'
-import params from './params'
+import leaflet from 'VendorWrappers/leaflet.js'
+import constants from './constants.js'
+import ModelViews from './model_views.js'
+import params from './params.js'
 
 const cache = {}
 

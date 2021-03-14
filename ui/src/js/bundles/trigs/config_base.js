@@ -1,6 +1,6 @@
-import leaflet from 'VendorWrappers/leaflet'
-import pointsBuilder from './points_builder'
-import CustomDefaultIcon from '../../custom_default_icon'
+import leaflet from 'VendorWrappers/leaflet.js'
+import pointsBuilder from './points_builder.js'
+import CustomDefaultIcon from '../../custom_default_icon.js'
 import pillarIcon from '../../../img/pillar.png'
 
 var dimensionNames = ['Type', 'Condition']

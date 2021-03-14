@@ -5,7 +5,7 @@ const karmaMode = global['describe'] != undefined
 async function runTests() {
 	let mocha = null
 	if (!karmaMode) {
-		mocha = await import('./mocha-wrapper') //it puts everything into global, but just needs to be loaded before the tests
+		mocha = await import('./mocha-wrapper.js') //it puts everything into global, but just needs to be loaded before the tests
 	}
 
 	beforeEach(function (done) {
@@ -19,9 +19,9 @@ async function runTests() {
 		done()
 	})
 
-	await import('../config_test')
-	await import('../conversion_test')
-	await import('../fullscreen_link_test')
+	await import('../config_test.js')
+	await import('../conversion_test.js')
+	await import('../fullscreen_link_test.js')
 	//'../controls_test'
 	//'../error_handler_test.js'
 	//'../layers_test.js'

@@ -1,5 +1,5 @@
-import global from './global'
-import params from './params'
+import global from './global.js'
+import params from './params.js'
 
 //all taken from http://detectmobilebrowsers.com/ (licence is UNLICENSE - http://unlicense.org/)
 

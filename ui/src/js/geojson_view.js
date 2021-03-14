@@ -1,5 +1,5 @@
 import $ from 'jquery'
-import leaflet from 'VendorWrappers/leaflet'
+import leaflet from 'VendorWrappers/leaflet.js'
 
 var GeojsonView = leaflet.Class.extend({
 	initialize: function (map, config, modelsByAspect, matrixLayerControl, bundles) {
