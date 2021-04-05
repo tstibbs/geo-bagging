@@ -1,5 +1,5 @@
 import Squire from 'Squire'
-import mobile from '../src/js/mobile'
+import mobile from '../src/js/mobile.js'
 
 let assert = eval('chai.assert')
 

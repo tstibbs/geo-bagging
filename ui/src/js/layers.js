@@ -1,6 +1,6 @@
-import leaflet from 'VendorWrappers/leaflet'
-import LeafletBing from 'VendorWrappers/bing-layer'
-import constants from './constants'
+import leaflet from 'VendorWrappers/leaflet.js'
+import LeafletBing from 'VendorWrappers/bing-layer.js'
+import constants from './constants.js'
 
 var defaults = {
 	key: constants.bingKey

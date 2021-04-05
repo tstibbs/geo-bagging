@@ -1,4 +1,4 @@
-import leaflet from 'VendorWrappers/leaflet'
+import leaflet from 'VendorWrappers/leaflet.js'
 
 var TracksView = leaflet.Class.extend({
 	initialize: function (manager) {

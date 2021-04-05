@@ -1,8 +1,8 @@
 import $ from 'jquery'
-import leaflet from 'VendorWrappers/leaflet'
-import FileConstraintsLoadView from './track_load_view'
-import CurrentLocationView from './current_location_view'
-import CurrentAreaView from './current_area_view'
+import leaflet from 'VendorWrappers/leaflet.js'
+import FileConstraintsLoadView from './track_load_view.js'
+import CurrentLocationView from './current_location_view.js'
+import CurrentAreaView from './current_area_view.js'
 
 var ConstraintsView = leaflet.Class.extend({
 	initialize: function (manager) {

@@ -1,4 +1,4 @@
-import PointsBuilder from './points_builder'
+import PointsBuilder from './points_builder.js'
 
 var dimensionNames = ['Lifeboat Types', 'Launch Methods']
 

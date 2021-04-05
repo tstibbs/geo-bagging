@@ -1,6 +1,6 @@
 import {assert} from 'chai'
 
-import conversion from '../src/js/conversion'
+import conversion from '../src/js/conversion.js'
 
 describe('conversion', function () {
 	it('latLngToGridRef - should return actual grid refs', function () {

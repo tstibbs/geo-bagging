@@ -1,7 +1,7 @@
 import $ from 'jquery'
 import {assert} from 'chai'
 
-import fullscreenLink from '../src/js/fullscreen_link'
+import fullscreenLink from '../src/js/fullscreen_link.js'
 
 describe('fullscreen_link', function () {
 	it('should display if container exists', function () {

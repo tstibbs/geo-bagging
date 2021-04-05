@@ -1,4 +1,4 @@
-import './entry_shared'
+import './entry_shared.js'
 
-import mapLoader from '../map_loader'
+import mapLoader from '../map_loader.js'
 mapLoader.loadMap()

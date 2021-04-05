@@ -1,10 +1,10 @@
 import $ from 'jquery'
-import leaflet from 'VendorWrappers/leaflet'
-import LeafletSidebar from 'VendorWrappers/sidebar'
-import AttributionView from './attribution'
-import UserView from './user'
-import ConstraintsView from './constraints/view'
-import params from '../params'
+import leaflet from 'VendorWrappers/leaflet.js'
+import LeafletSidebar from 'VendorWrappers/sidebar.js'
+import AttributionView from './attribution.js'
+import UserView from './user.js'
+import ConstraintsView from './constraints/view.js'
+import params from '../params.js'
 
 var MenuView = leaflet.Class.extend({
 	initialize: function (manager) {

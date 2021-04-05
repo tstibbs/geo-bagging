@@ -87,7 +87,7 @@ Resources:
       Role: !GetAtt LambdaExecutionRole.Arn
       Runtime: nodejs14.x
       Timeout: 20
-      MemorySize: 128
+      MemorySize: 512
       Environment:
         Variables:
           CLIENT_ID: !Ref ClientId

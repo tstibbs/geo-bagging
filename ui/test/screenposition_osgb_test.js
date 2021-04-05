@@ -1,6 +1,6 @@
 import $ from 'jquery'
 import leaflet from 'leaflet'
-import Screenposition_Osgb from '../src/js/screenposition_osgb'
+import Screenposition_Osgb from '../src/js/screenposition_osgb.js'
 
 let assert = eval('chai.assert')
 

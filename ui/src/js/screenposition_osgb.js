@@ -1,5 +1,5 @@
-import Leaflet_ScreenPosition from 'VendorWrappers/leaflet-map-center-coord'
-import conversion from './conversion'
+import Leaflet_ScreenPosition from 'VendorWrappers/leaflet-map-center-coord.js'
+import conversion from './conversion.js'
 import $ from 'jquery'
 
 var ScreenPositionOsgb = Leaflet_ScreenPosition.extend({

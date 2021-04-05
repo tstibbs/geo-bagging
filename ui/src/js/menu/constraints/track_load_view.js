@@ -1,7 +1,7 @@
-import leaflet from 'VendorWrappers/leaflet'
+import leaflet from 'VendorWrappers/leaflet.js'
 import $ from 'jquery'
 import {gpx as toGeoJSON} from '@tmcw/togeojson'
-import TracksView from './tracks_view'
+import TracksView from './tracks_view.js'
 
 var TrackLoadView = leaflet.Class.extend({
 	initialize: function (manager, constraintsView) {

@@ -1,4 +1,4 @@
-import './entry_shared'
+import './entry_shared.js'
 
-import tukIntegration from '../integration/tuk'
+import tukIntegration from '../integration/tuk.js'
 tukIntegration.showMap()

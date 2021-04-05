@@ -2,9 +2,9 @@ import Squire from 'Squire'
 import Sinon from 'sinon'
 import leaflet from 'leaflet'
 import $ from 'jquery'
-import PointsView from '../src/js/points_view'
-import Config from '../src/js/config'
-import Controls from '../src/js/controls'
+import PointsView from '../src/js/points_view.js'
+import Config from '../src/js/config.js'
+import Controls from '../src/js/controls.js'
 
 let assert = eval('chai.assert')
 

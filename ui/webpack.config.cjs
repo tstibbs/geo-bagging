@@ -28,6 +28,10 @@ module.exports = {
 		alias: {
 			VendorWrappers: path.resolve(__dirname, 'src/js/vendor-wrappers'),
 			leaflet: path.resolve(__dirname, 'node_modules/leaflet') //force everything to use the same version of leaflet
+		},
+		fallback: {
+			stream: false,
+			util: false
 		}
 	},
 	plugins: [
@@ -97,7 +101,7 @@ module.exports = {
 		})
 	],
 	optimization: {
-		moduleIds: 'hashed',
+		moduleIds: 'deterministic',
 		runtimeChunk: 'single',
 		splitChunks: {
 			//maxSize: 500*1024,//breaks css ordering - see https://github.com/webpack-contrib/mini-css-extract-plugin/issues/548
@@ -110,22 +114,17 @@ module.exports = {
 				}
 			}
 		},
-		minimizer: [
-			new TerserPlugin({
-				sourceMap: true
-			}),
-			new OptimizeCssAssetsPlugin({})
-		]
+		minimizer: [new TerserPlugin(), new OptimizeCssAssetsPlugin({})]
 	},
 	module: {
 		rules: [
 			{
 				test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-				loader: 'url-loader?limit=10000&mimetype=application/font-woff'
+				type: 'asset'
 			},
 			{
 				test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-				loader: 'file-loader'
+				type: 'asset/resource'
 			},
 			{
 				test: /\.css$/i,
@@ -143,11 +142,7 @@ module.exports = {
 			},
 			{
 				test: /\.(png|jpg|gif)$/i,
-				use: [
-					{
-						loader: 'file-loader'
-					}
-				]
+				type: 'asset/resource'
 			},
 			{
 				test: require.resolve('./node_modules/leaflet-plugins/layer/tile/Bing.js'),

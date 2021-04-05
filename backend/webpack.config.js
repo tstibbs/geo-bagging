@@ -1,5 +1,5 @@
 const {merge} = require('webpack-merge')
-const WebpackShellPlugin = require('webpack-shell-plugin')
+const WebpackShellPluginNext = require('webpack-shell-plugin-next')
 
 const {NODE_ENV: mode = 'production'} = process.env
 
@@ -17,8 +17,10 @@ if (mode === 'development') {
 	config = merge(config, {
 		watch: true,
 		plugins: [
-			new WebpackShellPlugin({
-				onBuildEnd: ['npm run dev:_serve']
+			new WebpackShellPluginNext({
+				onBuildEnd: {
+					scripts: ['npm run dev:_serve']
+				}
 			})
 		]
 	})

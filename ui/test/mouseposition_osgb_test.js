@@ -1,6 +1,6 @@
 import leaflet from 'leaflet'
 import $ from 'jquery'
-import Mouseposition_Osgb from '../src/js/mouseposition_osgb'
+import Mouseposition_Osgb from '../src/js/mouseposition_osgb.js'
 
 let assert = eval('chai.assert')(
 	//polyfill for IE

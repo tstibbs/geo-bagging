@@ -1,4 +1,4 @@
-import AbstractBundleBuilder from './abstract_bundle_builder'
+import AbstractBundleBuilder from './abstract_bundle_builder.js'
 
 var PointsBuilder = AbstractBundleBuilder.extend({
 	initialize: function (manager, bundleConfig, bundleName, urlPrefix) {

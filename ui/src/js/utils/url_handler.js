@@ -1,5 +1,5 @@
-import leaflet from 'VendorWrappers/leaflet'
-import params from '../params'
+import leaflet from 'VendorWrappers/leaflet.js'
+import params from '../params.js'
 
 var UrlHandler = leaflet.Class.extend({
 	initialize: function () {

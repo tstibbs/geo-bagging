@@ -1,6 +1,6 @@
-import leaflet from 'VendorWrappers/leaflet'
-import PointsBuilder from './points_builder'
-import CustomDefaultIcon from '../../custom_default_icon'
+import leaflet from 'VendorWrappers/leaflet.js'
+import PointsBuilder from './points_builder.js'
+import CustomDefaultIcon from '../../custom_default_icon.js'
 import hillIcon from '../../../img/hill.png'
 
 var dimensionNames = ['Hills']

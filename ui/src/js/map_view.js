@@ -1,7 +1,7 @@
-import leaflet from 'VendorWrappers/leaflet'
+import leaflet from 'VendorWrappers/leaflet.js'
 import $ from 'jquery'
-import fullscreen_link from './fullscreen_link'
-import mobile from './mobile'
+import fullscreen_link from './fullscreen_link.js'
+import mobile from './mobile.js'
 
 var MapView = leaflet.Class.extend({
 	initialize: function (config) {

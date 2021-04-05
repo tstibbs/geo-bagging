@@ -1,6 +1,6 @@
 import $ from 'jquery'
 import 'mocha/mocha.css'
-import 'mocha/browser-entry'
+import 'mocha/browser-entry.js'
 
 let div = $('<div></div>')
 div.attr('id', 'mocha')

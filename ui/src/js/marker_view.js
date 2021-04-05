@@ -1,8 +1,8 @@
 import $ from 'jquery'
 import _ from 'underscore'
-import leaflet from 'VendorWrappers/leaflet'
-import popupView from './popup_view'
-import constants from './constants'
+import leaflet from 'VendorWrappers/leaflet.js'
+import popupView from './popup_view.js'
+import constants from './constants.js'
 
 export default {
 	translateMarker: function (markerConfig, bundleConfig, aspectName, manager) {

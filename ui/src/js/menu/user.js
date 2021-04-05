@@ -1,6 +1,6 @@
 import $ from 'jquery'
-import leaflet from 'VendorWrappers/leaflet'
-import constants from '../constants'
+import leaflet from 'VendorWrappers/leaflet.js'
+import constants from '../constants.js'
 
 var UserMenu = leaflet.Class.extend({
 	initialize: function (manager) {

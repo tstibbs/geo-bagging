@@ -1,6 +1,6 @@
-import leaflet from 'VendorWrappers/leaflet'
-import AbstractBundleBuilder from './abstract_bundle_builder'
-import popupView from '../popup_view'
+import leaflet from 'VendorWrappers/leaflet.js'
+import AbstractBundleBuilder from './abstract_bundle_builder.js'
+import popupView from '../popup_view.js'
 
 var GeojsonLayer = AbstractBundleBuilder.extend({
 	initialize: function (manager, bundleConfig, bundleName, urlPrefix) {

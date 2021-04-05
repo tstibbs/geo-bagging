@@ -1,6 +1,6 @@
 import {assert} from 'chai'
 
-import Config from '../src/js/config'
+import Config from '../src/js/config.js'
 
 describe('config', function () {
 	before(function () {

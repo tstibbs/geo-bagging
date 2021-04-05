@@ -12,7 +12,7 @@ var defaultOptions = {
     .tags
     .headTags
     .map(tag =>
-        `\$("head").append('<link rel="stylesheet" type="text/css" href="' + window.geoBaggingBaseUrl + '${tag.attributes.href.replace(/^..\//, '')}">');\n`
+        `\$("head").append('<link rel="stylesheet" type="text/css" href="' + window.geoBaggingBaseUrl + '${(tag.attributes.href || tag.attributes.src).replace(/^..\//, '')}">');\n`
     )
 %>
 <%= htmlWebpackPlugin

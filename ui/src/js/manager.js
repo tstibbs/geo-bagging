@@ -1,9 +1,9 @@
 import $ from 'jquery'
-import leaflet from 'VendorWrappers/leaflet'
-import Controls from './controls'
-import layersBuilder from './layers'
-import constants from './constants'
-import params from './params'
+import leaflet from 'VendorWrappers/leaflet.js'
+import Controls from './controls.js'
+import layersBuilder from './layers.js'
+import constants from './constants.js'
+import params from './params.js'
 
 //basic manager class that simplifies interoperation between other components
 var Manager = leaflet.Class.extend({

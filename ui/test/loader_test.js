@@ -1,4 +1,4 @@
-import loader from '../src/js/loader'
+import loader from '../src/js/loader.js'
 
 let assert = eval('chai.assert')
 

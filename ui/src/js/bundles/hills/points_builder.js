@@ -1,4 +1,4 @@
-import AbstractPointsBuilder from '../abstract_points_builder'
+import AbstractPointsBuilder from '../abstract_points_builder.js'
 
 var Builder = AbstractPointsBuilder.extend({
 	parse: function (point) {
