@@ -26,6 +26,10 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: 14.x
+    - name: Upgrade npm
+      run: npm install -g npm@latest
+    - name: Install node dependencies
+      run: npm install -g aws-cdk
 
     - name: Set up Python
       uses: actions/setup-python@v2
@@ -33,6 +37,10 @@ jobs:
         python-version: '3.x'
     - name: Install python dependencies
       run: pip install cfn-lint
+
+    - name: Load cloud-core dependencies
+      run: npm ci
+      working-directory: cloud-core/aws/utils
 
     # the ordering is weird, because we're trying to get information about fundamental failures quicker - i.e. breadth-first not depth-first
 
