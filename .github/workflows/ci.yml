@@ -30,13 +30,12 @@ jobs:
       run: npm install -g npm@latest
     - name: Install node dependencies
       run: npm install -g aws-cdk
-
-    - name: Set up Python
-      uses: actions/setup-python@v2
-      with:
-        python-version: '3.x'
-    - name: Install python dependencies
-      run: pip install cfn-lint
+    - name: Set up environment
+      run: mkdir cdk.tmp
+      working-directory: geo-bagging/backend
+    - name: Set up test environment
+      run: cp dummy.env .env
+      working-directory: geo-bagging/backend
 
     - name: Load cloud-core dependencies
       run: npm ci
@@ -63,7 +62,7 @@ jobs:
 
     # build
     - name: "build: backend"
-      run: npm run build
+      run: npm run testsynth
       working-directory: geo-bagging/backend
     - name: "build: UI"
       run: npm run build
