@@ -19,6 +19,7 @@ function setCookie(res, name, value, options = {}) {
 		maxAge: cookieMaxAge,
 		sameSite: 'None',
 		secure: true,
+		path: '/',
 		...options
 	}
 	let cookieValue = cookie.serialize(name, String(value), cookieOptions)
