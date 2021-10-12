@@ -72,19 +72,19 @@ jobs:
 
   # actually deploy
 
-    - name: "deploy: backend"
-      run: npm run deploy
-      working-directory: geo-bagging/backend
-      env:
-        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        AWS_REGION: ${{ secrets.AWS_REGION }}
-        CF_ROLE_ARN: ${{ secrets.CF_ROLE_ARN }}
-        CLIENT_ID: ${{ secrets.CLIENT_ID }}
-        CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
-        COOKIE_SECRET: ${{ secrets.COOKIE_SECRET }}
-        API_GATEWAY_URL: ${{ secrets.API_GATEWAY_URL }}
-        STACK_NAME: ${{ secrets.STACK_NAME }}
+    # - name: "deploy: backend"
+    #   run: npm run deploy
+    #   working-directory: geo-bagging/backend
+    #   env:
+    #     AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+    #     AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+    #     AWS_REGION: ${{ secrets.AWS_REGION }}
+    #     CF_ROLE_ARN: ${{ secrets.CF_ROLE_ARN }}
+    #     CLIENT_ID: ${{ secrets.CLIENT_ID }}
+    #     CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
+    #     COOKIE_SECRET: ${{ secrets.COOKIE_SECRET }}
+    #     API_GATEWAY_URL: ${{ secrets.API_GATEWAY_URL }}
+    #     STACK_NAME: ${{ secrets.STACK_NAME }}
     - name: "deploy: ui"
       run: npm run deploy
       working-directory: geo-bagging/ui
