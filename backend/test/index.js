@@ -7,9 +7,10 @@ import bodyParser from 'body-parser'
 import {validateCdkAssets} from '@tstibbs/cloud-core-utils'
 import {STACK_NAME} from '../lib/deploy-envs.js'
 
-let handlers = await validateCdkAssets(STACK_NAME, 1)
-
-const router = handlers[0]
+const router =
+	process.env.USE_BUILT_CODE == 'true'
+		? (await validateCdkAssets(STACK_NAME, 1))[0]
+		: (await import('../src/app.js')).handler
 
 const app = express()
 const port = 3001

@@ -27,7 +27,7 @@
 	"scripts": {
 		"dev:frontend": "http-server -p 3000 test",
 		"dev": "cdk-tools watch \"dev:_serve\"",
-		"dev:_serve": "nodemon --watch cdk.out --watch ./test/index.js ./test/index.js",
+		"dev:_serve": "USE_BUILT_CODE=true nodemon --watch cdk.out --watch ./test/index.js ./test/index.js src",
 		"test": "node test/basic.js && cdk-tools testcdk",
 		"testsynth": "cdk-tools testsynth",
 		"dryrun": "cdk-tools dryrun",
