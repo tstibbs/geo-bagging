@@ -1,5 +1,6 @@
 import _ from 'underscore'
 import geolib from 'geolib'
+import {ifCmd} from '@tstibbs/cloud-core-utils'
 
 import {readFile, writeFile, createTempDir} from './utils.js'
 
@@ -89,7 +90,9 @@ class CsvComparer {
 		}
 
 		let dataChange
-		if (!_.isEqual(this._filterIn(oldRow, interestingFieldIndexes), this._filterIn(newRow, interestingFieldIndexes))) {
+		if (
+			!_.isEqual(this._filterIn(oldRow, ...interestingFieldIndexes), this._filterIn(newRow, ...interestingFieldIndexes))
+		) {
 			dataChange = SIGNIFICANT
 		} else if (
 			!_.isEqual(
@@ -311,6 +314,9 @@ class CsvComparer {
 			}
 			return `${info} - please review ${reportPath}`
 		} else {
+			let infoText = 'No notable changes or meta differences'
+			console.log(infoText)
+			await this._printReport() //just to ensure the report is overwritten if we have made a 'fix' and then re-ran this tool
 			return null
 		}
 	}
@@ -369,5 +375,12 @@ class CsvComparer {
 async function compare(source, file) {
 	return await new CsvComparer(source, file).compare()
 }
+
+async function cli() {
+	const args = process.argv.slice(2)
+	await compare(args[0], args[1])
+}
+
+await ifCmd(import.meta, cli)
 
 export default compare
