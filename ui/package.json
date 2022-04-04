@@ -10,6 +10,7 @@
 		"file-loader": "^6.2.0",
 		"html-loader": "^2.1.1",
 		"html-webpack-plugin": "^5.2.0",
+		"http-server": "^14.1.0",
 		"karma": "^6.1.1",
 		"karma-chrome-launcher": "^3.1.0",
 		"karma-docker-launcher": "^1.0.0",
@@ -50,7 +51,7 @@
 	"scripts": {
 		"prebuild": "rm -rf dist/*",
 		"build": "npx webpack --config webpack.config.cjs",
-		"serve": "npx http-server -p 3000 -c-1 --cors dist",
+		"serve": "npx http-server dist -p 3000 -c-1 --cors",
 		"dev": "npm run prebuild && npx webpack serve --config webpack.config.dev.cjs",
 		"test": "npx karma start karma.conf.cjs --no-auto-watch --single-run",
 		"deploy": "npm run build && ./deploy.sh"
