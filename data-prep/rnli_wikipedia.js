@@ -7,6 +7,27 @@ const flatten = arrays => {
 	return [].concat.apply([], arrays)
 }
 
+function removeIgnoredTypes(types, launchMethods) {
+	const ignoredTypes = ['RescueWaterCraft']
+	let occurrences = ignoredTypes.map(ignoredType => types.indexOf(ignoredType)).filter(occurrence => occurrence != -1)
+	if (occurrences.length > 0 && types.length != launchMethods.length) {
+		console.error(
+			`ignoredTypes detected, which requires types and launchMethods to map one-to-one, but they don't: "${types}" "${launchMethods}"`
+		)
+	}
+	occurrences.forEach(occurrence => {
+		//splice happens *in place*
+		types.splice(occurrence, occurrence)
+		launchMethods.splice(occurrence, occurrence)
+	})
+	types = [...new Set(types)]
+	launchMethods = [...new Set(launchMethods)]
+	return {
+		types,
+		launchMethods
+	}
+}
+
 async function convertWikiData() {
 	let data = await readFile(`${inputDir}/wiki.json`)
 	let docs = JSON.parse(data)
@@ -18,8 +39,9 @@ async function convertWikiData() {
 			let divisionStations = division.map(station => {
 				let typesString = station['Lifeboat type(s)'].text
 				let launchString = station['Launch method'].text
-				let types = parseTypes(typesString)
-				let launchMethods = parseLaunchMethods(launchString)
+				let possibleTypes = parseTypes(typesString)
+				let possibleLaunchMethods = parseLaunchMethods(launchString)
+				let {types, launchMethods} = removeIgnoredTypes(possibleTypes, possibleLaunchMethods)
 				let name = parseStation(station['Station'].text)
 				return {
 					types,
@@ -67,12 +89,24 @@ function parseTypes(typesString) {
 		['H\\-class', 'H'],
 		['E\\-class', 'E'],
 		['D\\-class \\(IB1\\)', 'D'],
-		['D\\-class', 'D']
+		['D\\-class', 'D'],
+		['Rescue WaterCraft', 'RescueWaterCraft'],
+		['Rescue Water Craft', 'RescueWaterCraft']
 	]
 	return multiReplace(typesString, replacements)
 }
 
+function stripPrefixes(launchString) {
+	//some entries such as 'carrybridge' have helpfully prefixed the launch method so you know which type it referrs to
+	const prefixCheck = /\b\w\w\w\s?- ([^\s]+)\b/g
+	if (prefixCheck.test(launchString)) {
+		launchString = launchString.replace(prefixCheck, '$1')
+	}
+	return launchString
+}
+
 function parseLaunchMethods(launchString) {
+	launchString = stripPrefixes(launchString)
 	let replacements = [
 		['Moored afloat', 'MooredAfloat'],
 		['Floating cradle', 'FloatingCradle'],
@@ -86,8 +120,7 @@ function parseLaunchMethods(launchString) {
 
 function multiReplace(input, replacements) {
 	let things = replace(input, replacements).split(/\s+/)
-	let uniqueThings = new Set(things)
-	return [...uniqueThings]
+	return things
 }
 
 function replace(input, replacements) {
