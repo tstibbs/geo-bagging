@@ -11,3 +11,11 @@ Or if that doesn't work, you can open the developer console (usually by pressing
 ```
 $.getScript("https://tstibbs.github.io/geo-bagging/integration/trigpointing.js");
 ```
+
+### Other
+
+The full map (showing data sources other than just trig points): https://tstibbs.github.io/geo-bagging/
+
+Requests for support: https://github.com/tstibbs/geo-bagging/discussions
+
+Bug reports: https://github.com/tstibbs/geo-bagging/issues

@@ -19,6 +19,10 @@ Note this started as an excuse to learn about a few javascript libraries that I'
 
 I'm not good with colours or icons; I'd welcome any contributions.
 
+## What browsers does this support?
+
+Dev/testing is done in Chrome, it may or may not work in other browsers. Should work in Chrome on Android. Definitely won't work in Internet Explorer.
+
 ## Unit tests
 
 There are some basic unit tests covering some of the functionality. To run these go here https://tstibbs.github.io/geo-bagging/test.html or run these commands:
