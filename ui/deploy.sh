@@ -7,10 +7,10 @@ codeDir=$(git rev-parse --show-toplevel)
 revision=$(git rev-parse HEAD)
 tmp=$(mktemp --directory)
 
-git config --global user.email "tstibbs@users.noreply.github.com"
-git config --global user.name "Tim Stibbs"
+# git config --global user.email "tstibbs@users.noreply.github.com"
+# git config --global user.name "Tim Stibbs"
 # track gh-pages just to ensure it gets passed down to the secondary repo
-git branch gh-pages origin/gh-pages
+# git branch gh-pages origin/gh-pages
 
 cd $tmp
 git init
@@ -32,9 +32,9 @@ then
 	git commit -m "Deploying $revision"
 	git push origin gh-pages
 
-	cd $currentDir
+	# cd $currentDir
 
-	git push origin gh-pages:gh-pages
+	# git push origin gh-pages:gh-pages
 else
     echo "Skipping commit, as there are no changes."
 fi
