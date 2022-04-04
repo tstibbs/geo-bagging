@@ -9,11 +9,10 @@ import shadowUrl from 'leaflet/dist/images/marker-shadow.png'
 
 delete leaflet.Icon.Default.prototype._getIconUrl
 
-var prefix = window.geoBaggingBaseUrl != null ? window.geoBaggingBaseUrl : ''
 leaflet.Icon.Default.mergeOptions({
-	iconRetinaUrl: prefix + retinaUrl,
-	iconUrl: prefix + iconUrl,
-	shadowUrl: prefix + shadowUrl
+	iconRetinaUrl: retinaUrl,
+	iconUrl: iconUrl,
+	shadowUrl: shadowUrl
 })
 
 export default leaflet

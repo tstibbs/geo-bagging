@@ -15,7 +15,7 @@ var milestonesIcon = milestoneIcon
 export default function build(config) {
 	return {
 		aspectLabel: 'Waymarks',
-		defaultIcon: new CustomDefaultIcon(config, milestonesIcon, {
+		defaultIcon: new CustomDefaultIcon(milestonesIcon, {
 			iconUrl: milestonesIcon
 		}),
 		dimensionNames: dimensionNames,

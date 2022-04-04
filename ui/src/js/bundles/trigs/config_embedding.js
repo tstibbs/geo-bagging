@@ -8,7 +8,7 @@ import redIcon from '../../../img/hill.png'
 export default function build(config) {
 	return $.extend(true, {}, trigpointingBase(config), {
 		icons: {
-			searchResult: new CustomDefaultIcon(config, redIcon, {
+			searchResult: new CustomDefaultIcon(redIcon, {
 				iconUrl: redIcon
 			})
 		},

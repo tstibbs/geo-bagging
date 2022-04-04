@@ -11,9 +11,13 @@ var defaultOptions = {
 <%= htmlWebpackPlugin
     .tags
     .headTags
-    .map(tag =>
-        `\$("head").append('<link rel="stylesheet" type="text/css" href="' + window.geoBaggingBaseUrl + '${(tag.attributes.href || tag.attributes.src).replace(/^..\//, '')}">');\n`
-    )
+    .map(tag => {
+        if (tag.attributes.src != null) {
+            return `$.ajax($.extend({url: window.geoBaggingBaseUrl + "${tag.attributes.src.replace(/^..\//, '')}"}, defaultOptions));\n`
+        } else {
+            return `\$("head").append('<link rel="stylesheet" type="text/css" href="' + window.geoBaggingBaseUrl + '${(tag.attributes.href).replace(/^..\//, '')}">');\n`
+        }
+    })
 %>
 <%= htmlWebpackPlugin
     .tags

@@ -39,7 +39,7 @@ export default function build(config) {
 	return {
 		aspectLabel: 'Trig Points',
 		icons: {
-			Pillar: new CustomDefaultIcon(config, pillarIcon, {
+			Pillar: new CustomDefaultIcon(pillarIcon, {
 				iconUrl: pillarIcon,
 				iconAnchor: [10, 40], // point of the icon which will correspond to marker's location
 				popupAnchor: [1, -38] // point from which the popup should open relative to the iconAnchor

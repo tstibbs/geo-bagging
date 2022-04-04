@@ -57,7 +57,7 @@ var redIconPath = hillIcon
 export default function build(config) {
 	return {
 		aspectLabel: 'Hills',
-		defaultIcon: new CustomDefaultIcon(config, redIconPath, {
+		defaultIcon: new CustomDefaultIcon(redIconPath, {
 			iconUrl: redIconPath
 		}),
 		dimensionNames: dimensionNames,
