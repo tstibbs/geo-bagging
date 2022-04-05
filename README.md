@@ -21,7 +21,11 @@ I'm not good with colours or icons; I'd welcome any contributions.
 
 ## What browsers does this support?
 
-Dev/testing is done in Chrome, it may or may not work in other browsers. Should work in Chrome on Android. Definitely won't work in Internet Explorer.
+Dev/testing is done in Chrome on Windows, it may or may not work in other browsers.
+
+Should work in Chrome on Android, though this is less frequently tested.
+
+Definitely won't work in Internet Explorer.
 
 ## Unit tests
 
