@@ -1,4 +1,4 @@
-@import "~font-awesome/css/font-awesome.min.css";
+@import '~font-awesome/css/font-awesome.min.css';
 
 body.full-screen {
 	/* Make the body actually fill the screen, so that our map can too */
@@ -20,7 +20,7 @@ div.full-screen {
 
 div.mini-map {
 	width: 300px;
-	height: 300px
+	height: 300px;
 }
 
 div.embedded-map {
@@ -29,15 +29,15 @@ div.embedded-map {
 }
 
 .loading-message-container {
-	width:100%;
-	height:100%;
+	width: 100%;
+	height: 100%;
 	display: flex;
 	justify-content: center;
 	align-items: center;
 }
 
-.loading-message-text{
-	display:block;
+.loading-message-text {
+	display: block;
 	padding-left: 28px;
 	padding-right: 28px;
 	background-color: rgba(255, 255, 255, 0.9);
@@ -49,7 +49,8 @@ div.embedded-map {
 	z-index: 2001;
 }
 
-.leaflet-container .leaflet-control-mapcentercoord, .leaflet-container .leaflet-control-mouseposition {
+.leaflet-container .leaflet-control-mapcentercoord,
+.leaflet-container .leaflet-control-mouseposition {
 	background-color: rgba(255, 255, 255, 0.85);
 }
 
@@ -95,24 +96,24 @@ div#error-container a#dismiss-button {
 }
 
 .full-screen-link a {
-    font-size: smaller;
+	font-size: smaller;
 }
 
 /* marker popups */
 
 .popup-title {
-    text-decoration: underline;
+	text-decoration: underline;
 }
 
 .popup-entry-key {
-    font-weight: bold;
+	font-weight: bold;
 }
 
 .popup-entry-list {
-    list-style-position: inside;
-    padding-left: 8px;
-    margin-top: 0px;
-    margin-bottom: 0px;
+	list-style-position: inside;
+	padding-left: 8px;
+	margin-top: 0px;
+	margin-bottom: 0px;
 }
 
 /* links section */
@@ -175,24 +176,26 @@ body.landing {
 }
 @media (min-width: 768px) {
 	/* repetition is a hack to get around the style above winning due to higher specificity */
-	.sidebar.collapsed, .sidebar {
+	.sidebar.collapsed,
+	.sidebar {
 		bottom: 26px;
 	}
-	.mobile > .sidebar.collapsed, .mobile > .sidebar {
+	.mobile > .sidebar.collapsed,
+	.mobile > .sidebar {
 		top: 38px;
 	}
 }
 
 .attribution-entry {
-    padding-top: 4px;
-    padding-bottom: 4px;
+	padding-top: 4px;
+	padding-bottom: 4px;
 }
 
 .attribution-source {
-    font-weight: bold;
+	font-weight: bold;
 }
 .attribution-source::after {
-	content: ": "
+	content: ': ';
 }
 
 div.info {
@@ -211,9 +214,9 @@ hr.info {
 }
 
 div.setting {
-    padding-left: 2px;
-    padding-top: 10px;
-    padding-bottom: 10px;
+	padding-left: 2px;
+	padding-top: 10px;
+	padding-bottom: 10px;
 }
 
 /* general */
@@ -222,7 +225,7 @@ div.setting {
 	visibility: hidden;
 }
 
-input[type="checkbox"] {
+input[type='checkbox'] {
 	vertical-align: bottom;
 	margin-left: 0px;
 }
@@ -234,13 +237,14 @@ label.fancy-checkbox > input {
 }
 
 label.fancy-checkbox > input:checked + i {
-	color: #12B000; /*mid green*/
+	color: #12b000; /*mid green*/
 }
 label.fancy-checkbox > input + i {
-	color: #CECECE; /*light grey*/
+	color: #cecece; /*light grey*/
 }
-body:not(.mobile) label.fancy-checkbox > i:hover { /*touch devices tend to latch the hover on, which isn't what we want*/
-	color: #18EE00; /*light green*/
+body:not(.mobile) label.fancy-checkbox > i:hover {
+	/*touch devices tend to latch the hover on, which isn't what we want*/
+	color: #18ee00; /*light green*/
 }
 
 label.fancy-checkbox {
