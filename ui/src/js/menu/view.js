@@ -4,6 +4,7 @@ import LeafletSidebar from 'VendorWrappers/sidebar.js'
 import AttributionView from './attribution.js'
 import UserView from './user.js'
 import ConstraintsView from './constraints/view.js'
+import ExternalFilesView from './external-files/files_load_panel.js'
 import params from '../params.js'
 
 var MenuView = leaflet.Class.extend({
@@ -26,6 +27,7 @@ var MenuView = leaflet.Class.extend({
 		view += '        <ul role="tablist">'
 		view += '            <li><a href="#sidebar-layers" role="tab"><i class="fa fa-bars"></i></a></li>'
 		view += '            <li><a href="#sidebar-constraints" role="tab"><i class="fa fa-map-o"></i></a></li>'
+		view += '            <li><a href="#sidebar-external-files" role="tab"><i class="fa fa-plus-square-o"></i></a></li>'
 		view += '        </ul>'
 
 		//bottom of the navigation bar
@@ -46,6 +48,10 @@ var MenuView = leaflet.Class.extend({
 		view += '        <div id="sidebar-constraints" class="sidebar-pane">'
 		view +=
 			'            <h1 class="sidebar-header">Data Limits<span class="sidebar-close"><i class="fa fa-caret-left"></i></span></h1>'
+		view += '        </div>'
+		view += '        <div id="sidebar-external-files" class="sidebar-pane">'
+		view +=
+			'            <h1 class="sidebar-header">External Files<span class="sidebar-close"><i class="fa fa-caret-left"></i></span></h1>'
 		view += '        </div>'
 		view += '        <div id="sidebar-attribution" class="sidebar-pane">'
 		view +=
@@ -74,6 +80,9 @@ var MenuView = leaflet.Class.extend({
 
 		var constraintsView = new ConstraintsView(this._manager)
 		$('#sidebar-constraints', this._view).append(constraintsView.getView())
+
+		var externalFilesView = new ExternalFilesView(this._manager)
+		$('#sidebar-external-file', this._view).append(externalFilesView.getView())
 	},
 
 	_buildControl: function () {
