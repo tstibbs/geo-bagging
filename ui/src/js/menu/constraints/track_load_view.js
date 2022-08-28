@@ -1,42 +1,16 @@
-import leaflet from 'VendorWrappers/leaflet.js'
-import $ from 'jquery'
-import {gpx as toGeoJSON} from '@tmcw/togeojson'
-import TracksView from './tracks_view.js'
+import FilesView from '../external-files/files_view.js'
+import FileLoadView from '../external-files/file_load_view.js'
+import {gpxToGeoJson, calcGeoJsonBounds} from '../../utils/geojson.js'
 
-var TrackLoadView = leaflet.Class.extend({
+const label = 'Upload GPX tracks to see markers around those tracks'
+const sourceName = 'Tracks'
+const colour = '#FF0000'
+
+var TrackLoadView = FileLoadView.extend({
 	initialize: function (manager, constraintsView) {
+		FileLoadView.prototype.initialize.call(this, label)
 		this._constraintsView = constraintsView
-		this._tracksView = new TracksView(manager)
-		this._view = $('<div class="setting"></div>')
-		this._view.append($('<span>Upload GPX tracks to see markers around those tracks:</span>'))
-		this._fileInput = $('<input type="file" multiple>')
-		this._view.append(this._fileInput)
-		this._fileInput.on('change', this._readFiles.bind(this))
-		this._fileCounter = 0
-	},
-
-	_readFiles: function () {
-		var tracks = []
-		var files = this._fileInput[0].files
-		for (var i = 0; i < files.length; i++) {
-			;(function (file) {
-				//just scoping
-				var reader = new FileReader()
-				//note this function is called asynchronously
-				reader.onload = function (e) {
-					var track = this._loadTrack(reader.result)
-					tracks.push({
-						name: `${this._fileCounter} - ${file.name}`, //counter just to make the name unique
-						...track
-					})
-					this._fileCounter++
-					if (tracks.length == files.length) {
-						this._finishedReadingFiles(tracks)
-					}
-				}.bind(this)
-				reader.readAsText(file)
-			}.bind(this)(files.item(i)))
-		}
+		this._tracksView = new FilesView(manager, sourceName, colour)
 	},
 
 	_finishedReadingFiles: function (tracks) {
@@ -44,64 +18,21 @@ var TrackLoadView = leaflet.Class.extend({
 			return track.bounds
 		})
 		this._constraintsView.limitTo(this, bounds)
-		this._tracksView.showTracks(tracks)
+		this._tracksView.showNewLayers(tracks)
 	},
 
-	_loadTrack: function (xmlString) {
-		var dom = new DOMParser().parseFromString(xmlString, 'text/xml')
-		var geoJson = toGeoJSON(dom)
-		var bounds = this._geoJsonBounds(geoJson)
+	_parseFileContents: function (fileContents) {
+		var geoJson = gpxToGeoJson(fileContents)
+		var bounds = calcGeoJsonBounds(geoJson)
 		return {
 			features: geoJson,
 			bounds: bounds
 		}
 	},
 
-	_geoJsonBounds: function (geoJson) {
-		var minLng
-		var maxLng
-		var minLat
-		var maxLat
-		geoJson.features.forEach(function (feature) {
-			var geometry = feature.geometry
-			var lineParser = function (line) {
-				line.forEach(function (point) {
-					var lng = point[0]
-					var lat = point[1]
-					if (minLng == null || lng < minLng) {
-						minLng = lng
-					}
-					if (maxLng == null || lng > maxLng) {
-						maxLng = lng
-					}
-					if (minLat == null || lat < minLat) {
-						minLat = lat
-					}
-					if (maxLat == null || lat > maxLat) {
-						maxLat = lat
-					}
-				})
-			}
-			if (geometry.type == 'MultiLineString') {
-				geometry.coordinates.forEach(lineParser)
-			} else {
-				lineParser(geometry.coordinates)
-			}
-		})
-		var latAdjustment = 0.005 //just to extend the bounding box a bit
-		var lngAdjustment = 0.01
-		var bottomLeft = [minLat - latAdjustment, minLng - lngAdjustment]
-		var topRight = [maxLat + latAdjustment, maxLng + lngAdjustment]
-		return leaflet.latLngBounds(bottomLeft, topRight)
-	},
-
-	getView: function () {
-		return this._view
-	},
-
 	reset: function () {
 		this._fileInput.val('')
-		this._tracksView.showTracks([])
+		this._tracksView.hideOldLayers()
 	}
 })
 
