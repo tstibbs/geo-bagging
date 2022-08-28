@@ -4,7 +4,6 @@ import PointsView from './points_view.js'
 import GeojsonView from './geojson_view.js'
 import AbstractPointsBuilder from './bundles/abstract_points_builder.js'
 import AbstractGeojsonBuilder from './bundles/abstract_geojson_builder.js'
-import Leaflet_MatrixLayers from 'VendorWrappers/leaflet-matrix-layers-control.js'
 import UrlHandler from './utils/url_handler.js'
 
 var ModelViews = leaflet.Class.extend({
@@ -12,7 +11,6 @@ var ModelViews = leaflet.Class.extend({
 		this._bundles = bundles
 		this._manager = manager
 		this._controls = manager.getControls()
-		this._matrixLayerControl = null
 		this._urlHandler = new UrlHandler()
 	},
 
@@ -45,7 +43,7 @@ var ModelViews = leaflet.Class.extend({
 				var meta = model.getMeta()
 				var description = meta.recordCount + ' items (last updated ' + meta.lastUpdated + ')'
 				var bundleDetails = this._bundles[bundleName]
-				this._matrixLayerControl.addLazyAspect(bundleName, bundleDetails, {
+				this._manager.getMatrixLayerControl().addLazyAspect(bundleName, bundleDetails, {
 					description: description,
 					callback: callback
 				})
@@ -66,23 +64,12 @@ var ModelViews = leaflet.Class.extend({
 		var geojsonModels = this._filterModels(bundleModels, AbstractGeojsonBuilder)
 		var lazyPointsModels = this._filterModels(lazyModels, AbstractPointsBuilder)
 		var lazyGeojsonModels = this._filterModels(lazyModels, AbstractGeojsonBuilder)
-		if (config.dimensional_layering) {
-			this._matrixLayerControl = new Leaflet_MatrixLayers(
-				this._manager.getLayers(),
-				null,
-				{},
-				{
-					multiAspects: true,
-					embeddable: config.use_sidebar
-				}
-			)
-		}
 
 		var pointsView = new PointsView(
 			this._manager.getMap(),
 			config,
 			pointsModels,
-			this._matrixLayerControl,
+			this._manager.getMatrixLayerControl(),
 			this._controls,
 			this._bundles,
 			this._manager
@@ -91,7 +78,7 @@ var ModelViews = leaflet.Class.extend({
 			this._manager.getMap(),
 			config,
 			geojsonModels,
-			this._matrixLayerControl,
+			this._manager.getMatrixLayerControl(),
 			this._bundles
 		)
 		var promises = [pointsView.finish(), geojsonView.finish()]
@@ -109,7 +96,7 @@ var ModelViews = leaflet.Class.extend({
 			function () {
 				if (config.dimensional_layering) {
 					//override the basic layers control
-					this._controls.addControl(this._matrixLayerControl)
+					this._controls.addControl(this._manager.getMatrixLayerControl())
 				}
 				//add attribution texts
 				Object.keys(bundleModels).forEach(

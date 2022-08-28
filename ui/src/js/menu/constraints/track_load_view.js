@@ -12,6 +12,7 @@ var TrackLoadView = leaflet.Class.extend({
 		this._fileInput = $('<input type="file" multiple>')
 		this._view.append(this._fileInput)
 		this._fileInput.on('change', this._readFiles.bind(this))
+		this._fileCounter = 0
 	},
 
 	_readFiles: function () {
@@ -24,7 +25,11 @@ var TrackLoadView = leaflet.Class.extend({
 				//note this function is called asynchronously
 				reader.onload = function (e) {
 					var track = this._loadTrack(reader.result)
-					tracks.push(track)
+					tracks.push({
+						name: `${this._fileCounter} - ${file.name}`, //counter just to make the name unique
+						...track
+					})
+					this._fileCounter++
 					if (tracks.length == files.length) {
 						this._finishedReadingFiles(tracks)
 					}
@@ -38,11 +43,8 @@ var TrackLoadView = leaflet.Class.extend({
 		var bounds = tracks.map(function (track) {
 			return track.bounds
 		})
-		var features = tracks.map(function (track) {
-			return track.features
-		})
 		this._constraintsView.limitTo(this, bounds)
-		this._tracksView.showTracks(features)
+		this._tracksView.showTracks(tracks)
 	},
 
 	_loadTrack: function (xmlString) {

@@ -1,5 +1,6 @@
 import $ from 'jquery'
 import leaflet from 'VendorWrappers/leaflet.js'
+import Leaflet_MatrixLayers from 'VendorWrappers/leaflet-matrix-layers-control.js'
 import Controls from './controls.js'
 import layersBuilder from './layers.js'
 import constants from './constants.js'
@@ -54,6 +55,17 @@ var Manager = leaflet.Class.extend({
 				this._map = map
 				this._config = config
 				this._layers = layersBuilder(map, config)
+				if (this._config.dimensional_layering) {
+					this._matrixLayerControl = new Leaflet_MatrixLayers(
+						this._layers,
+						null,
+						{},
+						{
+							multiAspects: true,
+							embeddable: this._config.use_sidebar
+						}
+					)
+				}
 				this._controls = new Controls(config, this._layers, map, this)
 			}.bind(this)
 		)
@@ -85,6 +97,10 @@ var Manager = leaflet.Class.extend({
 
 	getConfig: function () {
 		return this._config
+	},
+
+	getMatrixLayerControl: function () {
+		return this._matrixLayerControl
 	},
 
 	setAuthenticated: function (/*boolean*/ authenticated) {
