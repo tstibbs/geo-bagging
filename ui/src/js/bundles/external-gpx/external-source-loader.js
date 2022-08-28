@@ -16,9 +16,23 @@ const ExternalSourceLoader = leaflet.Class.extend({
 		} else {
 			Object.entries(fileNameToLayers).forEach(([fileName, layer]) => {
 				this._manager.getMatrixLayerControl()._addMatrixOverlay(layer, fileName, sourceName)
-				this._manager.getMatrixLayerControl()._update()
 			})
 		}
+		//force new layers to be visible initially - even if layers with those names were deselected in a previous session
+		Object.keys(fileNameToLayers).forEach(fileName => this._setLayerVis(sourceName, fileName, true))
+		this._manager.getMatrixLayerControl()._onInputClick()
+		this._manager.getMatrixLayerControl()._update()
+	},
+
+	hideLayers: function (sourceName, fileNameToLayers) {
+		Object.entries(fileNameToLayers).forEach(([fileName, layer]) => {
+			this._setLayerVis(sourceName, fileName, false)
+			layer.remove()
+		})
+	},
+
+	_setLayerVis: function (sourceName, fileName, visible) {
+		this._manager.getMatrixLayerControl()._model(sourceName).inputChanged(sourceName, fileName, visible)
 	}
 })
 

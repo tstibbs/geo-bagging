@@ -12,12 +12,10 @@ var TracksView = leaflet.Class.extend({
 	},
 
 	showTracks: function (tracks) {
-		//remove the old layers
-		Object.values(this._layers).forEach(function (layer) {
-			layer.remove()
-		})
+		//un-show the old layers
+		this._externalSourceLoader.hideLayers(sourceName, this._layers)
 		//add the new layers
-		this._layers = Object.fromEntries(
+		let newLayers = Object.fromEntries(
 			tracks.map(({features, name}) => {
 				let geoJsonLayer = leaflet.geoJSON(features, {
 					color: this._colour,
@@ -30,7 +28,8 @@ var TracksView = leaflet.Class.extend({
 				return [name, geoJsonLayer]
 			})
 		)
-		this._externalSourceLoader.addLayers(sourceName, this._layers)
+		this._externalSourceLoader.addLayers(sourceName, newLayers)
+		this._layers = {...this._layers, ...newLayers}
 	}
 })
 
