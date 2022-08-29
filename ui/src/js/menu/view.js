@@ -81,8 +81,8 @@ var MenuView = leaflet.Class.extend({
 		var constraintsView = new ConstraintsView(this._manager)
 		$('#sidebar-constraints', this._view).append(constraintsView.getView())
 
-		var externalFilesView = new ExternalFilesView(this._manager)
-		$('#sidebar-external-file', this._view).append(externalFilesView.getView())
+		const externalFilesView = new ExternalFilesView(this._manager)
+		$('#sidebar-external-files', this._view).append(externalFilesView.getView())
 	},
 
 	_buildControl: function () {

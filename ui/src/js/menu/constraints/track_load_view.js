@@ -1,38 +1,32 @@
-import FilesView from '../external-files/files_view.js'
 import FileLoadView from '../external-files/file_load_view.js'
-import {gpxToGeoJson, calcGeoJsonBounds} from '../../utils/geojson.js'
+import gpxBundle from '../../bundles/external-gpx/config.js'
 
 const label = 'Upload GPX tracks to see markers around those tracks'
-const sourceName = 'Tracks'
-const colour = '#FF0000'
+
+const configBundle = {
+	...gpxBundle,
+	aspectLabel: 'Tracks',
+	colour: '#FF0000',
+	loadLabel: label
+}
 
 var TrackLoadView = FileLoadView.extend({
 	initialize: function (manager, constraintsView) {
-		FileLoadView.prototype.initialize.call(this, label)
+		FileLoadView.prototype.initialize.call(this, manager, configBundle)
 		this._constraintsView = constraintsView
-		this._tracksView = new FilesView(manager, sourceName, colour)
 	},
 
 	_finishedReadingFiles: function (tracks) {
-		var bounds = tracks.map(function (track) {
+		var combinedBounds = tracks.map(function (track) {
 			return track.bounds
 		})
-		this._constraintsView.limitTo(this, bounds)
-		this._tracksView.showNewLayers(tracks)
-	},
-
-	_parseFileContents: function (fileContents) {
-		var geoJson = gpxToGeoJson(fileContents)
-		var bounds = calcGeoJsonBounds(geoJson)
-		return {
-			features: geoJson,
-			bounds: bounds
-		}
+		this._constraintsView.limitTo(this, combinedBounds)
+		FileLoadView.prototype._finishedReadingFiles.call(this, tracks)
 	},
 
 	reset: function () {
 		this._fileInput.val('')
-		this._tracksView.hideOldLayers()
+		this._filesView.hideOldLayers()
 	}
 })
 

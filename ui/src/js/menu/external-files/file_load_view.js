@@ -1,14 +1,18 @@
 import leaflet from 'VendorWrappers/leaflet.js'
 import $ from 'jquery'
+import FilesView from '../external-files/files_view.js'
+import {calcGeoJsonBounds} from '../../utils/geojson.js'
 
 var FileLoadView = leaflet.Class.extend({
-	initialize: function (label) {
+	initialize: function (manager, bundle) {
+		this._bundle = bundle
 		this._view = $('<div class="setting"></div>')
-		this._view.append($(`<span>${label}:</span>`))
+		this._view.append($(`<span>${this._bundle.loadLabel}:</span>`))
 		this._fileInput = $('<input type="file" multiple>')
 		this._view.append(this._fileInput)
 		this._fileInput.on('change', this._readFiles.bind(this))
 		this._fileCounter = 0
+		this._filesView = new FilesView(manager, this._bundle.aspectLabel, this._bundle.colour)
 	},
 
 	_readFiles: function () {
@@ -37,11 +41,16 @@ var FileLoadView = leaflet.Class.extend({
 
 	_finishedReadingFiles: function (datas) {
 		//datas is [{name, bounds, features}]
-		throw new Error('not implemented yet')
+		this._filesView.showNewLayers(datas)
 	},
 
 	_parseFileContents: function (fileContents) {
-		throw new Error('not implemented yet')
+		var geoJson = this._bundle.fileContentsParser(fileContents)
+		var bounds = calcGeoJsonBounds(geoJson)
+		return {
+			features: geoJson,
+			bounds: bounds
+		}
 	},
 
 	getView: function () {
