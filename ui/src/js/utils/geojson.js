@@ -28,6 +28,8 @@ export function calcGeoJsonBounds(geoJson) {
 		}
 		if (geometry.type == 'MultiLineString') {
 			geometry.coordinates.forEach(lineParser)
+		} else if (geometry.type == 'MultiPolygon') {
+			geometry.coordinates.forEach(polygon => polygon.forEach(lineParser))
 		} else {
 			lineParser(geometry.coordinates)
 		}
@@ -39,8 +41,12 @@ export function calcGeoJsonBounds(geoJson) {
 	return leaflet.latLngBounds(bottomLeft, topRight)
 }
 
-export function gpxToGeoJson(gpxAsString) {
+export function rawGpxToGeoJson(gpxAsString) {
 	var dom = new DOMParser().parseFromString(gpxAsString, 'text/xml')
 	var geoJson = toGeoJSON(dom)
 	return geoJson
+}
+
+export function rawGeoJsonToGeoJson(geojsonAsString) {
+	return JSON.parse(geojsonAsString)
 }

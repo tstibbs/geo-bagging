@@ -1,6 +1,7 @@
 import $ from 'jquery'
 import leaflet from 'VendorWrappers/leaflet.js'
 import FileLoadView from './file_load_view.js'
+import geojsonBundle from '../../bundles/external-geojson/config.js'
 import gpxBundle from '../../bundles/external-gpx/config.js'
 
 var ExternalFilesView = leaflet.Class.extend({
@@ -11,6 +12,9 @@ var ExternalFilesView = leaflet.Class.extend({
 		)
 		this._view.append(info)
 		this._view.append('<hr class="info">')
+
+		const geojsonLoadView = new FileLoadView(manager, geojsonBundle)
+		this._view.append(geojsonLoadView.getView())
 
 		const gpxLoadView = new FileLoadView(manager, gpxBundle)
 		this._view.append(gpxLoadView.getView())
