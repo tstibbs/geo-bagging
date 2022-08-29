@@ -1,19 +1,21 @@
 import leaflet from 'VendorWrappers/leaflet.js'
 import ExternalSourceLoader from '../../bundles/external-gpx/external-source-loader.js'
 
-const sourceName = 'GPX Files'
-
-var TracksView = leaflet.Class.extend({
-	initialize: function (manager) {
+var FilesView = leaflet.Class.extend({
+	initialize: function (manager, sourceName, colour) {
 		this._manager = manager
-		this._colour = '#FF0000'
+		this._sourceName = sourceName
+		this._colour = colour
 		this._layers = {}
 		this._externalSourceLoader = new ExternalSourceLoader(this._manager)
 	},
 
-	showTracks: function (tracks) {
+	hideOldLayers: function () {
 		//un-show the old layers
-		this._externalSourceLoader.hideLayers(sourceName, this._layers)
+		this._externalSourceLoader.hideLayers(this._sourceName, this._layers)
+	},
+
+	showNewLayers: function (tracks) {
 		//add the new layers
 		let newLayers = Object.fromEntries(
 			tracks.map(({features, name}) => {
@@ -28,9 +30,9 @@ var TracksView = leaflet.Class.extend({
 				return [name, geoJsonLayer]
 			})
 		)
-		this._externalSourceLoader.addLayers(sourceName, newLayers)
+		this._externalSourceLoader.addLayers(this._sourceName, newLayers)
 		this._layers = {...this._layers, ...newLayers}
 	}
 })
 
-export default TracksView
+export default FilesView
