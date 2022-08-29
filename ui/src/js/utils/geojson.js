@@ -48,5 +48,13 @@ export function rawGpxToGeoJson(gpxAsString) {
 }
 
 export function rawGeoJsonToGeoJson(geojsonAsString) {
-	return JSON.parse(geojsonAsString)
+	let parsed = JSON.parse(geojsonAsString)
+	//account for a common difference in capitalisation
+	parsed.features.forEach(feature => {
+		let {properties} = feature
+		if (properties && 'Name' in properties && (properties.name == null || `${properties.name}`.length == 0)) {
+			properties.name = properties.Name
+		}
+	})
+	return parsed
 }
