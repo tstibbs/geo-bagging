@@ -1,6 +1,9 @@
 import leaflet from 'VendorWrappers/leaflet.js'
 import ExternalSourceLoader from '../../bundles/external-gpx/external-source-loader.js'
 
+const initialOutlineWidth = 1
+const selectedOutlineWidth = 3
+
 var FilesView = leaflet.Class.extend({
 	initialize: function (manager, sourceName, colour) {
 		this._manager = manager
@@ -16,15 +19,31 @@ var FilesView = leaflet.Class.extend({
 	},
 
 	showNewLayers: function (tracks) {
+		const onFeatureClick = e => {
+			let layer = e.target
+			layer.setStyle({
+				weight: selectedOutlineWidth
+			})
+		}
 		//add the new layers
 		let newLayers = Object.fromEntries(
 			tracks.map(({features, name}) => {
 				let geoJsonLayer = leaflet.geoJSON(features, {
+					weight: initialOutlineWidth, //stroke width in pixels - aka border width
 					color: this._colour,
 					onEachFeature: function (feature, layer) {
 						if (feature.properties && feature.properties.name) {
 							layer.bindPopup(feature.properties.name)
 						}
+						layer.on({
+							click: onFeatureClick
+						})
+					}
+				})
+				//reset all styles when the map is clicked anywhere. Style will be re-added if it is one of these features that is clicked (same way the popups work)
+				this._manager.getMap().on({
+					preclick: () => {
+						geoJsonLayer.resetStyle()
 					}
 				})
 				return [name, geoJsonLayer]
