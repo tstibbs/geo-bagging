@@ -18,22 +18,47 @@ var FilesView = leaflet.Class.extend({
 		this._externalSourceLoader.hideLayers(this._sourceName, this._layers)
 	},
 
-	showNewLayers: function (tracks) {
-		const onFeatureClick = e => {
-			let layer = e.target
-			layer.setStyle({
-				weight: selectedOutlineWidth
-			})
+	_showAsSelected: function (layer) {
+		layer.setStyle({
+			weight: selectedOutlineWidth
+		})
+	},
+
+	_extractName: function (feature) {
+		if (feature && feature.properties && feature.properties.name) {
+			return feature.properties.name
+		} else {
+			return null
 		}
+	},
+
+	showNewLayers: function (tracks) {
 		//add the new layers
 		let newLayers = Object.fromEntries(
 			tracks.map(({features, name}) => {
+				const nameToFeatures = {}
+				const onFeatureClick = e => {
+					let layer = e.target
+					this._showAsSelected(layer)
+					let name = this._extractName(layer.feature)
+					if (name) {
+						let layers = nameToFeatures[name]
+						if (layer != null) {
+							layers.forEach(this._showAsSelected)
+						}
+					}
+				}
 				let geoJsonLayer = leaflet.geoJSON(features, {
 					weight: initialOutlineWidth, //stroke width in pixels - aka border width
 					color: this._colour,
-					onEachFeature: function (feature, layer) {
-						if (feature.properties && feature.properties.name) {
-							layer.bindPopup(feature.properties.name)
+					onEachFeature: (feature, layer) => {
+						let name = this._extractName(feature)
+						if (name) {
+							layer.bindPopup(name)
+							if (!(name in nameToFeatures)) {
+								nameToFeatures[name] = []
+							}
+							nameToFeatures[name].push(layer)
 						}
 						layer.on({
 							click: onFeatureClick
