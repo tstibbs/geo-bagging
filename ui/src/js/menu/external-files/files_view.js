@@ -1,14 +1,14 @@
 import leaflet from 'VendorWrappers/leaflet.js'
 import ExternalSourceLoader from '../../bundles/external-gpx/external-source-loader.js'
 
-const initialOutlineWidth = 1
 const selectedOutlineWidth = 3
 
 var FilesView = leaflet.Class.extend({
-	initialize: function (manager, sourceName, colour) {
+	initialize: function (manager, sourceName, colour, initialOutlineWidth) {
 		this._manager = manager
 		this._sourceName = sourceName
 		this._colour = colour
+		this._initialOutlineWidth = initialOutlineWidth
 		this._layers = {}
 		this._externalSourceLoader = new ExternalSourceLoader(this._manager)
 	},
@@ -49,7 +49,7 @@ var FilesView = leaflet.Class.extend({
 					}
 				}
 				let geoJsonLayer = leaflet.geoJSON(features, {
-					weight: initialOutlineWidth, //stroke width in pixels - aka border width
+					weight: this._initialOutlineWidth, //stroke width in pixels - aka border width
 					color: this._colour,
 					onEachFeature: (feature, layer) => {
 						let name = this._extractName(feature)

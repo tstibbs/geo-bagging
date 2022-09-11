@@ -12,7 +12,12 @@ var FileLoadView = leaflet.Class.extend({
 		this._view.append(this._fileInput)
 		this._fileInput.on('change', this._readFiles.bind(this))
 		this._fileCounter = 0
-		this._filesView = new FilesView(manager, this._bundle.aspectLabel, this._bundle.colour)
+		this._filesView = new FilesView(
+			manager,
+			this._bundle.aspectLabel,
+			this._bundle.colour,
+			this._bundle.initialOutlineWidth
+		)
 	},
 
 	_readFiles: function () {

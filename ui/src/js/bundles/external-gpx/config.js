@@ -3,6 +3,7 @@ import {rawGpxToGeoJson} from '../../utils/geojson.js'
 export default {
 	aspectLabel: 'GPX Files',
 	loadLabel: 'GPX',
-	colour: 'pink',
+	colour: '#bd007e', //dark pinky crimson
+	initialOutlineWidth: 2,
 	fileContentsParser: rawGpxToGeoJson
 }
