@@ -33,5 +33,6 @@ export default {
 	parser: Builder,
 	attribution:
 		'Natural England Open Data (<a href="http://www.nationalarchives.gov.uk/doc/open-government-licence/version/">OGL</a>)',
-	urls: urls
+	urls: urls,
+	initialOutlineWidth: 3
 }

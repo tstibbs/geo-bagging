@@ -1,12 +1,14 @@
-import leaflet from 'VendorWrappers/leaflet.js'
 import AbstractBundleBuilder from './abstract_bundle_builder.js'
-import popupView from '../popup_view.js'
+import GeoJsonTranslator from '../utils/geojson-translator.js'
+
+const colour = '#3388ff'
 
 var GeojsonLayer = AbstractBundleBuilder.extend({
 	initialize: function (manager, bundleConfig, bundleName, urlPrefix) {
 		AbstractBundleBuilder.prototype.initialize.call(this, manager, bundleConfig, bundleName, urlPrefix)
 		this._data = null
 		this._bundleConfig = bundleConfig
+		this._translator = new GeoJsonTranslator(manager, colour, bundleConfig.initialOutlineWidth)
 	},
 
 	fetchData: function (urlPrefix) {
@@ -25,31 +27,9 @@ var GeojsonLayer = AbstractBundleBuilder.extend({
 		)
 	},
 
-	_translateDatas: function (layerDatas) {
-		var layers = {}
-		layerDatas.forEach(
-			function (layerData) {
-				var name = layerData.name
-				var url = layerData.url
-				var geojson = layerData.geojson
-				var extraInfos = layerData.extraInfos
-
-				var geoLayer = leaflet.geoJSON(geojson, {
-					onEachFeature: function (feature, layer) {
-						var visited = null //not supported on geojson sources for now
-						var popup = popupView.buildPopup(this._manager, name, url, null, extraInfos, visited)
-						layer.bindPopup(popup)
-					}.bind(this)
-				})
-				layers[name] = geoLayer
-			}.bind(this)
-		)
-		return layers
-	},
-
 	buildLayers: function () {
 		var layerDatas = this._parseDatas()
-		return this._translateDatas(layerDatas)
+		return this._translator.dataToLayers(layerDatas)
 	},
 
 	getAttribution: function () {

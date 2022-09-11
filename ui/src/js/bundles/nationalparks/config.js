@@ -8,5 +8,6 @@ export default {
 	dataToLoad: 'data.geojson',
 	parser: Builder,
 	attribution:
-		'Office for National Statistics (<a href="http://www.nationalarchives.gov.uk/doc/open-government-licence/version/">OGL</a>)'
+		'Office for National Statistics (<a href="http://www.nationalarchives.gov.uk/doc/open-government-licence/version/">OGL</a>)',
+	initialOutlineWidth: 1
 }
