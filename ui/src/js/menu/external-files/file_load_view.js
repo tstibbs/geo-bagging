@@ -8,7 +8,7 @@ var FileLoadView = leaflet.Class.extend({
 		this._bundle = bundle
 		this._view = $('<div class="setting"></div>')
 		this._view.append($(`<span>${this._bundle.loadLabel}: </span></br>`))
-		this._fileInput = $('<input type="file" multiple>')
+		this._fileInput = $(`<input type="file" accept="${this._bundle.loadExtensions}" multiple>`)
 		this._view.append(this._fileInput)
 		this._fileInput.on('change', this._readFiles.bind(this))
 		this._fileCounter = 0

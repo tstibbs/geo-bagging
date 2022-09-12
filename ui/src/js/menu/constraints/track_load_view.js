@@ -7,7 +7,8 @@ const configBundle = {
 	...gpxBundle,
 	aspectLabel: 'Tracks',
 	colour: '#FF0000',
-	loadLabel: label
+	loadLabel: label,
+	loadExtensions: '.gpx'
 }
 
 var TrackLoadView = FileLoadView.extend({
