@@ -8,29 +8,36 @@ export function calcGeoJsonBounds(geoJson) {
 	var maxLat
 	geoJson.features.forEach(function (feature) {
 		var geometry = feature.geometry
+		const pointParser = point => {
+			var lng = point[0]
+			var lat = point[1]
+			if (minLng == null || lng < minLng) {
+				minLng = lng
+			}
+			if (maxLng == null || lng > maxLng) {
+				maxLng = lng
+			}
+			if (minLat == null || lat < minLat) {
+				minLat = lat
+			}
+			if (maxLat == null || lat > maxLat) {
+				maxLat = lat
+			}
+		}
 		var lineParser = function (line) {
-			line.forEach(function (point) {
-				var lng = point[0]
-				var lat = point[1]
-				if (minLng == null || lng < minLng) {
-					minLng = lng
-				}
-				if (maxLng == null || lng > maxLng) {
-					maxLng = lng
-				}
-				if (minLat == null || lat < minLat) {
-					minLat = lat
-				}
-				if (maxLat == null || lat > maxLat) {
-					maxLat = lat
-				}
-			})
+			line.forEach(pointParser)
 		}
 		if (geometry.type == 'MultiLineString') {
 			geometry.coordinates.forEach(lineParser)
 		} else if (geometry.type == 'MultiPolygon') {
 			geometry.coordinates.forEach(polygon => polygon.forEach(lineParser))
+		} else if (geometry.type == 'Point') {
+			pointParser(geometry.coordinates)
+		} else if (geometry.type == 'LineString') {
+			lineParser(geometry.coordinates)
 		} else {
+			console.log(`Unhandled geometry type: ${geometry.type}`)
+			//most likely something like this, worth a go
 			lineParser(geometry.coordinates)
 		}
 	})

@@ -11,9 +11,14 @@ var GeoJsonTranslator = leaflet.Class.extend({
 	},
 
 	_showAsSelected: function (layer) {
-		layer.setStyle({
-			weight: selectedOutlineWidth
-		})
+		// check first if we _can_ style, as some layers can be things like Marker objects which
+		// don't have a setStyle function - this feels hacky but that's what they do in leaflet
+		// (see https://github.com/Leaflet/Leaflet/blob/5e9e3c74902af8fbd834e483870c838a9d436e49/src/layer/GeoJSON.js#L156)
+		if (layer.setStyle) {
+			layer.setStyle({
+				weight: selectedOutlineWidth
+			})
+		}
 	},
 
 	_extractName: function (feature) {
