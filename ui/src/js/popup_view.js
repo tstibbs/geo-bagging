@@ -1,6 +1,7 @@
 import _ from 'underscore'
 
 const maxDisplayTextLength = 100
+const maxDisplayArrayLength = 10
 
 export default {
 	notEmpty: function (input) {
@@ -11,6 +12,15 @@ export default {
 		//truncate values if they are long, to prevent popup boxes getting too large
 		if (value.length > maxDisplayTextLength) {
 			return value.substring(0, maxDisplayTextLength - 3) + '...'
+		} else {
+			return value
+		}
+	},
+
+	_truncateDisplayArray: function (value) {
+		//truncate values if they are long, to prevent popup boxes getting too large
+		if (value.length > maxDisplayArrayLength) {
+			return [...value.slice(0, maxDisplayArrayLength), '...']
 		} else {
 			return value
 		}
@@ -70,6 +80,7 @@ export default {
 					popupText += '<span class="popup-entry-key">' + key + ': </span>'
 					if (Array.isArray(value)) {
 						if (value.length > 1) {
+							value = this._truncateDisplayArray(value)
 							popupText += '<ul class="popup-entry-list">'
 							for (var i = 0; i < value.length; i++) {
 								popupText += '<li>' + this._buildValue(value[i]) + '</li>'
