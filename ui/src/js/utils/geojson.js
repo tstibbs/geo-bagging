@@ -27,7 +27,7 @@ export function calcGeoJsonBounds(geoJson) {
 		var lineParser = function (line) {
 			line.forEach(pointParser)
 		}
-		if (geometry.type == 'MultiLineString') {
+		if (geometry.type == 'MultiLineString' || geometry.type == 'Polygon') {
 			geometry.coordinates.forEach(lineParser)
 		} else if (geometry.type == 'MultiPolygon') {
 			geometry.coordinates.forEach(polygon => polygon.forEach(lineParser))
