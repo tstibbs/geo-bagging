@@ -49,6 +49,8 @@ export function calcGeoJsonBounds(geoJson) {
 }
 
 export function rawGpxToGeoJson(gpxAsString) {
+	//xml editing in nodejs is hard, so quick and dirty replace for common mistake in gpx files (url tag with value used instead of link tag with attribute)
+	gpxAsString = gpxAsString.replace(/<url( [^>]+)?>(.+)<\/url>/g, `<link href="$2"></link>`)
 	var dom = new DOMParser().parseFromString(gpxAsString, 'text/xml')
 	var geoJson = toGeoJSON(dom)
 	return geoJson

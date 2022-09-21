@@ -29,6 +29,36 @@ var GeoJsonTranslator = leaflet.Class.extend({
 		}
 	},
 
+	_buildExtraInfos: function (featureProperties) {
+		//filter out blanks
+		let infos = Object.entries(featureProperties).filter(([key, value]) => value != null && `${value}`.length > 0)
+		//now get the props into shape for displaying
+		const gpxPropsToIgnore = ['sym', '_gpxType', 'coordTimes', 'name', 'Name'] //name is handled seperately
+		const gpxPrefixesToIgnore = ['SHAPE_']
+		const filterPropName = propName => {
+			return !gpxPropsToIgnore.includes(propName) && !gpxPrefixesToIgnore.some(prefix => propName.startsWith(prefix))
+		}
+		//filter out some gpx properties we know we don't want
+		infos = infos
+			.filter(([key, value]) => filterPropName(key))
+			//translate links from gpx into our format
+			.map(([key, value]) => {
+				if (Array.isArray(value)) {
+					value = value.map(entry => {
+						let linkValues = Object.entries(entry)
+						if (linkValues.length == 1 && linkValues[0][0] == 'href') {
+							let url = linkValues[0][1]
+							return [url, url]
+						} else {
+							return JSON.stringify(entry) //fallback, who knows what the structure is like, not much we can do
+						}
+					})
+				}
+				return [key, value]
+			})
+		return infos
+	},
+
 	dataToLayers: function (layerDatas) {
 		//add the new layers
 		let newLayers = Object.fromEntries(
@@ -53,7 +83,8 @@ var GeoJsonTranslator = leaflet.Class.extend({
 						let name = this._extractName(feature)
 						if (name) {
 							var visited = null //not supported on geojson sources for now
-							var popup = popupView.buildPopup(this._manager, name, url, null, extraInfos, visited)
+							let featureExtraInfos = extraInfos != undefined ? extraInfos : this._buildExtraInfos(feature.properties)
+							var popup = popupView.buildPopup(this._manager, name, url, null, featureExtraInfos, visited)
 							layer.bindPopup(popup)
 							if (!(name in nameToFeatures)) {
 								nameToFeatures[name] = []
