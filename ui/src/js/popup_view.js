@@ -1,15 +1,26 @@
 import _ from 'underscore'
 
+const maxDisplayTextLength = 100
+
 export default {
 	notEmpty: function (input) {
 		return input !== undefined && input !== null && input.length > 0
 	},
 
-	_buildValue: function (value) {
-		if (Array.isArray(value) && value.length == 2) {
-			return '<a href="' + value[1] + '">' + value[0] + '</a>'
+	_truncateDisplayString: function (value) {
+		//truncate values if they are long, to prevent popup boxes getting too large
+		if (value.length > maxDisplayTextLength) {
+			return value.substring(0, maxDisplayTextLength - 3) + '...'
 		} else {
 			return value
+		}
+	},
+
+	_buildValue: function (value) {
+		if (Array.isArray(value) && value.length == 2) {
+			return '<a href="' + this._truncateDisplayString(value[1]) + '">' + value[0] + '</a>'
+		} else {
+			return this._truncateDisplayString(value)
 		}
 	},
 
