@@ -21,19 +21,56 @@ var GeoJsonTranslator = leaflet.Class.extend({
 		}
 	},
 
-	_extractName: function (feature) {
-		if (feature && feature.properties && feature.properties.name) {
-			return feature.properties.name
-		} else {
-			return null
+	_extractName: function (feature, extraInfos, fileName) {
+		const findAndExtract = (regex, fallback) => {
+			let index = extraInfos.findIndex(([key, value]) => regex.test(key))
+			if (index != -1) {
+				let value = extraInfos[index][1]
+				if (value != null && `${value}`.length > 0) {
+					if (fallback) {
+						//if it's a fallback property then prefix with the file name, otherwise it's unlikely it will make much sense
+						value = `${fileName} / ${value}`
+					} else {
+						//if the property was something like 'name' then remove the element so it isn't shown in the infos section
+						extraInfos.splice(index, 1)
+					}
+					return value //stop looking
+				}
+			}
 		}
+		let name = null
+		// properties that could be used for the name, in order of preference
+		const nameProperties = [/name/, /Name/, /name/i]
+		const fallBackProperties = [/ID/i, /OBJECTID/i, /GLOBALID/i]
+		for (let nameRegex of nameProperties) {
+			name = findAndExtract(nameRegex, false)
+			if (name != null) {
+				break
+			}
+		}
+		if (name == null) {
+			for (let nameRegex of fallBackProperties) {
+				name = findAndExtract(nameRegex, true)
+				if (name != null) {
+					break
+				}
+			}
+		}
+		//fallback if nothing suitable found
+		if (name == null) {
+			name = fileName
+		}
+		if (feature.properties == null) {
+			feature.properties = {}
+		}
+		feature.properties.name = name
 	},
 
 	_buildExtraInfos: function (featureProperties) {
 		//filter out blanks
 		let infos = Object.entries(featureProperties).filter(([key, value]) => value != null && `${value}`.length > 0)
 		//now get the props into shape for displaying
-		const gpxPropsToIgnore = ['sym', '_gpxType', 'coordTimes', 'name', 'Name'] //name is handled seperately
+		const gpxPropsToIgnore = ['sym', '_gpxType', 'coordTimes']
 		const gpxPrefixesToIgnore = ['SHAPE_']
 		const filterPropName = propName => {
 			return !gpxPropsToIgnore.includes(propName) && !gpxPrefixesToIgnore.some(prefix => propName.startsWith(prefix))
@@ -68,9 +105,9 @@ var GeoJsonTranslator = leaflet.Class.extend({
 				const onFeatureClick = e => {
 					let layer = e.target
 					this._showAsSelected(layer)
-					let name = this._extractName(layer.feature)
-					if (name) {
-						let layers = nameToFeatures[name]
+					let featureName = layer.feature.properties.name
+					if (featureName) {
+						let layers = nameToFeatures[featureName]
 						if (layer != null) {
 							layers.forEach(this._showAsSelected)
 						}
@@ -80,17 +117,16 @@ var GeoJsonTranslator = leaflet.Class.extend({
 					weight: this._initialOutlineWidth, //stroke width in pixels - aka border width
 					color: this._colour,
 					onEachFeature: (feature, layer) => {
-						let name = this._extractName(feature)
-						if (name) {
-							var visited = null //not supported on geojson sources for now
-							let featureExtraInfos = extraInfos != undefined ? extraInfos : this._buildExtraInfos(feature.properties)
-							var popup = popupView.buildPopup(this._manager, name, url, null, featureExtraInfos, visited)
-							layer.bindPopup(popup)
-							if (!(name in nameToFeatures)) {
-								nameToFeatures[name] = []
-							}
-							nameToFeatures[name].push(layer)
+						let featureExtraInfos = extraInfos != undefined ? extraInfos : this._buildExtraInfos(feature.properties)
+						this._extractName(feature, featureExtraInfos, name)
+						let featureName = feature.properties.name
+						var visited = null //not supported on geojson sources for now
+						var popup = popupView.buildPopup(this._manager, featureName, url, null, featureExtraInfos, visited)
+						layer.bindPopup(popup)
+						if (!(featureName in nameToFeatures)) {
+							nameToFeatures[featureName] = []
 						}
+						nameToFeatures[featureName].push(layer)
 						layer.on({
 							click: onFeatureClick
 						})
