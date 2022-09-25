@@ -1,0 +1,19 @@
+{
+	"name": "@tstibbs/geo-bagging-backend",
+	"private": true,
+	"type": "module",
+	"devDependencies": {
+		"@tstibbs/cloud-core-utils": "file:../../cloud-core/aws/utils",
+		"aws-cdk": "2.38.0",
+		"aws-cdk-lib": "2.38.0",
+		"jest": "28.1.3"
+	},
+	"scripts": {
+		"test": "cdk-tools testcdk",
+		"testsynth": "cdk-tools testsynth"
+	},
+	"dependencies": {
+		"aws-sdk": "2.1196.0",
+		"dotenv": "16.0.1"
+	}
+}

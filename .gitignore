@@ -4,6 +4,7 @@ tmp/
 backend/cdk.out/*
 !backend/cdk.out/package.json
 backend/cdk.tmp/
+cdk.context.json
 
 
 # Created by https://www.toptal.com/developers/gitignore/api/node
