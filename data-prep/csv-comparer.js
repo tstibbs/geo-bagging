@@ -168,6 +168,7 @@ class CsvComparer {
 		let results = dataToLocation[dataMutation][locationMutation]
 		if (results.length > 0) {
 			this._print(`==========\n${descriptor}\n`)
+			results = _.sortBy(results, 'distance')
 			results.forEach(result => {
 				if (result.distance != null) {
 					this._print(`${result.newRow[this._indexId]} moved ${result.distance}m`)

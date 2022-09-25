@@ -8,7 +8,7 @@ const downloadSources = [
 	'follies',
 	'rnli',
 	'nationalparks',
-	'coastallandmarks',
+	// 'coastallandmarks', //removed due to changes in source data that we haven't yet been able to account for
 	'nt'
 ]
 const processingSources = [
