@@ -18,7 +18,7 @@ let s3 = new aws.S3()
 const args = process.argv.slice(2)
 if (args.length < 1) {
 	console.error(
-		'Usage: node tools/upload.js sourcesToUpload... [including source sub identifier e.g. hills/data hills/data_all'
+		'Usage: node tools/upload.js sourcesToUpload... [including source sub identifier e.g. hills/data hills/data_all.json'
 	)
 	process.exit(1)
 }
@@ -57,8 +57,7 @@ async function upload(prefix, fileName, body, contentType) {
 	assert.notEqual(uploadResponse.Location, undefined)
 }
 
-for (const source of sourcesToUpload) {
-	const mainFileName = `${source}.json`
+for (const mainFileName of sourcesToUpload) {
 	const mainFilePath = `../ui/src/js/bundles/${mainFileName}`
 	const mainContentStream = createReadStream(mainFilePath)
 	await upload(GB_DATA_PATH, mainFileName, mainContentStream, 'application/json')
