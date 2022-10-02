@@ -1,14 +1,14 @@
 import AbstractBundleBuilder from './abstract_bundle_builder.js'
 
 var PointsBuilder = AbstractBundleBuilder.extend({
-	initialize: function (manager, bundleConfig, bundleName, urlPrefix) {
-		AbstractBundleBuilder.prototype.initialize.call(this, manager, bundleConfig, bundleName, urlPrefix)
+	initialize: function (manager, bundleConfig, bundleName) {
+		AbstractBundleBuilder.prototype.initialize.call(this, manager, bundleConfig, bundleName)
 		this._markerList = null
 		this._bundleConfig = bundleConfig
 	},
 
-	fetchData: function (urlPrefix) {
-		return this._doFetchData(urlPrefix).done(
+	fetchData: function () {
+		return this._doFetchData().done(
 			function (data) {
 				this.addMarkers(data)
 			}.bind(this)

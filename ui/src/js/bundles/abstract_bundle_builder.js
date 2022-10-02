@@ -3,18 +3,18 @@ import $ from 'jquery'
 import constants from '../constants.js'
 
 var AbstractBundleBuilder = leaflet.Class.extend({
-	initialize: function (manager, bundleConfig, bundleName, urlPrefix) {
+	initialize: function (manager, bundleConfig, bundleName) {
 		this._markerList = null
 		this._manager = manager
 		this._config = manager.getConfig()
 		this._bundleConfig = bundleConfig
 		this._bundleName = bundleName.indexOf('/') == -1 ? bundleName : bundleName.substring(0, bundleName.lastIndexOf('/'))
-		this._urlPrefix = urlPrefix != null ? urlPrefix : ''
+		this._urlPrefix = this._bundleConfig.dataLocationUrlPrefix ?? `${this._config.baseUrl}bundles/`
 		this._visits = []
 	},
 
 	_buildDataUrl: function () {
-		return this._urlPrefix + 'bundles/' + this._bundleName + '/' + this._bundleConfig.dataToLoad
+		return this._urlPrefix + this._bundleName + '/' + this._bundleConfig.dataToLoad
 	},
 
 	_doFetchData: function () {
@@ -30,7 +30,7 @@ var AbstractBundleBuilder = leaflet.Class.extend({
 		if (this._manager.shouldManageVisits()) {
 			//not loading visits is ok, because we won't display the info either if not authenticated
 			var visitsLoadPromise = $.get({
-				url: constants.backendBaseUrl + 'listVisits?source=' + this._bundleName,
+				url: constants.apiBackendBaseUrl + 'listVisits?source=' + this._bundleName,
 				dataType: 'json',
 				xhrFields: {
 					withCredentials: true

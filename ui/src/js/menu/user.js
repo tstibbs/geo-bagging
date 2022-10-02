@@ -8,7 +8,7 @@ var UserMenu = leaflet.Class.extend({
 		if (manager.isAuthenticated()) {
 			this._view.append($('<span>Logged in as ' + manager.getLoggedInUser() + '</span>'))
 		} else {
-			this._view.append($('<a href="' + constants.backendBaseUrl + 'login">Click here to log in</a>'))
+			this._view.append($('<a href="' + constants.apiBackendBaseUrl + 'login">Click here to log in</a>'))
 		}
 	},
 

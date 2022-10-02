@@ -1,7 +1,7 @@
-import leaflet from 'VendorWrappers/leaflet.js'
 import pointsBuilder from './points_builder.js'
 import CustomDefaultIcon from '../../custom_default_icon.js'
 import pillarIcon from '../../../img/pillar.png'
+import constants from '../../constants.js'
 
 var dimensionNames = ['Type', 'Condition']
 var dimensionValueKeys = [
@@ -49,6 +49,7 @@ export default function build(config) {
 		dimensionValueLabels: dimensionValueLabels,
 		parser: pointsBuilder,
 		attribution:
-			'&copy; <a href="http://trigpointing.uk">trigpointing.uk</a> and licenced by Ordnance Survey under the <a href="http://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/">Open Government Licence</a>.'
+			'&copy; <a href="http://trigpointing.uk">trigpointing.uk</a> and licenced by Ordnance Survey under the <a href="http://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/">Open Government Licence</a>.',
+		dataLocationUrlPrefix: constants.dataBackendBaseUrl
 	}
 }

@@ -8,7 +8,6 @@ var defaultPageId = global.location.pathname.split('/').pop()
 
 var defaults = {
 	baseUrl: window.geoBaggingBaseUrl != null ? window.geoBaggingBaseUrl : '',
-	remoteData: false,
 	map_style: 'full', //full, mini, embedded
 	cluster: true,
 	dimensional_layering: false,
@@ -57,9 +56,6 @@ var Config = leaflet.Class.extend({
 			resolvedConfig.initial_zoom = params.test('startZoom')
 		}
 		this._buildMarkerConstraints(resolvedConfig)
-		if (params.test('remoteData') == 'true') {
-			resolvedConfig.remoteData = true
-		}
 
 		//set all values locally so that the exporter object works like a hash
 		for (var property in resolvedConfig) {

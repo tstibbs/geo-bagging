@@ -13,8 +13,8 @@ export default function build(config) {
 			})
 		},
 		parser: TrigsPointsBuilder.extend({
-			initialize: function (manager, bundleConfig, bundleName, urlPrefix) {
-				TrigsPointsBuilder.prototype.initialize.call(this, manager, bundleConfig, bundleName, urlPrefix)
+			initialize: function (manager, bundleConfig, bundleName) {
+				TrigsPointsBuilder.prototype.initialize.call(this, manager, bundleConfig, bundleName)
 				var generalPoints = this._config.pointsToLoad.generalPoints
 				for (var i = 0; i < generalPoints.length; i++) {
 					var point = generalPoints[i]

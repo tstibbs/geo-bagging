@@ -28,17 +28,12 @@ var SourceLoader = leaflet.Class.extend({
 				sources[sourceModuleIds[i]] = sourceModule
 			})
 
-			//https://cdn.jsdelivr.net/gh/tstibbs/geo-bagging@gh-pages/js/bundles/nt/data.json
-			var sourceDataPrefix = this._config.remoteData
-				? 'https://cdn.jsdelivr.net/gh/tstibbs/geo-bagging@gh-pages'
-				: this._config.baseUrl //some mobile browsers don't support local ajax, so this provides a workaround for dev on mobile devices.
-
 			var sourceModels = {}
 			var lazyModels = {}
 			var promises = Object.keys(sources).map(
 				function (sourceName) {
 					var source = sources[sourceName]
-					var parser = new source.parser(this._manager, source, sourceName, sourceDataPrefix)
+					var parser = new source.parser(this._manager, source, sourceName)
 
 					var metaPromise = parser.fetchMeta()
 					if (selectedSourceIds.indexOf(sourceName) != -1) {

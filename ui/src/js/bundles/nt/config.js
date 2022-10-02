@@ -1,4 +1,5 @@
 import PointsBuilder from './points_builder.js'
+import constants from '../../constants.js'
 
 var dimensionNames = ['Type', 'Facilities']
 
@@ -32,5 +33,6 @@ export default {
 	dimensionValueLabels: dimensionValueLabels,
 	dataToLoad: 'data.json',
 	parser: PointsBuilder,
-	attribution: '&copy; National Trust'
+	attribution: '&copy; National Trust',
+	dataLocationUrlPrefix: constants.dataBackendBaseUrl
 }

@@ -4,15 +4,15 @@ import GeoJsonTranslator from '../utils/geojson-translator.js'
 const colour = '#3388ff'
 
 var GeojsonLayer = AbstractBundleBuilder.extend({
-	initialize: function (manager, bundleConfig, bundleName, urlPrefix) {
-		AbstractBundleBuilder.prototype.initialize.call(this, manager, bundleConfig, bundleName, urlPrefix)
+	initialize: function (manager, bundleConfig, bundleName) {
+		AbstractBundleBuilder.prototype.initialize.call(this, manager, bundleConfig, bundleName)
 		this._data = null
 		this._bundleConfig = bundleConfig
 		this._translator = new GeoJsonTranslator(manager, colour, bundleConfig.initialOutlineWidth)
 	},
 
-	fetchData: function (urlPrefix) {
-		return this._doFetchData(urlPrefix).done(
+	fetchData: function () {
+		return this._doFetchData().done(
 			function (data) {
 				this._data = data
 			}.bind(this)
