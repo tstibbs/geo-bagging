@@ -21,12 +21,6 @@ rm -rf *
 cp -R $codeDir/ui/dist/* ./
 git add .
 
-# fix up data sources not in the built package
-git checkout HEAD -- bundles/nt/*.json
-git checkout HEAD -- bundles/nt/*.json.meta
-git checkout HEAD -- bundles/trigs/*.json
-git checkout HEAD -- bundles/trigs/*.json.meta
-
 if ! git diff-index --quiet HEAD
 then
 	git commit -m "Deploying $revision"
