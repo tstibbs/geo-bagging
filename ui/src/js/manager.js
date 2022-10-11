@@ -15,7 +15,7 @@ var Manager = leaflet.Class.extend({
 			this._initializePromise = $.Deferred(
 				function (deferred) {
 					$.get({
-						url: constants.apiBackendBaseUrl + 'isAuthenticated',
+						url: constants.legacyApiBackendBaseUrl + 'isAuthenticated',
 						xhrFields: {
 							withCredentials: true
 						}

@@ -41,7 +41,7 @@ export default {
 					endpoint = 'removeVisit'
 				}
 				$.post({
-					url: constants.apiBackendBaseUrl + endpoint,
+					url: constants.legacyApiBackendBaseUrl + endpoint,
 					data: JSON.stringify({
 						source: aspectName,
 						name: markerConfig.id

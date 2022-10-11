@@ -1,6 +1,7 @@
 import $ from 'jquery'
 import conversion from '../conversion.js'
 import mapLoader from '../map_loader.js'
+import constants from '../constants.js'
 
 export default {
 	showMap: function () {
@@ -72,49 +73,69 @@ export default {
 		var lng = lngLat[0]
 		var lat = lngLat[1]
 
-		var searchUrl = $("a:contains('trigpoints')").attr('href')
-		$.ajax(searchUrl).done(
-			function (res, status, xhr) {
-				var $searchResult = $($.parseHTML(res))
-				var flashLink = $searchResult.find("a:contains('Interactive Map')").attr('href')
-				var suffix = '?' + flashLink.split('?')[1]
-				this.getPointsFromSearch(suffix, function (points) {
-					var mapDiv = $('map[name="trigmap"]').parent()
-					mapDiv.empty()
+		const fetchSearchResults = searchUrl => {
+			$.ajax(searchUrl).done(
+				function (res, status, xhr) {
+					var $searchResult = $($.parseHTML(res))
+					var flashLink = $searchResult.find("a:contains('Interactive Map')").attr('href')
+					var suffix = '?' + flashLink.split('?')[1]
+					this.getPointsFromSearch(suffix, function (points) {
+						var mapDiv = $('map[name="trigmap"]').parent()
+						mapDiv.empty()
 
-					//get 'this' trig id
-					var id = window.location.pathname.split(/\//).pop()
-					id = /0*([^0].*)/.exec(id)[1] //strip any leading zeros
+						//get 'this' trig id
+						var id = window.location.pathname.split(/\//).pop()
+						id = /0*([^0].*)/.exec(id)[1] //strip any leading zeros
 
-					var significantPoint = null
-					points = points.filter(function (point) {
-						if (point.id == id) {
-							significantPoint = point
-							return false
-						} else {
-							return true
+						var significantPoint = null
+						points = points.filter(function (point) {
+							if (point.id == id) {
+								significantPoint = point
+								return false
+							} else {
+								return true
+							}
+						})
+						var options = {
+							map_style: 'mini_embedded',
+							cluster: false,
+							hider_control_start_visible: false,
+							show_hider_control: true,
+							start_position: [lat, lng],
+							map_outer_container_element: mapDiv,
+							pointsToLoad: {
+								significantPoint: significantPoint,
+								generalPoints: points
+							},
+							force_config_override: true,
+							initial_zoom: 13,
+							use_sidebar: false
 						}
-					})
-					var options = {
-						map_style: 'mini_embedded',
-						cluster: false,
-						hider_control_start_visible: false,
-						show_hider_control: true,
-						start_position: [lat, lng],
-						map_outer_container_element: mapDiv,
-						pointsToLoad: {
-							significantPoint: significantPoint,
-							generalPoints: points
-						},
-						force_config_override: true,
-						initial_zoom: 13,
-						use_sidebar: false
-					}
 
-					mapLoader.loadMap(options)
+						mapLoader.loadMap(options)
+					})
+				}.bind(this)
+			)
+		}
+		var searchUrl = $("a:contains('trigpoints')").attr('href')
+		let matches = searchUrl.match(/^\/trigs\/search-parse.php\?trig=([\d\w]+)$/)
+		if (matches != null) {
+			//if the URL is in the format that our redirector service can handle
+			let redirectFetcherUrl = `${constants.integrationBackendBaseUrl}trigs/search-parse.php/${matches[1]}`
+			$.ajax(redirectFetcherUrl)
+				.done((res, status, xhr) => {
+					if (res.redirectTo != null && res.redirectTo.length > 0) {
+						searchUrl = res.redirectTo
+					}
+					fetchSearchResults(searchUrl) //may hit https/cors issues, but worth trying if we've failed to get an alternative URL
 				})
-			}.bind(this)
-		)
+				.fail(error => {
+					console.error(error)
+					fetchSearchResults(searchUrl) //may hit https/cors issues, but worth trying if we've failed to get an alternative URL
+				})
+		} else {
+			fetchSearchResults(searchUrl) //may hit https/cors issues, but worth trying if we've failed to get an alternative URL
+		}
 	},
 
 	getPointsFromSearch: function (suffix, callback) {

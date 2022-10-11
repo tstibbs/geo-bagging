@@ -30,7 +30,7 @@ var AbstractBundleBuilder = leaflet.Class.extend({
 		if (this._manager.shouldManageVisits()) {
 			//not loading visits is ok, because we won't display the info either if not authenticated
 			var visitsLoadPromise = $.get({
-				url: constants.apiBackendBaseUrl + 'listVisits?source=' + this._bundleName,
+				url: constants.legacyApiBackendBaseUrl + 'listVisits?source=' + this._bundleName,
 				dataType: 'json',
 				xhrFields: {
 					withCredentials: true
