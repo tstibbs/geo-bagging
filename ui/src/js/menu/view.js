@@ -3,6 +3,7 @@ import leaflet from 'VendorWrappers/leaflet.js'
 import LeafletSidebar from 'VendorWrappers/sidebar.js'
 import AttributionView from './attribution.js'
 import UserView from './user.js'
+import SettingsView from './settings/view.js'
 import ConstraintsView from './constraints/view.js'
 import ExternalFilesView from './external-files/files_load_panel.js'
 import params from '../params.js'
@@ -26,6 +27,7 @@ var MenuView = leaflet.Class.extend({
 		view += '    <div class="sidebar-tabs">'
 		view += '        <ul role="tablist">'
 		view += '            <li><a href="#sidebar-layers" role="tab"><i class="fa fa-bars"></i></a></li>'
+		view += '            <li><a href="#sidebar-settings" role="tab"><i class="fa fa-sliders"></i></a></li>'
 		view += '            <li><a href="#sidebar-constraints" role="tab"><i class="fa fa-map-o"></i></a></li>'
 		view += '            <li><a href="#sidebar-external-files" role="tab"><i class="fa fa-plus-square-o"></i></a></li>'
 		view += '        </ul>'
@@ -44,6 +46,10 @@ var MenuView = leaflet.Class.extend({
 		view += '        <div id="sidebar-layers" class="sidebar-pane">'
 		view +=
 			'            <h1 class="sidebar-header">Layers<span class="sidebar-close"><i class="fa fa-caret-left"></i></span></h1>'
+		view += '        </div>'
+		view += '        <div id="sidebar-settings" class="sidebar-pane">'
+		view +=
+			'            <h1 class="sidebar-header">Settings<span class="sidebar-close"><i class="fa fa-caret-left"></i></span></h1>'
 		view += '        </div>'
 		view += '        <div id="sidebar-constraints" class="sidebar-pane">'
 		view +=
@@ -77,6 +83,9 @@ var MenuView = leaflet.Class.extend({
 			var userView = new UserView(this._manager)
 			$('#sidebar-user', this._view).append(userView.getView())
 		}
+
+		var settingsView = new SettingsView(this._manager)
+		$('#sidebar-settings', this._view).append(settingsView.getView())
 
 		var constraintsView = new ConstraintsView(this._manager)
 		$('#sidebar-constraints', this._view).append(constraintsView.getView())

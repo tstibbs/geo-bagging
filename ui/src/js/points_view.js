@@ -2,8 +2,10 @@ import _ from 'underscore'
 import $ from 'jquery'
 import leaflet from 'leaflet'
 import leaflet_cluster from 'VendorWrappers/leaflet-marker-cluster.js'
+import 'leaflet.markercluster.freezable' //side effects on leaflet_cluster
 import LeafletSubgroup from 'VendorWrappers/leaflet-subgroup.js'
 import markerView from './marker_view.js'
+import {ENABLE_CLUSTERING_EVENT, DISABLE_CLUSTERING_EVENT} from './menu/settings/clustering_enabled_control.js'
 
 var PointsView = leaflet.Class.extend({
 	initialize: function (map, config, modelsByAspect, matrixLayerControl, controls, bundles, manager) {
@@ -48,6 +50,12 @@ var PointsView = leaflet.Class.extend({
 						deferredObject.resolve()
 					}
 				}
+			})
+			this._map.on(ENABLE_CLUSTERING_EVENT, () => {
+				this._parentGroup.enableClustering()
+			})
+			this._map.on(DISABLE_CLUSTERING_EVENT, () => {
+				this._parentGroup.disableClustering()
 			})
 		} else {
 			this._parentGroup = leaflet.layerGroup()
