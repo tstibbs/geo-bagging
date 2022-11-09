@@ -579,6 +579,12 @@
  */
 
 /*!
+ Leaflet.MarkerCluster.Freezable 1.0.0+9db80a3
+ (c) 2015-2016 Boris Seang
+ License MIT
+ */
+
+/*!
 Copyright (c) 2016 Dominik Moritz
 
 This file is part of the leaflet locate control. It is licensed under the MIT license.
