@@ -2,6 +2,7 @@ import leaflet from 'VendorWrappers/leaflet.js'
 import $ from 'jquery'
 import fullscreen_link from './fullscreen_link.js'
 import mobile from './mobile.js'
+import {detectZoomDirection} from './leaflet-plugins/zoom-detector.js'
 
 var MapView = leaflet.Class.extend({
 	initialize: function (config) {
@@ -28,6 +29,9 @@ var MapView = leaflet.Class.extend({
 			},
 			this
 		)
+
+		//hook up zoom in/out detector
+		detectZoomDirection(this._map)
 	},
 
 	//creates the html we need to display errors, loading screen and the map container
