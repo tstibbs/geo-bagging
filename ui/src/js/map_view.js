@@ -3,6 +3,7 @@ import $ from 'jquery'
 import fullscreen_link from './fullscreen_link.js'
 import mobile from './mobile.js'
 import {detectZoomDirection} from './leaflet-plugins/zoom-detector.js'
+import {maxOverallZoom, minOverallZoom} from './layers.js'
 
 var MapView = leaflet.Class.extend({
 	initialize: function (config) {
@@ -11,7 +12,10 @@ var MapView = leaflet.Class.extend({
 		// set up the map
 		this._map = new leaflet.Map(this._config.map_element_id, {
 			//these controls will be added by the controls module
-			zoomControl: false
+			zoomControl: false,
+			//set up the min and max zoom first to prevent the min/max changing when layers are loading, as this could change the zoom we set below in setView.
+			minZoom: minOverallZoom,
+			maxZoom: maxOverallZoom
 		})
 
 		//set start point
@@ -75,6 +79,7 @@ var MapView = leaflet.Class.extend({
 				initial_zoom: initial_zoom
 			}
 			this._config.persist(hash)
+			console.debug(JSON.stringify(hash))
 		}
 	},
 

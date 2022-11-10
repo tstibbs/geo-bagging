@@ -41,6 +41,30 @@ var layers = {
 	OSM: osm
 }
 
+function layerZoomExtractor(layers) {
+	let max = 0
+	let min = Number.MAX_SAFE_INTEGER
+	layers.forEach(layer => {
+		if (layer.getLayers) {
+			let {max: subLayersMax, min: subLayersMin} = layerZoomExtractor(layer.getLayers())
+			max = Math.max(max, subLayersMax)
+			min = Math.min(min, subLayersMin)
+		}
+		if (layer.options?.maxZoom) {
+			max = Math.max(max, layer.options.maxZoom)
+		}
+		if (layer.options?.maxZoom) {
+			min = Math.min(min, layer.options.minZoom)
+		}
+	})
+	return {
+		max,
+		min
+	}
+}
+//now go back through all layers and compile the overall min and max - this is safer than trying to know it up front and then enforce it on the layers
+const {max: maxOverallZoom, min: minOverallZoom} = layerZoomExtractor(Object.values(layers))
+
 function _listenForLayerChange(layerId, layer, config) {
 	layer.on(
 		'add',
@@ -68,3 +92,4 @@ var LayerAdder = function (map, config) {
 }
 
 export default LayerAdder
+export {maxOverallZoom, minOverallZoom}
