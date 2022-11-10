@@ -29,12 +29,12 @@
 		"webpack-merge": "^5.7.3"
 	},
 	"dependencies": {
-		"@tmcw/togeojson": "^4.3.0",
+		"@tmcw/togeojson": "^5.4.0",
 		"Leaflet.MapCenterCoord": "git+https://tstibbs@github.com/xguaita/Leaflet.MapCenterCoord.git",
 		"file-saver": "^2.0.5",
 		"font-awesome": "^4.7.0",
-		"jquery": "^3.5.1",
-		"leaflet": "^1.7.1",
+		"jquery": "^3.6.1",
+		"leaflet": "^1.9.2",
 		"leaflet-box-selector": "git+https://tstibbs@github.com/tstibbs/Leaflet.BoxSelector.git",
 		"leaflet-control-hider": "git+https://tstibbs@github.com/tstibbs/Leaflet.ControlHider.git",
 		"leaflet-geosearch": "git+https://tstibbs@github.com/tstibbs/L.GeoSearch.git#bing_jsonp",
@@ -42,12 +42,12 @@
 		"leaflet-mouse-position": "^1.2.0",
 		"leaflet-plugins": "^3.4.0",
 		"leaflet.featuregroup.subgroup": "^1.0.2",
-		"leaflet.locatecontrol": "^0.72.2",
-		"leaflet.markercluster": "^1.4.1",
+		"leaflet.locatecontrol": "^0.78.0",
+		"leaflet.markercluster": "^1.5.3",
 		"leaflet.markercluster.freezable": "^1.0.0",
-		"proj4": "^2.7.0",
+		"proj4": "^2.8.0",
 		"sidebar-v2": "^0.4.0",
-		"underscore": "^1.12.0"
+		"underscore": "^1.13.6"
 	},
 	"scripts": {
 		"prebuild": "rm -rf dist/*",
