@@ -1,7 +1,6 @@
 import leaflet from 'VendorWrappers/leaflet.js'
 import $ from 'jquery'
 import FilesView from '../external-files/files_view.js'
-import {calcGeoJsonBounds} from '../../utils/geojson.js'
 
 var FileLoadView = leaflet.Class.extend({
 	initialize: function (manager, bundle) {
@@ -50,11 +49,10 @@ var FileLoadView = leaflet.Class.extend({
 	},
 
 	_parseFileContents: function (fileContents) {
-		var geoJson = this._bundle.fileContentsParser(fileContents)
-		var bounds = calcGeoJsonBounds(geoJson)
+		const {features, bounds} = this._bundle.fileContentsParser(fileContents)
 		return {
-			features: geoJson,
-			bounds: bounds
+			features,
+			bounds
 		}
 	},
 

@@ -68,7 +68,10 @@ var GeoJsonTranslator = leaflet.Class.extend({
 
 	_buildExtraInfos: function (featureProperties) {
 		//filter out blanks
-		let infos = Object.entries(featureProperties).filter(([key, value]) => value != null && `${value}`.length > 0)
+		let infos = []
+		if (featureProperties != null) {
+			infos = Object.entries(featureProperties).filter(([key, value]) => value != null && `${value}`.length > 0)
+		}
 		//now get the props into shape for displaying
 		const gpxPropsToIgnore = ['sym', '_gpxType', 'coordTimes']
 		const gpxPrefixesToIgnore = ['SHAPE_']

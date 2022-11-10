@@ -1,8 +1,9 @@
 import $ from 'jquery'
 import leaflet from 'VendorWrappers/leaflet.js'
-import FileConstraintsLoadView from './track_load_view.js'
+import TrackConstraintsLoadView from './track_load_view.js'
 import CurrentLocationView from './current_location_view.js'
 import CurrentAreaView from './current_area_view.js'
+import {GeoJsonConstraintLoadView} from './geo-json-load-view.js'
 
 var ConstraintsView = leaflet.Class.extend({
 	initialize: function (manager) {
@@ -21,8 +22,11 @@ var ConstraintsView = leaflet.Class.extend({
 		var currentLocationView = new CurrentLocationView(manager, this)
 		this._view.append(currentLocationView.getView())
 
-		this._fileConstraintsLoadView = new FileConstraintsLoadView(manager, this)
-		this._view.append(this._fileConstraintsLoadView.getView())
+		this._trackConstraintsLoadView = new TrackConstraintsLoadView(manager, this)
+		this._view.append(this._trackConstraintsLoadView.getView())
+
+		this._geoJsonConstraintLoadView = new GeoJsonConstraintLoadView(manager, this)
+		this._view.append(this._geoJsonConstraintLoadView.getView())
 
 		var reset = this._buildReset()
 		this._view.append(reset)

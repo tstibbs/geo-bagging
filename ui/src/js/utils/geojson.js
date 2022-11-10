@@ -2,11 +2,14 @@ import leaflet from 'VendorWrappers/leaflet.js'
 import {gpx as toGeoJSON} from '@tmcw/togeojson'
 
 export function calcGeoJsonBounds(geoJson) {
-	var minLng
-	var maxLng
-	var minLat
-	var maxLat
-	geoJson.features.forEach(function (feature) {
+	if (geoJson.type !== 'FeatureCollection') {
+		console.log(`incompatible geoJson.type=${geoJson.type}, attempting to parse anyway...`)
+	}
+	let multiBounds = geoJson.features.map(function (feature) {
+		var minLng = null
+		var maxLng = null
+		var minLat = null
+		var maxLat = null
 		var geometry = feature.geometry
 		const pointParser = point => {
 			var lng = point[0]
@@ -33,19 +36,20 @@ export function calcGeoJsonBounds(geoJson) {
 			geometry.coordinates.forEach(polygon => polygon.forEach(lineParser))
 		} else if (geometry.type == 'Point') {
 			pointParser(geometry.coordinates)
-		} else if (geometry.type == 'LineString') {
+		} else if (geometry.type == 'LineString' || geometry.type == 'MultiPoint') {
 			lineParser(geometry.coordinates)
 		} else {
 			console.log(`Unhandled geometry type: ${geometry.type}`)
 			//most likely something like this, worth a go
 			lineParser(geometry.coordinates)
 		}
+		var latAdjustment = 0.005 //just to extend the bounding box a bit
+		var lngAdjustment = 0.01
+		var bottomLeft = [minLat - latAdjustment, minLng - lngAdjustment]
+		var topRight = [maxLat + latAdjustment, maxLng + lngAdjustment]
+		return leaflet.latLngBounds(bottomLeft, topRight)
 	})
-	var latAdjustment = 0.005 //just to extend the bounding box a bit
-	var lngAdjustment = 0.01
-	var bottomLeft = [minLat - latAdjustment, minLng - lngAdjustment]
-	var topRight = [maxLat + latAdjustment, maxLng + lngAdjustment]
-	return leaflet.latLngBounds(bottomLeft, topRight)
+	return multiBounds
 }
 
 export function rawGpxToGeoJson(gpxAsString) {
@@ -53,10 +57,18 @@ export function rawGpxToGeoJson(gpxAsString) {
 	gpxAsString = gpxAsString.replace(/<url( [^>]+)?>(.+)<\/url>/g, `<link href="$2"></link>`)
 	var dom = new DOMParser().parseFromString(gpxAsString, 'text/xml')
 	var geoJson = toGeoJSON(dom)
-	return geoJson
+	let multiBounds = calcGeoJsonBounds(geoJson)
+	return {
+		features: geoJson,
+		bounds: multiBounds
+	}
 }
 
 export function rawGeoJsonToGeoJson(geojsonAsString) {
 	let parsed = JSON.parse(geojsonAsString)
-	return parsed
+	let multiBounds = calcGeoJsonBounds(parsed)
+	return {
+		features: parsed,
+		bounds: multiBounds
+	}
 }
