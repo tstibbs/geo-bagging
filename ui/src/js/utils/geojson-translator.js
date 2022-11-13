@@ -73,7 +73,7 @@ var GeoJsonTranslator = leaflet.Class.extend({
 			infos = Object.entries(featureProperties).filter(([key, value]) => value != null && `${value}`.length > 0)
 		}
 		//now get the props into shape for displaying
-		const gpxPropsToIgnore = ['sym', '_gpxType', 'coordTimes']
+		const gpxPropsToIgnore = ['sym', '_gpxType', 'coordTimes', 'coordinateProperties']
 		const gpxPrefixesToIgnore = ['SHAPE_']
 		const filterPropName = propName => {
 			return !gpxPropsToIgnore.includes(propName) && !gpxPrefixesToIgnore.some(prefix => propName.startsWith(prefix))
