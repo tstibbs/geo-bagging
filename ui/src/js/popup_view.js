@@ -38,6 +38,9 @@ export default {
 		if (Array.isArray(value)) {
 			return value.map(this._escapeValue.bind(this))
 		} else {
+			if (typeof value !== 'string') {
+				value = JSON.stringify(value) //prevents '[Object object]' showing up on the ui if this turns out to be an object because of some bad data
+			}
 			return _.escape(value)
 		}
 	},
