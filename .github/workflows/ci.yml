@@ -25,11 +25,7 @@ jobs:
     - name: Set up node
       uses: actions/setup-node@v1
       with:
-        node-version: 14.x
-    - name: Upgrade npm
-      run: npm install -g npm@latest
-    - name: Install node dependencies
-      run: npm install -g aws-cdk
+        node-version: 16.x
     - name: Set up environment
       run: mkdir cdk.tmp
       working-directory: geo-bagging/backend
