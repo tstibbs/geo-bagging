@@ -2,6 +2,9 @@ name: CI
 
 on: [push, pull_request]
 
+env:
+  npm_config_engine_strict: true
+
 jobs:
   build:
 

@@ -1,6 +1,10 @@
 {
 	"name": "@tstibbs/geo-bagging-data-prep",
 	"private": true,
+	"engines": {
+		"node": ">=16",
+		"npm": ">=8"
+	},
 	"type": "module",
 	"dependencies": {
 		"@tstibbs/cloud-core-utils": "file:../../cloud-core/aws/utils",

@@ -1,6 +1,10 @@
 {
 	"name": "@tstibbs/geo-bagging-backend",
 	"private": true,
+	"engines": {
+		"node": ">=16",
+		"npm": ">=8"
+	},
 	"type": "module",
 	"devDependencies": {
 		"@aws-cdk/aws-apigatewayv2-alpha": "^2.38.0-alpha.0",

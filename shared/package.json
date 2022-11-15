@@ -1,5 +1,10 @@
 {
+	"name": "@tstibbs/geo-bagging-shared",
 	"private": true,
+	"engines": {
+		"node": ">=16",
+		"npm": ">=8"
+	},
 	"type": "module",
 	"dependencies": {
 		"es-main": "^1.0.2"
