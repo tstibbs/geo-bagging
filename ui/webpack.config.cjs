@@ -4,7 +4,7 @@ const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const CopyPlugin = require('copy-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
-const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin')
+const CssMinimizerPlugin = require('css-minimizer-webpack-plugin')
 const TerserPlugin = require('terser-webpack-plugin')
 const LicenseWebpackPlugin = require('license-webpack-plugin').LicenseWebpackPlugin
 
@@ -114,7 +114,7 @@ module.exports = {
 				}
 			}
 		},
-		minimizer: [new TerserPlugin(), new OptimizeCssAssetsPlugin({})]
+		minimizer: [new TerserPlugin(), new CssMinimizerPlugin({})]
 	},
 	module: {
 		rules: [
