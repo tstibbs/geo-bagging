@@ -1,6 +1,6 @@
 import {Transform} from 'stream'
 import Stream from 'stream'
-import csv from 'csv'
+import {parse, transform} from 'csv'
 import fs from 'fs'
 import cheerio from 'cheerio'
 import gridconversion from './gridconversion.js'
@@ -124,7 +124,7 @@ class Converter {
 	}
 
 	async writeOutStream(readable, fileName) {
-		let csvParser = csv.parse({
+		let csvParser = parse({
 			relax_column_count: true // extraneous spaces in the headers of the milestones spreadsheets cause it to think some sheets have more columns than they do
 		})
 		await this.writeOutParsedStream(readable.pipe(csvParser), fileName)
@@ -135,7 +135,7 @@ class Converter {
 			this._lineCount = 0
 			let writeStream = fs.createWriteStream(fileName)
 			readable
-				.pipe(csv.transform({parallel: 1}, this._formatLine.bind(this)))
+				.pipe(transform({parallel: 1}, this._formatLine.bind(this)))
 				.pipe(new HeaderFooterTransformer(this._header))
 				.pipe(writeStream)
 			writeStream.on('finish', async () => {

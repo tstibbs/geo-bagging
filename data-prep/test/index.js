@@ -2,5 +2,6 @@
 import {readdirSync} from 'fs'
 
 for (let file of readdirSync('.').filter(entry => entry.endsWith('.js'))) {
-	import(`../${file}`)
+	console.log(file)
+	await import(`../${file}`)
 }

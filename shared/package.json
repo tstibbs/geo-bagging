@@ -7,6 +7,6 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"es-main": "^1.0.2"
+		"es-main": "^1.2.0"
 	}
 }
