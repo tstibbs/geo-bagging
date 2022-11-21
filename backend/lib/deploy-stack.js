@@ -4,10 +4,9 @@ import {HttpLambdaIntegration} from '@aws-cdk/aws-apigatewayv2-integrations-alph
 import {HttpApi, HttpMethod, CorsHttpMethod} from '@aws-cdk/aws-apigatewayv2-alpha'
 import {NodejsFunction} from 'aws-cdk-lib/aws-lambda-nodejs'
 import {Runtime} from 'aws-cdk-lib/aws-lambda'
-import {HttpOrigin} from 'aws-cdk-lib/aws-cloudfront-origins'
-import {ResponseHeadersPolicy, ViewerProtocolPolicy, AllowedMethods, CachePolicy} from 'aws-cdk-lib/aws-cloudfront'
 
-import {buildWebsiteResources, applyStandardTags} from '@tstibbs/cloud-core-utils'
+import {applyStandardTags} from '@tstibbs/cloud-core-utils'
+import {WebsiteResources} from '@tstibbs/cloud-core-utils/src/stacks/website.js'
 import {addUsageTrackingToHttpApi} from '@tstibbs/cloud-core-utils/src/stacks/usage-tracking.js'
 import {COUNTRIES_DENY_LIST} from './deploy-envs.js'
 
@@ -40,14 +39,8 @@ class DeployStack extends Stack {
 		addUsageTrackingToHttpApi(this.#httpApi, 'httpApiAccessLogs')
 		this.#addHttpRoute('/integration/trigs/search-parse.php/{searchTerm}', 'search')
 
-		const distribution = buildWebsiteResources(this, 'geoBaggingData', countriesDenyList)
-		let httpApiDomain = Fn.select(2, Fn.split('/', this.#httpApi.url))
-		distribution.addBehavior('integration/*', new HttpOrigin(httpApiDomain), {
-			responseHeadersPolicy: ResponseHeadersPolicy.CORS_ALLOW_ALL_ORIGINS_WITH_PREFLIGHT,
-			allowedMethods: AllowedMethods.ALLOW_GET_HEAD, //GET_HEAD is the default, but specifying it here for future compatibility
-			viewerProtocolPolicy: ViewerProtocolPolicy.HTTPS_ONLY,
-			cachePolicy: CachePolicy.CACHING_DISABLED
-		})
+		const websiteResources = new WebsiteResources(this, 'geoBaggingData', countriesDenyList)
+		websiteResources.addHttpApi(`integration/*`, this.#httpApi)
 
 		applyStandardTags(this)
 	}
