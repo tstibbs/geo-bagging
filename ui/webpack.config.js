@@ -1,18 +1,19 @@
-const fs = require('fs')
-const path = require('path')
-const webpack = require('webpack')
-const HtmlWebpackPlugin = require('html-webpack-plugin')
-const CopyPlugin = require('copy-webpack-plugin')
-const MiniCssExtractPlugin = require('mini-css-extract-plugin')
-const CssMinimizerPlugin = require('css-minimizer-webpack-plugin')
-const TerserPlugin = require('terser-webpack-plugin')
-const LicenseWebpackPlugin = require('license-webpack-plugin').LicenseWebpackPlugin
+import {readFileSync} from 'fs'
+import {resolve} from 'path'
 
-const isarrayLicenceText = fs.readFileSync('./src/licences/isarray-LICENSE')
-const mitLicenceText = fs.readFileSync('./src/licences/MIT-License')
-const fontAwesomeLicenceText = fs.readFileSync('./src/licences/Font-Awesome-LICENSE.txt')
+import webpack from 'webpack'
+import HtmlWebpackPlugin from 'html-webpack-plugin'
+import CopyPlugin from 'copy-webpack-plugin'
+import MiniCssExtractPlugin from 'mini-css-extract-plugin'
+import CssMinimizerPlugin from 'css-minimizer-webpack-plugin'
+import TerserPlugin from 'terser-webpack-plugin'
+import {LicenseWebpackPlugin} from 'license-webpack-plugin'
 
-module.exports = {
+const isarrayLicenceText = readFileSync('./src/licences/isarray-LICENSE')
+const mitLicenceText = readFileSync('./src/licences/MIT-License')
+const fontAwesomeLicenceText = readFileSync('./src/licences/Font-Awesome-LICENSE.txt')
+
+export default {
 	mode: 'production',
 	devtool: 'source-map',
 	entry: {
@@ -26,8 +27,8 @@ module.exports = {
 	},
 	resolve: {
 		alias: {
-			VendorWrappers: path.resolve(__dirname, 'src/js/vendor-wrappers'),
-			leaflet: path.resolve(__dirname, 'node_modules/leaflet') //force everything to use the same version of leaflet
+			VendorWrappers: resolve('./src/js/vendor-wrappers'),
+			leaflet: resolve('./node_modules/leaflet') //force everything to use the same version of leaflet
 		},
 		fallback: {
 			stream: false,
@@ -145,39 +146,39 @@ module.exports = {
 				type: 'asset/resource'
 			},
 			{
-				test: require.resolve('./node_modules/leaflet-plugins/layer/tile/Bing.js'),
+				test: resolve('./node_modules/leaflet-plugins/layer/tile/Bing.js'),
 				use: 'exports-loader?exports=default|L.BingLayer'
 			},
 			{
-				test: require.resolve('./node_modules/leaflet-mouse-position/src/L.Control.MousePosition.js'),
+				test: resolve('./node_modules/leaflet-mouse-position/src/L.Control.MousePosition.js'),
 				use: 'exports-loader?exports=default|L.Control.MousePosition'
 			},
 			{
-				test: require.resolve('./node_modules/Leaflet.MapCenterCoord/src/L.Control.MapCenterCoord.js'),
+				test: resolve('./node_modules/Leaflet.MapCenterCoord/src/L.Control.MapCenterCoord.js'),
 				use: 'exports-loader?exports=default|L.Control.MapCenterCoord'
 			},
 			{
-				test: require.resolve('./node_modules/leaflet-control-hider/src/hider.js'),
+				test: resolve('./node_modules/leaflet-control-hider/src/hider.js'),
 				use: 'exports-loader?exports=default|L.Control.ControlHider'
 			},
 			{
-				test: require.resolve('./node_modules/leaflet-geosearch/src/js/l.control.geosearch.js'),
+				test: resolve('./node_modules/leaflet-geosearch/src/js/l.control.geosearch.js'),
 				use: 'exports-loader?exports=default|L.Control.GeoSearch'
 			},
 			{
-				test: require.resolve('./node_modules/leaflet-geosearch/src/js/l.geosearch.provider.bing.js'),
+				test: resolve('./node_modules/leaflet-geosearch/src/js/l.geosearch.provider.bing.js'),
 				use: 'exports-loader?exports=default|L.GeoSearch.Provider.Bing'
 			},
 			{
-				test: require.resolve('./node_modules/sidebar-v2/js/leaflet-sidebar.js'),
+				test: resolve('./node_modules/sidebar-v2/js/leaflet-sidebar.js'),
 				use: 'exports-loader?exports=default|L.Control.Sidebar'
 			},
 			{
-				test: require.resolve('./node_modules/leaflet.featuregroup.subgroup/dist/leaflet.featuregroup.subgroup-src.js'),
+				test: resolve('./node_modules/leaflet.featuregroup.subgroup/dist/leaflet.featuregroup.subgroup-src.js'),
 				use: 'exports-loader?type=commonjs&exports=single|L.FeatureGroup.SubGroup'
 			},
 			{
-				test: require.resolve('./node_modules/mocha/browser-entry.js'),
+				test: resolve('./node_modules/mocha/browser-entry.js'),
 				use: 'exports-loader?type=commonjs&exports=single|window'
 			}
 		]

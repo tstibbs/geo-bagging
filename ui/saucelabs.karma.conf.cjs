@@ -1,3 +1,5 @@
+//Note: this file is specifically a common-js file because karma doesn't support es6 config files: https://github.com/karma-runner/karma/issues/3677
+
 var baseConfig = require('./karma.conf.js')
 
 //browser

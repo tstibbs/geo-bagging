@@ -55,9 +55,9 @@
 	},
 	"scripts": {
 		"prebuild": "rm -rf dist/*",
-		"build": "npx webpack --config webpack.config.cjs",
+		"build": "npx webpack",
 		"serve": "npx http-server dist -p 3000 -c-1 --cors",
-		"dev": "npm run prebuild && npx webpack serve --config webpack.config.dev.cjs",
+		"dev": "npm run prebuild && npx webpack serve --config webpack.config.dev.js",
 		"test": "npx karma start karma.conf.cjs --no-auto-watch --single-run",
 		"deploy": "npm run build && ./deploy.sh"
 	}

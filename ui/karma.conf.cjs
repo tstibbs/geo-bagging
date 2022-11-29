@@ -1,3 +1,5 @@
+//Note: this file is specifically a common-js file because karma doesn't support es6 config files: https://github.com/karma-runner/karma/issues/3677
+
 const wsl = process.env.WSL_DISTRO_NAME != null
 
 module.exports = function (config) {

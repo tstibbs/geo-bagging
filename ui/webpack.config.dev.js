@@ -1,8 +1,8 @@
-const {merge} = require('webpack-merge')
+import {merge} from 'webpack-merge'
 
-const base = require('./webpack.config.cjs')
+import base from './webpack.config.js'
 
-module.exports = merge(base, {
+export default merge(base, {
 	mode: 'development',
 	devtool: 'inline-cheap-module-source-map',
 	devServer: {
