@@ -8,10 +8,20 @@ import MiniCssExtractPlugin from 'mini-css-extract-plugin'
 import CssMinimizerPlugin from 'css-minimizer-webpack-plugin'
 import TerserPlugin from 'terser-webpack-plugin'
 import {LicenseWebpackPlugin} from 'license-webpack-plugin'
+import {buildTemplateContentRenderingFunction} from '@tstibbs/cloud-core-ui/build/templates.js'
 
 const isarrayLicenceText = readFileSync('./src/licences/isarray-LICENSE')
 const mitLicenceText = readFileSync('./src/licences/MIT-License')
 const fontAwesomeLicenceText = readFileSync('./src/licences/Font-Awesome-LICENSE.txt')
+
+const projectName = `geo-bagging`
+const bugReportUrl = `https://github.com/tstibbs/${projectName}/issues/new`
+
+const defaultTemplateParameters = {
+	projectName,
+	bugReportUrl,
+	logsEntriesIndicateErrors: true
+}
 
 export default {
 	mode: 'production',
@@ -38,20 +48,20 @@ export default {
 	plugins: [
 		new HtmlWebpackPlugin({
 			title: 'GeoBagging',
-			template: './src/templates/index.html.ejs',
-			chunks: ['main'],
-			templateParameters: {
+			templateContent: buildTemplateContentRenderingFunction('./src/templates/index.html.ejs', {
+				...defaultTemplateParameters,
 				baseUrl: undefined
-			}
+			}),
+			chunks: ['main']
 		}),
 		new HtmlWebpackPlugin({
 			title: 'GeoBagging',
 			filename: 'examples/mini.html',
-			template: './src/templates/index.html.ejs',
-			chunks: ['mini'],
-			templateParameters: {
+			templateContent: buildTemplateContentRenderingFunction('./src/templates/index.html.ejs', {
+				...defaultTemplateParameters,
 				baseUrl: '../'
-			}
+			}),
+			chunks: ['mini']
 		}),
 		new HtmlWebpackPlugin({
 			title: 'GeoBaggingTests',
@@ -60,7 +70,10 @@ export default {
 		}),
 		new HtmlWebpackPlugin({
 			filename: 'integration/trigpointing.js',
-			template: './src/templates/integration.js.ejs',
+			templateContent: buildTemplateContentRenderingFunction(
+				'./src/templates/integration.js.ejs',
+				defaultTemplateParameters
+			),
 			inject: false,
 			chunks: ['integration'],
 			minify: false

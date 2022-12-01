@@ -10,19 +10,25 @@
             </script>
         <% } %>
         <script type="text/javascript">
-            function showError(errorMessage) {
-                document.write(errorMessage)
-            }
-            <%= require('raw-loader!./feature-detect.js').default %>
+            <%- include('../../node_modules/@tstibbs/cloud-core-ui/templates/feature-detect.js.ejs', {writeFeatureErrorsToDom: true}) %>
         </script>
         <script type="text/javascript">
-            <%= require('raw-loader!./error_handler.js').default %>
+            <%- include('../../node_modules/@tstibbs/cloud-core-ui/templates/error-handler.js.ejs') %>
         </script>
         <!-- stylesheets -->
+        <style>
+            <%- include('../../node_modules/@tstibbs/cloud-core-ui/templates/error-display.css.ejs') %>
+        </style>
     </head>
     <body>
-        <%= require('raw-loader!./error-display.html').default %>
-        <%= require('raw-loader!./loading.html').default %>
+        <%- include('../../node_modules/@tstibbs/cloud-core-ui/templates/error-display.html.ejs') %>
+        <div id="loading-message-pane" class="full-screen">
+            <div class="loading-message-container">
+                <div class="loading-message-text">
+                    <p>Loading...</p>
+                </div>
+            </div>
+        </div>        
         <!--scripts-->
     </body>
 </html>

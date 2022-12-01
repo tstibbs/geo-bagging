@@ -1,14 +1,11 @@
-function showError(errorMessage) {
-    alert(errorMessage)
-}
-<%= require('raw-loader!./feature-detect.js').default %>
+<%- include('../../node_modules/@tstibbs/cloud-core-ui/templates/feature-detect.js.ejs', {writeFeatureErrorsToDom: false}) %>
 
 window.geoBaggingBaseUrl = /^(.*)\/integration\/trigpointing\.js.*$/.exec(document.currentScript.src)[1] + '/';
 var defaultOptions = {
     dataType: "script",
     cache: true
 };
-<%= htmlWebpackPlugin
+<%- htmlWebpackPlugin
     .tags
     .headTags
     .map(tag => {
@@ -19,7 +16,7 @@ var defaultOptions = {
         }
     })
 %>
-<%= htmlWebpackPlugin
+<%- htmlWebpackPlugin
     .tags
     .bodyTags
     .map(tag =>

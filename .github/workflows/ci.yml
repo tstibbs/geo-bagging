@@ -39,6 +39,9 @@ jobs:
     - name: Load cloud-core dependencies
       run: npm ci
       working-directory: cloud-core/aws/utils
+    - name: Load cloud-core-ui dependencies
+      run: npm ci
+      working-directory: cloud-core/ui
 
     # the ordering is weird, because we're trying to get information about fundamental failures quicker - i.e. breadth-first not depth-first
 
