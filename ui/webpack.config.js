@@ -8,6 +8,8 @@ import MiniCssExtractPlugin from 'mini-css-extract-plugin'
 import CssMinimizerPlugin from 'css-minimizer-webpack-plugin'
 import TerserPlugin from 'terser-webpack-plugin'
 import {LicenseWebpackPlugin} from 'license-webpack-plugin'
+
+import {defaultLicenseWebpackPluginConfig} from '@tstibbs/cloud-core-ui/build/licence-generation.js'
 import {buildTemplateContentRenderingFunction} from '@tstibbs/cloud-core-ui/build/templates.js'
 
 const isarrayLicenceText = readFileSync('./src/licences/isarray-LICENSE')
@@ -102,7 +104,7 @@ export default {
 			}
 		}),
 		new LicenseWebpackPlugin({
-			perChunkOutput: false,
+			...defaultLicenseWebpackPluginConfig,
 			licenseFileOverrides: {
 				'leaflet.markercluster': 'MIT-LICENCE.txt',
 				'leaflet-mouse-position': 'MIT-LICENCE.txt'
