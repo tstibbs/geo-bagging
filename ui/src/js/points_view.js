@@ -1,11 +1,10 @@
 import _ from 'underscore'
 import $ from 'jquery'
 import leaflet from 'leaflet'
-import leaflet_cluster from 'VendorWrappers/leaflet-marker-cluster.js'
+import {buildMarkerClusterGroup} from './utils/marker-cluster.js'
 import 'leaflet.markercluster.freezable' //side effects on leaflet_cluster
 import LeafletSubgroup from 'VendorWrappers/leaflet-subgroup.js'
 import markerView from './marker_view.js'
-import {ENABLE_CLUSTERING_EVENT, DISABLE_CLUSTERING_EVENT} from './menu/settings/clustering_enabled_control.js'
 
 var PointsView = leaflet.Class.extend({
 	initialize: function (map, config, modelsByAspect, matrixLayerControl, controls, bundles, manager) {
@@ -39,23 +38,12 @@ var PointsView = leaflet.Class.extend({
 		var deferredObject = $.Deferred()
 
 		if (this._config.cluster) {
-			var mapElem = $('div#map')
-			var radius = Math.max(mapElem[0].offsetHeight, mapElem[0].offsetWidth) / 10
-			this._parentGroup = new leaflet_cluster.MarkerClusterGroup({
-				disableClusteringAtZoom: 15,
-				maxClusterRadius: radius,
-				chunkedLoading: true,
+			this._parentGroup = buildMarkerClusterGroup(this._manager.getMap(), {
 				chunkProgress: function (processed, total, elapsed, layersArray) {
 					if (processed === total) {
 						deferredObject.resolve()
 					}
 				}
-			})
-			this._map.on(ENABLE_CLUSTERING_EVENT, () => {
-				this._parentGroup.enableClustering()
-			})
-			this._map.on(DISABLE_CLUSTERING_EVENT, () => {
-				this._parentGroup.disableClustering()
 			})
 		} else {
 			this._parentGroup = leaflet.layerGroup()

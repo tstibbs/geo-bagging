@@ -1,5 +1,6 @@
 import leaflet from 'VendorWrappers/leaflet.js'
 import popupView from '../popup_view.js'
+import {buildMarkerClusterGroup} from './marker-cluster.js'
 
 const selectedOutlineWidth = 3
 
@@ -135,13 +136,17 @@ var GeoJsonTranslator = leaflet.Class.extend({
 						})
 					}
 				})
+
+				//add clustering layer to cluster any 'point' objects in the geojson
+				let clusterGroup = buildMarkerClusterGroup(this._manager.getMap())
+				clusterGroup.addLayers(geoJsonLayer)
 				//reset all styles when the map is clicked anywhere. Style will be re-added if it is one of these features that is clicked (same way the popups work)
 				this._manager.getMap().on({
 					preclick: () => {
 						geoJsonLayer.resetStyle()
 					}
 				})
-				return [name, geoJsonLayer]
+				return [name, clusterGroup]
 			})
 		)
 		return newLayers
