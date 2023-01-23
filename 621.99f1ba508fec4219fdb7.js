@@ -1,2 +1,0 @@
-(self.webpackChunk_tstibbs_geo_bagging_ui=self.webpackChunk_tstibbs_geo_bagging_ui||[]).push([[621],{7621:(s,e,u)=>{"use strict";u.r(e),u.d(e,{default:()=>i});const i=u(7085).default.extend({parse:function(s){var e=s[0],u=s[1],i=s[2],t=s[3],n=s[4],a=s[5],l=s[6],g=s[7],b=s[8],d=s[9],o=s[10],p=s[11],r=[["Style",l],["Position",b],["Notes",o],["Purpose",n]];if(!l.includes(t)||null!=a){var _=t;null!=a&&(_+=" / "+a),r.push(["Type",_])}r.push(["Images",this.buildImageLinks(p)]),this.addMarker(i,u,e,g,i,r,null,[n,t,d])}})}}]);
-//# sourceMappingURL=621.99f1ba508fec4219fdb7.js.map
