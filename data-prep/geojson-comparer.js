@@ -19,8 +19,25 @@ async function visualise(datasource, qualifier) {
 	let outputPath = `${outputDir}/output-${qualifier}.png`
 	let geojson = await readFile(inputPath)
 	geojson = JSON.parse(geojson)
+	//add bounds of the UK so that changes in bounds between the old and new data doesn't affect the scaling of the image (which could otherwise cause false positive differences)
+	geojson.features.push({
+		type: 'Feature',
+		geometry: {
+			type: 'MultiLineString',
+			coordinates: [
+				[
+					//bounds of the UK
+					[-9.0, 49.75],
+					[-9.0, 61.01],
+					[2.01, 61.01],
+					[2.01, 49.75],
+					[-9.0, 49.75]
+				]
+			]
+		}
+	})
 	let xml = await util.promisify(mapnikify)(geojson, false)
-	let outputXmlPath = `${tmpInputDir}/comparisons/${datasource}/tmp.xml`
+	let outputXmlPath = `${tmpInputDir}/comparisons/${datasource}/tmp-${qualifier}.xml`
 	await writeFile(outputXmlPath, xml)
 	await toPng(outputXmlPath, outputPath)
 }
