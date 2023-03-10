@@ -11,7 +11,7 @@ async function buildDataFile() {
 	let contents = await readFile(`${inputDirectory}/NationalParks.json`)
 	let data = JSON.parse(contents)
 	data.features = data.features.map(feature => {
-		let name = feature.properties.npark18nm
+		let name = feature.properties['NPARK22NM']
 		let match = /^(The )?(.*?)( National Park)?$/g.exec(name)
 		if (match != null && match[2] != null) {
 			name = match[2]
