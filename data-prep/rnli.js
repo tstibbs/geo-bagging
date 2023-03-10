@@ -44,11 +44,11 @@ class RnliConverter extends Converter {
 
 	extractColumns(record) {
 		if (record.length > 1) {
-			//X,Y,OBJECTID_1,Station,Station_Ty,County,Region,Division,Country,Lifesaving,Lifesavi_1,Lat_Dec_De,Long_Dec_D,URL
+			//X,Y,OBJECTID_1,Station,County,Region,Division,Country,URL,SAP_ID,StationType,Lat,Long,LivesavingRegion,LivesavingArea
 			let lng = parseFloat(record[0])
 			let lat = parseFloat(record[1])
 			let stationName = record[3]
-			let url = record[13]
+			let url = record[8]
 
 			let lifeboatTypes = 'Unknown'
 			let launchMethods = 'Unknown'
