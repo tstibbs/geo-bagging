@@ -18,7 +18,7 @@ let s3 = new aws.S3()
 const args = process.argv.slice(2)
 if (args.length < 1) {
 	console.error(
-		'Usage: node tools/upload.js sourcesToUpload... [including source sub identifier e.g. hills/data hills/data_all.json'
+		'Usage: node tools/upload.js sourcesToUpload... [including source sub identifier e.g. hills/data.json hills/data_all.json'
 	)
 	process.exit(1)
 }
