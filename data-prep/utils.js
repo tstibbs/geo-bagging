@@ -1,4 +1,3 @@
-import request from 'request'
 import util from 'util'
 import fs from 'fs'
 
@@ -29,18 +28,6 @@ async function backUpReferenceData(source, file) {
 	await exec(command)
 }
 
-function get(path) {
-	return new Promise((resolve, reject) => {
-		request(path, (error, response, body) => {
-			if (error) {
-				reject(error)
-			} else {
-				resolve([body, path])
-			}
-		})
-	})
-}
-
 async function createTempDir(inputDir) {
 	let exists = await util.promisify(fs.exists)(inputDir)
 	if (!exists) {
@@ -59,4 +46,4 @@ export const readFile = util.promisify(fs.readFile)
 export const writeFile = util.promisify(fs.writeFile)
 export const readdir = util.promisify(fs.readdir)
 
-export {get, createTempDir, deleteFile, exec, backUpReferenceData}
+export {createTempDir, deleteFile, exec, backUpReferenceData}

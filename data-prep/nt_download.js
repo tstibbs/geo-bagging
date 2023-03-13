@@ -1,37 +1,14 @@
-import cheerio from 'cheerio'
 import {ifCmd} from '@tstibbs/cloud-core-utils'
-import {get, writeFile, createTempDir} from './utils.js'
-import {tmpInputDir} from './constants.js'
+import {download as downloadFiles} from './downloader.js'
 
-const allDataPath = 'https://www.nationaltrust.org.uk/search/data/all-places'
-const basePath = 'https://www.nationaltrust.org.uk/search?query=&type=place&view=map'
-const tmpDir = `${tmpInputDir}/nt`
-
-async function download() {
-	await createTempDir(tmpDir)
-	let [body] = await get(basePath)
-	let $ = cheerio.load(body)
-	let placeTypes = $("input[name='PlaceFilter']")
-		.toArray()
-		.map(elem => $(elem).attr('value'))
-	let facilityTypes = $("input[name='FacilityFilter']")
-		.toArray()
-		.map(elem => $(elem).attr('value'))
-	let places = await getAspect(placeTypes, 'PlaceFilter')
-	let facilities = await getAspect(facilityTypes, 'FacilityFilter')
-	let [allData] = await get(allDataPath)
-	let data = {
-		places,
-		facilities,
-		allData
-	}
-	let dataString = JSON.stringify(data, null, 2)
-	await writeFile(`${tmpDir}/data.json`, dataString)
+const urls = {
+	'https://www.nationaltrust.org.uk/api/search/places?query=&lat=54&lon=-2&milesRadius=1000&publicationChannel=NATIONAL_TRUST_ORG_UK':
+		'data.json',
+	'https://www.nationaltrust.org.uk/search': 'config.html'
 }
 
-async function getAspect(values, param) {
-	let placePromises = values.map(type => get(`${basePath}&${param}=${type}`).then(([body]) => [body, type]))
-	return await Promise.all(placePromises)
+function download() {
+	return downloadFiles('nt', urls)
 }
 
 await ifCmd(import.meta, download)

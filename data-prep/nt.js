@@ -1,3 +1,5 @@
+import cheerio from 'cheerio'
+
 import Converter from './converter.js'
 import {ifCmd} from '@tstibbs/cloud-core-utils'
 import {readFile, backUpReferenceData} from './utils.js'
@@ -10,74 +12,47 @@ const columnHeaders = '[Longitude,Latitude,Id,Name,Link,type,facilities]'
 
 const attributeExcludes = ['fifty-things', 'available-for-weddings']
 
-function getIdsForAspect(values) {
-	let placeIds = {}
-	values
-		.filter(
-			([body, attribute]) => !attributeExcludes.includes(attribute) //This doesn't really add any value as an attribute, so let's just filter it out
-		)
-		.forEach(([body, attribute]) => {
-			let result = /<script>var nt_searchResultsPlaceIds = \[(\d+(, \d+)*)\]<\/script>/.exec(body)
-			if (result == null) {
-				console.log('result null')
-				console.log(path)
-				console.log(body)
-				placeIds[attribute] = []
-			} else {
-				placeIds[attribute] = result[1].split(', ').map(str => parseInt(str))
-			}
-		})
-	return placeIds
+function configToFilters(config) {
+	return Object.fromEntries(
+		config
+			.map(({reference, tagRefs}) => {
+				return tagRefs.map(tagRef => [tagRef, reference])
+			})
+			.flat()
+	)
+}
+
+function filterToTags(filters, tagRefs) {
+	let tags = tagRefs.map(tagRef => filters[tagRef])
+	tags = [...new Set(tags)] //make unique
+	tags = tags
+		.filter(tag => tag != undefined)
+		.filter(tag => !attributeExcludes.includes(tag))
+		.sort()
+		.join(';')
+	if (tags.length == 0) {
+		tags = 'Other'
+	}
+	return tags
 }
 
 async function buildDataFile() {
 	await backUpReferenceData('nt', 'data.json')
-	let input = await readFile(`${tmpInputDir}/nt/data.json`)
-	let {places, facilities, allData} = JSON.parse(input)
-	places = getIdsForAspect(places)
-	facilities = getIdsForAspect(facilities)
-	let idsByAspect = {
-		places: places,
-		facilities: facilities
-	}
-	let aspectsById = {}
-	Object.entries(idsByAspect).forEach(([aspect, attributesToIds]) => {
-		Object.keys(attributesToIds).forEach(attribute => {
-			attributesToIds[attribute].forEach(id => {
-				if (aspectsById[id] == null) {
-					aspectsById[id] = {}
-				}
-				if (aspectsById[id][aspect] == null) {
-					aspectsById[id][aspect] = []
-				}
-				aspectsById[id][aspect].push(attribute)
-			})
-		})
-	})
-	let data = JSON.parse(allData)
-	let csv = Object.entries(data)
-		.filter(([id, details]) => details.location != null)
-		.map(([id, details]) => [parseInt(id), details])
+	let rawData = await readFile(`${tmpInputDir}/nt/data.json`, `UTF-8`)
+	let rawConfigHtml = await readFile(`${tmpInputDir}/nt/config.html`, `UTF-8`)
+	let $ = cheerio.load(rawConfigHtml)
+	const config = JSON.parse($('#__NEXT_DATA__')[0].children[0].data).props.pageProps.filters
+	const placeTypes = configToFilters(config.placeFilters.placeTypes)
+	const placeFacilities = configToFilters(config.placeFilters.placeFacilities)
+
+	let data = JSON.parse(rawData)
+	let csv = data.multiMatch.results
+		.map(entry => [parseInt(entry.id.value), entry])
 		.sort((a, b) => a[0] - b[0])
-		.map(([id, details]) => {
-			function stringVals(id, aspect) {
-				if (aspectsById[id] == null || aspectsById[id][aspect] == null) {
-					return 'Other'
-				} else {
-					return aspectsById[id][aspect].join(';')
-				}
-			}
-			let type = stringVals(id, 'places')
-			let facilities = stringVals(id, 'facilities')
-			return [
-				details.location.longitude,
-				details.location.latitude,
-				id,
-				details.title,
-				details.websiteUrl,
-				type,
-				facilities
-			]
+		.map(([id, entry]) => {
+			let types = filterToTags(placeTypes, entry.tagRefs)
+			let facilities = filterToTags(placeFacilities, entry.tagRefs)
+			return [entry.location.lon, entry.location.lat, id, entry.title, entry.websiteUrl, types, facilities]
 		})
 	let converter = new Converter(attributionString, columnHeaders)
 	await converter.writeOutCsv(csv, `${outputDir}/nt/data.json`)

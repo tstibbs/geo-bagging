@@ -5,26 +5,27 @@ var dimensionNames = ['Type', 'Facilities']
 
 var dimensionValueLabels = {}
 dimensionValueLabels[dimensionNames[0]] = {
-	'houses-and-buildings': 'Houses',
-	'gardens-and-parks': 'Gardens & parks',
+	'castles-and-forts': 'Castles \u0026 forts',
+	'churches-and-chapels': 'Churches \u0026 chapels',
+	'coast-and-beaches': 'Coast \u0026 beaches',
 	countryside: 'Countryside',
-	'coast-and-beaches': 'Coast & beaches',
-	'castles-and-forts': 'Castles & forts',
-	'sites-and-monuments': 'Sites & monuments',
-	'churches-and-chapels': 'Churches & chapels',
-	'mills-and-mines': 'Mills, forges & mines',
-	'villages-and-pubs': 'Villages & pubs'
+	'gardens-and-parks': 'Gardens \u0026 parks',
+	'houses-and-buildings': 'Houses',
+	'mills-and-mines': 'Mills, forges \u0026 mines',
+	'sites-and-monuments': 'Sites \u0026 monuments',
+	'villages-and-pubs': 'Villages \u0026 pubs'
 }
 dimensionValueLabels[dimensionNames[1]] = {
-	'family-friendly': 'Family-friendly',
-	'dog-friendly': 'Dog-friendly',
+	'available-for-weddings': 'Available for weddings',
+	blossom: 'Blossom',
 	'disabled-access': 'Disabled access',
+	'dog-friendly': 'Dog-friendly',
+	'family-friendly': 'Family-friendly',
+	'fifty-things': "50 things to do before you're 11 ¾",
 	'for-hard-of-hearing': 'For deaf/hard of hearing',
 	'for-visually-impaired': 'For blind/visually impaired',
-	'places-to-eat-and-drink': 'Places to eat & drink',
 	'ideal-for-group-visits': 'Ideal for group visits',
-	'available-for-weddings': 'Available for weddings',
-	'fifty-things': "50 things to do before you're 11 ¾"
+	'places-to-eat-and-drink': 'Places to eat \u0026 drink'
 }
 
 export default {
