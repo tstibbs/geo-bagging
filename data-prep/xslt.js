@@ -4,7 +4,7 @@ import {download as downloadFiles} from './downloader.js'
 import {tmpInputDir} from './constants.js'
 
 const artifact = `Saxon-HE`
-const version = `9.8.0-6`
+const version = `10.9`
 const jarName = `${artifact}-${version}.jar`
 const downloadPath = `https://repo1.maven.org/maven2/net/sf/saxon/${artifact}/${version}/${jarName}`
 const jarPath = `${tmpInputDir}/${jarName}`
@@ -30,7 +30,7 @@ async function transform(xslt, input, output) {
 			`java`,
 			[
 				`-jar`,
-				`${tmpInputDir}/Saxon-HE-9.8.0-6.jar`,
+				`${tmpInputDir}/${jarName}`,
 				`-xsl:${xslt}`,
 				`-s:${tmpInputDir}/${input}`,
 				`-o:${tmpInputDir}/${output}`
