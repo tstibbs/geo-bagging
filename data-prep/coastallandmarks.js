@@ -138,6 +138,7 @@ function processPiers() {
 					).filter(opening => opening != null)
 					if (docCoords.length > 0) {
 						let coordToSelect = 0 //choose the first one by default unless we can come up with a better match
+						const name = doc.title
 						if (docCoords.length > 1) {
 							let specificCoordFound = false
 							let coordsInInfoboxFormat = docCoords.map(({lat, lon}) => `${lat}°N, ${lon}°W`)
@@ -163,7 +164,7 @@ function processPiers() {
 						}
 						let opening = openings.length > 0 ? openings[0] : null
 						return {
-							name: doc.title,
+							name,
 							lat: docCoord.lat,
 							lng: docCoord.lon,
 							opening: opening
