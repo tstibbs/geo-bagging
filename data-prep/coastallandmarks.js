@@ -114,6 +114,14 @@ function processPiers() {
 			let docs = filterPages(data)
 			let csv = docs
 				.map(doc => {
+					let allInfoboxes = doc.sections.filter(section => section.infoboxes != null).map(section => section.infoboxes)
+					let infoBoxDocCoords = flatten(
+						allInfoboxes.map(infoboxes => {
+							return infoboxes
+								.filter(infobox => infobox.coordinates != null && infobox.coordinates.text != null)
+								.map(infobox => infobox.coordinates.text)
+						})
+					).filter(coords => coords != null)
 					let docCoords = flatten(
 						doc.sections
 							.filter(section => section.templates != null)
@@ -122,22 +130,37 @@ function processPiers() {
 							})
 					).filter(sectionCoords => sectionCoords != null)
 					let openings = flatten(
-						doc.sections
-							.filter(section => section.infoboxes != null)
-							.map(section => {
-								return section.infoboxes
-									.filter(infobox => infobox.open != null && infobox.open.text != null)
-									.map(infobox => infobox.open.text)
-							})
+						allInfoboxes.map(infoboxes => {
+							return infoboxes
+								.filter(infobox => infobox.open != null && infobox.open.text != null)
+								.map(infobox => infobox.open.text)
+						})
 					).filter(opening => opening != null)
 					if (docCoords.length > 0) {
+						let coordToSelect = 0 //choose the first one by default unless we can come up with a better match
 						if (docCoords.length > 1) {
-							console.log(`Multiple coords found for "${name}"`)
+							let specificCoordFound = false
+							let coordsInInfoboxFormat = docCoords.map(({lat, lon}) => `${lat}°N, ${lon}°W`)
+							let unique = [...new Set(coordsInInfoboxFormat)]
+							if (unique.length > 1) {
+								//prefer something that matches what's in the infobox, if that appears to be useful
+								let uniqueInfoBox = [...new Set(infoBoxDocCoords)]
+								if (uniqueInfoBox.length == 1) {
+									let potentialIndex = coordsInInfoboxFormat.findIndex(coord => uniqueInfoBox[0] == coord)
+									if (potentialIndex != -1) {
+										coordToSelect = potentialIndex
+										specificCoordFound = true
+									}
+								}
+							}
+							if (!specificCoordFound) {
+								console.warn(`Multiple coords found for "${name}"`)
+							}
 						}
+						let docCoord = docCoords[coordToSelect]
 						if (openings.length > 1) {
-							console.log(`Multiple open dates for "${name}"`)
+							console.warn(`Multiple open dates for "${name}"`)
 						}
-						let docCoord = docCoords[0]
 						let opening = openings.length > 0 ? openings[0] : null
 						return {
 							name: doc.title,
@@ -165,6 +188,7 @@ async function processData() {
 	let csv = flatten(csvs).sort((rowA, rowB) => {
 		return rowA[2].localeCompare(rowB[2])
 	})
+	csv = ['', ...csv] //add a dummy header row which will then be discarded by Converter
 	const converter = new Converter(attributionString, columnHeaders)
 	await converter.writeOutCsv(csv, `${outputDir}/coastallandmarks/data.json`)
 	return await compareData('coastallandmarks', 'data.json')
