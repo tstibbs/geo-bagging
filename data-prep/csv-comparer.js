@@ -6,7 +6,9 @@ import {readFile, writeFile, createTempDir} from './utils.js'
 
 const HEADER_LNG = 'Longitude'
 const HEADER_LAT = 'Latitude'
-const INTERESTING_FIELDS = ['Name', 'Link', 'Url']
+const HEADER_LINK = 'Link'
+const HEADER_URL = 'Url'
+const INTERESTING_FIELDS = ['Name', HEADER_LINK, HEADER_URL]
 
 const NONE = Symbol('NONE')
 const SIGNIFICANT = Symbol('SIGNIFICANT')
@@ -41,6 +43,14 @@ class CsvComparer {
 		let headers = contents.headers.replace('[', '').replace(']', '').split(',')
 		let indexLng = headers.indexOf(HEADER_LNG)
 		let indexLat = headers.indexOf(HEADER_LAT)
+		let indexUrl = headers.indexOf(HEADER_URL)
+		let indexLink = headers.indexOf(HEADER_LINK)
+		if (indexUrl != -1 && indexLink != -1) {
+			throw new Error(`Both ${HEADER_URL} nor ${HEADER_LINK} found in headers - unsure which to use.`)
+		} else if (indexUrl == -1) {
+			indexUrl = indexLink
+		}
+
 		let interestingFieldIndexes = INTERESTING_FIELDS.map(field => headers.indexOf(field)).filter(
 			index => index != null && index != -1 && index != this._indexId
 		)
@@ -50,6 +60,7 @@ class CsvComparer {
 			data,
 			indexLng,
 			indexLat,
+			indexUrl,
 			headers,
 			attribution,
 			interestingFieldIndexes
@@ -182,13 +193,14 @@ class CsvComparer {
 		}
 	}
 
-	async compare() {
-		let oldContents = await this._read(`tmp-input/old-data/${this._filePath}`)
-		let newContents = await this._read(`../ui/src/js/bundles/${this._filePath}`)
+	async compare(oldPath, newPath) {
+		let oldContents = await this._read(oldPath ?? `tmp-input/old-data/${this._filePath}`)
+		let newContents = await this._read(newPath ?? `../ui/src/js/bundles/${this._filePath}`)
 
 		let {interestingFieldIndexes} = newContents
 		this._indexLng = newContents.indexLng
 		this._indexLat = newContents.indexLat
+		this._indexUrl = newContents.indexUrl
 
 		let metaDifferences = false
 		if (!_.isEqual(oldContents.headers, newContents.headers)) {
@@ -258,7 +270,7 @@ class CsvComparer {
 		let totalChanges = missing.length + added.length + changes.length
 		if (totalChanges > 0) {
 			if (missing.length > 0 && added.length > 0) {
-				if (missing.length * added.length > 10000) {
+				if (missing.length * added.length > 1000 * 1000) {
 					this._print('Too many additions/deletions to try to work out matches')
 				} else {
 					let result = this._reconcileDrops(missing, added)
@@ -323,43 +335,80 @@ class CsvComparer {
 	}
 
 	_reconcileDrops(missing, added) {
-		const extract = row => {
+		const extractGeo = row => {
 			return {latitude: row[this._indexLat], longitude: row[this._indexLng]}
 		}
 
-		let matches = [] //uses id of 'missing'
+		let potentialGeoMatches = [] //uses id of 'missing'
+
+		//find matches by closest entry less than 10 metres away
 		missing.forEach((missingRow, missingIndex) => {
 			added.forEach((addedRow, addedIndex) => {
-				let distance = geolib.getDistance(extract(missingRow), extract(addedRow))
+				let distance = geolib.getDistance(extractGeo(missingRow), extractGeo(addedRow))
 				if (distance < 10) {
-					if (matches[missingIndex] === undefined) {
-						matches[missingIndex] = []
+					if (potentialGeoMatches[missingIndex] === undefined) {
+						potentialGeoMatches[missingIndex] = []
 					}
-					matches[missingIndex].push({distance, addedIndex})
+					potentialGeoMatches[missingIndex].push({distance, addedIndex})
 				}
 			})
 		})
 		let takenAddedIndexes = []
-		matches = matches.map(rowMatches => {
+		let matches = potentialGeoMatches.map(rowMatches => {
 			if (rowMatches !== undefined) {
 				let sorted = rowMatches.sort((a, b) => a.distance - b.distance)
-				return sorted.find(match => {
+				let match = sorted.find(match => {
 					if (!takenAddedIndexes.includes(match.addedIndex)) {
 						takenAddedIndexes.push(match.addedIndex)
 						return true
 					}
 				})
+				if (match !== undefined) {
+					return match.addedIndex
+				} else {
+					//all potential matches were already taken
+					return undefined //i.e. no match found
+				}
+			} else {
+				return undefined //i.e. no match found
 			}
 		})
+
+		// find matches by url
+		if (this._indexUrl != -1) {
+			//i.e. if we actually have a URL field in this source
+			missing.forEach((missingRow, missingIndex) => {
+				let missingUrl = missingRow[this._indexUrl]
+				if (
+					matches[missingIndex] === undefined && //i.e. we haven't found a match for it yet
+					missingUrl != null &&
+					missingUrl.length > 0
+				) {
+					//don't find matches based on neither of them having a URL
+					added.forEach((addedRow, addedIndex) => {
+						let addedUrl = addedRow[this._indexUrl]
+						if (missingUrl.toLowerCase() == addedUrl.toLowerCase() && !takenAddedIndexes.includes(addedIndex)) {
+							takenAddedIndexes.push(addedIndex)
+							matches[missingIndex] = addedIndex
+						}
+					})
+				}
+			})
+		}
 
 		let changes = []
 		if (matches.length > 0) {
 			this._print('Making the following assumptions about re-names:')
 			matches.forEach((match, i) => {
-				changes.push([missing[i], added[match.addedIndex]])
-				this._print(missing[i][this._indexId], ' -> ', added[match.addedIndex][this._indexId])
-				missing[i] = null
-				added[match.addedIndex] = null
+				if (match != null) {
+					let rowFromMissing = missing[i]
+					let rowFromAdded = added[match]
+					changes.push([rowFromMissing, rowFromAdded])
+					this._print(`${rowFromMissing[this._indexId]} -> ${rowFromAdded[this._indexId]}`)
+					//now blat this pair from missing and added, so they don't show up under missing/added in the report
+					missing[i] = null
+					added[match] = null
+				}
 			})
 		}
 		missing = missing.filter(elem => elem != null)
