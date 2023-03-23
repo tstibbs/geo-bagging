@@ -1,29 +1,25 @@
+import assert from 'assert/strict'
 import util from 'util'
 import _ from 'underscore'
 import wtf from 'wtf_wikipedia'
+import wtfPluginApi from 'wtf-plugin-api'
 import {wikipediaOptions} from './constants.js'
 
+wtf.extend(wtfPluginApi)
 const wtfFetch = util.promisify(wtf.fetch)
 
 async function fetchCategories(category, exclusions) {
-	let categories = []
-	let pages = []
-	let result = await wtf.category(category, wikipediaOptions)
-	if (result.pages != null && result.pages.length > 0) {
-		categories = [category]
-		pages = result.pages.map(page => page.title)
-	}
-	let subCats = result.categories
-	if (exclusions) {
-		subCats = subCats.filter(category => !exclusions.includes(category.title))
-	}
-	let promises = subCats.map(category => fetchCategories(category.title, exclusions))
-	const results = await Promise.all(promises)
-	categories = categories.concat(...results.map(result => result.categories))
-	pages = pages.concat(...results.map(result => result.pageNames))
+	let result = await wtf.getCategoryPages(category, {
+		...wikipediaOptions,
+		recursive: true,
+		categoryExclusions: exclusions
+	})
+	let resultCategories = result.filter(entry => entry.type == 'subcat')
+	let resultPages = result.filter(entry => entry.type == 'page')
+	assert.equal(resultCategories.length + resultPages.length, result.length)
 	return {
-		categories: categories,
-		pageNames: pages
+		categories: [category, ...resultCategories.map(category => category.title)],
+		pageNames: resultPages.map(page => page.title)
 	}
 }
 
