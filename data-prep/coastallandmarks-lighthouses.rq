@@ -1,0 +1,47 @@
+SELECT ?item ?itemLabel ?lon ?lat ?inception ?serviceEntry ?dateOfOfficialOpening ?wikipediaLink ?inceptionPrecision ?serviceEntryPrecision ?dateOfOfficialOpeningPrecision
+WHERE {
+  # in British Isles - list below as per https://www.wikidata.org/wiki/Q38272
+  VALUES ?countries {
+    wd:Q145    # UK
+    wd:Q27     # Ireland
+    wd:Q25230  # Guernsey
+    wd:Q785    # Jersey
+    wd:Q9676   # Isle of Man
+  }
+  ?item wdt:P17 ?countries .
+  # instance of a lighthouse
+  ?item wdt:P31 wd:Q39715
+  # extract opening date info
+  OPTIONAL { 
+    ?item p:P571 ?inceptionProperty .
+    ?inceptionProperty a wikibase:BestRank . #use the best rank in the case of duplicates
+    ?inceptionProperty ps:P571 ?inception .
+    ?inceptionProperty psv:P571/wikibase:timePrecision ?inceptionPrecision .
+  }
+  OPTIONAL {
+    ?item p:P729 ?serviceEntryProperty .
+    ?serviceEntryProperty a wikibase:BestRank . #use the best rank in the case of duplicates
+    ?serviceEntryProperty ps:P729 ?serviceEntry .
+    ?serviceEntryProperty psv:P729/wikibase:timePrecision ?serviceEntryPrecision .
+  }
+  OPTIONAL {
+    ?item p:P1619 ?dateOfOfficialOpeningProperty .
+    ?dateOfOfficialOpeningProperty a wikibase:BestRank . #use the best rank in the case of duplicates
+    ?dateOfOfficialOpeningProperty ps:P1619 ?dateOfOfficialOpening .
+    ?dateOfOfficialOpeningProperty psv:P1619/wikibase:timePrecision ?dateOfOfficialOpeningPrecision .
+  }
+  # get wikipedia link if there is one
+  OPTIONAL {
+    ?wikipediaLink schema:about ?item .
+    ?wikipediaLink schema:inLanguage "en" .     
+    ?wikipediaLink schema:isPartOf <https://en.wikipedia.org/> .
+  }
+  # extract lat/longs
+  ?item p:P625 ?coordinate .
+  ?coordinate a wikibase:BestRank . #use the best rank in the case of duplicates
+  ?coordinate psv:P625 ?coordinate_node .
+  ?coordinate_node wikibase:geoLongitude ?lon .
+  ?coordinate_node wikibase:geoLatitude ?lat ;
+  
+  SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en" }
+}

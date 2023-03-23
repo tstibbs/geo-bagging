@@ -1,4 +1,5 @@
-import {fetchPages, fetchCategories} from './wikiUtils.js'
+import {fetchPages, fetchCategories} from './wikipediaUtils.js'
+import {queryWikidata} from './wikidataUtils.js'
 import {ifCmd} from '@tstibbs/cloud-core-utils'
 import {writeFile, createTempDir} from './utils.js'
 import {tmpInputDir} from './constants.js'
@@ -6,15 +7,7 @@ import {tmpInputDir} from './constants.js'
 const inputDir = `${tmpInputDir}/coastallandmarks`
 
 async function downloadLighthouses() {
-	const allPages = [
-		'List_of_lighthouses_in_Scotland',
-		'List_of_lighthouses_in_England',
-		'List_of_lighthouses_in_Wales',
-		'List_of_lighthouses_in_the_Channel_Islands',
-		'List_of_lighthouses_in_the_Isle_of_Man',
-		'List_of_lighthouses_in_Ireland'
-	]
-	let pageDocs = await fetchPages(allPages)
+	let pageDocs = await queryWikidata('coastallandmarks-lighthouses.rq')
 	await writeFile(`${inputDir}/lighthouses.json`, JSON.stringify(pageDocs, null, 2))
 }
 

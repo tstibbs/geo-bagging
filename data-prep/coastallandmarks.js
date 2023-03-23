@@ -1,7 +1,13 @@
 import fs from 'fs'
+import {readFile} from 'fs/promises'
+
+import {sortBy} from 'underscore'
+import {DateTime} from 'luxon'
+
 import {tmpInputDir, outputDir} from './constants.js'
 import Converter from './converter.js'
-import {filterPages} from './wikiUtils.js'
+import {filterPages} from './wikipediaUtils.js'
+import {checkForDuplicates} from './wikidataUtils.js'
 import {ifCmd} from '@tstibbs/cloud-core-utils'
 import {backUpReferenceData} from './utils.js'
 import compareData from './csv-comparer.js'
@@ -19,47 +25,43 @@ function wikify(name) {
 	return 'https://en.wikipedia.org/wiki/' + name.replace(/ /g, '_')
 }
 
-function processLighthouses() {
-	return new Promise((resolve, reject) => {
-		fs.readFile(`${inputDir}/lighthouses.json`, (err, rawData) => {
-			if (err) {
-				console.error(err)
-				reject(err)
-			}
-			let data = JSON.parse(rawData)
-
-			let sections = flatten(data.map(page => page.sections))
-			let rows = flatten(sections.filter(section => section.tables != null).map(section => section.tables[0]))
-			let csv = rows
-				.map(row => {
-					let nameContainer = row.Name ? row.Name : row.Lighthouse
-					let coordContainer =
-						row['County coordinates Grid Reference'] ||
-						row['Area coordinates'] ||
-						row['Location Coordinates'] ||
-						row['Location coordinates'] ||
-						row['Location & coordinates']
-
-					let name = nameContainer.text
-					let link = null
-					if (nameContainer.links && nameContainer.links.length > 0) {
-						let pageRef = nameContainer.links.map(link => link.page).filter(page => page != null && page.length > 0)[0]
-						link = wikify(pageRef)
-					}
-					let yearBuilt = row['Year built'] ? row['Year built'].text : ''
-					let coordMatches = /(-?\d+\.\d+)°N, (-?\d+\.\d+)°W/.exec(coordContainer.text)
-					if (coordMatches != null) {
-						let north = coordMatches[1]
-						let west = coordMatches[2]
-						return [west, north, name, link, 'Lighthouse', yearBuilt]
-					} else {
-						return null
-					}
-				})
-				.filter(record => record != null)
-			resolve(csv)
-		})
+async function processLighthouses() {
+	let resultsAsText = await readFile(`${inputDir}/lighthouses.json`)
+	let results = JSON.parse(resultsAsText)
+	checkForDuplicates(results)
+	let csv = results.map(entry => {
+		const qid = entry.item.value
+		const name = entry.item.label
+		const {lon, lat, wikipediaLink, dateOfOfficialOpening, inception, serviceEntry} = entry
+		//no particular reason to prefer one of these dates over the other, so might as well take the one with the greatest precision
+		let dates = [dateOfOfficialOpening, inception, serviceEntry].filter(date => date?.value != null)
+		dates = sortBy(dates, 'precision')
+		const date = dates.length > 0 ? convertDateToPrecision(dates.slice(-1)[0]) : null
+		const link = wikipediaLink ?? `https://www.wikidata.org/wiki/${qid}`
+		return [lon, lat, name, link, 'Lighthouse', date]
 	})
+	return csv
+}
+
+function convertDateToPrecision(dateObj) {
+	//e.g. 1874-01-01T00:00:00Z
+	const {value: dateAsString, precision} = dateObj
+	//old dates have weird time zones. Thus if you parse midnight Zulu on an old date, it might actually be a few minutes prior to midnight, when expressed in the Europe/London timezone. This means that the midnight-zulu dates you get out of wikidata are incorrect - they're actually midnight Europe/London. So, we explicitly set the output timezone to GMT to force it to be in GMT rather than Europe/London (even though the latter would be more logical).
+	let dateTime = DateTime.fromISO(dateAsString).setZone('GMT')
+	switch (precision) {
+		case '11':
+			return dateTime.toFormat('dd/MM/yyyy') //day
+		case '10':
+			return dateTime.toFormat('MMMM yyyy') //month
+		case '9':
+			return dateTime.toFormat('yyyy') //year
+		case '8':
+			return Math.floor(dateTime.year / 10) * 10 + 's' //decade
+		case '7':
+			return Math.floor(dateTime.year / 100) * 100 + 's' //century
+		default:
+			throw new Error(`Unsupported precision: ${precision}`)
+	}
 }
 
 function processPiers() {
