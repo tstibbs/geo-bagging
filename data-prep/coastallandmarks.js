@@ -1,5 +1,6 @@
 import fs from 'fs'
 import {readFile} from 'fs/promises'
+import assert from 'assert/strict'
 
 import {sortBy} from 'underscore'
 import {DateTime} from 'luxon'
@@ -33,31 +34,69 @@ async function processLighthouses() {
 		const qid = entry.item.value
 		const name = entry.item.label
 		const {lon, lat, wikipediaLink, dateOfOfficialOpening, inception, serviceEntry} = entry
-		//no particular reason to prefer one of these dates over the other, so might as well take the one with the greatest precision
-		let dates = [dateOfOfficialOpening, inception, serviceEntry].filter(date => date?.value != null)
-		dates = sortBy(dates, 'precision')
-		const date = dates.length > 0 ? convertDateToPrecision(dates.slice(-1)[0]) : null
+		let date = null
+		//we want the earliest date that gives good precision
+		//1. so, we'll cast all dates to 'year' and find all the ones that are the earliest, except if the precision was wider than 'year'
+		//2. then, we'll find the ones that are the highest precision out of that set
+		//3. then, we'll take the earliest one from the high-precision set - even if they all have the same year and precision, it will at least be the earliest one in the list below, which has been ordered deliberately
+		let dates = [inception, dateOfOfficialOpening, serviceEntry].filter(date => date?.value != null)
+		if (dates.length > 0) {
+			dates.forEach(date => {
+				assert.notEqual(date?.precision, null)
+				date.precision = parseInt(date.precision)
+				date.value = stringToDate(date.value)
+				date.millis = date.value.toMillis()
+			})
+			dates.forEach(date => {
+				if (date.precision > 11 || date.precision < 7) {
+					throw new Error(`Unsupported precision: ${date.precision}`)
+				}
+			})
+			//1.
+			dates.forEach(date => {
+				if (date.precision >= 9) {
+					date.year = date.value.year
+				}
+			})
+			let datesWithYear = dates.filter(date => date.year != null)
+			if (datesWithYear.length > 0) {
+				let minYear = Math.min(...datesWithYear.map(date => date.year))
+				dates = datesWithYear.filter(date => date.year == minYear) //find the lowest dates
+				assert.ok(dates.length > 0)
+			}
+			//2.
+			// dates = sortBy(dates, 'precision')
+			let bestPrecision = Math.max(...dates.map(date => date.precision))
+			dates = dates.filter(date => date.precision == bestPrecision) //find the best precision
+			//3.
+			dates = sortBy(dates, 'millis')
+			let chosenDate = dates[0]
+			//
+			date = dates.length > 0 ? formatDateToPrecision(chosenDate.value, chosenDate.precision) : null
+		}
 		const link = wikipediaLink ?? `https://www.wikidata.org/wiki/${qid}`
 		return [lon, lat, name, link, 'Lighthouse', date]
 	})
 	return csv
 }
 
-function convertDateToPrecision(dateObj) {
+function stringToDate(dateAsString) {
 	//e.g. 1874-01-01T00:00:00Z
-	const {value: dateAsString, precision} = dateObj
 	//old dates have weird time zones. Thus if you parse midnight Zulu on an old date, it might actually be a few minutes prior to midnight, when expressed in the Europe/London timezone. This means that the midnight-zulu dates you get out of wikidata are incorrect - they're actually midnight Europe/London. So, we explicitly set the output timezone to GMT to force it to be in GMT rather than Europe/London (even though the latter would be more logical).
-	let dateTime = DateTime.fromISO(dateAsString).setZone('GMT')
+	return DateTime.fromISO(dateAsString).setZone('GMT')
+}
+
+function formatDateToPrecision(dateTime, precision) {
 	switch (precision) {
-		case '11':
+		case 11:
 			return dateTime.toFormat('dd/MM/yyyy') //day
-		case '10':
+		case 10:
 			return dateTime.toFormat('MMMM yyyy') //month
-		case '9':
+		case 9:
 			return dateTime.toFormat('yyyy') //year
-		case '8':
+		case 8:
 			return Math.floor(dateTime.year / 10) * 10 + 's' //decade
-		case '7':
+		case 7:
 			return Math.floor(dateTime.year / 100) * 100 + 's' //century
 		default:
 			throw new Error(`Unsupported precision: ${precision}`)
