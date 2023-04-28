@@ -40,10 +40,14 @@ npm run test
 
 As a demonstration of some things this project can be used for, some basic integration with trigpointing.uk has been created, see [Integration](ui/src/includes/integration/trigpointing.md) for details.
 
-## Licence
+# Architecture
 
-The _code_ of this project is licenced under AGPL, but please see [here](Licences.md) for important information regarding the licence of other parts of this project.
+[High level architecture diagram](high-level-architecture.png)
 
 ## Contributing
 
 PRs are very welcome, but for any big changes or new features please open an issue to discuss first.
+
+## Licence
+
+The _code_ of this project is licenced under AGPL, but please see [here](Licences.md) for important information regarding the licence of other parts of this project.
