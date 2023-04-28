@@ -47,4 +47,4 @@ The _code_ of this project is licenced under AGPL, but please see [here](Licence
 
 ## Contributing
 
-PRs are very welcome, but for any big changes please open an issue to discuss first.
+PRs are very welcome, but for any big changes or new features please open an issue to discuss first.
