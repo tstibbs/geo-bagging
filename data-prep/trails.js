@@ -164,7 +164,7 @@ async function buildDataFile() {
 		() => walesCoastPathDetails,
 		crsTransformer,
 		feature => {
-			let status = feature.properties['STATUS']
+			let status = feature.properties['status']
 			return status != null && status.trim() == 'Main'
 		},
 		features => {
