@@ -8,7 +8,7 @@ import 'leaflet-mouse-position/src/L.Control.MousePosition.css'
 import 'leaflet.locatecontrol/dist/L.Control.Locate.min.css'
 import 'leaflet.markercluster/dist/MarkerCluster.Default.css'
 import 'leaflet.markercluster/dist/MarkerCluster.css'
-import 'leaflet-geosearch/src/css/l.geosearch.css'
+import 'leaflet-geosearch/dist/geosearch.css'
 import 'sidebar-v2/css/leaflet-sidebar.css'
 
 //my modules that are external to this project

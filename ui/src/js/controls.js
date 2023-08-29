@@ -60,7 +60,9 @@ var Controls = leaflet.Class.extend({
 						{
 							showPopup: true,
 							provider: new GeosearchBing({
-								key: constants.bingKey
+								params: {
+									key: constants.bingKey
+								}
 							})
 						},
 						configOverrides

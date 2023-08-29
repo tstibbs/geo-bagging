@@ -41,7 +41,7 @@
 		"leaflet": "^1.9.4",
 		"leaflet-box-selector": "git+https://tstibbs@github.com/tstibbs/Leaflet.BoxSelector.git",
 		"leaflet-control-hider": "git+https://tstibbs@github.com/tstibbs/Leaflet.ControlHider.git",
-		"leaflet-geosearch": "git+https://tstibbs@github.com/tstibbs/L.GeoSearch.git#bing_jsonp",
+		"leaflet-geosearch": "git+https://tstibbs@github.com/tstibbs/L.GeoSearch.git#local/merging-prs-372-374",
 		"leaflet-matrix-layers-control": "git+https://tstibbs@github.com/tstibbs/Leaflet.MatrixLayersControl.git",
 		"leaflet-mouse-position": "^1.2.0",
 		"leaflet-plugins": "^3.4.0",
