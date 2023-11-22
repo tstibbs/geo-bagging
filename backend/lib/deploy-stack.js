@@ -50,7 +50,7 @@ class DeployStack extends Stack {
 			entry: `src/handlers/${name}.js`,
 			memorySize: 128,
 			timeout: Duration.seconds(30),
-			runtime: Runtime.NODEJS_16_X
+			runtime: Runtime.NODEJS_20_X
 		})
 
 		let integration = new HttpLambdaIntegration(`${name}-integration`, handler)

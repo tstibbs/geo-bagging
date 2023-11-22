@@ -28,7 +28,7 @@ jobs:
     - name: Set up node
       uses: actions/setup-node@v1
       with:
-        node-version: 16.x
+        node-version: 20.x
     - name: Set up environment
       run: mkdir cdk.tmp
       working-directory: geo-bagging/backend
