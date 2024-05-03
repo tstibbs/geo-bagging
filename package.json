@@ -6,8 +6,8 @@
 		"npm": ">=8"
 	},
 	"devDependencies": {
-		"lint-staged": "^14.0.1",
-		"prettier": "^3.0.2"
+		"lint-staged": "^15.2.2",
+		"prettier": "^3.2.5"
 	},
 	"scripts": {
 		"preinstall": "git config core.hooksPath .project/hooks"
