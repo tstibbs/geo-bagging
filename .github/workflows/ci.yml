@@ -14,19 +14,19 @@ jobs:
 
     # checkout a dependent project
     - name: Checkout cloud-core
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
       with:
         repository: tstibbs/cloud-core
         path: 'cloud-core' # will resolve to /home/runner/work/geo-bagging/geo-bagging/cloud-core
 
     # checkout 'this' project
     - name: Checkout geo-bagging
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
       with:
         path: 'geo-bagging' # will resolve to /home/runner/work/geo-bagging/geo-bagging/geo-bagging
 
     - name: Set up node
-      uses: actions/setup-node@v1
+      uses: actions/setup-node@v4
       with:
         node-version: 20.x
     - name: Set up environment
