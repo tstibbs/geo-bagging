@@ -2,8 +2,8 @@
 	"name": "@tstibbs/geo-bagging-data-prep",
 	"private": true,
 	"engines": {
-		"node": ">=16",
-		"npm": ">=8"
+		"node": ">=20 <20.12",
+		"npm": ">=10"
 	},
 	"type": "module",
 	"dependencies": {
