@@ -2,8 +2,8 @@
 	"name": "@tstibbs/geo-bagging-root",
 	"private": true,
 	"engines": {
-		"node": ">=16",
-		"npm": ">=8"
+		"node": ">=20",
+		"npm": ">=10"
 	},
 	"devDependencies": {
 		"lint-staged": "^15.2.2",
