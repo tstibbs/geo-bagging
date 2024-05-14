@@ -11,7 +11,9 @@ The simplest way is to use the bookmarklet below:
 - Either drag the link above into your bookmarks
 - Or right-click (or long-press on a mobile device) on the link, select `Copy link address`, then create a new bookmark, with the copied link as the URL of the bookmark
 
-## Chrome on Windows
+## Desktop Devices
+
+Tested on Chrome on Windows, but likely to work in other modern browsers on other operating systems.
 
 1. When on a T:UK page, click the bookmark created above to load the map view.
 1. Refresh the page to return to the original page without the extra map view.
@@ -22,9 +24,11 @@ If the bookmarklet doesn't work at all, you can open the developer console (usua
 $.getScript("https://tstibbs.github.io/geo-bagging/integration/trigpointing.js");
 ```
 
-## Chrome on Android
+## Mobile Devices
 
-1. When on a T:UK page, click in to the adress bar.
+Tested in Chrome on Android, but likely to work in other modern browsers on iOS and other devices types.
+
+1. When on a T:UK page, click in to the address bar.
 1. Type the name of your bookmarklet (e.g. type "Add map to T:UK" if using the name as it appears above).
 1. Select the bookmarklet in the list.
 
@@ -36,6 +40,6 @@ See note about which browsers are supported: <https://github.com/tstibbs/geo-bag
 
 The full map (showing data sources other than just trig points): <https://tstibbs.github.io/geo-bagging/>
 
-Requests for support: <https://github.com/tstibbs/geo-bagging/discussions>
+Questions and feature suggestions: <https://github.com/tstibbs/geo-bagging/discussions>
 
 Bug reports: <https://github.com/tstibbs/geo-bagging/issues>
