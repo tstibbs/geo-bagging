@@ -36,10 +36,9 @@ class DeployStack extends Stack {
 				allowOrigins: allowedOrigins
 			}
 		})
-		addUsageTrackingToHttpApi(this.#httpApi, 'httpApiAccessLogs')
 		this.#addHttpRoute('/integration/trigs/search-parse.php/{searchTerm}', 'search')
 
-		const websiteResources = new WebsiteResources(this, 'geoBaggingData', countriesDenyList)
+		const websiteResources = new WebsiteResources(this, 'geoBaggingData', countriesDenyList, true)
 		websiteResources.addHttpApi(`integration/*`, this.#httpApi)
 
 		applyStandardTags(this)
