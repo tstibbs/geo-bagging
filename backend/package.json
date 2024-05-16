@@ -7,8 +7,6 @@
 	},
 	"type": "module",
 	"devDependencies": {
-		"@aws-cdk/aws-apigatewayv2-alpha": "^2.114.1-alpha.0",
-		"@aws-cdk/aws-apigatewayv2-integrations-alpha": "^2.114.1-alpha.0",
 		"@aws-sdk/client-s3": "^3.568.0",
 		"@tstibbs/cloud-core-utils": "file:../../cloud-core/aws/utils",
 		"aws-cdk": "2.140.0",
