@@ -7,7 +7,8 @@
 	},
 	"type": "module",
 	"devDependencies": {
-		"@aws-sdk/client-s3": "^3.568.0",
+		"@aws-sdk/client-cloudformation": "^3.577.0",
+		"@aws-sdk/client-s3": "^3.577.0",
 		"@tstibbs/cloud-core-utils": "file:../../cloud-core/aws/utils",
 		"aws-cdk": "2.140.0",
 		"aws-cdk-lib": "2.140.0",
