@@ -37,7 +37,19 @@ const classifications = {
 	A: 'Arderin',
 	VL: 'Vandeleur-Lynam',
 	O: 'Other',
-	Un: 'Unclassified'
+	Un: 'Unclassified',
+	Tu: 'Tump',
+	Mur: 'Murdo',
+	CT: 'Corbett Top',
+	GT: 'Graham Top',
+	'B&L': 'Buxton & Lewis',
+	Bg: 'Bridge',
+	T100: 'Trail 100',
+	Y: 'Yeaman',
+	Cm: 'Clem',
+	Ca: 'Carn',
+	Bin: 'Binnion',
+	HHB: 'High Hills of Britain'
 }
 
 const urlPaths = {
@@ -55,7 +67,7 @@ const urlPaths = {
 	Hew: 'https://www.hill-bagging.co.uk/hill-list/the-hewitts',
 	N: 'https://www.hill-bagging.co.uk/hill-list/the-nuttalls',
 	Dew: 'https://www.hill-bagging.co.uk/hill-list/the-deweys',
-	//"DDew": "Donald Dewey", //no dedicated page exists
+	//"DDew"  //no dedicated page exists
 	HF: 'https://www.hill-bagging.co.uk/hill-list/the-highland-fives',
 	4: 'https://www.hill-bagging.co.uk/hill-list/the-tumps',
 	3: 'https://www.hill-bagging.co.uk/hill-list/the-tumps',
@@ -75,9 +87,21 @@ const urlPaths = {
 	SIB: 'https://www.hill-bagging.co.uk/hill-list/the-sibs',
 	Dil: 'https://www.hill-bagging.co.uk/hill-list/the-dillons',
 	A: 'https://www.hill-bagging.co.uk/hill-list/the-arderins',
-	VL: 'https://www.hill-bagging.co.uk/hill-list/the-vandeleur-lynams'
-	// "O":    "Other", //no dedicated page exists
-	// "Un":   "Unclassified" //no dedicated page exists
+	VL: 'https://www.hill-bagging.co.uk/hill-list/the-vandeleur-lynams',
+	// "O"  //no dedicated page exists
+	// "Un"  //no dedicated page exists
+	Tu: 'https://www.hill-bagging.co.uk/hill-list/the-tumps',
+	// 'Mur'  //no dedicated page exists
+	// 'CT'  //no dedicated page exists
+	// 'GT'  //no dedicated page exists
+	// 'B&L'  //no dedicated page exists
+	// 'Bg'  //no dedicated page exists
+	T100: 'https://www.hill-bagging.co.uk/hill-list/the-trail-100s',
+	Y: 'https://www.hill-bagging.co.uk/hill-list/the-yeamans',
+	Cm: 'https://www.hill-bagging.co.uk/hill-list/the-clems',
+	Ca: 'https://www.hill-bagging.co.uk/hill-list/the-carns',
+	Bin: 'https://www.hill-bagging.co.uk/hill-list/the-binnions',
+	HHB: 'https://www.hill-bagging.co.uk/hill-list/the-high-hills-of-britain'
 }
 
 const prefixes = {
