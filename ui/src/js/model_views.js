@@ -12,6 +12,7 @@ var ModelViews = leaflet.Class.extend({
 		this._manager = manager
 		this._controls = manager.getControls()
 		this._urlHandler = new UrlHandler()
+		this._lazyCallbacks = {}
 	},
 
 	_filterModels: function (bundleModels, className) {
@@ -27,12 +28,16 @@ var ModelViews = leaflet.Class.extend({
 		return matchingModels
 	},
 
+	loadSource: function (bundleName) {
+		return this._lazyCallbacks[bundleName]()
+	},
+
 	_addLazyModels: function (lazyModels, addCallback) {
 		Object.keys(lazyModels).forEach(
 			function (bundleName) {
 				var model = lazyModels[bundleName]
 				var callback = function () {
-					model.fetchData().done(
+					return model.fetchData().done(
 						function () {
 							addCallback(bundleName, model)
 							this._addAttribution(bundleName, model)
@@ -40,6 +45,7 @@ var ModelViews = leaflet.Class.extend({
 						}.bind(this)
 					)
 				}.bind(this)
+				this._lazyCallbacks[bundleName] = callback
 				var meta = model.getMeta()
 				var description = meta.recordCount + ' items (last updated ' + meta.lastUpdated + ')'
 				var bundleDetails = this._bundles[bundleName]

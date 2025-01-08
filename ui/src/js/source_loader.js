@@ -10,10 +10,13 @@ var SourceLoader = leaflet.Class.extend({
 		this._config = config
 	},
 
+	_parseSources: function (paramName) {
+		var sourcesString = params.test(paramName)
+		return sourcesString != null && sourcesString.length > 0 ? sourcesString.split(',') : []
+	},
+
 	loadSources: function (selectedSourceIds) {
-		var extraDataSourcesString = params.test('extra-datasources')
-		var extraDataSources =
-			extraDataSourcesString != null && extraDataSourcesString.length > 0 ? extraDataSourcesString.split(',') : []
+		var extraDataSources = this._parseSources('extra-datasources')
 		var sourceIds = $.uniqueSort(selectedSourceIds.concat(constants.dataSources, extraDataSources))
 		var sourceModuleIds = this._sourceIdsToDataSources(sourceIds)
 		var deferredObject = $.Deferred()
@@ -49,15 +52,14 @@ var SourceLoader = leaflet.Class.extend({
 
 			$.when.apply($, promises).always(
 				function () {
-					var modelViews = new ModelViews(sources, this._manager)
-					modelViews.loadModelViews(sourceModels, lazyModels, this._config, this._finish)
+					this._modelViews = new ModelViews(sources, this._manager)
+					this._modelViews.loadModelViews(sourceModels, lazyModels, this._config, this._finish.bind(this))
 					//don't need to wait for ModelViews to finish, callback will update UI when the time comes, but can safely return after this call
 					deferredObject.resolve()
 				}.bind(this)
 			)
 
 			setTimeout(() => {
-				this._finish()
 				deferredObject.resolve()
 			}, 1)
 		})
@@ -79,7 +81,15 @@ var SourceLoader = leaflet.Class.extend({
 		return allSources
 	},
 
-	_finish: function () {
+	_autoLoadSources: async function () {
+		let sourceIds = this._parseSources('auto-load-datasources')
+		let dataSources = this._sourceIdsToDataSources(sourceIds)
+		let promises = dataSources.map(sourceId => this._modelViews.loadSource(sourceId))
+		await Promise.all(promises)
+	},
+
+	_finish: async function () {
+		await this._autoLoadSources()
 		$('div#loading-message-pane').hide()
 	}
 })
