@@ -1,56 +1,31 @@
-import leaflet from 'VendorWrappers/leaflet.js'
 import PointsBuilder from './points_builder.js'
+import {labels, links} from './classifications.js'
 import CustomDefaultIcon from '../../custom_default_icon.js'
 import hillIcon from '../../../img/hill.png'
 
-var dimensionNames = ['Hills']
-var dimensionValueLabels = {}
-var hillValueLabels = {}
-dimensionValueLabels[dimensionNames[0]] = hillValueLabels
-
 var displayNames = {
-	5: 'Dewey',
-	'5D': 'Donald Dewey',
-	'5H': 'Highland Five',
-	C: 'Corbett',
+	...labels,
+	//compatibility with the reduced data set, until it's fixed up
 	CouT: 'County Top',
-	D: 'Donald',
-	G: 'Graham',
-	Hew: 'Hewitt',
-	Hu: 'Hump',
-	M: 'Munro',
-	MT: 'Munro Top',
-	Ma: 'Marilyn',
-	N: 'Nutall',
-	SIB: 'Island (SIB)',
-	Sim: 'Simm',
-	TU: 'Tump',
-	W: 'Wainwright'
+	TU: 'Tump'
 }
 var urlPaths = {
-	5: 'Deweys',
-	'5D': 'HighlandFives',
-	'5H': 'HighlandFives',
-	C: 'Corbetts',
-	CouT: 'CountyTops',
-	D: 'Donalds',
-	G: 'Grahams',
-	Hew: 'Hewitts',
-	Hu: 'HuMPs',
-	M: 'Munros',
-	MT: 'Munros',
-	Ma: 'Marilyns',
-	N: 'Nuttalls',
-	SIB: 'SIBs',
-	Sim: 'Simms',
-	TU: 'Tumps',
-	W: 'Wainwrights'
+	...links,
+	//compatibility with the reduced data set, until it's fixed up
+	CouT: 'http://www.hill-bagging.co.uk/CountyTops.php',
+	TU: 'http://www.hill-bagging.co.uk/Tumps.php'
 }
 
-Object.keys(displayNames).forEach(function (key) {
-	hillValueLabels[key] =
-		'<a href="http://www.hill-bagging.co.uk/' + urlPaths[key] + '.php">' + displayNames[key] + '</a>'
-})
+var dimensionNames = ['Hills']
+var dimensionValueLabels = {}
+var hillValueLabels = {...displayNames}
+dimensionValueLabels[dimensionNames[0]] = hillValueLabels
+
+Object.keys(displayNames)
+	.filter(key => key in urlPaths)
+	.forEach(key => {
+		hillValueLabels[key] = '<a href="' + urlPaths[key] + '">' + displayNames[key] + '</a>'
+	})
 
 var redIconPath = hillIcon
 
