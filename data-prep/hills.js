@@ -57,7 +57,7 @@ class HillConverter extends Converter {
 						classification
 				)
 			}
-			let classes = classification.split(',')
+			let classes = classification.split(',').map(cls => cls.trim())
 			let allClasses = []
 			classes.forEach(classString => {
 				if (classString.endsWith('=')) {
