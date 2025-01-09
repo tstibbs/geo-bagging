@@ -8,9 +8,11 @@ import {backUpReferenceData} from './utils.js'
 import Converter from './converter.js'
 import compareData from './csv-comparer.js'
 
+import {heightBandHill, heightBandMtn, heightBand3000} from '../ui/src/js/bundles/hills/constants.js'
+
 const attributionString =
 	'This file adapted from the The Database of British and Irish Hills (http://www.hills-database.co.uk/downloads.html), licenced under CC BY 3.0 (https://creativecommons.org/licenses/by/3.0/deed.en_GB)'
-const columnHeaders = '[Longitude,Latitude,Id,Name,Classification,Height(m)]'
+const columnHeaders = '[Longitude,Latitude,Id,Name,Classification,HeightBand,Height(m)]'
 
 const classesMap = {
 	//used for mapping and filtering, by filtering in only the things we want
@@ -79,13 +81,16 @@ class HillConverter extends Converter {
 			allClasses = Array.from(new Set(allClasses))
 			if (allClasses.length > 0) {
 				classification = allClasses.join(';')
+				let height = record[13]
+				let heightBand = toHeightBand(height)
 				return [
 					record[34], //Longitude
 					record[33], //Latitude
 					record[0], //Number
 					record[1], //Name
 					classification, //Classification
-					record[13] //Metres
+					heightBand,
+					height //Metres
 					//record[30], //hill-bagging link //they appear to all just be http://www.hill-bagging.co.uk/googlemaps.php?qu=S&rf=[id] but some of them are different - so we'll construct them ourselves on the front end
 				]
 			} else {
@@ -94,6 +99,16 @@ class HillConverter extends Converter {
 		} else {
 			return null
 		}
+	}
+}
+
+function toHeightBand(height) {
+	if (height < 610) {
+		return heightBandHill
+	} else if (height < 914.4) {
+		return heightBandMtn
+	} else {
+		return heightBand3000
 	}
 }
 

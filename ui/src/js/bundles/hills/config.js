@@ -2,6 +2,7 @@ import PointsBuilder from './points_builder.js'
 import {labels, links} from './classifications.js'
 import CustomDefaultIcon from '../../custom_default_icon.js'
 import hillIcon from '../../../img/hill.png'
+import {heightBandHill, heightBandMtn, heightBand3000} from './constants.js'
 
 var displayNames = {
 	...labels,
@@ -16,15 +17,21 @@ var urlPaths = {
 	TU: 'http://www.hill-bagging.co.uk/Tumps.php'
 }
 
-var dimensionNames = ['Hills']
+var dimensionNames = ['Height', 'Group']
 var dimensionValueLabels = {}
-var hillValueLabels = {...displayNames}
-dimensionValueLabels[dimensionNames[0]] = hillValueLabels
+const heightBandLabels = {
+	[heightBandHill]: 'Hill',
+	[heightBandMtn]: "Mountain <3000'",
+	[heightBand3000]: "Mountain 3000'+"
+}
+dimensionValueLabels[dimensionNames[0]] = heightBandLabels
+var groupLabels = {...displayNames}
+dimensionValueLabels[dimensionNames[1]] = groupLabels
 
 Object.keys(displayNames)
 	.filter(key => key in urlPaths)
 	.forEach(key => {
-		hillValueLabels[key] = '<a href="' + urlPaths[key] + '">' + displayNames[key] + '</a>'
+		groupLabels[key] = '<a href="' + urlPaths[key] + '">' + displayNames[key] + '</a>'
 	})
 
 var redIconPath = hillIcon

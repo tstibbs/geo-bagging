@@ -7,16 +7,17 @@ var Builder = AbstractPointsBuilder.extend({
 		var lat = point[1]
 		var id = point[2]
 		var name = point[3]
-		var classification = point[4]
-		var height = point[5]
+		var classifications = point[4]
+		var heightBands = [point[5]]
+		var height = point[6]
 
 		var url = 'http://www.hill-bagging.co.uk/mountaindetails.php?rf=' + id
 
 		var extraInfos = [
 			['Height', height],
-			['Classifications', this.split(classification, this._bundleConfig.hillDisplayNames)]
+			['Classifications', this.split(classifications, this._bundleConfig.hillDisplayNames)]
 		]
-		this.addMarker(id, lat, lng, url, name, extraInfos, null, [classification])
+		this.addMarker(id, lat, lng, url, name, extraInfos, null, [heightBands, classifications])
 	}
 })
 
