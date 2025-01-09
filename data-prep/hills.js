@@ -10,6 +10,8 @@ import compareData from './csv-comparer.js'
 
 import {heightBandHill, heightBandMtn, heightBand3000} from '../ui/src/js/bundles/hills/constants.js'
 
+const UNCLASSIFIED_CLASSIFICATION = 'Un'
+
 const attributionString =
 	'This file adapted from the The Database of British and Irish Hills (http://www.hills-database.co.uk/downloads.html), licenced under CC BY 3.0 (https://creativecommons.org/licenses/by/3.0/deed.en_GB)'
 const columnHeaders = '[Longitude,Latitude,Id,Name,Classification,HeightBand,Height(m)]'
@@ -79,6 +81,9 @@ class HillConverter extends Converter {
 				}
 			})
 			allClasses = Array.from(new Set(allClasses))
+			if (!this._filtering && allClasses.length == 0) {
+				allClasses = [UNCLASSIFIED_CLASSIFICATION]
+			}
 			if (allClasses.length > 0) {
 				classification = allClasses.join(';')
 				let height = record[13]
