@@ -1,2 +1,0 @@
-"use strict";(self.webpackChunk_tstibbs_geo_bagging_ui=self.webpackChunk_tstibbs_geo_bagging_ui||[]).push([[89],{2089:(i,s,t)=>{t.r(s),t.d(s,{default:()=>a});const a=t(4758).default.extend({parse:function(i){var s=i[0],t=i[1],a=i[2],e=i[3],l=i[4],n="http://www.hill-bagging.co.uk/mountaindetails.php?rf="+a,g=[["Height",i[5]],["Classifications",this.split(l,this._bundleConfig.hillDisplayNames)]];this.addMarker(a,t,s,n,e,g,null,[l])}})}}]);
-//# sourceMappingURL=89.cfc7d76b9962fde57e1a.js.map
