@@ -25,11 +25,10 @@ if (args.length < 1) {
 const sourcesToUpload = args
 
 async function getOutputs(stackName) {
-	let response = await cloudformation
-		.describeStacks({
-			StackName: stackName
-		})
-		.promise()
+	let response = await cloudformation.describeStacks({
+		StackName: stackName
+	})
+
 	assert.equal(response.Stacks.length, 1)
 	let outputs = Object.fromEntries(response.Stacks[0].Outputs.map(output => [output.OutputKey, output.OutputValue]))
 	return outputs
@@ -45,14 +44,13 @@ async function upload(prefix, fileName, body, contentType) {
 		key = fileName
 	}
 	console.log(`Uploading ${key}`)
-	let uploadResponse = await s3
-		.upload({
-			Bucket: bucketName,
-			Key: key,
-			Body: body,
-			ContentType: contentType
-		})
-		.promise()
+	let uploadResponse = await s3.upload({
+		Bucket: bucketName,
+		Key: key,
+		Body: body,
+		ContentType: contentType
+	})
+
 	assert.notEqual(uploadResponse.Location, null)
 	assert.notEqual(uploadResponse.Location, undefined)
 }
