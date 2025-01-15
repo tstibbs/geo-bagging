@@ -1,19 +1,17 @@
 import {strict as assert} from 'assert'
 import {createReadStream} from 'fs'
 
-import aws from 'aws-sdk'
+import {CloudFormation} from '@aws-sdk/client-cloudformation'
+import {Upload} from '@aws-sdk/lib-storage'
+import {S3} from '@aws-sdk/client-s3'
 
+import {defaultAwsClientConfig} from '@tstibbs/cloud-core-utils/src/tools/aws-client-config.js'
 import {STACK_NAME} from '../lib/deploy-envs.js'
 
 const GB_DATA_PATH = 'data'
 
-aws.config.region = 'eu-west-2'
-aws.config.apiVersions = {
-	s3: '2006-03-01',
-	cloudformation: '2010-05-15'
-}
-let cloudformation = new aws.CloudFormation()
-let s3 = new aws.S3()
+let cloudformation = new CloudFormation(defaultAwsClientConfig)
+let s3 = new S3(defaultAwsClientConfig)
 
 const args = process.argv.slice(2)
 if (args.length < 1) {
@@ -44,12 +42,15 @@ async function upload(prefix, fileName, body, contentType) {
 		key = fileName
 	}
 	console.log(`Uploading ${key}`)
-	let uploadResponse = await s3.upload({
-		Bucket: bucketName,
-		Key: key,
-		Body: body,
-		ContentType: contentType
-	})
+	let uploadResponse = await new Upload({
+		client: s3,
+		params: {
+			Bucket: bucketName,
+			Key: key,
+			Body: body,
+			ContentType: contentType
+		}
+	}).done()
 
 	assert.notEqual(uploadResponse.Location, null)
 	assert.notEqual(uploadResponse.Location, undefined)
