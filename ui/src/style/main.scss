@@ -218,3 +218,9 @@ body:not(.mobile) label.fancy-checkbox > i:hover {
 label.fancy-checkbox {
 	cursor: pointer;
 }
+
+.leaflet-popup-content {
+	overflow: auto;
+	max-height: 85vh;
+	max-width: 85vw;
+}
