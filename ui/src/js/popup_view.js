@@ -28,7 +28,9 @@ export default {
 
 	_buildValue: function (value) {
 		if (Array.isArray(value) && value.length == 2) {
-			return '<a href="' + this._truncateDisplayString(value[1]) + '">' + value[0] + '</a>'
+			let text = this._truncateDisplayString(value[0])
+			let url = value[1]
+			return `<a href="${url}">${text}</a>`
 		} else {
 			return this._truncateDisplayString(value)
 		}
