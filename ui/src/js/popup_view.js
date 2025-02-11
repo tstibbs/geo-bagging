@@ -27,12 +27,18 @@ export default {
 	},
 
 	_buildValue: function (value) {
-		if (Array.isArray(value) && value.length == 2) {
-			let text = this._truncateDisplayString(value[0])
+		if (typeof value === 'object' && 'url' in value) {
+			let {url, text} = value
+			url = encodeURI(url)
+			text = this._truncateDisplayString(this._escapeValue(text))
+			return `<a href="${url}">${text}</a>`
+		} else if (Array.isArray(value) && value.length == 2) {
+			//legacy array-based method
+			let text = this._truncateDisplayString(this._escapeValue(value[0]))
 			let url = value[1]
 			return `<a href="${url}">${text}</a>`
 		} else {
-			return this._truncateDisplayString(value)
+			return this._truncateDisplayString(this._escapeValue(value))
 		}
 	},
 
@@ -85,7 +91,7 @@ export default {
 					if (popupText.length > 0) {
 						popupText += '<br />'
 					}
-					popupText += '<span class="popup-entry-key">' + key + ': </span>'
+					popupText += '<span class="popup-entry-key">' + _.escape(key) + ': </span>'
 					if (Array.isArray(value)) {
 						if (value.length > 1) {
 							value = this._truncateDisplayArray(value)
@@ -110,16 +116,6 @@ export default {
 		//get everything from the model - anything that gets put into the dom needs to be escaped to prevent XSS
 		var name = _.escape(unescapedName)
 		var url = _.escape(unescapedUrl)
-		var extraTexts = null
-		if (unescapedExtraTexts != null) {
-			extraTexts = unescapedExtraTexts.map(
-				function (keyAndVal) {
-					var key = keyAndVal[0]
-					var value = keyAndVal[1]
-					return [_.escape(key), this._escapeValue(value)]
-				}.bind(this)
-			)
-		}
 
 		var popupText = '<div>'
 		if (this.notEmpty(url)) {
@@ -133,11 +129,11 @@ export default {
 			popupText += '    <i class="fa fa-check"></i>'
 			popupText += '</label>'
 		}
-		if (extraTexts != null) {
+		if (unescapedExtraTexts != null) {
 			if (popupText.length > 0) {
 				popupText += '<br />'
 			}
-			popupText += this.buildDescription(extraTexts)
+			popupText += this.buildDescription(unescapedExtraTexts)
 		}
 
 		if (latLng != null) {

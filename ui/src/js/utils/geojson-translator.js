@@ -84,15 +84,21 @@ var GeoJsonTranslator = leaflet.Class.extend({
 			.filter(([key, value]) => filterPropName(key))
 			//translate links from gpx into our format
 			.map(([key, value]) => {
-				if (Array.isArray(value)) {
-					value = value.map(entry => {
-						let linkValues = Object.entries(entry)
-						if (linkValues.length == 1 && linkValues[0][0] == 'href') {
-							let url = linkValues[0][1]
-							return [url, url]
-						} else {
-							return JSON.stringify(entry) //fallback, who knows what the structure is like, not much we can do
+				if (key == 'links') {
+					value = value.map(link => {
+						let {href, type, text} = link
+						if (text == null || text.trim().length == 0) {
+							text = href
 						}
+						return {
+							url: href,
+							text,
+							type
+						}
+					})
+				} else if (Array.isArray(value)) {
+					value = value.map(entry => {
+						return JSON.stringify(entry) //who knows what the structure is like, not much we can do
 					})
 				}
 				return [key, value]
