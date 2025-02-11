@@ -99,13 +99,10 @@ div.mini-map .leaflet-container .leaflet-control-attribution {
 }
 
 .expandable-checkbox:not(checked) ~ .expandable-content {
-	visibility: hidden;
-	/* when not showing, hide links but keep their width to ensure the popup is appropriately sized when they do appear */
-	height: 0px;
+	display: none;
 }
 .expandable-checkbox:checked ~ .expandable-content {
-	visibility: initial;
-	height: initial;
+	display: block;
 }
 
 /* landing page */
