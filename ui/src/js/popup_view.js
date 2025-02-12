@@ -28,10 +28,18 @@ export default {
 
 	_buildValue: function (value) {
 		if (typeof value === 'object' && 'url' in value) {
-			let {url, text} = value
+			let {url, text, type} = value
 			url = encodeURI(url)
 			text = this._truncateDisplayString(this._escapeValue(text))
-			return `<a href="${url}">${text}</a>`
+			if (type != null && type.startsWith('image/')) {
+				return `
+				<div class="popup-image-width-preserver"></div>
+				<a href="${url}">
+					<img class="popup-image" src="${url}" title="${text}">
+				</a>`
+			} else {
+				return `<a href="${url}">${text}</a>`
+			}
 		} else if (Array.isArray(value) && value.length == 2) {
 			//legacy array-based method
 			let text = this._truncateDisplayString(this._escapeValue(value[0]))

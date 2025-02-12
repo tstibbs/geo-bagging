@@ -84,6 +84,21 @@ div.mini-map .leaflet-container .leaflet-control-attribution {
 	margin-bottom: 0px;
 }
 
+/* leaflet creates the popup at the width of it's content - before any images have loaded. 
+ * Re-setting the width can result in the popup being in the wrong place, because it's 
+ * position is calculated based on the original width. So we add a small element to force 
+ * the width before any images have loaded. This ensures no jumping. It does mean that the 
+ * box might be wider than needed, but that's the lesser of the two evils. */
+.popup-image-width-preserver {
+	width: 200px;
+	height: 0px;
+}
+.popup-image {
+	max-width: 200px;
+	max-height: 200px;
+	vertical-align: middle;
+}
+
 /* links section */
 
 .expandable-links {
@@ -220,4 +235,5 @@ label.fancy-checkbox {
 	overflow: auto;
 	max-height: 85vh;
 	max-width: 85vw;
+	width: max-content !important;
 }
