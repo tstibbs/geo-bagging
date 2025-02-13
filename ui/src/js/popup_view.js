@@ -29,7 +29,7 @@ export default {
 	_buildValue: function (value) {
 		if (typeof value === 'object' && 'url' in value) {
 			let {url, text, type} = value
-			url = encodeURI(url)
+			url = this._escapeValue(url)
 			text = this._truncateDisplayString(this._escapeValue(text))
 			if (type != null && type.startsWith('image/')) {
 				return `
@@ -43,7 +43,7 @@ export default {
 		} else if (Array.isArray(value) && value.length == 2) {
 			//legacy array-based method
 			let text = this._truncateDisplayString(this._escapeValue(value[0]))
-			let url = value[1]
+			let url = this._escapeValue(value[1])
 			return `<a href="${url}">${text}</a>`
 		} else {
 			return this._truncateDisplayString(this._escapeValue(value))
