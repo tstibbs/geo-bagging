@@ -4,10 +4,14 @@ import TrackConstraintsLoadView from './track_load_view.js'
 import CurrentLocationView from './current_location_view.js'
 import CurrentAreaView from './current_area_view.js'
 import {GeoJsonConstraintLoadView} from './geo-json-load-view.js'
+import {geoJsonCoordsToLeaflet, geoJsonBoundsToLeaflet} from '../../utils/geojson.js'
+import {mergePolygons} from '../../utils/polygon-merger.js'
+import {polygon} from '@turf/turf'
 
 var ConstraintsView = leaflet.Class.extend({
 	initialize: function (manager) {
 		this._manager = manager
+		this._constraintPolygons = []
 		this._limitOriginView = null //the view that triggered the current limits
 		this._view = $('<div></div>')
 		var info = $(
@@ -40,13 +44,26 @@ var ConstraintsView = leaflet.Class.extend({
 		return wrapper
 	},
 
-	limitTo: function (limitOriginView, /*LatLngBounds*/ bounds) {
+	limitToBounds: function (limitOriginView, /*LatLngBounds*/ bounds) {
+		//translating to geojson just to translate back is somewhat inefficient, but as it's only a single polygon it shouldn't cause a noticeable slowdown. It's simpler to do this than to have two versions of the main limitTo function
+		let polygonPoints = [
+			bounds.getSouthWest(),
+			bounds.getNorthWest(),
+			bounds.getNorthEast(),
+			bounds.getSouthEast(),
+			bounds.getSouthWest()
+		].map(latLng => leaflet.GeoJSON.latLngToCoords(latLng))
+		let boundsAsGeoJson = polygon([polygonPoints])
+		this.limitToGeoJsonPolygons(limitOriginView, [boundsAsGeoJson])
+	},
+
+	limitToGeoJsonPolygons: function (limitOriginView, /*[GeoJson Polygon]*/ bounds) {
 		this.unlimit()
 		this._limitOriginView = limitOriginView
-		this._manager.setViewConstraints(this._buildLimitFunction(bounds))
-		if (this._constraintPolygon != null) {
-			this._constraintPolygon.remove()
+		if (!Array.isArray(bounds)) {
+			bounds = [bounds]
 		}
+		this._manager.setViewConstraints(this._buildLimitFunction(bounds))
 		var polygonPoints = [
 			[
 				[-90, -180],
@@ -55,34 +72,41 @@ var ConstraintsView = leaflet.Class.extend({
 				[-90, 180]
 			] //outer - should cover the entire map
 		]
-		if (!Array.isArray(bounds)) {
-			bounds = [bounds]
-		}
-		bounds.forEach(function (hole) {
-			polygonPoints.push([hole.getSouthWest(), hole.getNorthWest(), hole.getNorthEast(), hole.getSouthEast()]) //hole
+		let geoJsonBounds = mergePolygons(bounds)
+		geoJsonBounds.forEach(hole => {
+			let coords = hole.geometry.coordinates
+			//take polygon bounds (the first element in the array) to make a hole in the main polygon
+			let holePoints = geoJsonCoordsToLeaflet(coords[0])
+			polygonPoints.push(holePoints)
+			//take polygon holes (the remaining elements in the array) to re-add a constraint polygon for any holes-within-holes
+			let holesInHoles = coords.slice(1)
+			holesInHoles.forEach(holeInHole => {
+				let holeInHolePolygon = geoJsonCoordsToLeaflet(holeInHole)
+				this._addMaskPolygon(holeInHolePolygon)
+			})
 		})
-		this._constraintPolygon = new L.Polygon(polygonPoints, {
+		this._addMaskPolygon(polygonPoints)
+	},
+
+	_addMaskPolygon: function (polygonPoints) {
+		let polygon = new L.Polygon(polygonPoints, {
 			color: 'rgb(0, 0, 0, 0)',
 			fillColor: 'rgb(90, 90, 90)',
 			fillOpacity: 0.3
 		})
-		this._constraintPolygon.addTo(this._manager.getMap())
+		polygon.addTo(this._manager.getMap())
+		this._constraintPolygons.push(polygon)
 	},
 
-	_buildLimitFunction: function (bounds) {
-		if (Array.isArray(bounds)) {
-			return function (latLng) {
-				for (var i = 0; i < bounds.length; i++) {
-					if (bounds[i].contains(latLng)) {
-						return true
-					}
+	_buildLimitFunction: function (geoJsonPolygons) {
+		let bounds = geoJsonBoundsToLeaflet(geoJsonPolygons)
+		return function (latLng) {
+			for (var i = 0; i < bounds.length; i++) {
+				if (bounds[i].contains(latLng)) {
+					return true
 				}
-				return false
 			}
-		} else {
-			return function (latLng) {
-				return bounds.contains(latLng)
-			}
+			return false
 		}
 	},
 
@@ -92,8 +116,9 @@ var ConstraintsView = leaflet.Class.extend({
 			this._limitOriginView = null
 		}
 		this._manager.setViewConstraints(null)
-		if (this._constraintPolygon != null) {
-			this._constraintPolygon.remove()
+		if (this._constraintPolygons != null) {
+			this._constraintPolygons.forEach(polygon => polygon.remove())
+			this._constraintPolygons = []
 		}
 	},
 

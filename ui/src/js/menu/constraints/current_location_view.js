@@ -20,8 +20,8 @@ var CurrentLocationView = leaflet.Class.extend({
 			var lng = e.latlng.lng
 			var latExtra = 0.08 //roughly 5 miles difference in lattitude in the UK
 			var lngExtra = 0.12 //roughly 5 miles difference in longitude in the UK
-			var latLngBounds = new leaflet.latLngBounds([lat + latExtra, lng + lngExtra], [lat - latExtra, lng - lngExtra])
-			this._constraintsView.limitTo(this, latLngBounds)
+			var latLngBounds = new leaflet.LatLngBounds([lat + latExtra, lng + lngExtra], [lat - latExtra, lng - lngExtra])
+			this._constraintsView.limitToBounds(this, latLngBounds)
 		}.bind(this)
 		map.on('locationfound', listener)
 		map.stopLocate()

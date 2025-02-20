@@ -1,11 +1,15 @@
 import leaflet from 'VendorWrappers/leaflet.js'
 import {gpx as toGeoJSON} from '@tmcw/togeojson'
+import {polygon} from '@turf/turf'
 
 export function calcGeoJsonBounds(geoJson) {
 	if (geoJson.type !== 'FeatureCollection') {
 		console.log(`incompatible geoJson.type=${geoJson.type}, attempting to parse anyway...`)
 	}
-	let multiBounds = geoJson.features.map(function (feature) {
+	//margin for the bounding box:
+	const latAdjustment = 0.005
+	const lngAdjustment = 0.01
+	let polygons = geoJson.features.map(function (feature) {
 		var minLng = null
 		var maxLng = null
 		var minLat = null
@@ -43,13 +47,20 @@ export function calcGeoJsonBounds(geoJson) {
 			//most likely something like this, worth a go
 			lineParser(geometry.coordinates)
 		}
-		var latAdjustment = 0.005 //just to extend the bounding box a bit
-		var lngAdjustment = 0.01
-		var bottomLeft = [minLat - latAdjustment, minLng - lngAdjustment]
-		var topRight = [maxLat + latAdjustment, maxLng + lngAdjustment]
-		return leaflet.latLngBounds(bottomLeft, topRight)
+		let top = maxLat + latAdjustment
+		let bottom = minLat - latAdjustment
+		let left = minLng - lngAdjustment
+		let right = maxLng + lngAdjustment
+		let polygonCoords = [
+			[left, top],
+			[right, top],
+			[right, bottom],
+			[left, bottom],
+			[left, top]
+		]
+		return polygon([polygonCoords])
 	})
-	return multiBounds
+	return polygons
 }
 
 export function rawGpxToGeoJson(gpxAsString) {
@@ -71,4 +82,19 @@ export function rawGeoJsonToGeoJson(geojsonAsString) {
 		features: parsed,
 		bounds: multiBounds
 	}
+}
+
+export function geoJsonCoordsToLeaflet(geojsonCoords) {
+	return leaflet.GeoJSON.coordsToLatLngs(geojsonCoords)
+}
+
+export function geoJsonBoundsToLeaflet(bounds) {
+	return bounds.map(polygon => {
+		const coordinates = geoJsonCoordsToLeaflet(polygon.geometry.coordinates[0])
+		const bound = new leaflet.LatLngBounds()
+		for (const coord of coordinates) {
+			bound.extend(coord)
+		}
+		return bound
+	})
 }

@@ -11,7 +11,7 @@ var FileConstraintLoadView = FileLoadView.extend({
 			return track.bounds
 		})
 		combinedBounds = combinedBounds.flat()
-		this._constraintsView.limitTo(this, combinedBounds)
+		this._constraintsView.limitToGeoJsonPolygons(this, combinedBounds)
 		FileLoadView.prototype._finishedReadingFiles.call(this, tracks)
 	},
 
