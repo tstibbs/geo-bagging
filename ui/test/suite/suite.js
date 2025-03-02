@@ -22,6 +22,7 @@ async function runTests() {
 	await import('../config_test.js')
 	await import('../conversion_test.js')
 	await import('../fullscreen_link_test.js')
+	await import('../utils/geojson_test.js')
 	//'../controls_test'
 	//'../error_handler_test.js'
 	//'../layers_test.js'
