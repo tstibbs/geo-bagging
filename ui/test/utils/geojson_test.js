@@ -277,4 +277,35 @@ describe('calcGeoJsonBounds', function () {
 		const result = calcGeoJsonBounds(largeExampleInput)
 		expect(result).to.deep.equal(largeExampleExpectedBounds)
 	}).timeout(5000)
+
+	describe('handles things other than a collection', function () {
+		it('point', function () {
+			const result = calcGeoJsonBounds(POINT_FEATURE)
+			expect(result).to.deep.equal([POINT_FEATURE_BOUNDS])
+		})
+		it('line string', function () {
+			const result = calcGeoJsonBounds(LINE_STRING_FEATURE)
+			expect(result).to.deep.equal([LINE_STRING_FEATURE_BOUNDS])
+		})
+		it('polygon', function () {
+			const result = calcGeoJsonBounds(POLYGON_FEATURE)
+			expect(result).to.deep.equal([POLYGON_FEATURE_BOUNDS])
+		})
+		it('multipoint', function () {
+			const result = calcGeoJsonBounds(MULTI_POINT_FEATURE)
+			expect(result).to.deep.equal([MULTI_POINT_FEATURE_BOUNDS])
+		})
+		it('multi line string', function () {
+			const result = calcGeoJsonBounds(MULTI_LINE_STRING_FEATURE)
+			expect(result).to.deep.equal([MULTI_LINE_STRING_FEATURE_BOUNDS])
+		})
+		it('multi polygon', function () {
+			const result = calcGeoJsonBounds(MULTI_POLYGON_FEATURE)
+			expect(result).to.deep.equal([MULTI_POLYGON_FEATURE_BOUNDS])
+		})
+		it('geom', function () {
+			const result = calcGeoJsonBounds(GEOM_COLLECTION_FEATURE)
+			expect(result).to.deep.equal([GEOM_COLLECTION_FEATURE_BOUNDS])
+		})
+	})
 })

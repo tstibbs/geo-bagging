@@ -3,13 +3,14 @@ import {gpx as toGeoJSON} from '@tmcw/togeojson'
 import {polygon, bbox} from '@turf/turf'
 
 export function calcGeoJsonBounds(geoJson) {
+	let {features} = geoJson
 	if (geoJson.type !== 'FeatureCollection') {
-		console.log(`incompatible geoJson.type=${geoJson.type}, attempting to parse anyway...`)
+		features = [geoJson]
 	}
 	//margin for the bounding box:
 	const latAdjustment = 0.005
 	const lngAdjustment = 0.01
-	let polygons = geoJson.features.map(function (feature) {
+	let polygons = features.map(function (feature) {
 		const [minLng, minLat, maxLng, maxLat] = bbox(feature)
 		let top = maxLat + latAdjustment
 		let bottom = minLat - latAdjustment
