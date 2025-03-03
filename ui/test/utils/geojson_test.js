@@ -103,6 +103,74 @@ const MULTI_LINE_STRING_FEATURE_BOUNDS = boundsOf([
 	[100.0 - 0.01, 0.0 - 0.005],
 	[100.0 - 0.01, 3.0 + 0.005]
 ])
+const MULTI_POLYGON_FEATURE = {
+	type: 'Feature',
+	geometry: {
+		type: 'MultiPolygon',
+		coordinates: [
+			[
+				[
+					[102.0, 2.0],
+					[103.0, 2.0],
+					[103.0, 3.0],
+					[102.0, 3.0],
+					[102.0, 2.0]
+				]
+			],
+			[
+				[
+					[100.0, 0.0],
+					[101.0, 0.0],
+					[101.0, 1.0],
+					[100.0, 1.0],
+					[100.0, 0.0]
+				],
+				[
+					[100.2, -0.2],
+					[100.2, 0.8],
+					[106.8, 0.8],
+					[106.8, -0.2],
+					[100.2, -0.2]
+				]
+			]
+		]
+	},
+	properties: {}
+}
+const MULTI_POLYGON_FEATURE_BOUNDS = boundsOf([
+	[100.0 - 0.01, 3.0 + 0.005],
+	[106.8 + 0.01, 3.0 + 0.005],
+	[106.8 + 0.01, -0.2 - 0.005],
+	[100.0 - 0.01, -0.2 - 0.005],
+	[100.0 - 0.01, 3.0 + 0.005]
+])
+const GEOM_COLLECTION_FEATURE = {
+	type: 'Feature',
+	geometry: {
+		type: 'GeometryCollection',
+		geometries: [
+			{
+				type: 'Point',
+				coordinates: [100.0, -4.0]
+			},
+			{
+				type: 'LineString',
+				coordinates: [
+					[101.0, 0.0],
+					[102.0, 1.0]
+				]
+			}
+		]
+	},
+	properties: {}
+}
+const GEOM_COLLECTION_FEATURE_BOUNDS = boundsOf([
+	[100.0 - 0.01, 1.0 + 0.005],
+	[102.0 + 0.01, 1.0 + 0.005],
+	[102.0 + 0.01, -4.0 - 0.005],
+	[100.0 - 0.01, -4.0 - 0.005],
+	[100.0 - 0.01, 1.0 + 0.005]
+])
 
 function boundsOf(bounds) {
 	return {
@@ -165,20 +233,40 @@ describe('calcGeoJsonBounds', function () {
 		expect(result).to.deep.equal(expectedBounds)
 	})
 
+	it('handle collection of MultiPolygon features', function () {
+		const geoJsonFeatures = featureCollectionOf(MULTI_POLYGON_FEATURE)
+		const expectedBounds = [MULTI_POLYGON_FEATURE_BOUNDS]
+
+		const result = calcGeoJsonBounds(geoJsonFeatures)
+		expect(result).to.deep.equal(expectedBounds)
+	})
+
+	it('handle collection of GeometryCollection features', function () {
+		const geoJsonFeatures = featureCollectionOf(GEOM_COLLECTION_FEATURE)
+		const expectedBounds = [GEOM_COLLECTION_FEATURE_BOUNDS]
+
+		const result = calcGeoJsonBounds(geoJsonFeatures)
+		expect(result).to.deep.equal(expectedBounds)
+	})
+
 	it('handle multiple features in a collection', function () {
 		const geoJsonFeatures = featureCollectionOf(
 			POINT_FEATURE,
 			LINE_STRING_FEATURE,
 			POLYGON_FEATURE,
 			MULTI_POINT_FEATURE,
-			MULTI_LINE_STRING_FEATURE
+			MULTI_LINE_STRING_FEATURE,
+			MULTI_POLYGON_FEATURE,
+			GEOM_COLLECTION_FEATURE
 		)
 		const expectedBounds = [
 			POINT_FEATURE_BOUNDS,
 			LINE_STRING_FEATURE_BOUNDS,
 			POLYGON_FEATURE_BOUNDS,
 			MULTI_POINT_FEATURE_BOUNDS,
-			MULTI_LINE_STRING_FEATURE_BOUNDS
+			MULTI_LINE_STRING_FEATURE_BOUNDS,
+			MULTI_POLYGON_FEATURE_BOUNDS,
+			GEOM_COLLECTION_FEATURE_BOUNDS
 		]
 
 		const result = calcGeoJsonBounds(geoJsonFeatures)
