@@ -43,13 +43,16 @@ var PointsBuilder = AbstractBundleBuilder.extend({
 			visited: visited
 		}
 
-		if (this._config.dimensional_layering || dimensionValues == null || dimensionValues.length === 0) {
+		if (this._config.dimensional_layering && dimensionValues != null && dimensionValues.length !== 0) {
 			if (this._markerList == null) {
 				this._markerList = {}
 			}
 
 			if (this._withinConstraints(marker)) {
 				var currentMap = this._markerList
+				dimensionValues = this._manager
+					.getVisitConstraintManager()
+					.translateDimensionValues(dimensionValues, id, this._bundleName)
 				for (var i = 0; i < dimensionValues.length - 1; i++) {
 					// all but the last one
 					var key = dimensionValues[i]

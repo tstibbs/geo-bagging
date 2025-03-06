@@ -29,7 +29,14 @@ var GeojsonLayer = AbstractBundleBuilder.extend({
 
 	buildLayers: function () {
 		var layerDatas = this._parseDatas()
-		return this._translator.dataToLayers(layerDatas)
+		var layers = this._translator.dataToLayers(layerDatas)
+		layers = Object.fromEntries(
+			Object.entries(layers).map(([id, layer]) => {
+				let dimensionString = this._manager.getVisitConstraintManager().translateDimensionString(id, this._bundleName)
+				return [dimensionString, layer]
+			})
+		)
+		return layers
 	},
 
 	getAttribution: function () {

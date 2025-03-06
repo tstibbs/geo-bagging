@@ -115,7 +115,7 @@ var ConstraintsView = leaflet.Class.extend({
 			this._limitOriginView.reset()
 			this._limitOriginView = null
 		}
-		this._manager.setViewConstraints(null)
+		this._manager.resetViewConstraints()
 		if (this._constraintPolygons != null) {
 			this._constraintPolygons.forEach(polygon => polygon.remove())
 			this._constraintPolygons = []

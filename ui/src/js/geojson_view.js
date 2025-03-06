@@ -2,7 +2,8 @@ import $ from 'jquery'
 import leaflet from 'VendorWrappers/leaflet.js'
 
 var GeojsonView = leaflet.Class.extend({
-	initialize: function (map, config, modelsByAspect, matrixLayerControl, bundles) {
+	initialize: function (manager, map, config, modelsByAspect, matrixLayerControl, bundles) {
+		this._manager = manager
 		this._map = map
 		this._config = config
 		this._modelsByAspect = modelsByAspect
@@ -34,6 +35,7 @@ var GeojsonView = leaflet.Class.extend({
 				layer.addTo(this._map)
 			}.bind(this)
 		)
+		aspectOptions = this._manager.getVisitConstraintManager().translateAspect(aspectOptions)
 		this._matrixLayerControl.addAspect(aspect, layers, aspectOptions)
 	}
 })

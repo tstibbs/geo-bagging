@@ -5,11 +5,13 @@ import Controls from './controls.js'
 import layersBuilder from './layers.js'
 import constants from './constants.js'
 import params from './params.js'
+import {VisitConstraintManager} from './constraints/visit-constraint-manager.js'
 
 //basic manager class that simplifies interoperation between other components
 var Manager = leaflet.Class.extend({
 	initialize: function (map, config) {
 		this._authenticated = false //default
+		this._visitConstraintManager = new VisitConstraintManager()
 		var showUserSettings = params.test('testing') == 'true'
 		if (showUserSettings) {
 			this._initializePromise = $.Deferred(
@@ -75,6 +77,11 @@ var Manager = leaflet.Class.extend({
 		return this._initializePromise
 	},
 
+	resetViewConstraints: function () {
+		this._limitFunction = null
+		this._visitConstraintManager.reset()
+	},
+
 	setViewConstraints: function (limitFunction) {
 		this._limitFunction = limitFunction //function(latLng) {return true or false}
 	},
@@ -118,6 +125,10 @@ var Manager = leaflet.Class.extend({
 
 	getLoggedInUser: function () {
 		return this._loggedInUser
+	},
+
+	getVisitConstraintManager: function () {
+		return this._visitConstraintManager
 	}
 })
 

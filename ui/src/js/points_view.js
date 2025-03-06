@@ -113,6 +113,7 @@ var PointsView = leaflet.Class.extend({
 			var matrixOverlays = {}
 			this.depthFirstIteration(markerList, '', matrixOverlays)
 			var aspectOptions = this._bundles[aspect] //will have other options, but collisions are unlikely
+			aspectOptions = this._manager.getVisitConstraintManager().translateAspect(aspectOptions)
 			this._matrixLayerControl.addAspect(aspect, matrixOverlays, aspectOptions)
 		}
 	},

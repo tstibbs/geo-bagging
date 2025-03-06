@@ -81,6 +81,7 @@ var ModelViews = leaflet.Class.extend({
 			this._manager
 		)
 		var geojsonView = new GeojsonView(
+			this._manager,
 			this._manager.getMap(),
 			config,
 			geojsonModels,
