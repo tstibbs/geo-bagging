@@ -3,7 +3,8 @@ import FileLoadView from './file_load_view.js'
 
 var FileFeaturesLoadView = FileLoadView.extend({
 	initialize: function (manager, bundle) {
-		FileLoadView.prototype.initialize.call(this, bundle)
+		FileLoadView.prototype.initialize.call(this, bundle.loadLabel, bundle.loadExtensions)
+		this._bundle = bundle
 		this._filesView = new FilesView(
 			manager,
 			this._bundle.aspectLabel,
@@ -17,8 +18,8 @@ var FileFeaturesLoadView = FileLoadView.extend({
 		this._filesView.showNewLayers(datas)
 	},
 
-	_parseFileContents: function (fileContents) {
-		const {features, bounds} = this._bundle.fileContentsParser(fileContents)
+	_parseFileContents: async function (file) {
+		const {features, bounds} = this._bundle.fileContentsParser(await file.text())
 		return {
 			features,
 			bounds

@@ -5,6 +5,7 @@ import AttributionView from './attribution.js'
 import UserView from './user.js'
 import SettingsView from './settings/view.js'
 import ConstraintsView from './constraints/view.js'
+import {VisitsMenuView} from './visits/view.js'
 import ExternalFilesView from './external-files/files_load_panel.js'
 import params from '../params.js'
 
@@ -29,6 +30,7 @@ var MenuView = leaflet.Class.extend({
 		view += '            <li><a href="#sidebar-layers" role="tab"><i class="fa fa-bars"></i></a></li>'
 		view += '            <li><a href="#sidebar-settings" role="tab"><i class="fa fa-sliders"></i></a></li>'
 		view += '            <li><a href="#sidebar-constraints" role="tab"><i class="fa fa-map-o"></i></a></li>'
+		view += '            <li><a href="#sidebar-visits" role="tab"><i class="fa fa-list-ul"></i></a></li>'
 		view += '            <li><a href="#sidebar-external-files" role="tab"><i class="fa fa-plus-square-o"></i></a></li>'
 		view += '        </ul>'
 
@@ -54,6 +56,10 @@ var MenuView = leaflet.Class.extend({
 		view += '        <div id="sidebar-constraints" class="sidebar-pane">'
 		view +=
 			'            <h1 class="sidebar-header">Data Limits<span class="sidebar-close"><i class="fa fa-caret-left"></i></span></h1>'
+		view += '        </div>'
+		view += '        <div id="sidebar-visits" class="sidebar-pane">'
+		view +=
+			'            <h1 class="sidebar-header">Upload Visits<span class="sidebar-close"><i class="fa fa-caret-left"></i></span></h1>'
 		view += '        </div>'
 		view += '        <div id="sidebar-external-files" class="sidebar-pane">'
 		view +=
@@ -89,6 +95,9 @@ var MenuView = leaflet.Class.extend({
 
 		var constraintsView = new ConstraintsView(this._manager)
 		$('#sidebar-constraints', this._view).append(constraintsView.getView())
+
+		var visitsView = new VisitsMenuView(this._manager)
+		$('#sidebar-visits', this._view).append(visitsView.getView())
 
 		const externalFilesView = new ExternalFilesView(this._manager)
 		$('#sidebar-external-files', this._view).append(externalFilesView.getView())

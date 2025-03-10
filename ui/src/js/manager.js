@@ -79,7 +79,6 @@ var Manager = leaflet.Class.extend({
 
 	resetViewConstraints: function () {
 		this._limitFunction = null
-		this._visitConstraintManager.reset()
 	},
 
 	setViewConstraints: function (limitFunction) {

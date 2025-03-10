@@ -36,6 +36,7 @@
 		"@tmcw/togeojson": "^5.8.1",
 		"@tstibbs/cloud-core-ui": "file:../../cloud-core/ui",
 		"@turf/turf": "^7.2.0",
+		"exceljs": "^4.4.0",
 		"file-saver": "^2.0.5",
 		"font-awesome": "^4.7.0",
 		"jquery": "^3.7.0",
