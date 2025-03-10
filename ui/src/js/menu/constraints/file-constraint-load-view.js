@@ -1,8 +1,8 @@
-import FileLoadView from '../external-files/file_load_view.js'
+import FileFeaturesLoadView from '../external-files/file_features_load_view.js'
 
-var FileConstraintLoadView = FileLoadView.extend({
+var FileConstraintLoadView = FileFeaturesLoadView.extend({
 	initialize: function (manager, constraintsView, bundle) {
-		FileLoadView.prototype.initialize.call(this, manager, bundle)
+		FileFeaturesLoadView.prototype.initialize.call(this, manager, bundle)
 		this._constraintsView = constraintsView
 	},
 
@@ -12,7 +12,7 @@ var FileConstraintLoadView = FileLoadView.extend({
 		})
 		combinedBounds = combinedBounds.flat()
 		this._constraintsView.limitToGeoJsonPolygons(this, combinedBounds)
-		FileLoadView.prototype._finishedReadingFiles.call(this, tracks)
+		FileFeaturesLoadView.prototype._finishedReadingFiles.call(this, tracks)
 	},
 
 	reset: function () {
