@@ -86,6 +86,10 @@ var AbstractBundleBuilder = leaflet.Class.extend({
 
 	getBundleConfig: function () {
 		return this._bundleConfig
+	},
+
+	getBundleName: function () {
+		return this._bundleName
 	}
 })
 

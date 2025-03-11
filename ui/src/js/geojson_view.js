@@ -35,7 +35,7 @@ var GeojsonView = leaflet.Class.extend({
 				layer.addTo(this._map)
 			}.bind(this)
 		)
-		aspectOptions = this._manager.getVisitConstraintManager().translateAspect(aspectOptions)
+		aspectOptions = this._manager.getVisitConstraintManager().translateAspect(aspectOptions, model.getBundleName())
 		this._matrixLayerControl.addAspect(aspect, layers, aspectOptions)
 	}
 })
