@@ -30,7 +30,14 @@ var MenuView = leaflet.Class.extend({
 		view += '            <li><a href="#sidebar-layers" role="tab"><i class="fa fa-bars"></i></a></li>'
 		view += '            <li><a href="#sidebar-settings" role="tab"><i class="fa fa-sliders"></i></a></li>'
 		view += '            <li><a href="#sidebar-constraints" role="tab"><i class="fa fa-map-o"></i></a></li>'
-		view += '            <li><a href="#sidebar-visits" role="tab"><i class="fa fa-list-ul"></i></a></li>'
+		view += `            <li>
+                                 <a href="#sidebar-visits" role="tab">
+                                     <span class="fa fa-stack">
+                                         <i class="fa-check fa fa-stack-1x fa-small-icon"></i>
+                                         <i class="fa-map-o fa fa-stack-1x"></i>
+                                     </span>
+                                 </a>
+                             </li>`
 		view += '            <li><a href="#sidebar-external-files" role="tab"><i class="fa fa-plus-square-o"></i></a></li>'
 		view += '        </ul>'
 
