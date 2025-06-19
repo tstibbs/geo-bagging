@@ -2,7 +2,7 @@ import {Transform} from 'stream'
 import Stream from 'stream'
 import {parse, transform} from 'csv'
 import fs from 'fs'
-import cheerio from 'cheerio'
+import {load as loadCheerio} from 'cheerio'
 import gridconversion from './gridconversion.js'
 import {writeFile} from './utils.js'
 
@@ -55,7 +55,7 @@ class Converter {
 	}
 
 	_parseHtml(htmlString) {
-		return cheerio.load(htmlString)
+		return loadCheerio(htmlString)
 	}
 
 	_match(input, regex, groupNumber) {

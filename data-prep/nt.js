@@ -1,4 +1,4 @@
-import cheerio from 'cheerio'
+import {load as loadCheerio} from 'cheerio'
 
 import Converter from './converter.js'
 import {ifCmd} from '@tstibbs/cloud-core-utils'
@@ -40,7 +40,7 @@ async function buildDataFile() {
 	await backUpReferenceData('nt', 'data.json')
 	let rawData = await readFile(`${tmpInputDir}/nt/data.json`, `UTF-8`)
 	let rawConfigHtml = await readFile(`${tmpInputDir}/nt/config.html`, `UTF-8`)
-	let $ = cheerio.load(rawConfigHtml)
+	let $ = loadCheerio(rawConfigHtml)
 	const config = JSON.parse($('#__NEXT_DATA__')[0].children[0].data).props.pageProps.filters
 	const placeTypes = configToFilters(config.placeFilters.placeTypes)
 	const placeFacilities = configToFilters(config.placeFilters.placeFacilities)

@@ -2,39 +2,40 @@
 	"name": "@tstibbs/geo-bagging-data-prep",
 	"private": true,
 	"engines": {
-		"node": ">=20 <20.12",
+		"node": ">=22",
 		"npm": ">=10"
 	},
 	"type": "module",
 	"dependencies": {
-		"@tstibbs/cloud-core-utils": "file:../../cloud-core/aws/utils",
 		"@mapbox/geojson-mapnikify": "^3.0.2-dev",
-		"cheerio": "^0.22.0",
+		"@mapnik/mapnik": "^4.7.1",
+		"@tstibbs/cloud-core-utils": "file:../../cloud-core/aws/utils",
+		"cheerio": "^1.1.0",
 		"combined-stream2": "^1.1.2",
-		"csv": "^6.3.8",
+		"csv": "^6.3.11",
 		"geolib": "^3.3.4",
-		"html-entities": "^2.5.2",
-		"luxon": "^3.4.4",
-		"mapnik": "^4.5.9",
+		"html-entities": "^2.6.0",
+		"luxon": "^3.6.1",
 		"node-fetch": "^3.3.2",
-		"pixelmatch": "^5.3.0",
+		"pixelmatch": "^7.1.0",
 		"pngjs": "^7.0.0",
-		"proj4": "^2.11.0",
+		"proj4": "^2.19.3",
 		"request": "^2.88.2",
-		"requirejs": "^2.3.6",
 		"stream-array": "^1.1.2",
-		"underscore": "^1.13.6",
-		"unzipper": "^0.11.4",
-		"wikibase-sdk": "^10.0.2",
-		"wtf_wikipedia": "^10.3.0",
-		"wtf-plugin-api": "^2.0.0",
+		"underscore": "^1.13.7",
+		"unzipper": "^0.12.3",
+		"wikibase-sdk": "^10.2.3",
+		"wtf_wikipedia": "^10.4.0",
+		"wtf-plugin-api": "^2.0.1",
 		"xlsx": "^0.18.5",
 		"xml2js": "^0.6.2"
 	},
 	"overrides": {
-		"nth-check": "2.1.1"
+		"nth-check": "2.1.1",
+		"mapnik": "npm:@mapnik/mapnik"
 	},
 	"scripts": {
-		"test": "node test/index.js"
+		"test": "node test/index.js",
+		"postinstall": "sed -i 's/+init=//' node_modules/@mapbox/geojson-mapnikify/lib/template.xml"
 	}
 }

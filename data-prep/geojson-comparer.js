@@ -1,5 +1,5 @@
 import util from 'util'
-import mapnik from 'mapnik'
+import mapnik from '@mapnik/mapnik'
 import mapnikify from '@mapbox/geojson-mapnikify'
 import fs from 'fs'
 import assert from 'assert'
