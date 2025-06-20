@@ -19,7 +19,7 @@
 		"node-fetch": "^3.3.2",
 		"pixelmatch": "^7.1.0",
 		"pngjs": "^7.0.0",
-		"proj4": "^2.19.2",
+		"proj4": "^2.19.3",
 		"request": "^2.88.2",
 		"stream-array": "^1.1.2",
 		"underscore": "^1.13.7",
@@ -35,6 +35,7 @@
 		"mapnik": "npm:@mapnik/mapnik"
 	},
 	"scripts": {
-		"test": "node test/index.js"
+		"test": "node test/index.js",
+		"postinstall": "sed -i 's/+init=//' node_modules/@mapbox/geojson-mapnikify/lib/template.xml"
 	}
 }
