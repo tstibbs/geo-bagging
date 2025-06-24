@@ -6,10 +6,10 @@ const downloadSources = [
 	//'milestones', removed due to outdated source, see note in milestones_download.js
 	'trails',
 	'follies',
-	'rnli',
-	'nationalparks',
-	'coastallandmarks',
-	'nt'
+	// 'rnli', //temporarily removed due to changes in the data source we use
+	'nationalparks'
+	// 'coastallandmarks', //temporarily removed due to changes in the data source we use
+	// 'nt' //temporarily removed due to changes in the data source we use
 ]
 const processingSources = [
 	...downloadSources,
