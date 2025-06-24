@@ -22,7 +22,7 @@ const walesNatTrailsDetails = {
 const englandCoastPathDetails = {
 	name: 'England Coast Path',
 	length: '2795 (expected length at completion)',
-	notes: 'Completion targetted at 2020.'
+	notes: 'Completion targeted at 2020.'
 }
 const walesCoastPathDetails = {
 	name: 'Wales Coast Path',
@@ -32,9 +32,10 @@ const walesCoastPathDetails = {
 
 //set up the projections we support
 proj4.defs(
-	'urn:ogc:def:crs:EPSG::27700',
+	'EPSG:27700',
 	'+proj=tmerc +lat_0=49 +lon_0=-2 +k=0.9996012717 +x_0=400000 +y_0=-100000 +ellps=airy +datum=OSGB36 +units=m +no_defs'
 )
+proj4.defs('urn:ogc:def:crs:EPSG::27700', proj4.defs('EPSG:27700'))
 proj4.defs('urn:ogc:def:crs:OGC:1.3:CRS84', proj4.defs('EPSG:4326'))
 
 async function parse(fileName, propertiesTransformer, geometryTransformer, filter, allFeaturesTransformer) {
@@ -69,6 +70,9 @@ async function parse(fileName, propertiesTransformer, geometryTransformer, filte
 	} catch (err) {
 		//catch and log because proj4 throws poor error messages
 		console.error(`error thrown for ${fileName}`)
+		if (typeof err === 'string') {
+			err = new Error(err)
+		}
 		console.error(err)
 		throw err
 	}
@@ -120,7 +124,7 @@ async function buildDataFile() {
 		'National_Trails_England.geojson',
 		properties => {
 			return {
-				openedDate: properties['Opened'],
+				openedDate: new Date(properties['Opened']).toISOString(),
 				length: properties['Length_Mil'],
 				name: properties['Name']
 			}
@@ -136,14 +140,14 @@ async function buildDataFile() {
 	let pWelshNatTrails = parse(
 		'WalesNationalTrails.json',
 		properties => {
-			let name = properties['NAME'].trim()
+			let name = properties['name'].trim()
 			let extraProps = walesNatTrailsDetails[name]
 			return Object.assign({name}, extraProps)
 		},
 		crsTransformer,
 		feature => {
-			let name = feature.properties['NAME']
-			return name != null && name.trim() != 'Pembrokeshire'
+			let name = feature.properties['name']
+			return name != null && name.trim() != 'Pembrokeshire Coast'
 		}
 	)
 

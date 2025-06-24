@@ -18,7 +18,7 @@ const urls = {
 	//Org: Defra group ArcGIS Online organisation
 	//licence: OGL
 	//parent page: https://hub.arcgis.com/datasets/Defra::national-trails-england
-	'https://opendata.arcgis.com/api/v3/datasets/6a67e9afbcb646549be437fbff12d6ed_0/downloads/data?format=geojson&spatialRefId=4326&where=1%3D1':
+	'https://services.arcgis.com/JJzESW51TqeY9uat/arcgis/rest/services/National_Trails_England/FeatureServer/0/query?where=1%3D1&outFields=*&outSR=4326&f=geojson':
 		'National_Trails_England.geojson',
 	//title: England Coast Path Route
 	//Org: Defra group ArcGIS Online organisation
