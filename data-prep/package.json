@@ -17,7 +17,6 @@
 		"html-entities": "^2.6.0",
 		"luxon": "^3.6.1",
 		"node-fetch": "^3.3.2",
-		"pixelmatch": "^7.1.0",
 		"pngjs": "^7.0.0",
 		"proj4": "^2.19.3",
 		"request": "^2.88.2",
