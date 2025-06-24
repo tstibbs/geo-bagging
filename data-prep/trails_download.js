@@ -27,8 +27,8 @@ const urls = {
 	'https://opendata.arcgis.com/datasets/a1488f928832407fbd267feb6802bed6_0.geojson': 'England_Coast_Path_Route.geojson'
 }
 
-function download() {
-	return downloadFiles('trails', urls)
+async function download() {
+	return await downloadFiles('trails', urls)
 }
 
 await ifCmd(import.meta, download)

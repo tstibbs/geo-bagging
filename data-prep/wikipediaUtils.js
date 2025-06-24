@@ -6,7 +6,7 @@ import wtfPluginApi from 'wtf-plugin-api'
 import {wikipediaOptions} from './constants.js'
 
 wtf.extend(wtfPluginApi)
-const wtfFetch = util.promisify(wtf.fetch)
+const wtfFetch = wtf.fetch
 
 async function fetchCategories(category, exclusions) {
 	let result = await wtf.getCategoryPages(category, {

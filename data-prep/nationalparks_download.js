@@ -11,10 +11,9 @@ const urls = {
 		'NationalParks.json'
 }
 
-function download() {
-	return downloadFiles('nationalparks', urls)
+async function download() {
+	return await downloadFiles('nationalparks', urls)
 }
-
 await ifCmd(import.meta, download)
 
 export default download

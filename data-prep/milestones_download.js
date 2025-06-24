@@ -31,12 +31,12 @@ const allFiles = [
 	'MSS_Summary_Sheet_Tollhouses.xls'
 ]
 
-function download() {
+async function download() {
 	let urls = allFiles.reduce((urls, fileName) => {
 		urls[`http://www.msocrepository.co.uk/Excel%20Spreadsheets/${fileName}`] = fileName
 		return urls
 	}, {})
-	return downloadFiles('milestones', urls)
+	return await downloadFiles('milestones', urls)
 }
 
 await ifCmd(import.meta, download)

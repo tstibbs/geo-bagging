@@ -5,11 +5,11 @@ import {tmpInputDir} from './constants.js'
 import {download as downloadFiles} from './downloader.js'
 const inputDir = `${tmpInputDir}/rnli`
 
-function downloadStationsList() {
+async function downloadStationsList() {
 	const urls = {
 		'https://opendata.arcgis.com/datasets/7dad2e58254345c08dfde737ec348166_0.csv': 'lifeboatStations.csv' //https://hub.arcgis.com/datasets/7dad2e58254345c08dfde737ec348166_0
 	}
-	return downloadFiles('rnli', urls)
+	return await downloadFiles('rnli', urls)
 }
 
 async function downloadEnrichingData() {

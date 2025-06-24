@@ -1,8 +1,8 @@
 import {ifCmd} from '@tstibbs/cloud-core-utils'
 import {download as downloadFiles} from './downloader.js'
 
-function download() {
-	return downloadFiles('hills', {
+async function download() {
+	return await downloadFiles('hills', {
 		'http://www.hills-database.co.uk/hillcsv.zip': 'hillcsv.zip'
 	})
 }

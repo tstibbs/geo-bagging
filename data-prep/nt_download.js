@@ -7,8 +7,8 @@ const urls = {
 	'https://www.nationaltrust.org.uk/search': 'config.html'
 }
 
-function download() {
-	return downloadFiles('nt', urls)
+async function download() {
+	return await downloadFiles('nt', urls)
 }
 
 await ifCmd(import.meta, download)
