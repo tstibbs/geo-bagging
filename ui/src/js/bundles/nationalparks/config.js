@@ -8,6 +8,6 @@ export default {
 	dataToLoad: 'data.geojson',
 	parser: Builder,
 	attribution:
-		'Office for National Statistics (<a href="http://www.nationalarchives.gov.uk/doc/open-government-licence/version/">OGL</a>)',
+		'Office for National Statistics licensed under the (<a href="https://www.ons.gov.uk/methodology/geography/licences">OGL v.3.0</a>). Contains OS data © Crown copyright and database right',
 	initialOutlineWidth: 1
 }

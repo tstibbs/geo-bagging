@@ -8,11 +8,11 @@ const inputDirectory = `${tmpInputDir}/nationalparks`
 
 async function buildDataFile() {
 	await backUpReferenceData('nationalparks', 'data.geojson')
-	let contents = await readFile(`${inputDirectory}/NationalParks.json`)
+	let contents = await readFile(`${inputDirectory}/NationalParks.geojson`)
 	let data = JSON.parse(contents)
 	data.features = data.features.map(feature => {
-		let name = feature.properties['NPARK22NM']
-		let match = /^(The )?(.*?)( National Park)?$/g.exec(name)
+		let name = feature.properties['NPARK21NM']
+		let match = /^(The )?(.*?)( National Park| Authority)?$/g.exec(name)
 		if (match != null && match[2] != null) {
 			name = match[2]
 		}
