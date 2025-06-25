@@ -150,7 +150,7 @@ async function buildDataFile() {
 					resolve()
 				}
 			})
-			.on('error', error => reject(error))
+			.on('error', error => reject(new Error(error)))
 	})
 }
 

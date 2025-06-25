@@ -144,7 +144,7 @@ class Converter {
 				resolve()
 			})
 			writeStream.on('error', error => {
-				reject(error)
+				reject(new Error(error))
 			})
 		})
 	}

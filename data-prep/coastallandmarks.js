@@ -108,7 +108,7 @@ function processPiers() {
 		fs.readFile(`${inputDir}/piers.json`, (err, rawData) => {
 			if (err) {
 				console.error(err)
-				reject(err)
+				reject(new Error(err))
 			}
 			let data = JSON.parse(rawData)
 			let docs = filterPages(data)

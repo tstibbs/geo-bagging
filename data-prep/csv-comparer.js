@@ -266,8 +266,9 @@ class CsvComparer {
 			}
 		}
 
-		let notableChanges = false
 		let totalChanges = missing.length + added.length + changes.length
+		let minorChanges = totalChanges > 0
+		let majorChanges = false
 		if (totalChanges > 0) {
 			if (missing.length > 0 && added.length > 0) {
 				if (missing.length * added.length > 1000 * 1000) {
@@ -278,56 +279,54 @@ class CsvComparer {
 					added = result.added
 					changes = changes.concat(result.changes)
 				}
-				notableChanges = true
+				majorChanges = true
 			}
 
-			if (missing.length) {
+			if (missing.length > 0) {
 				this._print('\n')
 				this._print(`Missing from new (${missing.length}):`)
 				missing.forEach(row => {
 					this._print(JSON.stringify(row))
 				})
-				notableChanges = true
+				majorChanges = true
 			} else {
 				this._print(`No entries missing`)
 			}
 
-			if (added.length) {
+			if (added.length > 0) {
 				this._print('\n')
 				this._print(`Added in new (${added.length}):`)
 				added.forEach(row => {
 					this._print(JSON.stringify(row))
 				})
-				notableChanges = true
+				majorChanges = true
 			} else {
 				this._print(`No entries added`)
 			}
 
-			if (changes.length) {
+			if (changes.length > 0) {
 				this._print('\n')
 				this._print(`Changed (${changes.length}):`)
-				notableChanges |= this._printChanges(changes, interestingFieldIndexes)
+				majorChanges |= this._printChanges(changes, interestingFieldIndexes)
 			} else {
 				this._print(`No entries changed`)
 			}
 		}
-		if (notableChanges || metaDifferences) {
+		if (minorChanges || majorChanges || metaDifferences) {
 			let reportPath = await this._printReport()
-			let info1 = `${totalChanges} changes`
-			let info2 = `meta changes`
-			let info = ''
-			if (totalChanges > 0 && metaDifferences) {
-				info = `${info1} + ${info2}`
-			} else if (totalChanges > 0) {
-				info = info1
-			} else if (metaDifferences) {
-				info = info2
-			} else {
-				throw new Exception('Unexpected')
+			let infos = []
+			if (majorChanges) {
+				infos.push(`${totalChanges} changes (including significant changes)`)
+			} else if (infoMinor) {
+				infos.push(`${totalChanges} minor changes`)
 			}
+			if (metaDifferences) {
+				infos.push(`meta changes`)
+			}
+			let info = infos.join(` + `)
 			return `${info} - please review ${reportPath}`
 		} else {
-			let infoText = 'No notable changes or meta differences'
+			let infoText = 'No changes or meta differences'
 			console.log(infoText)
 			await this._printReport() //just to ensure the report is overwritten if we have made a 'fix' and then re-ran this tool
 			return null

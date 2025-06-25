@@ -9,7 +9,7 @@ const downloadSources = [
 	// 'rnli', //temporarily removed due to changes in the data source we use
 	'nationalparks'
 	// 'coastallandmarks', //temporarily removed due to changes in the data source we use
-	// 'nt' //temporarily removed due to changes in the data source we use
+	// 'nt' //temporarily removed due to occasionally being blocked due to looking like a bot
 ]
 const processingSources = [
 	...downloadSources,
@@ -27,15 +27,30 @@ async function importAll(input, namer) {
 }
 
 async function single(action, name, processor) {
-	console.log(`${action} ${name}: started.`)
+	let log = `${action} ${name}`
+	console.log(`${log}: started.`)
 	try {
 		let result = await processor()
-		console.log(`${action} ${name}: completed.`)
-		return result == null ? null : `${action} ${name}: ${result}`
+		console.log(`${log}: completed.`)
+		if (result == null) {
+			return {
+				status: 'noChanges',
+				report: log
+			}
+		} else {
+			return {
+				status: 'changes',
+				report: `${log}: ${result}`
+			}
+		}
 	} catch (err) {
-		console.log(`${action} ${name}: errored.`)
+		console.log(`${log}: errored.`)
 		console.log(err)
-		return `${action} ${name}`
+		let message = err.message ?? err
+		return {
+			status: 'error',
+			report: `${log}: ${message}`
+		}
 	}
 }
 
@@ -43,31 +58,38 @@ async function run() {
 	const downloaders = await importAll(downloadSources, processor => `./${processor}_download.js`)
 	const processors = await importAll(processingSources, processor => `./${processor}.js`)
 
-	let errored = []
+	let results = {}
 
 	for (const [name, processor] of downloaders) {
-		let errorInfo = await single('Downloading', name, processor)
-		if (errorInfo !== null) {
-			errored.push(errorInfo)
-		}
+		let result = await single('Downloading', name, processor)
+		results[name] = result
 	}
-	if (errored.length == 0) {
+	if (Object.values(results).filter(result => result.status === 'error').length == 0) {
 		//only continue if none of the download have errored
 		console.log('')
 		console.log('Initial download finished, starting processing.')
 		console.log('')
 		//processing downloaded stuff
 		for (const [name, processor] of processors) {
-			let errorInfo = await single('Processing', name, processor)
-			if (errorInfo !== null) {
-				errored.push(errorInfo)
-			}
+			let result = await single('Processing', name, processor)
+			results[name] = result // deliberately overwrite the result for the download
 		}
 	}
+	let errored = Object.values(results).filter(result => result.status === 'error')
+	let changes = Object.values(results).filter(result => result.status === 'changes')
+	let noChanges = Object.values(results).filter(result => result.status === 'noChanges')
+	const logResults = (message, resultSet) =>
+		console.log([message, ...resultSet.map(result => result.report)].join('\n * '))
+	console.log('')
+	if (noChanges.length > 0) {
+		logResults('Sources ran and produced no changes: ', noChanges)
+	}
+	if (changes.length > 0) {
+		logResults('Sources ran but produced diffs to review: ', changes)
+	}
 	if (errored.length > 0) {
-		console.log('')
-		console.log(['Some things errored: ', ...errored].join('\n * '))
-		process.exit(1)
+		logResults('Sources errored: ', errored)
+		process.exitCode = 1
 	}
 }
 

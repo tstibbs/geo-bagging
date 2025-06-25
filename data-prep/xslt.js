@@ -44,7 +44,7 @@ async function transform(xslt, input, output) {
 				resolve()
 			} else {
 				console.error(`Non-zero exit code: ${exitCode}`)
-				reject(exitCode)
+				reject(new Error(exitCode))
 			}
 		})
 	})

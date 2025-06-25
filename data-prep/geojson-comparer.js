@@ -60,16 +60,16 @@ function toPng(inputXmlPath, outputPngPath) {
 		let map = new mapnik.Map(heightWidth, heightWidth)
 		map.load(inputXmlPath, (err, map) => {
 			if (err) {
-				reject(err)
+				reject(new Error(err))
 			} else {
 				map.zoomAll()
 				let im = new mapnik.Image(heightWidth, heightWidth)
 				map.render(im, (err, im) => {
-					if (err) reject(err)
+					if (err) reject(new Error(err))
 					im.encode('png', (err, buffer) => {
-						if (err) reject(err)
+						if (err) reject(new Error(err))
 						fs.writeFile(outputPngPath, buffer, err => {
-							if (err) reject(err)
+							if (err) reject(new Error(err))
 							resolve()
 						})
 					})

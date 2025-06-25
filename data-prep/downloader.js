@@ -11,12 +11,12 @@ function _downloadSingle(source, destination) {
 			.on('error', err => {
 				//request error
 				req.abort()
-				reject(err)
+				reject(new Error(err))
 			})
 			.on('response', response => {
 				if (response.statusCode != 200) {
 					req.abort()
-					reject(response.statusCode)
+					reject(new Error(response.statusCode))
 				}
 			})
 			.pipe(file)
