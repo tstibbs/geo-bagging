@@ -316,7 +316,7 @@ class CsvComparer {
 			let reportPath = await this._printReport()
 			let infos = []
 			if (majorChanges) {
-				infos.push(`${totalChanges} changes (including significant changes)`)
+				infos.push(`${totalChanges} potentially significant changes`)
 			} else if (infoMinor) {
 				infos.push(`${totalChanges} minor changes`)
 			}
