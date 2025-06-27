@@ -1,0 +1,49 @@
+name: test-source-download
+
+on: 
+  workflow_dispatch:
+  schedule:
+    - cron: "47 2 * * MON"
+
+env:
+  npm_config_engine_strict: true
+
+jobs:
+  build:
+    timeout-minutes: 10
+
+    runs-on: ubuntu-24.04
+
+    steps:
+
+    # checkout a dependent project
+    - name: Checkout cloud-core
+      uses: actions/checkout@v4
+      with:
+        repository: tstibbs/cloud-core
+        path: 'cloud-core' # will resolve to /home/runner/work/geo-bagging/geo-bagging/cloud-core
+
+    # checkout 'this' project
+    - name: Checkout geo-bagging
+      uses: actions/checkout@v4
+      with:
+        path: 'geo-bagging' # will resolve to /home/runner/work/geo-bagging/geo-bagging/geo-bagging
+
+    - name: Set up node
+      uses: actions/setup-node@v4
+      with:
+        node-version: 22.x
+
+    - name: Load cloud-core dependencies
+      working-directory: cloud-core/aws/utils
+      run: npm ci
+
+    - name: "get deps: UI"
+      working-directory: geo-bagging/ui
+      run: npm ci
+    - name: "get deps: data-prep"
+      working-directory: geo-bagging/data-prep
+      run: npm ci
+    - name: "test: data-prep"
+      working-directory: geo-bagging/data-prep
+      run: npm run test-source-download

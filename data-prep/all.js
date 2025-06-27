@@ -4,7 +4,7 @@ const downloadSources = [
 	'defence',
 	'hills',
 	//'milestones', removed due to outdated source, see note in milestones_download.js
-	'trails',
+	// 'trails', //temporarily removed due to erroring data source
 	'follies',
 	// 'rnli', //temporarily removed due to changes in the data source we use
 	'nationalparks'
@@ -12,9 +12,9 @@ const downloadSources = [
 	// 'nt' //temporarily removed due to occasionally being blocked due to looking like a bot
 ]
 const processingSources = [
-	...downloadSources,
+	...downloadSources
 	//processing manually downloaded stuff
-	'trigs'
+	// 'trigs'
 ]
 
 async function importAll(input, namer) {
