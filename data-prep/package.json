@@ -20,6 +20,7 @@
 		"pngjs": "^7.0.0",
 		"proj4": "^2.19.3",
 		"request": "^2.88.2",
+		"saxon-js": "^2.7.0",
 		"stream-array": "^1.1.2",
 		"underscore": "^1.13.7",
 		"unzipper": "^0.12.3",
