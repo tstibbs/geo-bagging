@@ -9,6 +9,7 @@ import {applyStandardTags} from '@tstibbs/cloud-core-utils'
 import {WebsiteResources} from '@tstibbs/cloud-core-utils/src/stacks/website.js'
 import {addUsageTrackingToHttpApi} from '@tstibbs/cloud-core-utils/src/stacks/usage-tracking.js'
 import {COUNTRIES_DENY_LIST} from './deploy-envs.js'
+import {dataPrepTestBuild} from './test-data-prep.js'
 
 const countriesDenyList = COUNTRIES_DENY_LIST.split(',')
 
@@ -40,6 +41,8 @@ class DeployStack extends Stack {
 
 		const websiteResources = new WebsiteResources(this, 'geoBaggingData', countriesDenyList, true)
 		websiteResources.addHttpApi(`integration/*`, this.#httpApi)
+
+		dataPrepTestBuild(this)
 
 		applyStandardTags(this)
 	}

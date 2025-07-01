@@ -1,0 +1,23 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      nodejs: 22
+  pre_build:
+    commands:
+      - git clone --single-branch --branch=main --depth=1 https://github.com/tstibbs/cloud-core.git
+      - cd cloud-core/aws/utils
+      - npm ci
+      - cd -
+      - git clone --single-branch --branch=main --depth=1 https://github.com/tstibbs/geo-bagging.git
+      - cd geo-bagging/ui
+      - npm ci
+      - cd -
+      - cd geo-bagging/data-prep
+      - npm ci
+      - cd -
+  build:
+    commands:
+      - cd geo-bagging/data-prep
+      - npm run test-source-download

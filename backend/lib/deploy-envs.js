@@ -8,4 +8,4 @@ if (STACK_NAME == null || STACK_NAME.length == 0) {
 }
 export {STACK_NAME}
 
-export const {COUNTRIES_DENY_LIST} = process.env
+export const {COUNTRIES_DENY_LIST, NOTIFICATION_EMAIL} = process.env
