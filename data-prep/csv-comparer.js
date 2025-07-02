@@ -317,7 +317,7 @@ class CsvComparer {
 			let infos = []
 			if (majorChanges) {
 				infos.push(`${totalChanges} potentially significant changes`)
-			} else if (infoMinor) {
+			} else if (minorChanges) {
 				infos.push(`${totalChanges} minor changes`)
 			}
 			if (metaDifferences) {

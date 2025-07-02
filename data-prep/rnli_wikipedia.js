@@ -20,8 +20,6 @@ function removeIgnoredTypes(types, launchMethods) {
 		types.splice(occurrence, occurrence)
 		launchMethods.splice(occurrence, occurrence)
 	})
-	types = [...new Set(types)]
-	launchMethods = [...new Set(launchMethods)]
 	return {
 		types,
 		launchMethods
@@ -87,6 +85,7 @@ function parseTypes(typesString) {
 		['Tamar-class', 'Tamar'],
 		['Tyne-class', 'Tyne'],
 		['H\\-class', 'H'],
+		['E\\-class Mk\\d', 'E'],
 		['E\\-class', 'E'],
 		['D\\-class \\(IB1\\)', 'D'],
 		['D\\-class', 'D'],
@@ -97,7 +96,7 @@ function parseTypes(typesString) {
 }
 
 function stripPrefixes(launchString) {
-	//some entries such as 'carrybridge' have helpfully prefixed the launch method so you know which type it referrs to
+	//some entries such as 'carrybridge' have helpfully prefixed the launch method so you know which type it refers to
 	const prefixCheck = /\b\w\w\w\s?- ([^\s]+)\b/g
 	if (prefixCheck.test(launchString)) {
 		launchString = launchString.replace(prefixCheck, '$1')
@@ -109,11 +108,17 @@ function parseLaunchMethods(launchString) {
 	launchString = stripPrefixes(launchString)
 	let replacements = [
 		['Moored afloat', 'MooredAfloat'],
+		['Moored alongside', 'MooredAfloat'],
+		['Aquadock', 'MooredAfloat'],
+		['Versadock', 'MooredAfloat'],
 		['Floating cradle', 'FloatingCradle'],
 		['Floating house', 'FloatingHouse'],
-		['Moored alongside', 'MooredAfloat'],
+		['Floating Boathouse', 'FloatingHouse'],
 		['Mobile davit', 'Transporter'],
-		['Carriageway', 'Carriage']
+		['Lorry-mounted davit', 'Transporter'],
+		['Carriageway', 'Carriage'],
+		['A85 Carriage', 'Carriage'],
+		['SLARS', 'Carriage']
 	]
 	return multiReplace(launchString, replacements)
 }

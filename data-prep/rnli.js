@@ -44,21 +44,32 @@ class RnliConverter extends Converter {
 
 	extractColumns(record) {
 		if (record.length > 1) {
-			//X,Y,OBJECTID_1,Station,County,Region,Division,Country,URL,SAP_ID,StationType,Lat,Long,LivesavingRegion,LivesavingArea
-			let lng = parseFloat(record[0])
-			let lat = parseFloat(record[1])
-			let stationName = record[3]
+			//OBJECTID,Station Type,County,Division,Region,Country,Lifesaving Area,Lifesaving Region,URL,Station,SAP_ID,Lat (DecDeg),(Long (DecDeg),x,y
+			let lng = parseFloat(record[12])
+			let lat = parseFloat(record[11])
+			let stationName = record[9]
 			let url = record[8]
 
-			let lifeboatTypes = 'Unknown'
-			let launchMethods = 'Unknown'
+			let lifeboatTypesString = 'Unknown'
+			let launchMethodsString = 'Unknown'
 			let wikiStation = this._findExtraData(stationName)
 			if (wikiStation != null) {
-				lifeboatTypes = wikiStation.types.join(';')
-				launchMethods = wikiStation.launchMethods.join(';')
+				let {types, launchMethods} = wikiStation
+				if (launchMethods.length > types.length) {
+					throw new Error(
+						`${stationName} has ${launchMethods.length} launch methods but only ${types.length} lifeboat types.`
+					)
+				}
+				if (launchMethods.length < types.length) {
+					console.warn(
+						`${stationName} has ${types.length} lifeboat types but only ${launchMethods.length} launch methods.`
+					)
+				}
+				lifeboatTypesString = types.join(';')
+				launchMethodsString = launchMethods.join(';')
 			}
 
-			return [lng, lat, stationName, url, lifeboatTypes, launchMethods]
+			return [lng, lat, stationName, url, lifeboatTypesString, launchMethodsString]
 		} else {
 			return null
 		}
