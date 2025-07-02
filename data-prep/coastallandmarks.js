@@ -8,7 +8,7 @@ import {DateTime} from 'luxon'
 import {tmpInputDir, outputDir} from './constants.js'
 import Converter from './converter.js'
 import {filterPages} from './wikipediaUtils.js'
-import {checkForDuplicates} from './wikidataUtils.js'
+import {deduplicate} from './wikidataUtils.js'
 import {ifCmd} from '@tstibbs/cloud-core-utils'
 import {backUpReferenceData} from './utils.js'
 import compareData from './csv-comparer.js'
@@ -29,7 +29,7 @@ function wikify(name) {
 async function processLighthouses() {
 	let resultsAsText = await readFile(`${inputDir}/lighthouses.json`)
 	let results = JSON.parse(resultsAsText)
-	checkForDuplicates(results)
+	results = deduplicate(results)
 	let csv = results.map(entry => {
 		const qid = entry.item.value
 		const name = entry.item.label
