@@ -39,17 +39,11 @@ class TrigConverter extends Converter {
 async function buildDataFile() {
 	await backUpReferenceData('trigs', 'data_all.json')
 	await backUpReferenceData('trigs', 'data_mini.json')
-	const inputDir = `${tmpInputDir}/trigs`
-	let files = await readdir(inputDir)
-	let foundFiles = files.filter(file => /trigpoints-\d+.csv/.test(file))
-	if (foundFiles.length != 1) {
-		console.error(`Should be exactly 1 file called trigpoints-[date as numbers].csv, but were: ${foundFiles}`)
-		process.exit(1)
-	}
+	const inputFile = `${tmpInputDir}/trigs/trigpoints.csv`
 
 	//generate the 'all' data
 
-	await new TrigConverter().writeOut(`${inputDir}/` + foundFiles[0], `${outputDir}/trigs/data_all.json`)
+	await new TrigConverter().writeOut(inputFile, `${outputDir}/trigs/data_all.json`)
 
 	//generate the 'mini' data
 
@@ -65,7 +59,7 @@ async function buildDataFile() {
 		let lat = lngLat[1]
 		return lng > minLng && lat > minLat && lng < maxLng && lat < maxLat && conditions.includes(condition)
 	})
-	await miniConverter.writeOut(`${inputDir}/` + foundFiles[0], `${outputDir}/trigs/data_mini.json`)
+	await miniConverter.writeOut(inputFile, `${outputDir}/trigs/data_mini.json`)
 	return await compareData('trigs', 'data_all.json')
 }
 

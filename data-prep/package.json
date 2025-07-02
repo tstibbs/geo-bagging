@@ -13,6 +13,7 @@
 		"cheerio": "^1.1.0",
 		"combined-stream2": "^1.1.2",
 		"csv": "^6.3.11",
+		"dotenv": "^17.0.1",
 		"geolib": "^3.3.4",
 		"html-entities": "^2.6.0",
 		"luxon": "^3.6.1",

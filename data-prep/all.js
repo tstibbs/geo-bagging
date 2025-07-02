@@ -8,14 +8,11 @@ const downloadSources = [
 	'follies',
 	// 'rnli', //temporarily removed due to changes in the data source we use
 	'nationalparks',
-	'coastallandmarks'
+	'coastallandmarks',
 	// 'nt' //temporarily removed due to occasionally being blocked due to looking like a bot
+	'trigs'
 ]
-const processingSources = [
-	...downloadSources
-	//processing manually downloaded stuff
-	// 'trigs'
-]
+const processingSources = [...downloadSources]
 
 async function importAll(input, namer) {
 	let modules = await Promise.all(
