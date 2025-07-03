@@ -37,7 +37,7 @@
 	},
 	"scripts": {
 		"test": "node test/index.js",
-		"test-source-download": "node all.js",
+		"test-source-download": "node test-source-download.js",
 		"postinstall": "sed -i 's/+init=//' node_modules/@mapbox/geojson-mapnikify/lib/template.xml"
 	}
 }

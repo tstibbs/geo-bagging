@@ -51,7 +51,7 @@ async function single(action, name, processor) {
 	}
 }
 
-async function run() {
+export async function run(failFast = true) {
 	const downloaders = await importAll(downloadSources, processor => `./${processor}_download.js`)
 	const processors = await importAll(processingSources, processor => `./${processor}.js`)
 
@@ -61,7 +61,12 @@ async function run() {
 		let result = await single('Downloading', name, processor)
 		results[name] = result
 	}
-	if (Object.values(results).filter(result => result.status === 'error').length == 0) {
+	Object.entries(results)
+		.filter(([source, result]) => result.status === 'error')
+		.forEach(([source, result]) => {
+			processors.delete(source)
+		})
+	if (!failFast || Object.values(results).filter(result => result.status === 'error').length == 0) {
 		//only continue if none of the download have errored
 		console.log('')
 		console.log('Initial download finished, starting processing.')
