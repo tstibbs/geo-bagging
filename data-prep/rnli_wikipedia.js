@@ -1,7 +1,18 @@
 import {ifCmd} from '@tstibbs/cloud-core-utils'
 import {readFile} from './utils.js'
 import {tmpInputDir} from './constants.js'
+
 const inputDir = `${tmpInputDir}/rnli`
+const validLaunchMethods = [
+	'MooredAfloat',
+	'Carriage',
+	'FloatingHouse',
+	'Transporter',
+	'Davit',
+	'Launchway',
+	'Slipway',
+	'Unknown'
+]
 
 const flatten = arrays => {
 	return [].concat.apply([], arrays)
@@ -19,6 +30,11 @@ function removeIgnoredTypes(types, launchMethods) {
 		//splice happens *in place*
 		types.splice(occurrence, occurrence)
 		launchMethods.splice(occurrence, occurrence)
+	})
+	launchMethods.forEach(method => {
+		if (!validLaunchMethods.includes(method)) {
+			throw new Error(`${method} is not a valid launch method.`)
+		}
 	})
 	return {
 		types,
@@ -111,11 +127,12 @@ function parseLaunchMethods(launchString) {
 		['Moored alongside', 'MooredAfloat'],
 		['Aquadock', 'MooredAfloat'],
 		['Versadock', 'MooredAfloat'],
-		['Floating cradle', 'FloatingCradle'],
+		['Tetradock', 'MooredAfloat'],
 		['Floating house', 'FloatingHouse'],
 		['Floating Boathouse', 'FloatingHouse'],
 		['Mobile davit', 'Transporter'],
 		['Lorry-mounted davit', 'Transporter'],
+		['Floating cradle', 'Carriage'],
 		['Carriageway', 'Carriage'],
 		['A85 Carriage', 'Carriage'],
 		['SLARS', 'Carriage']
