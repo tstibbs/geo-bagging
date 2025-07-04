@@ -14,9 +14,13 @@ function _downloadSingle(source, destination) {
 				reject(new Error(err))
 			})
 			.on('response', response => {
-				if (response.statusCode != 200) {
+				let {statusCode} = response
+				if (statusCode != 200) {
+					console.error(
+						`${statusCode} returned by ${source} with headers: \n${JSON.stringify(response.headers, null, 2)}`
+					)
 					req.abort()
-					reject(new Error(response.statusCode))
+					reject(new Error(statusCode))
 				}
 			})
 			.pipe(file)
