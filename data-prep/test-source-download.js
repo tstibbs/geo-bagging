@@ -1,3 +1,8 @@
-import {run} from './all.js'
+import {ifCmd} from '@tstibbs/cloud-core-utils'
+import {run as runAll} from './all.js'
 
-await run(false)
+async function run() {
+	await runAll(false)
+}
+
+await ifCmd(import.meta, run)
