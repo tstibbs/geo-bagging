@@ -9,7 +9,7 @@ const downloadSources = [
 	'rnli',
 	'nationalparks',
 	'coastallandmarks',
-	// 'nt' //temporarily removed due to occasionally being blocked due to looking like a bot
+	'nt',
 	'trigs'
 ]
 const processingSources = [...downloadSources]

@@ -37,20 +37,25 @@ function _downloadSingle(source, destination) {
 	})
 }
 
-async function download(bundleName, urls) {
+export async function _downloadMultiple(bundleName, urls, downloaderFunction) {
 	let outputDir = `${tmpInputDir}`
 	if (bundleName != null) {
 		outputDir += `/${bundleName}`
 	}
 	await createTempDir(outputDir)
-	let promises = Object.entries(urls).map(([url, fileName]) => _downloadSingle(url, outputDir + '/' + fileName))
+	let orderedArrayOfUrls = Array.isArray(urls) ? urls : Object.entries(urls)
 	let from = bundleName != null ? bundleName : Object.keys(urls).join(';')
 	try {
-		await Promise.all(promises)
+		for (const [url, fileName] of orderedArrayOfUrls) {
+			console.log(`Downloading ${url} to ${outputDir}/${fileName}`)
+			await downloaderFunction(url, outputDir + '/' + fileName)
+		}
 	} catch (err) {
 		console.log(`Error downloading '${from}': ${err}`)
 		throw err
 	}
 }
 
-export {download}
+export async function download(bundleName, urls) {
+	return await _downloadMultiple(bundleName, urls, _downloadSingle)
+}
