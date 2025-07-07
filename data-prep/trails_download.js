@@ -23,7 +23,7 @@ const urls = {
 	//title: England Coast Path Route
 	//Org: Defra group ArcGIS Online organisation
 	//licence: OGL
-	//parent page: http://naturalengland-defra.opendata.arcgis.com/datasets/england-coast-path-route
+	//parent page: https://naturalengland-defra.opendata.arcgis.com/datasets/Defra::king-charles-iii-england-coast-path-route/about
 	'https://opendata.arcgis.com/datasets/a1488f928832407fbd267feb6802bed6_0.geojson': 'England_Coast_Path_Route.geojson'
 }
 

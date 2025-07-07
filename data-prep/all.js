@@ -4,7 +4,7 @@ const downloadSources = [
 	'defence',
 	'hills',
 	//'milestones', removed due to outdated source, see note in milestones_download.js
-	'trails',
+	// 'trails', //temporarily disabling source until the download url is fixed
 	'follies',
 	'rnli',
 	'nationalparks',
