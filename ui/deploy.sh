@@ -13,10 +13,8 @@ tmp=$(mktemp --directory)
 # git branch gh-pages origin/gh-pages
 
 cd $tmp
-git init
-git remote add origin $codeDir
-git fetch
-git checkout gh-pages
+git clone --single-branch --branch=gh-pages --depth=1 file://$codeDir
+cd geo-bagging
 rm -rf *
 cp -R $codeDir/ui/dist/* ./
 git add .
