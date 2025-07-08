@@ -23,8 +23,9 @@ const urls = {
 	//title: England Coast Path Route
 	//Org: Defra group ArcGIS Online organisation
 	//licence: OGL
-	//parent page: https://naturalengland-defra.opendata.arcgis.com/datasets/Defra::king-charles-iii-england-coast-path-route/about
-	'https://opendata.arcgis.com/datasets/a1488f928832407fbd267feb6802bed6_0.geojson': 'England_Coast_Path_Route.geojson'
+	//parent page: https://environment.data.gov.uk/dataset/4006f956-f491-4ca9-ab01-d8c96e873165 / https://environment.data.gov.uk/geoservices/datasets/4006f956-f491-4ca9-ab01-d8c96e873165/ogc/features/v1/collections/England_Coast_Path_Route (would prefer to use the data from https://naturalengland-defra.opendata.arcgis.com/datasets/Defra::king-charles-iii-england-coast-path-route/about if it was available)
+	'https://environment.data.gov.uk/geoservices/datasets/4006f956-f491-4ca9-ab01-d8c96e873165/ogc/features/v1/collections/England_Coast_Path_Route/items?f=application%2Fgeo%2Bjson&limit=50000':
+		'England_Coast_Path_Route.geojson'
 }
 
 async function download() {

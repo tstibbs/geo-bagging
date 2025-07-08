@@ -38,10 +38,20 @@ proj4.defs(
 proj4.defs('urn:ogc:def:crs:EPSG::27700', proj4.defs('EPSG:27700'))
 proj4.defs('urn:ogc:def:crs:OGC:1.3:CRS84', proj4.defs('EPSG:4326'))
 
-async function parse(fileName, propertiesTransformer, geometryTransformer, filter, allFeaturesTransformer) {
+async function parse(
+	fileName,
+	fileValidator,
+	propertiesTransformer,
+	geometryTransformer,
+	filter,
+	allFeaturesTransformer
+) {
 	try {
 		let contents = await readFile(`${inputDirectory}/${fileName}`)
 		let data = JSON.parse(contents)
+		if (fileValidator != null) {
+			fileValidator(data)
+		}
 		let features = data.features
 		if (filter != null) {
 			features = features.filter(filter)
@@ -122,6 +132,7 @@ async function buildDataFile() {
 	await backUpReferenceData('trails', 'data.geojson')
 	let pEngNatTrails = parse(
 		'National_Trails_England.geojson',
+		null,
 		properties => {
 			return {
 				openedDate: new Date(properties['Opened']).toISOString(),
@@ -139,6 +150,7 @@ async function buildDataFile() {
 
 	let pWelshNatTrails = parse(
 		'WalesNationalTrails.json',
+		null,
 		properties => {
 			let name = properties['name'].trim()
 			let extraProps = walesNatTrailsDetails[name]
@@ -153,10 +165,15 @@ async function buildDataFile() {
 
 	let pEnglandCoastPath = parse(
 		'England_Coast_Path_Route.geojson',
+		data => {
+			if (data.numberMatched != data.numberReturned) {
+				throw new Error(`${data.numberMatched} records matched but only ${data.numberReturned} returned.`)
+			}
+		},
 		() => englandCoastPathDetails,
 		crsTransformer,
 		feature => {
-			return feature.properties['Alt_Route'].trim() == 'No'
+			return feature.properties['alt_route'].trim() == 'No'
 		},
 		features => {
 			return combineReducer(features)
@@ -165,6 +182,7 @@ async function buildDataFile() {
 
 	let pWalesCoastPath = parse(
 		'WalesCoastPath.json',
+		null,
 		() => walesCoastPathDetails,
 		crsTransformer,
 		feature => {
