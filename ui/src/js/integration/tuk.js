@@ -1,5 +1,5 @@
 import $ from 'jquery'
-import conversion from '../conversion.js'
+import conversion from '@tstibbs/geo-bagging-shared/conversion.js'
 import mapLoader from '../map_loader.js'
 import constants from '../constants.js'
 

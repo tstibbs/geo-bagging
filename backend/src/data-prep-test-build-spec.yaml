@@ -11,7 +11,7 @@ phases:
       - npm ci
       - cd -
       - git clone --single-branch --branch=main --depth=1 https://github.com/tstibbs/geo-bagging.git
-      - cd geo-bagging/ui
+      - cd geo-bagging/shared
       - npm ci
       - cd -
       - cd geo-bagging/data-prep

@@ -1,5 +1,5 @@
 import $ from 'jquery'
-import conversion from '../../conversion.js'
+import conversion from '@tstibbs/geo-bagging-shared/conversion.js'
 import CustomDefaultIcon from '../../custom_default_icon.js'
 import trigpointingBase from './config_base.js'
 import TrigsPointsBuilder from './points_builder.js'

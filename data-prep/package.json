@@ -10,6 +10,7 @@
 		"@mapbox/geojson-mapnikify": "^3.0.2-dev",
 		"@mapnik/mapnik": "^4.7.1",
 		"@tstibbs/cloud-core-utils": "file:../../cloud-core/aws/utils",
+		"@tstibbs/geo-bagging-shared": "file:../shared",
 		"cheerio": "^1.1.0",
 		"combined-stream2": "^1.1.2",
 		"csv": "^6.3.11",

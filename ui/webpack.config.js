@@ -105,6 +105,7 @@ export default {
 		}),
 		new LicenseWebpackPlugin({
 			...defaultLicenseWebpackPluginConfig,
+			excludedPackageTest: packageName => packageName === '@tstibbs/geo-bagging-shared',
 			licenseFileOverrides: {
 				'leaflet.markercluster': 'MIT-LICENCE.txt',
 				'leaflet-mouse-position': 'MIT-LICENCE.txt'

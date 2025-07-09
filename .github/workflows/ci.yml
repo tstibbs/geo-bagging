@@ -49,6 +49,9 @@ jobs:
     - name: "get deps: root"
       run: npm ci
       working-directory: geo-bagging
+    - name: "get deps: shared"
+      run: npm ci
+      working-directory: geo-bagging/shared
     - name: "get deps: data-prep"
       run: npm ci
       working-directory: geo-bagging/data-prep

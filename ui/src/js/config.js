@@ -2,7 +2,7 @@ import leaflet from 'leaflet'
 import $ from 'jquery'
 import global from './global.js'
 import params from './params.js'
-import conversion from './conversion.js'
+import conversion from '@tstibbs/geo-bagging-shared/conversion.js'
 
 var defaultPageId = global.location.pathname.split('/').pop()
 

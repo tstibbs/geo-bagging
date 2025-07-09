@@ -3,7 +3,7 @@ import Stream from 'stream'
 import {parse, transform} from 'csv'
 import fs from 'fs'
 import {load as loadCheerio} from 'cheerio'
-import gridconversion from './gridconversion.js'
+import gridconversion from '@tstibbs/geo-bagging-shared/conversion.js'
 import {writeFile} from './utils.js'
 
 function header(attributionString, columnHeaders) {
