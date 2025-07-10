@@ -1,4 +1,4 @@
-import _ from 'underscore'
+import _, {difference} from 'underscore'
 import geolib from 'geolib'
 import {ifCmd} from '@tstibbs/cloud-core-utils'
 
@@ -32,7 +32,7 @@ class CsvComparer {
 	async _printReport() {
 		let dir = `tmp-input/comparisons/${this._source}`
 		await createTempDir(dir)
-		let reportPath = `${dir}/${this._file}.report.txt`
+		let reportPath = `${dir}/${this._file}.report.diff`
 		await writeFile(reportPath, this._report)
 		return reportPath
 	}
@@ -181,15 +181,63 @@ class CsvComparer {
 			this._print(`==========\n${descriptor}\n`)
 			results = _.sortBy(results, 'distance')
 			results.forEach(result => {
+				this._print(result.newRow[this._indexId])
 				if (result.distance != null) {
-					this._print(`${result.newRow[this._indexId]} moved ${result.distance}m`)
+					this._print(`moved ${result.distance}m`)
 				}
-				this._print(JSON.stringify(result.oldRow))
-				this._print(JSON.stringify(result.newRow))
+				this.#jsonDiff(result.oldRow, result.newRow)
 			})
 			return true
 		} else {
 			return false
+		}
+	}
+
+	#jsonDiff(dataOld, dataNew) {
+		let removes = []
+		let adds = []
+		if (dataOld.length != dataNew.length) {
+			throw new Error(`Row length mismatch: old=${dataOld.length}, new=${dataNew.length}`)
+		}
+		for (let i = 0; i < dataOld.length; i++) {
+			//don't diff the lat/longs because that's already handled by the distance measurer
+			if (i != this._indexLng && i != this._indexLat) {
+				let valOld = dataOld[i]
+				let valNew = dataNew[i]
+				if (typeof valOld === 'string' && valOld.includes(';')) {
+					valOld = valOld.split(';')
+				}
+				if (typeof valNew === 'string' && valNew.includes(';')) {
+					valNew = valNew.split(';')
+				}
+				if (Array.isArray(valOld) && !Array.isArray(valNew)) {
+					valNew = [valNew]
+				}
+				if (Array.isArray(valNew) && !Array.isArray(valOld)) {
+					valOld = [valOld]
+				}
+				if (Array.isArray(valNew)) {
+					let subArrayRemoves = difference(valOld, valNew)
+					let subArrayAdds = difference(valNew, valOld)
+					if (subArrayRemoves.length > 0) {
+						removes.push(`${i}[]: ${subArrayRemoves}`)
+					}
+					if (subArrayAdds.length > 0) {
+						adds.push(`${i}[]: ${subArrayAdds}`)
+					}
+				} else {
+					if (valOld !== valNew) {
+						removes.push(`${i}: ${valOld}`)
+						adds.push(`${i}: ${valNew}`)
+					}
+				}
+			}
+		}
+		if (removes.length > 0) {
+			this._print('-' + removes.join(', '))
+		}
+		if (adds.length > 0) {
+			this._print('+' + adds.join(', '))
 		}
 	}
 
@@ -206,14 +254,14 @@ class CsvComparer {
 		if (!_.isEqual(oldContents.headers, newContents.headers)) {
 			metaDifferences = true
 			this._print('Headers differ:')
-			this._print(oldContents.headers)
-			this._print(newContents.headers)
+			this._print('-' + oldContents.headers)
+			this._print('+' + newContents.headers)
 		}
 		if (oldContents.attribution !== newContents.attribution) {
 			metaDifferences = true
 			this._print('Attributions differ:')
-			this._print(oldContents.attribution)
-			this._print(newContents.attribution)
+			this._print('-' + oldContents.attribution)
+			this._print('+' + newContents.attribution)
 		}
 
 		let oldData = oldContents.data
@@ -286,7 +334,7 @@ class CsvComparer {
 				this._print('\n')
 				this._print(`Missing from new (${missing.length}):`)
 				missing.forEach(row => {
-					this._print(JSON.stringify(row))
+					this._print('-' + JSON.stringify(row))
 				})
 				majorChanges = true
 			} else {
@@ -297,7 +345,7 @@ class CsvComparer {
 				this._print('\n')
 				this._print(`Added in new (${added.length}):`)
 				added.forEach(row => {
-					this._print(JSON.stringify(row))
+					this._print('+' + JSON.stringify(row))
 				})
 				majorChanges = true
 			} else {
