@@ -20,6 +20,7 @@
 		"karma-chrome-launcher": "^3.2.0",
 		"karma-docker-launcher": "^1.0.0",
 		"karma-mocha": "^2.0.1",
+		"karma-mocha-reporter": "^2.2.5",
 		"license-webpack-plugin": "^4.0.2",
 		"mini-css-extract-plugin": "^2.7.6",
 		"mocha": "^10.2.0",

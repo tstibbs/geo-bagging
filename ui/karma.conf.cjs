@@ -10,6 +10,8 @@ module.exports = function (config) {
 
 		browsers: wsl ? ['ChromeHeadlessDocker'] : ['Chrome_fixedSize'],
 
+		reporters: ['mocha'],
+
 		customLaunchers: {
 			Chrome_fixedSize: {
 				base: 'ChromeHeadless',
