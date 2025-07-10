@@ -4,7 +4,7 @@ import Leaflet_ControlHider from 'VendorWrappers/leaflet-control-hider.js'
 import Selection from './selection.js'
 import Locate from './locate.js'
 import mobile from './mobile.js'
-import {GeosearchControl, GeosearchBing} from 'VendorWrappers/leaflet-geosearch.js'
+import {GeosearchControl, GeosearchOsm} from 'VendorWrappers/leaflet-geosearch.js'
 import Mouseposition_Osgb from './mouseposition_osgb.js'
 import Screenposition_Osgb from './screenposition_osgb.js'
 import constants from './constants.js'
@@ -59,10 +59,10 @@ var Controls = leaflet.Class.extend({
 					$.extend(
 						{
 							showPopup: true,
-							provider: new GeosearchBing({
-								params: {
-									key: constants.bingKey
-								}
+							provider: new GeosearchOsm({
+								// params: {
+								// 	key: constants.bingKey
+								// }
 							})
 						},
 						configOverrides
