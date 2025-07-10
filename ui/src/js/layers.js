@@ -48,7 +48,7 @@ var osm = new leaflet.TileLayer(
 )
 
 var layers = {
-	OS: bingOsGroup,
+	// OS: bingOsGroup, //disabling os maps as bing maps dev portal retired on 30/06/2025
 	'Bing Roads': bingRoads,
 	'Bing Satellite': bingAerial,
 	'Bing Hybrid': bingHybrid,
