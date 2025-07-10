@@ -16,6 +16,8 @@ const INSIGNIFICANT = Symbol('INSIGNIFICANT')
 const MUTATION_DESCRIPTORS = [NONE, SIGNIFICANT, INSIGNIFICANT]
 
 class CsvComparer {
+	#indexName
+
 	constructor(source, file) {
 		this._filePath = `${source}/${file}`
 		this._source = source
@@ -179,13 +181,15 @@ class CsvComparer {
 		let results = dataToLocation[dataMutation][locationMutation]
 		if (results.length > 0) {
 			this._print(`==========\n${descriptor}\n`)
-			results = _.sortBy(results, 'distance')
+			results = _.sortBy(results, 'distance').reverse()
 			results.forEach(result => {
-				this._print(result.newRow[this._indexId])
+				this._print(result.newRow[this.#indexName])
 				if (result.distance != null) {
 					this._print(`moved ${result.distance}m`)
+					this.#jsonDiff(true, result.oldRow, result.newRow)
+				} else {
+					this.#jsonDiff(false, result.oldRow, result.newRow)
 				}
-				this.#jsonDiff(result.oldRow, result.newRow)
 			})
 			return true
 		} else {
@@ -193,11 +197,15 @@ class CsvComparer {
 		}
 	}
 
-	#jsonDiff(dataOld, dataNew) {
+	#jsonDiff(includeLocation, dataOld, dataNew) {
 		let removes = []
 		let adds = []
 		if (dataOld.length != dataNew.length) {
 			throw new Error(`Row length mismatch: old=${dataOld.length}, new=${dataNew.length}`)
+		}
+		if (includeLocation) {
+			removes.push(`Loc: ${dataOld[this._indexLat]},${dataOld[this._indexLng]}`)
+			adds.push(`Loc: ${dataNew[this._indexLat]},${dataNew[this._indexLng]}`)
 		}
 		for (let i = 0; i < dataOld.length; i++) {
 			//don't diff the lat/longs because that's already handled by the distance measurer
@@ -244,6 +252,10 @@ class CsvComparer {
 	async compare(oldPath, newPath) {
 		let oldContents = await this._read(oldPath ?? `tmp-input/old-data/${this._filePath}`)
 		let newContents = await this._read(newPath ?? `../ui/src/js/bundles/${this._filePath}`)
+		let oldHeaders = oldContents.headers
+		let newHeaders = newContents.headers
+		this.#indexName =
+			oldHeaders.indexOf('Name') === newHeaders.indexOf('Name') ? newHeaders.indexOf('Name') : this._indexId
 
 		let {interestingFieldIndexes} = newContents
 		this._indexLng = newContents.indexLng
@@ -251,11 +263,11 @@ class CsvComparer {
 		this._indexUrl = newContents.indexUrl
 
 		let metaDifferences = false
-		if (!_.isEqual(oldContents.headers, newContents.headers)) {
+		if (!_.isEqual(oldHeaders, newHeaders)) {
 			metaDifferences = true
 			this._print('Headers differ:')
-			this._print('-' + oldContents.headers)
-			this._print('+' + newContents.headers)
+			this._print('-' + oldHeaders)
+			this._print('+' + newHeaders)
 		}
 		if (oldContents.attribution !== newContents.attribution) {
 			metaDifferences = true
