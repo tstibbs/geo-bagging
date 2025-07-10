@@ -46,13 +46,21 @@ var osm = new leaflet.TileLayer(
 		attribution: 'Map data © <a href="http://openstreetmap.org">OpenStreetMap</a> contributors'
 	})
 )
+var osmDummy = new leaflet.TileLayer(
+	'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+	leaflet.extend({}, defaults, {
+		attribution: 'Map data © <a href="http://openstreetmap.org">OpenStreetMap</a> contributors'
+	})
+)
 
 var layers = {
-	// OS: bingOsGroup, //disabling os maps as bing maps dev portal retired on 30/06/2025
-	'Bing Roads': bingRoads,
-	'Bing Satellite': bingAerial,
-	'Bing Hybrid': bingHybrid,
-	OSM: osm
+	//bing maps dev portal retired on 30/06/2025, so disabling bing sources while we work out what to do
+	// OS: bingOsGroup,
+	// 'Bing Roads': bingRoads,
+	// 'Bing Satellite': bingAerial,
+	// 'Bing Hybrid': bingHybrid,
+	OSM: osm,
+	'Do not use': osmDummy // having a single layer breaks the layers control - this is a workaround pending investigation
 }
 
 function _listenForLayerChange(layerId, layer, config) {
