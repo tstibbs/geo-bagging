@@ -12,32 +12,32 @@ var defaults = {
 	maxZoom: maxOverallZoom,
 	detectRetina: false
 }
-var bingDefaults = leaflet.extend({}, defaults, {
-	key: constants.bingKey,
-	maxNativeZoom: 18
-})
+// var bingDefaults = leaflet.extend({}, defaults, {
+// 	key: constants.bingKey,
+// 	maxNativeZoom: 18
+// })
 
-//Bing standard maps
-var bingRoads = new LeafletBing(leaflet.extend({}, bingDefaults, {imagerySet: 'RoadOnDemand'}))
-var bingHybrid = new LeafletBing(leaflet.extend({}, bingDefaults, {imagerySet: 'AerialWithLabelsOnDemand'}))
-var bingAerial = new LeafletBing(leaflet.extend({}, bingDefaults, {imagerySet: 'Aerial'}))
+// //Bing standard maps
+// var bingRoads = new LeafletBing(leaflet.extend({}, bingDefaults, {imagerySet: 'RoadOnDemand'}))
+// var bingHybrid = new LeafletBing(leaflet.extend({}, bingDefaults, {imagerySet: 'AerialWithLabelsOnDemand'}))
+// var bingAerial = new LeafletBing(leaflet.extend({}, bingDefaults, {imagerySet: 'Aerial'}))
 
-//OS
-var bingOsLayer = new LeafletBing(
-	leaflet.extend({}, bingDefaults, {
-		imagerySet: 'OrdnanceSurvey',
-		minZoom: 12,
-		maxNativeZoom: 17
-	})
-) //note OS doesn't support retina
-//fallback layer because the OS maps don't scale well when you zoom out
-var bingFallbackLayer = new LeafletBing(
-	leaflet.extend({}, bingDefaults, {
-		imagerySet: 'RoadOnDemand',
-		maxZoom: 11
-	})
-)
-var bingOsGroup = leaflet.layerGroup([bingOsLayer, bingFallbackLayer])
+// //OS
+// var bingOsLayer = new LeafletBing(
+// 	leaflet.extend({}, bingDefaults, {
+// 		imagerySet: 'OrdnanceSurvey',
+// 		minZoom: 12,
+// 		maxNativeZoom: 17
+// 	})
+// ) //note OS doesn't support retina
+// //fallback layer because the OS maps don't scale well when you zoom out
+// var bingFallbackLayer = new LeafletBing(
+// 	leaflet.extend({}, bingDefaults, {
+// 		imagerySet: 'RoadOnDemand',
+// 		maxZoom: 11
+// 	})
+// )
+// var bingOsGroup = leaflet.layerGroup([bingOsLayer, bingFallbackLayer])
 
 //OSM
 var osm = new leaflet.TileLayer(
@@ -78,7 +78,7 @@ var LayerAdder = function (map, config) {
 	if (layerToSelect != null) {
 		layerToSelect.addTo(map)
 	} else {
-		bingOsGroup.addTo(map)
+		osm.addTo(map)
 	}
 
 	//set up listener to persist which layer is selected
