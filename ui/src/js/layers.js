@@ -46,12 +46,17 @@ var osm = new leaflet.TileLayer(
 		attribution: 'Map data © <a href="http://openstreetmap.org">OpenStreetMap</a> contributors'
 	})
 )
-var osmDummy = new leaflet.TileLayer(
-	'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-	leaflet.extend({}, defaults, {
-		attribution: 'Map data © <a href="http://openstreetmap.org">OpenStreetMap</a> contributors'
-	})
-)
+
+const mapTilerAttribution = `\u003ca href="https://www.maptiler.com/copyright/" target="_blank"\u003e\u0026copy; MapTiler\u003c/a\u003e \u003ca href="https://www.openstreetmap.org/copyright" target="_blank"\u003e\u0026copy; OpenStreetMap contributors\u003c/a\u003e`
+const mapTilerUrl = `https://api.maptiler.com/maps/hybrid/{z}/{x}/{y}.png?key=${constants.mapTilerKey}`
+const mapTilerSatellite = new leaflet.TileLayer(mapTilerUrl, {
+	...defaults,
+	tileSize: 512,
+	zoomOffset: -1,
+	maxNativeZoom: 18,
+	attribution: mapTilerAttribution,
+	crossOrigin: true
+})
 
 var layers = {
 	//bing maps dev portal retired on 30/06/2025, so disabling bing sources while we work out what to do
@@ -60,7 +65,7 @@ var layers = {
 	// 'Bing Satellite': bingAerial,
 	// 'Bing Hybrid': bingHybrid,
 	OSM: osm,
-	'Do not use': osmDummy // having a single layer breaks the layers control - this is a workaround pending investigation
+	Satellite: mapTilerSatellite
 }
 
 function _listenForLayerChange(layerId, layer, config) {
