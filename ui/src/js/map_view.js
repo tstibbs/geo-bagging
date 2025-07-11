@@ -4,6 +4,7 @@ import fullscreen_link from './fullscreen_link.js'
 import mobile from './mobile.js'
 import {detectZoomDirection} from './leaflet-plugins/zoom-detector.js'
 import {maxOverallZoom, minOverallZoom} from './layers.js'
+import {crs as osCrs} from './layers/os-opendata-layer.js'
 
 var MapView = leaflet.Class.extend({
 	initialize: function (config) {
@@ -15,7 +16,8 @@ var MapView = leaflet.Class.extend({
 			zoomControl: false,
 			//set up the min and max zoom first to prevent the min/max changing when layers are loading, as this could change the zoom we set below in setView.
 			minZoom: minOverallZoom,
-			maxZoom: maxOverallZoom
+			maxZoom: maxOverallZoom,
+			crs: leaflet.CRS.EPSG3857
 		})
 
 		//set start point
@@ -33,6 +35,24 @@ var MapView = leaflet.Class.extend({
 			},
 			this
 		)
+		const defaultCrs = leaflet.CRS.EPSG3857
+		this._map.on('baselayerchange', ({layer}) => {
+			let originalBounds = this._map.getBounds()
+			let oldCrs = this._map.options?.crs
+			let newCrs = layer.options?.crs != null ? layer.options.crs : defaultCrs
+			if (oldCrs !== newCrs) {
+				this._map.options.crs = newCrs
+				if (oldCrs != null) {
+					//i.e. it wasn't the initial layer select being fired
+					this._map.options.zoomSnap = 0
+					this._map.fitBounds(originalBounds)
+					this._map.fitBounds(originalBounds)
+					this._map.options.zoomSnap = 1
+				}
+			}
+		})
+		//TODO re-add markers etc once the crs changes
+		//TODO re-project starting point when loading the UI in case the layer has changed
 
 		//hook up zoom in/out detector
 		detectZoomDirection(this._map)

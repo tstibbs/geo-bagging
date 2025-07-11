@@ -1,6 +1,8 @@
 import leaflet from 'VendorWrappers/leaflet.js'
 import LeafletBing from 'VendorWrappers/bing-layer.js'
 import constants from './constants.js'
+import {osOpenDataLayer} from './layers/os-opendata-layer.js'
+
 const minOverallZoom = 1
 const maxOverallZoom = 19
 
@@ -59,6 +61,7 @@ const mapTilerSatellite = new leaflet.TileLayer(mapTilerUrl, {
 })
 
 var layers = {
+	OS2: osOpenDataLayer,
 	//bing maps dev portal retired on 30/06/2025, so disabling bing sources while we work out what to do
 	// OS: bingOsGroup,
 	// 'Bing Roads': bingRoads,
@@ -78,13 +81,29 @@ function _listenForLayerChange(layerId, layer, config) {
 }
 
 var LayerAdder = function (map, config) {
+	// const defaultCrs = map.options.crs
+	// osOpenDataLayer.on('add', ({target: layer}) => {
+	// 	if (map.options?.crs != null && map.options?.crs !== layer.options?.crs) {
+	// 		map.options.crs = layer.options.crs
+	// 	}
+	// })
+	// osm.on('add', () => {
+	// 	map.options.crs = defaultCrs
+	// })
 	//if we have a default layer set, select that now
+
+	//TODO set the crs depending on what layer is being loaded initially
+	//TODO need to ensure the move to the stored/default location happens after the crs is set
 	var layerToSelect = layers[config.defaultLayer]
 	if (layerToSelect != null) {
 		layerToSelect.addTo(map)
 	} else {
 		osm.addTo(map)
 	}
+	//TODO shouldn't really need to do this
+	// map.fire('baselayerchange', {
+	// 	layer: layerToSelect
+	// })
 
 	//set up listener to persist which layer is selected
 	for (var id in layers) {
