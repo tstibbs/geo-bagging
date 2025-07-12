@@ -81,29 +81,18 @@ function _listenForLayerChange(layerId, layer, config) {
 }
 
 var LayerAdder = function (map, config) {
-	// const defaultCrs = map.options.crs
-	// osOpenDataLayer.on('add', ({target: layer}) => {
-	// 	if (map.options?.crs != null && map.options?.crs !== layer.options?.crs) {
-	// 		map.options.crs = layer.options.crs
-	// 	}
-	// })
-	// osm.on('add', () => {
-	// 	map.options.crs = defaultCrs
-	// })
-	//if we have a default layer set, select that now
-
-	//TODO set the crs depending on what layer is being loaded initially
-	//TODO need to ensure the move to the stored/default location happens after the crs is set
+	//TODO there's a bug here where if we select the wrong layer somehow then the zoom could be all wrong because the zoom levels are not equivalent between layers
 	var layerToSelect = layers[config.defaultLayer]
 	if (layerToSelect != null) {
 		layerToSelect.addTo(map)
 	} else {
 		osm.addTo(map)
 	}
-	//TODO shouldn't really need to do this
-	// map.fire('baselayerchange', {
-	// 	layer: layerToSelect
-	// })
+	//I'm not totally convinced we should need to do this
+	//the alternative is to set the CRS on the map based on what layer is being loaded initially
+	map.fire('baselayerchange', {
+		layer: layerToSelect
+	})
 
 	//set up listener to persist which layer is selected
 	for (var id in layers) {

@@ -4,11 +4,15 @@ import fullscreen_link from './fullscreen_link.js'
 import mobile from './mobile.js'
 import {detectZoomDirection} from './leaflet-plugins/zoom-detector.js'
 import {maxOverallZoom, minOverallZoom} from './layers.js'
-import {crs as osCrs} from './layers/os-opendata-layer.js'
+
+const DEFAULT_CRS = leaflet.CRS.EPSG3857
 
 var MapView = leaflet.Class.extend({
 	initialize: function (config) {
 		this._config = config
+		this._initLat = this._config.start_position[0]
+		this._initLng = this._config.start_position[1]
+		this._initZoom = this._config.initial_zoom
 		this._createView()
 		// set up the map
 		this._map = new leaflet.Map(this._config.map_element_id, {
@@ -17,7 +21,7 @@ var MapView = leaflet.Class.extend({
 			//set up the min and max zoom first to prevent the min/max changing when layers are loading, as this could change the zoom we set below in setView.
 			minZoom: minOverallZoom,
 			maxZoom: maxOverallZoom,
-			crs: leaflet.CRS.EPSG3857
+			crs: DEFAULT_CRS
 		})
 
 		//set start point
@@ -35,27 +39,33 @@ var MapView = leaflet.Class.extend({
 			},
 			this
 		)
-		const defaultCrs = leaflet.CRS.EPSG3857
 		this._map.on('baselayerchange', ({layer}) => {
 			let originalBounds = this._map.getBounds()
 			let oldCrs = this._map.options?.crs
-			let newCrs = layer.options?.crs != null ? layer.options.crs : defaultCrs
+			let newCrs = layer.options?.crs != null ? layer.options.crs : DEFAULT_CRS
+			console.log(`Switching CRS from ${oldCrs.code} to ${newCrs.code}`)
 			if (oldCrs !== newCrs) {
 				this._map.options.crs = newCrs
-				if (oldCrs != null) {
-					//i.e. it wasn't the initial layer select being fired
-					this._map.options.zoomSnap = 0
-					this._map.fitBounds(originalBounds)
-					this._map.fitBounds(originalBounds)
-					this._map.options.zoomSnap = 1
-				}
+				this._map.options.zoomSnap = 0
+				this._map.fitBounds(originalBounds)
+				this._map.fitBounds(originalBounds)
+				this._map.options.zoomSnap = 1
+				this._map.fitBounds(originalBounds)
 			}
 		})
 		//TODO re-add markers etc once the crs changes
-		//TODO re-project starting point when loading the UI in case the layer has changed
 
 		//hook up zoom in/out detector
 		detectZoomDirection(this._map)
+	},
+
+	postInit: function() {
+		console.log(`force setting init position: ${this._initLat}, ${this._initLng}, ${this._initZoom}`)
+		//start position might have got messed up during CRS changes, so we re-set it here
+		this._map.setView(
+			new leaflet.LatLng(this._initLat, this._initLng),
+			this._initZoom
+		)
 	},
 
 	//creates the html we need to display errors, loading screen and the map container
