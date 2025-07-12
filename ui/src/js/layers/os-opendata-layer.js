@@ -1,7 +1,8 @@
-const apiKey = 'vWnckqIMRUgvAqfaN8jece3GEG3EGWZD'
 import leaflet from 'VendorWrappers/leaflet.js'
 import 'proj4'
 import 'proj4leaflet'
+
+import constants from '../constants.js'
 
 //TODO do we need to include https://cdn.jsdelivr.net/gh/OrdnanceSurvey/os-api-branding@0.3.1/os-api-branding.js
 
@@ -17,7 +18,7 @@ export const crs = new leaflet.Proj.CRS(
 
 // Define parameters object.
 const params = {
-	key: apiKey,
+	key: constants.osOpenDataKey,
 	service: 'WMTS',
 	request: 'GetTile',
 	version: '2.0.0',
@@ -42,4 +43,5 @@ const queryString = Object.keys(params)
 export const osOpenDataLayer = L.tileLayer('https://api.os.uk/maps/raster/v1/wmts?' + queryString, {
 	crs: crs,
 	maxNativeZoom: 9
+	//TODO attribution
 })

@@ -61,7 +61,7 @@ const mapTilerSatellite = new leaflet.TileLayer(mapTilerUrl, {
 })
 
 var layers = {
-	OS2: osOpenDataLayer,
+	'OS Maps': osOpenDataLayer,
 	//bing maps dev portal retired on 30/06/2025, so disabling bing sources while we work out what to do
 	// OS: bingOsGroup,
 	// 'Bing Roads': bingRoads,
