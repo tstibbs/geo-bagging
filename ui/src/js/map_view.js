@@ -49,11 +49,12 @@ var MapView = leaflet.Class.extend({
 				this._map.options.zoomSnap = 0
 				this._map.fitBounds(originalBounds)
 				this._map.fitBounds(originalBounds)
+
+				//manually round zoom because fitbounds just floors it which leads to stepping when switching layers back and forwards
+				this._map.setZoom(Math.round(this._map.getZoom()))
 				this._map.options.zoomSnap = 1
-				this._map.fitBounds(originalBounds)
 			}
 		})
-		//TODO re-add markers etc once the crs changes
 
 		//hook up zoom in/out detector
 		detectZoomDirection(this._map)
