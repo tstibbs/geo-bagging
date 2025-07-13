@@ -55,6 +55,7 @@ export default {
 			.waitForInitialization()
 			.then(
 				function () {
+					mapView.postInit()
 					return new SourceLoader(manager, this._config).loadSources(allBundles)
 				}.bind(this)
 			)

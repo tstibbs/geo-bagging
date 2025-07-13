@@ -1,6 +1,8 @@
 import leaflet from 'VendorWrappers/leaflet.js'
 import LeafletBing from 'VendorWrappers/bing-layer.js'
 import constants from './constants.js'
+import {osOpenDataLayer} from './layers/os-opendata-layer.js'
+
 const minOverallZoom = 1
 const maxOverallZoom = 19
 
@@ -59,6 +61,7 @@ const mapTilerSatellite = new leaflet.TileLayer(mapTilerUrl, {
 })
 
 var layers = {
+	'OS Maps (beta)': osOpenDataLayer,
 	//bing maps dev portal retired on 30/06/2025, so disabling bing sources while we work out what to do
 	// OS: bingOsGroup,
 	// 'Bing Roads': bingRoads,
@@ -78,13 +81,17 @@ function _listenForLayerChange(layerId, layer, config) {
 }
 
 var LayerAdder = function (map, config) {
-	//if we have a default layer set, select that now
+	//TODO there's a bug here where if we select the wrong layer somehow then the zoom could be all wrong because the zoom levels are not equivalent between layers
 	var layerToSelect = layers[config.defaultLayer]
-	if (layerToSelect != null) {
-		layerToSelect.addTo(map)
-	} else {
-		osm.addTo(map)
+	if (layerToSelect == null) {
+		layerToSelect = osm //default to OSM if no layer is selected
 	}
+	layerToSelect.addTo(map)
+	//I'm not totally convinced we should need to do this
+	//the alternative is to set the CRS on the map based on what layer is being loaded initially
+	map.fire('baselayerchange', {
+		layer: layerToSelect
+	})
 
 	//set up listener to persist which layer is selected
 	for (var id in layers) {
