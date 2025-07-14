@@ -59,11 +59,7 @@ var Controls = leaflet.Class.extend({
 					$.extend(
 						{
 							showPopup: true,
-							provider: new GeosearchOsm({
-								// params: {
-								// 	key: constants.bingKey
-								// }
-							})
+							provider: new GeosearchOsm()
 						},
 						configOverrides
 					)

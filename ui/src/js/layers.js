@@ -1,5 +1,4 @@
 import leaflet from 'VendorWrappers/leaflet.js'
-import LeafletBing from 'VendorWrappers/bing-layer.js'
 import constants from './constants.js'
 import {osOpenDataLayer} from './layers/os-opendata-layer.js'
 
@@ -14,32 +13,6 @@ var defaults = {
 	maxZoom: maxOverallZoom,
 	detectRetina: false
 }
-// var bingDefaults = leaflet.extend({}, defaults, {
-// 	key: constants.bingKey,
-// 	maxNativeZoom: 18
-// })
-
-// //Bing standard maps
-// var bingRoads = new LeafletBing(leaflet.extend({}, bingDefaults, {imagerySet: 'RoadOnDemand'}))
-// var bingHybrid = new LeafletBing(leaflet.extend({}, bingDefaults, {imagerySet: 'AerialWithLabelsOnDemand'}))
-// var bingAerial = new LeafletBing(leaflet.extend({}, bingDefaults, {imagerySet: 'Aerial'}))
-
-// //OS
-// var bingOsLayer = new LeafletBing(
-// 	leaflet.extend({}, bingDefaults, {
-// 		imagerySet: 'OrdnanceSurvey',
-// 		minZoom: 12,
-// 		maxNativeZoom: 17
-// 	})
-// ) //note OS doesn't support retina
-// //fallback layer because the OS maps don't scale well when you zoom out
-// var bingFallbackLayer = new LeafletBing(
-// 	leaflet.extend({}, bingDefaults, {
-// 		imagerySet: 'RoadOnDemand',
-// 		maxZoom: 11
-// 	})
-// )
-// var bingOsGroup = leaflet.layerGroup([bingOsLayer, bingFallbackLayer])
 
 //OSM
 var osm = new leaflet.TileLayer(
@@ -62,11 +35,6 @@ const mapTilerSatellite = new leaflet.TileLayer(mapTilerUrl, {
 
 var layers = {
 	'OS Maps (beta)': osOpenDataLayer,
-	//bing maps dev portal retired on 30/06/2025, so disabling bing sources while we work out what to do
-	// OS: bingOsGroup,
-	// 'Bing Roads': bingRoads,
-	// 'Bing Satellite': bingAerial,
-	// 'Bing Hybrid': bingHybrid,
 	OSM: osm,
 	Satellite: mapTilerSatellite
 }

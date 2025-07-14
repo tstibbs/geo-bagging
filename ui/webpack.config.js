@@ -162,10 +162,6 @@ export default {
 				type: 'asset/resource'
 			},
 			{
-				test: resolve('./node_modules/leaflet-plugins/layer/tile/Bing.js'),
-				use: 'exports-loader?exports=default|L.BingLayer'
-			},
-			{
 				test: resolve('./node_modules/leaflet-mouse-position/src/L.Control.MousePosition.js'),
 				use: 'exports-loader?exports=default|L.Control.MousePosition'
 			},
@@ -180,10 +176,6 @@ export default {
 			{
 				test: resolve('./node_modules/leaflet-geosearch/src/js/l.control.geosearch.js'),
 				use: 'exports-loader?exports=default|L.Control.GeoSearch'
-			},
-			{
-				test: resolve('./node_modules/leaflet-geosearch/src/js/l.geosearch.provider.bing.js'),
-				use: 'exports-loader?exports=default|L.GeoSearch.Provider.Bing'
 			},
 			{
 				test: resolve('./node_modules/sidebar-v2/js/leaflet-sidebar.js'),
