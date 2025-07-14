@@ -33,26 +33,38 @@ const mapTilerSatellite = new leaflet.TileLayer(mapTilerUrl, {
 	crossOrigin: true
 })
 
+//map of display name to layer details
 var layers = {
-	'OS Maps (beta)': osOpenDataLayer,
-	OSM: osm,
-	Satellite: mapTilerSatellite
+	'OS Maps (beta)': {
+		layer: osOpenDataLayer,
+		id: 'os-open-data'
+	},
+	'Open Street Map': {
+		layer: osm,
+		id: 'OSM'
+	},
+	Satellite: {
+		layer: mapTilerSatellite,
+		id: 'Satellite'
+	}
 }
 
-function _listenForLayerChange(layerId, layer, config) {
+function _listenForLayerChange(id, layer, config) {
 	layer.on(
 		'add',
 		function () {
-			config.persist({defaultLayer: layerId})
+			config.persist({defaultLayer: id})
 		}.bind(this)
 	)
 }
 
 var LayerAdder = function (map, config) {
 	//TODO there's a bug here where if we select the wrong layer somehow then the zoom could be all wrong because the zoom levels are not equivalent between layers
-	var layerToSelect = layers[config.defaultLayer]
+	var layerToSelect = Object.values(layers).find(layer => layer.id === config.defaultLayer)
 	if (layerToSelect == null) {
 		layerToSelect = osm //default to OSM if no layer is selected
+	} else {
+		layerToSelect = layerToSelect.layer
 	}
 	layerToSelect.addTo(map)
 	//I'm not totally convinced we should need to do this
@@ -62,11 +74,11 @@ var LayerAdder = function (map, config) {
 	})
 
 	//set up listener to persist which layer is selected
-	for (var id in layers) {
-		_listenForLayerChange(id, layers[id], config)
-	}
+	Object.values(layers).forEach(({id, layer}) => {
+		_listenForLayerChange(id, layer, config)
+	})
 
-	return layers
+	return Object.fromEntries(Object.entries(layers).map(([displayName, {layer}]) => [displayName, layer]))
 }
 
 export default LayerAdder
