@@ -43,7 +43,7 @@ var MapView = leaflet.Class.extend({
 			let originalBounds = this._map.getBounds()
 			let oldCrs = this._map.options?.crs
 			let newCrs = layer.options?.crs != null ? layer.options.crs : DEFAULT_CRS
-			console.log(`Switching CRS from ${oldCrs.code} to ${newCrs.code}`)
+			console.debug(`Switching CRS from ${oldCrs.code} to ${newCrs.code}`)
 			if (oldCrs !== newCrs) {
 				this._map.options.crs = newCrs
 				this._map.options.zoomSnap = 0
@@ -61,7 +61,7 @@ var MapView = leaflet.Class.extend({
 	},
 
 	postInit: function () {
-		console.log(`force setting init position: ${this._initLat}, ${this._initLng}, ${this._initZoom}`)
+		console.debug(`force setting init position: ${this._initLat}, ${this._initLng}, ${this._initZoom}`)
 		//start position might have got messed up during CRS changes, so we re-set it here
 		this._map.setView(new leaflet.LatLng(this._initLat, this._initLng), this._initZoom)
 	},
