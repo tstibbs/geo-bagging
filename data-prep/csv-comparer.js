@@ -183,7 +183,11 @@ class CsvComparer {
 			this._print(`==========\n${descriptor}\n`)
 			results = _.sortBy(results, 'distance').reverse()
 			results.forEach(result => {
-				this._print(result.newRow[this.#indexName])
+				if (this.#indexName != -1) {
+					this._print(`${result.newRow[this.#indexName]} (${result.newRow[this._indexId]})`)
+				} else {
+					this._print(result.newRow[this._indexId])
+				}
 				if (result.distance != null) {
 					this._print(`moved ${result.distance}m`)
 					this.#jsonDiff(true, result.oldRow, result.newRow)
@@ -254,8 +258,7 @@ class CsvComparer {
 		let newContents = await this._read(newPath ?? `../ui/src/js/bundles/${this._filePath}`)
 		let oldHeaders = oldContents.headers
 		let newHeaders = newContents.headers
-		this.#indexName =
-			oldHeaders.indexOf('Name') === newHeaders.indexOf('Name') ? newHeaders.indexOf('Name') : this._indexId
+		this.#indexName = oldHeaders.indexOf('Name') === newHeaders.indexOf('Name') ? newHeaders.indexOf('Name') : -1
 
 		let {interestingFieldIndexes} = newContents
 		this._indexLng = newContents.indexLng
