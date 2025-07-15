@@ -36,6 +36,8 @@ if (unsupportedFeatures.length > 0) {
 	throw Error(errorMessage)
 }</script><script>// This file must have no dependencies and must be loaded first, so it can warn of any issues loading dependent libraries
 
+const hiddenMessages = ['log: [HMR] Waiting for update signal from WDS...']
+
 const showDebug =
 	true ||
 	new URLSearchParams(location.search).has('debug') ||
@@ -60,7 +62,7 @@ if (showDebug) {
 				return false
 			}
 			for (var i = 0; i < bufferedMessages.length; i++) {
-				displayError(bufferedMessages)
+				displayError(bufferedMessages[i])
 			}
 		} else {
 			setTimeout(addErrorHandler.bind(this), 1000) //just keep checking, it won't be long
@@ -85,11 +87,13 @@ if (showDebug) {
 					}
 				}
 			})
-			var message = args.join(' | ')
-			elem.innerHTML = message
-			var list = document.getElementById('errors-list')
-			list.appendChild(elem)
-			container.style.display = 'block' //may already be showing, but that's fine
+			var message = args.at(0) + ': ' + args.slice(1).join(' | ')
+			if (!hiddenMessages.includes(message)) {
+				elem.innerHTML = message
+				var list = document.getElementById('errors-list')
+				list.appendChild(elem)
+				container.style.display = 'block' //may already be showing, but that's fine
+			}
 		} else {
 			//if the dom isn't ready yet, let's buffer the messages up for now
 			bufferedMessages.push(args)
@@ -104,7 +108,8 @@ if (showDebug) {
 					//scoping old
 					window.console[func] = function () {
 						old.apply(this, arguments) //log first in case our displayer mucks something up
-						displayError.apply(outerThis, arguments)
+						var args = [func].concat(Array.prototype.slice.call(arguments))
+						displayError.apply(outerThis, args)
 					}
 				})(func, window.console[func])
 			}
@@ -112,14 +117,13 @@ if (showDebug) {
 	}
 
 	window.onerror = function (message, file, line, col, error) {
-		displayError.apply(outerThis, [message, file, error])
+		displayError.apply(outerThis, ['onerror', message, file, error])
 	}
 	window.addEventListener('error', function (e) {
-		displayError.apply(outerThis, [e])
+		displayError.apply(outerThis, ['error event', e])
 	})
 	window.addEventListener('unhandledrejection', function (event) {
-		var message = 'Unhandled Error: ' + event?.reason?.message
-		displayError.apply(outerThis, [message])
+		displayError.apply(outerThis, ['unhandledrejection', event?.reason?.message])
 	})
 }</script><style>div#error-container {
 	background-color: rgba(255, 143, 143, 0.9);
@@ -151,4 +155,4 @@ div#error-container p.error {
 div#error-container a#dismiss-button {
 	font-size: smaller;
 	float: right;
-}</style><script defer="defer" src="runtime.5ad3973db17e749615e9.js"></script><script defer="defer" src="vendors.0193d38524e4de86bfe2.js"></script><script defer="defer" src="430.5a5bc7ef130655d12f77.js"></script><script defer="defer" src="main.6ee488d136e56e7aceb9.js"></script><link href="vendors.css" rel="stylesheet"><link href="main.css" rel="stylesheet"></head><body><div id="error-container" style="display: none"><p class="title">Some errors have occurred:</p><div id="errors-list"></div><div>You may wish to report these errors by raising a <a href="https://github.com/tstibbs/geo-bagging/issues/new">bug report</a>.</div><a id="dismiss-button" href="#">Hide</a></div><div id="loading-message-pane" class="full-screen"><div class="loading-message-container"><div class="loading-message-text"><p>Loading...</p></div></div></div></body></html>
+}</style><script defer="defer" src="runtime.cb219cf02871b31cec94.js"></script><script defer="defer" src="vendors.0193d38524e4de86bfe2.js"></script><script defer="defer" src="430.50ca2e1d5941fb327b96.js"></script><script defer="defer" src="main.6ee488d136e56e7aceb9.js"></script><link href="vendors.css" rel="stylesheet"><link href="main.css" rel="stylesheet"></head><body><div id="error-container" style="display: none"><p class="title">Some errors have occurred:</p><div id="errors-list"></div><div>You may wish to report these errors by raising a <a href="https://github.com/tstibbs/geo-bagging/issues/new">bug report</a>.</div><a id="dismiss-button" href="#">Hide</a></div><div id="loading-message-pane" class="full-screen"><div class="loading-message-container"><div class="loading-message-text"><p>Loading...</p></div></div></div></body></html>
