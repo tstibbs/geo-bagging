@@ -7,7 +7,9 @@
 	},
 	"type": "module",
 	"devDependencies": {
-		"@aws-sdk/client-s3": "^3.828.0",
+		"@aws-sdk/client-cloudformation": "^3.845.0",
+		"@aws-sdk/client-s3": "^3.845.0",
+		"@aws-sdk/lib-storage": "^3.845.0",
 		"@tstibbs/cloud-core-utils": "file:../../cloud-core/aws/utils",
 		"aws-cdk": "2.1018.1",
 		"aws-cdk-lib": "2.200.1",
@@ -20,6 +22,7 @@
 	},
 	"scripts": {
 		"test": "cdk-tools testcdk",
-		"testsynth": "cdk-tools testsynth"
+		"testsynth": "cdk-tools testsynth",
+		"upload-sources": "node tools/upload.js"
 	}
 }
