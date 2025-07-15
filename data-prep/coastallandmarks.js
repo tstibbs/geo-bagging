@@ -16,7 +16,7 @@ const inputDir = `${tmpInputDir}/coastallandmarks`
 
 const attributionString =
 	'Adapted from data from wikipedia licenced under CC BY-SA (https://creativecommons.org/licenses/by-sa/3.0/)'
-const columnHeaders = '[Longitude,Latitude,Name,Link,Type,YearBuilt]'
+const columnHeaders = '[Longitude,Latitude,Id,Name,Link,Type,YearBuilt]'
 
 const flatten = arrays => {
 	return [].concat.apply([], arrays)
@@ -75,7 +75,7 @@ async function processLighthouses() {
 			date = dates.length > 0 ? formatDateToPrecision(chosenDate.value, chosenDate.precision) : null
 		}
 		const link = wikipediaLink ?? `https://www.wikidata.org/wiki/${qid}`
-		return [lon, lat, name, link, 'Lighthouse', date]
+		return [lon, lat, qid, name, link, 'Lighthouse', date]
 	})
 	return csv
 }
@@ -167,7 +167,8 @@ function processPiers() {
 							name,
 							lat: docCoord.lat,
 							lng: docCoord.lon,
-							opening: opening
+							opening: opening,
+							wikidataId: doc.wikidata
 						}
 					} else {
 						return null
@@ -175,7 +176,7 @@ function processPiers() {
 				})
 				.filter(coord => coord != null)
 				.map(pier => {
-					return [pier.lng, pier.lat, pier.name, wikify(pier.name), 'Pier', pier.opening]
+					return [pier.lng, pier.lat, pier.wikidataId, pier.name, wikify(pier.name), 'Pier', pier.opening]
 				})
 			resolve(csv)
 		})

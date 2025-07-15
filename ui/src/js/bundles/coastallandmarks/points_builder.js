@@ -5,10 +5,10 @@ var Builder = AbstractPointsBuilder.extend({
 	parse: function (point) {
 		var lng = point[0]
 		var lat = point[1]
-		var name = point[2]
-		var link = point[3]
-		var type = point[4]
-		var opened = point[5]
+		var name = point[3]
+		var link = point[4]
+		var type = point[5]
+		var opened = point[6]
 
 		var extraInfos = [
 			['Type', type],

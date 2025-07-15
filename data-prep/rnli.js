@@ -7,7 +7,7 @@ import compareData from './csv-comparer.js'
 
 const attributionString =
 	'Contains (https://hub.arcgis.com/datasets/7dad2e58254345c08dfde737ec348166_0) licensed under the GIS Open Data Licence &copy; RNLI and data from (https://en.wikipedia.org/wiki/List_of_RNLI_stations)'
-const columnHeaders = '[Longitude,Latitude,Name,Link,LifeboatTypes,LaunchMethods]'
+const columnHeaders = '[Longitude,Latitude,Id,Name,Link,LifeboatTypes,LaunchMethods]'
 
 class RnliConverter extends Converter {
 	constructor(wikiData) {
@@ -48,6 +48,7 @@ class RnliConverter extends Converter {
 			let lng = parseFloat(record[12])
 			let lat = parseFloat(record[11])
 			let stationName = record[9]
+			let id = record[10]
 			let url = record[8]
 
 			let lifeboatTypesString = 'Unknown'
@@ -69,7 +70,7 @@ class RnliConverter extends Converter {
 				launchMethodsString = launchMethods.join(';')
 			}
 
-			return [lng, lat, stationName, url, lifeboatTypesString, launchMethodsString]
+			return [lng, lat, id, stationName, url, lifeboatTypesString, launchMethodsString]
 		} else {
 			return null
 		}
