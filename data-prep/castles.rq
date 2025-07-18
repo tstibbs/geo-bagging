@@ -1,0 +1,74 @@
+# Find all castles in the British Isles that have not been demolished,
+# and output their name, latitude, longitude, inception, official website, and operator.
+# This query now includes Guernsey, Jersey, and Isle of Man, and ensures a single best-ranked coordinate.
+
+SELECT
+  ?castle
+  ?castleLabel
+  ?latitude   # Latitude of the castle (extracted from sampled raw coordinate)
+  ?longitude  # Longitude of the castle (extracted from sampled raw coordinate)
+  (SAMPLE(?inception) AS ?inception) # Sample the best-ranked inception
+  (SAMPLE(?website) AS ?website)     # Sample the best-ranked website
+  (SAMPLE(?operatorLabel) AS ?operatorLabel) # Sample the best-ranked operator label
+WHERE {
+  # Subquery to get the castle, its label, and a single sampled raw coordinate
+  {
+    SELECT ?castle ?castleLabel (SAMPLE(?coordinatesRaw) AS ?sampledCoordinatesRaw)
+    WHERE {
+      # 1. Find items that are an instance of a castle
+      ?castle wdt:P31 wd:Q23413. # P31: instance of, Q23413: castle
+
+      # 2. Filter for castles located in the British Isles (UK, Ireland, Guernsey, Jersey, Isle of Man)
+      ?castle wdt:P17 ?country. # P17: country
+      VALUES ?country {
+        wd:Q145    # UK
+        wd:Q27     # Ireland
+        wd:Q25230  # Guernsey
+        wd:Q785    # Jersey
+        wd:Q9676   # Isle of Man
+      }
+
+      # 3. Exclude castles that have been demolished, destroyed, or disassembled
+      MINUS {
+        ?castle wdt:P2949 ?demolition_event. # P2949: demolished, destroyed, or disassembled
+      }
+
+      # 4. Require coordinates to be present and get the raw coordinate string.
+      # wdt:P625 already provides best-ranked, and SAMPLE will pick one if multiple equally best-ranked exist.
+      ?castle wdt:P625 ?coordinatesRaw. # Get the raw coordinate string (e.g., "Point(-1.23 51.45)")
+
+      # Service to fetch castle label within the subquery
+      SERVICE wikibase:label {
+        bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en".
+        ?castle rdfs:label ?castleLabel. # Fetch the castle label
+      }
+    }
+    GROUP BY ?castle ?castleLabel # Group by castle and its label to ensure one sampled coordinate per castle
+  }
+
+  # Now, in the outer query, extract latitude and longitude from the sampled raw coordinate
+  # using string manipulation and type casting.
+  # TODO use wikibase:geoLongitude to do this better
+  BIND(REPLACE(STR(?sampledCoordinatesRaw), "Point\\(([^ ]+) ([^)]+)\\)", "$2") AS ?latitudeStr)
+  BIND(REPLACE(STR(?sampledCoordinatesRaw), "Point\\(([^ ]+) ([^)]+)\\)", "$1") AS ?longitudeStr)
+  BIND(xsd:decimal(?latitudeStr) AS ?latitude)
+  BIND(xsd:decimal(?longitudeStr) AS ?longitude)
+
+  # 5. Optional properties (using wdt: for best rank)
+  OPTIONAL { ?castle wdt:P571 ?inception. }   # P571: inception
+  OPTIONAL { ?castle wdt:P856 ?website. }     # P856: official website
+  OPTIONAL { ?castle wdt:P137 ?operator. }    # P137: operator
+
+  # 6. Filter for castles that have an operator OR have a website
+  FILTER (BOUND(?operator) || BOUND(?website))
+
+  # 7. Service to fetch operator label in the outer query, if operator exists
+  OPTIONAL {
+    SERVICE wikibase:label {
+      bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en".
+      ?operator rdfs:label ?operatorLabel. # Fetch the operator label (if operator exists)
+    }
+  }
+}
+GROUP BY ?castle ?castleLabel ?latitude ?longitude # Group by all non-aggregated variables in the outer SELECT
+ORDER BY ?castleLabel # Order the results alphabetically by castle name
