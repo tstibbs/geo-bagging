@@ -33,6 +33,9 @@ const mapTilerSatellite = new leaflet.TileLayer(mapTilerUrl, {
 	crossOrigin: true
 })
 
+osOpenDataLayer._debugName = 'layers.osOpenDataLayer'
+osm._debugName = 'layers.osm'
+mapTilerSatellite._debugName = 'layers.mapTilerSatellite'
 //map of display name to layer details
 var layers = {
 	'OS Maps (beta)': {

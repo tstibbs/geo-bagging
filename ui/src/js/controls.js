@@ -54,17 +54,17 @@ var Controls = leaflet.Class.extend({
 			this.addControl(new Selection())
 		}
 		if (this._config.show_search_control) {
-			this.addControl(
-				new GeosearchControl(
-					$.extend(
-						{
-							showPopup: true,
-							provider: new GeosearchOsm()
-						},
-						configOverrides
-					)
+			let geosearchControl = new GeosearchControl(
+				$.extend(
+					{
+						showPopup: true,
+						provider: new GeosearchOsm()
+					},
+					configOverrides
 				)
 			)
+			geosearchControl._debugName = 'geosearchControl'
+			this.addControl(geosearchControl)
 		}
 		if (
 			this._config.show_hider_control === true ||
@@ -77,7 +77,9 @@ var Controls = leaflet.Class.extend({
 			)
 		}
 		if (this._config.show_locate_control) {
-			this.addControl(new Locate(configOverrides))
+			let locateControl = new Locate(configOverrides)
+			// locateControl._layer._debugName = 'locate-control'
+			this.addControl(locateControl)
 		}
 		if (this._config.show_layers_control && this._layers != null && Object.keys(this._layers).length > 1) {
 			this.addControl(new leaflet.Control.Layers(this._layers, null))

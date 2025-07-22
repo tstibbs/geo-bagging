@@ -18,5 +18,6 @@ export function buildMarkerClusterGroup(map, options = {}) {
 	map.on(DISABLE_CLUSTERING_EVENT, () => {
 		clusterGroup.disableClustering()
 	})
+	clusterGroup._debugName = 'marker-cluster-group'
 	return clusterGroup
 }

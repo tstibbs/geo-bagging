@@ -75,6 +75,8 @@ export default {
 			cmt: cmt,
 			desc: desc
 		}
+
+		marker._debugName = 'marker_view.marker'
 		return marker
 	}
 }

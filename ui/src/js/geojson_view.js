@@ -16,6 +16,7 @@ var GeojsonView = leaflet.Class.extend({
 			throw new Error('!dimensional_layering is not supported yet.')
 		} else {
 			var parentGroup = leaflet.layerGroup()
+			parentGroup._debugName = 'geojson_view.leaflet.layerGroup()'
 			var markerLists = Object.keys(this._modelsByAspect).forEach(
 				function (aspect) {
 					var model = this._modelsByAspect[aspect]

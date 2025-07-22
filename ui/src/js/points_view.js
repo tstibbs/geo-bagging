@@ -5,6 +5,7 @@ import {buildMarkerClusterGroup} from './utils/marker-cluster.js'
 import 'leaflet.markercluster.freezable' //side effects on leaflet_cluster
 import LeafletSubgroup from 'VendorWrappers/leaflet-subgroup.js'
 import markerView from './marker_view.js'
+import {CRS_CHANGE_EVENT} from './map_view.js'
 
 var PointsView = leaflet.Class.extend({
 	initialize: function (map, config, modelsByAspect, matrixLayerControl, controls, bundles, manager) {
@@ -45,8 +46,26 @@ var PointsView = leaflet.Class.extend({
 					}
 				}
 			})
+			this._manager.getMap().on(CRS_CHANGE_EVENT, () => {
+				//this will come back to bite us at some point but I can't see any other way
+				// console.log("REFRESHING")
+				// this._map.eachLayer(layer => {
+				// 	if (layer._debugName === undefined) {
+				// 	console.log(layer._debugName)
+				// 	}
+				// })
+				console.log('CRS_CHANGE: removing parent group')
+				this._parentGroup.removeFrom(this._map)
+				setTimeout(() => {
+					console.log('CRS_CHANGE: adding parent group')
+					this._parentGroup.addTo(this._map)
+					this._parentGroup._topClusterLevel._recalculateBounds()
+					this._parentGroup._refreshClustersIcons()
+				}, 1)
+			})
 		} else {
 			this._parentGroup = leaflet.layerGroup()
+			this._parentGroup._debugName = 'points_view.leaflet.layerGroup()'
 			deferredObject.resolve()
 		}
 
@@ -86,6 +105,7 @@ var PointsView = leaflet.Class.extend({
 						function (layerId) {
 							var markers = markersByLayer[layerId]
 							var layerGroup = leaflet.layerGroup()
+							layerGroup._debugName = 'points_view.leaflet.layerGroup()'
 							for (var i = 0; i < markers.length; i++) {
 								layerGroup.addLayer(markers[i])
 							}
@@ -123,6 +143,7 @@ var PointsView = leaflet.Class.extend({
 			var subGroup = new LeafletSubgroup(this._parentGroup, markers)
 			//don't add to the map yet - let the layer control do that if it thinks it needs to - otherwise we could add all layers then immediately try to remove them all, which can cause UI weirdness
 			overlays[path] = subGroup
+			subGroup._debugName = 'depthFirstIteration.LeafletSubgroup'
 		} else {
 			Object.keys(markers).forEach(
 				function (dimValue) {

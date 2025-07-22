@@ -5,6 +5,8 @@ import mobile from './mobile.js'
 import {detectZoomDirection} from './leaflet-plugins/zoom-detector.js'
 import {maxOverallZoom, minOverallZoom} from './layers.js'
 
+export const CRS_CHANGE_EVENT = 'crschange'
+
 const DEFAULT_CRS = leaflet.CRS.EPSG3857
 
 var MapView = leaflet.Class.extend({
@@ -40,11 +42,11 @@ var MapView = leaflet.Class.extend({
 			this
 		)
 		this._map.on('baselayerchange', ({layer}) => {
-			let originalBounds = this._map.getBounds()
 			let oldCrs = this._map.options?.crs
 			let newCrs = layer.options?.crs != null ? layer.options.crs : DEFAULT_CRS
 			console.debug(`Switching CRS from ${oldCrs.code} to ${newCrs.code}`)
 			if (oldCrs !== newCrs) {
+				let originalBounds = this._map.getBounds()
 				this._map.options.crs = newCrs
 				this._map.options.zoomSnap = 0
 				this._map.fitBounds(originalBounds)
@@ -53,6 +55,12 @@ var MapView = leaflet.Class.extend({
 				//manually round zoom because fitbounds just floors it which leads to stepping when switching layers back and forwards
 				this._map.setZoom(Math.round(this._map.getZoom()))
 				this._map.options.zoomSnap = 1
+
+				//map is updated before firing the event to ensure that anything reacting to this event has the correct state to work with
+				this._map.fire(CRS_CHANGE_EVENT, {
+					oldCrs,
+					newCrs
+				})
 			}
 		})
 
