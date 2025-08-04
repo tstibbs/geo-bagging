@@ -7,7 +7,7 @@ var FilesView = leaflet.Class.extend({
 		this._sourceName = sourceName
 		this._layers = {}
 		this._externalSourceLoader = new ExternalSourceLoader(manager)
-		this._translator = new GeoJsonTranslator(manager, colour, initialOutlineWidth)
+		this._translator = new GeoJsonTranslator(manager, {color: colour, initialOutlineWidth})
 	},
 
 	hideOldLayers: function () {

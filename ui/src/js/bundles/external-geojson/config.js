@@ -5,6 +5,8 @@ export default {
 	loadLabel: 'GeoJson',
 	loadExtensions: '.geojson',
 	colour: 'darkblue',
-	initialOutlineWidth: 1,
+	style: {
+		initialOutlineWidth: 1
+	},
 	fileContentsParser: rawGeoJsonToGeoJson
 }

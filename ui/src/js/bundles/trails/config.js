@@ -34,5 +34,7 @@ export default {
 	attribution:
 		'Natural England Open Data (<a href="http://www.nationalarchives.gov.uk/doc/open-government-licence/version/">OGL</a>)',
 	urls: urls,
-	initialOutlineWidth: 3
+	style: {
+		initialOutlineWidth: 3
+	}
 }

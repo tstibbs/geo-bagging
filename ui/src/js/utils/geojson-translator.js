@@ -7,10 +7,13 @@ import {buildMarkerClusterGroup} from './marker-cluster.js'
 const selectedOutlineWidth = 3
 
 var GeoJsonTranslator = leaflet.Class.extend({
-	initialize: function (manager, colour, initialOutlineWidth) {
+	initialize: function (manager, unselectedStyle) {
 		this._manager = manager
-		this._colour = colour
-		this._initialOutlineWidth = initialOutlineWidth
+		this._unselectedStyle = unselectedStyle
+		if (unselectedStyle.initialOutlineWidth != null) {
+			//stroke width in pixels - aka border width
+			this._unselectedStyle.weight = unselectedStyle.initialOutlineWidth
+		}
 	},
 
 	_showAsSelected: function (layer) {
@@ -19,7 +22,8 @@ var GeoJsonTranslator = leaflet.Class.extend({
 		// (see https://github.com/Leaflet/Leaflet/blob/5e9e3c74902af8fbd834e483870c838a9d436e49/src/layer/GeoJSON.js#L156)
 		if (layer.setStyle) {
 			layer.setStyle({
-				weight: selectedOutlineWidth
+				weight: selectedOutlineWidth,
+				fillOpacity: 0.2
 			})
 		}
 	},
@@ -126,8 +130,7 @@ var GeoJsonTranslator = leaflet.Class.extend({
 					}
 				}
 				let geoJsonLayer = leaflet.Proj.geoJson(geojson, {
-					weight: this._initialOutlineWidth, //stroke width in pixels - aka border width
-					color: this._colour,
+					style: this._unselectedStyle,
 					onEachFeature: (feature, layer) => {
 						let featureExtraInfos = extraInfos != undefined ? extraInfos : this._buildExtraInfos(feature.properties)
 						this._extractName(feature, featureExtraInfos, name)

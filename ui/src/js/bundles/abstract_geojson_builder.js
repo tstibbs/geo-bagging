@@ -8,7 +8,7 @@ var GeojsonLayer = AbstractBundleBuilder.extend({
 		AbstractBundleBuilder.prototype.initialize.call(this, manager, bundleConfig, bundleName)
 		this._data = null
 		this._bundleConfig = bundleConfig
-		this._translator = new GeoJsonTranslator(manager, colour, bundleConfig.initialOutlineWidth)
+		this._translator = new GeoJsonTranslator(manager, {color: colour, ...bundleConfig.style})
 	},
 
 	fetchData: function () {
