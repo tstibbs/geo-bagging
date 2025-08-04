@@ -1,3 +1,5 @@
+import 'proj4'
+import 'proj4leaflet'
 import leaflet from 'VendorWrappers/leaflet.js'
 import popupView from '../popup_view.js'
 import {buildMarkerClusterGroup} from './marker-cluster.js'
@@ -123,7 +125,7 @@ var GeoJsonTranslator = leaflet.Class.extend({
 						}
 					}
 				}
-				let geoJsonLayer = leaflet.geoJSON(geojson, {
+				let geoJsonLayer = leaflet.Proj.geoJson(geojson, {
 					weight: this._initialOutlineWidth, //stroke width in pixels - aka border width
 					color: this._colour,
 					onEachFeature: (feature, layer) => {
