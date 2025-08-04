@@ -1,6 +1,6 @@
 import Builder from './builder.js'
 
-var name = 'National Parks'
+var name = 'Counties'
 
 const attribution =
 	'Office for National Statistics licensed under the (<a href="https://www.ons.gov.uk/methodology/geography/licences">OGL v.3.0</a>). Contains OS data © Crown copyright and database right ' +
@@ -13,6 +13,7 @@ export default {
 	parser: Builder,
 	attribution,
 	style: {
-		initialOutlineWidth: 1
+		initialOutlineWidth: 1,
+		fillOpacity: 0
 	}
 }
