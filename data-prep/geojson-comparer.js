@@ -28,12 +28,12 @@ async function visualise(datasource, qualifier) {
 			type: 'MultiLineString',
 			coordinates: [
 				[
-					//bounds of the UK
-					[-9.0, 49.75],
-					[-9.0, 61.01],
+					//bounds of the UK and Ireland
+					[-13.7, 49.75],
+					[-13.7, 61.01],
 					[2.01, 61.01],
 					[2.01, 49.75],
-					[-9.0, 49.75]
+					[-13.7, 49.75]
 				]
 			]
 		}
