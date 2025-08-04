@@ -4,6 +4,7 @@ import Converter from './converter.js'
 import {tmpInputDir, outputDir} from './constants.js'
 import {ifCmd} from '@tstibbs/cloud-core-utils'
 import {backUpReferenceData, writeFile, readFile} from './utils.js'
+import {reprojectGeometry} from './crs-utils.js'
 
 const inputDirectory = `${tmpInputDir}/trails`
 
@@ -90,18 +91,7 @@ async function parse(
 
 function crsTransformer(crs, geometry) {
 	if (crs != null) {
-		let projection = proj4(crs, 'WGS84')
-		const multiLineTransformer = elem => {
-			return elem.map(projection.forward)
-		}
-		const lineStringTransformer = projection.forward
-		const transformers = {
-			MultiLineString: multiLineTransformer,
-			LineString: lineStringTransformer
-		}
-		let geoType = geometry.type
-		let transformer = transformers[geoType]
-		geometry.coordinates = geometry.coordinates.map(transformer)
+		return reprojectGeometry(crs, geometry)
 	}
 	return geometry
 }
