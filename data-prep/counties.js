@@ -1,6 +1,7 @@
 import {ifCmd} from '@tstibbs/cloud-core-utils'
 import {process, readDownloadedFiles} from './generic-source-geojson.js'
 
+const SIMPLIFICATION_TOLERANCE = 0.0001
 const sourceName = 'counties'
 
 async function dataProducer() {
@@ -25,7 +26,7 @@ async function dataProducer() {
 }
 
 async function buildDataFile() {
-	return await process(sourceName, dataProducer)
+	return await process(sourceName, dataProducer, SIMPLIFICATION_TOLERANCE)
 }
 
 await ifCmd(import.meta, buildDataFile)
