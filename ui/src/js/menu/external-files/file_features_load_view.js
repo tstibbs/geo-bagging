@@ -5,12 +5,7 @@ var FileFeaturesLoadView = FileLoadView.extend({
 	initialize: function (manager, bundle) {
 		FileLoadView.prototype.initialize.call(this, bundle.loadLabel, bundle.loadExtensions)
 		this._bundle = bundle
-		this._filesView = new FilesView(
-			manager,
-			this._bundle.aspectLabel,
-			this._bundle.colour,
-			this._bundle.initialOutlineWidth
-		)
+		this._filesView = new FilesView(manager, this._bundle.aspectLabel, this._bundle.style)
 	},
 
 	_finishedReadingFiles: function (datas) {

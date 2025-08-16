@@ -6,7 +6,10 @@ const label = 'Upload a GeoJSON file to see markers within the polygons specifie
 const configBundle = {
 	...geojsonBundle,
 	aspectLabel: 'GeoJson Constraints',
-	colour: 'orange',
+	style: {
+		...geojsonBundle.style,
+		color: 'orange'
+	},
 	loadLabel: label
 }
 

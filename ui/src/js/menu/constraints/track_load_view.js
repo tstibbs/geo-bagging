@@ -6,7 +6,10 @@ const label = 'Upload GPX tracks to see markers around those tracks'
 const configBundle = {
 	...gpxBundle,
 	aspectLabel: 'GPX Tracks',
-	colour: '#FF0000', //red
+	style: {
+		...gpxBundle.style,
+		color: '#FF0000' //red
+	},
 	loadLabel: label
 }
 

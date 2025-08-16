@@ -3,11 +3,11 @@ import ExternalSourceLoader from '../../utils/external-source-loader.js'
 import GeoJsonTranslator from '../../utils/geojson-translator.js'
 
 var FilesView = leaflet.Class.extend({
-	initialize: function (manager, sourceName, colour, initialOutlineWidth) {
+	initialize: function (manager, sourceName, bundleStyle) {
 		this._sourceName = sourceName
 		this._layers = {}
 		this._externalSourceLoader = new ExternalSourceLoader(manager)
-		this._translator = new GeoJsonTranslator(manager, {color: colour, initialOutlineWidth})
+		this._translator = new GeoJsonTranslator(manager, bundleStyle)
 	},
 
 	hideOldLayers: function () {

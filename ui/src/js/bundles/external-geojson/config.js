@@ -4,8 +4,8 @@ export default {
 	aspectLabel: 'GeoJson Files',
 	loadLabel: 'GeoJson',
 	loadExtensions: '.geojson',
-	colour: 'darkblue',
 	style: {
+		color: 'darkblue',
 		initialOutlineWidth: 1
 	},
 	fileContentsParser: rawGeoJsonToGeoJson
