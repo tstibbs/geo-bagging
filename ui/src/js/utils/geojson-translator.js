@@ -112,6 +112,16 @@ var GeoJsonTranslator = leaflet.Class.extend({
 		return infos
 	},
 
+	_createGeoJsonLayer: function (geojson, style) {
+		// the idea of a geojson being able to specify a CRS existed in old geojson specs, but has been removed in newer specs (see https://datatracker.ietf.org/doc/html/rfc7946#section-4)
+		// we use proj4leaflet's geojson layer which looks at the CRS (if one is specified) because some datasets do specify a CRS, so this might help.
+		// however, annoyingly proj4 doesn't know how to handle the standard geojson CRS, so if it's specified then the load file fail. Thus if the specified CRS is just the standard geojson CRS anyway, we remove it to prevent proj4 having to deal with it.
+		if (/urn:ogc:def:crs:OGC:[^:]*:CRS84/.test(geojson?.crs?.properties?.name)) {
+			delete geojson.crs
+		}
+		return leaflet.Proj.geoJson(geojson, style)
+	},
+
 	dataToLayers: function (layerDatas) {
 		//add the new layers
 		let newLayers = Object.fromEntries(
@@ -129,7 +139,7 @@ var GeoJsonTranslator = leaflet.Class.extend({
 						}
 					}
 				}
-				let geoJsonLayer = leaflet.Proj.geoJson(geojson, {
+				let geoJsonLayer = this._createGeoJsonLayer(geojson, {
 					style: this._unselectedStyle,
 					onEachFeature: (feature, layer) => {
 						let featureExtraInfos = extraInfos != undefined ? extraInfos : this._buildExtraInfos(feature.properties)

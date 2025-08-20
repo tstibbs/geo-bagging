@@ -7,7 +7,15 @@ var FileLoadView = leaflet.Class.extend({
 		this._view.append($(`<span>${loadLabel}: </span></br>`))
 		this._fileInput = $(`<input type="file" accept="${loadExtensions}" multiple>`)
 		this._view.append(this._fileInput)
-		this._fileInput.on('change', this._readFiles.bind(this))
+		this._fileInput.on('change', async () => {
+			//this is called from the browser, so async errors will cause an uncaught promise rejection
+			try {
+				await this._readFiles()
+			} catch (e) {
+				console.error('failed to read files')
+				console.error(e)
+			}
+		})
 		this._fileCounter = 0
 	},
 
