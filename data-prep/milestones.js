@@ -10,8 +10,7 @@ import compareData from './csv-comparer.js'
 
 const inputDir = `${tmpInputDir}/milestones`
 
-const attributionString =
-	"This file adapted from the the database of 'The Milestone Society' (http://www.milestonesociety.co.uk/database.html)."
+const attributionString = `Adapted from the the database of <a href="http://www.milestonesociety.co.uk/database.html">The Milestone Society</a>.`
 const columnHeaders =
 	'[Longitude,Latitude,Id,Type,Category,Location,Position,Design,Repository_Photo_Hyperlink,Additional_Photo_Hyperlink_1,Additional_Photo_Hyperlink_2]'
 

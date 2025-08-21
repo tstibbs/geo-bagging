@@ -21,7 +21,6 @@ export default function build(config) {
 		dimensionNames: dimensionNames,
 		dimensionValueLabels: dimensionValueLabels,
 		dataToLoad: 'data.json',
-		parser: PointsBuilder,
-		attribution: '&copy; <a href="http://www.msocrepository.co.uk/">The Milestone Society</a>'
+		parser: PointsBuilder
 	}
 }

@@ -34,6 +34,5 @@ export default {
 	dimensionValueLabels: dimensionValueLabels,
 	dataToLoad: 'data.json',
 	parser: PointsBuilder,
-	attribution: '&copy; National Trust',
 	dataLocationUrlPrefix: constants.dataBackendBaseUrl
 }

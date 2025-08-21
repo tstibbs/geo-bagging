@@ -3,6 +3,7 @@ import {process, readDownloadedFiles} from './generic-source-geojson.js'
 
 const SIMPLIFICATION_TOLERANCE = 0.0001
 const sourceName = 'counties'
+const attributionString = `Office for National Statistics licensed under the <a href="https://www.ons.gov.uk/methodology/geography/licences">OGL v.3.0</a> and Tailte Éireann licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC&nbsp;BY&#8209;SA&nbsp;4.0</a>. Contains OS data &copy; Crown copyright and database right ${new Date().getFullYear()}.`
 
 async function dataProducer() {
 	let [ukCounties, roiCounties] = await readDownloadedFiles(sourceName, ['UK-counties.geojson', 'RoI-counties.geojson'])
@@ -26,7 +27,7 @@ async function dataProducer() {
 }
 
 async function buildDataFile() {
-	return await process(sourceName, dataProducer, SIMPLIFICATION_TOLERANCE)
+	return await process(sourceName, attributionString, dataProducer, SIMPLIFICATION_TOLERANCE)
 }
 
 await ifCmd(import.meta, buildDataFile)

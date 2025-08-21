@@ -4,8 +4,7 @@ import {backUpReferenceData, readdir} from './utils.js'
 import {tmpInputDir, outputDir} from './constants.js'
 import compareData from './csv-comparer.js'
 
-const attributionString =
-	'This file adapted from data available on http://trigpointing.uk/ which is a mixture of Public Domain and OGL from Ordnance Survey'
+const attributionString = `Adapted from data available on <a href="https://trigpointing.uk/">trigpointing.uk</a> which is a mixture of Public Domain and OGL from Ordnance Survey.`
 const columnHeaders = '[Longitude,Latitude,Id,Name,physical_type,condition]'
 
 class TrigConverter extends Converter {

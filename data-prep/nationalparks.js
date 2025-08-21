@@ -3,6 +3,7 @@ import {process, readDownloadedFiles} from './generic-source-geojson.js'
 
 const SIMPLIFICATION_TOLERANCE = 0.000001
 const sourceName = 'nationalparks'
+const attributionString = `Office for National Statistics licensed under the <a href="https://www.ons.gov.uk/methodology/geography/licences">OGL v.3.0</a>. Contains OS data &copy; Crown copyright and database right ${new Date().getFullYear()}.`
 
 async function buildDataFile() {
 	const dataProducer = async () => {
@@ -21,7 +22,7 @@ async function buildDataFile() {
 		})
 		return data
 	}
-	return await process(sourceName, dataProducer, SIMPLIFICATION_TOLERANCE)
+	return await process(sourceName, attributionString, dataProducer, SIMPLIFICATION_TOLERANCE)
 }
 
 await ifCmd(import.meta, buildDataFile)

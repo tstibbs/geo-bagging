@@ -6,8 +6,7 @@ import {readFile, backUpReferenceData} from './utils.js'
 import {tmpInputDir, outputDir} from './constants.js'
 import compareData from './csv-comparer.js'
 
-const attributionString =
-	'This file adapted from data available on www.nationaltrust.org.uk which is copyright © National Trust'
+const attributionString = `Adapted from data available on <a href="https://www.nationaltrust.org.uk/">nationaltrust.org.uk</a> which is copyright &copy; National Trust.`
 const columnHeaders = '[Longitude,Latitude,Id,Name,Link,type,facilities]'
 
 const attributeExcludes = ['fifty-things', 'available-for-weddings']

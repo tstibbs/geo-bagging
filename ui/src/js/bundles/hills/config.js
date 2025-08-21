@@ -33,8 +33,6 @@ export default function build(config) {
 		dimensionValueLabels: dimensionValueLabels,
 		hillDisplayNames: displayNames,
 		dataToLoad: 'data.json',
-		parser: PointsBuilder,
-		attribution:
-			'&copy; <a href="http://www.hills-database.co.uk/downloads.html">The Database of British and Irish Hills</a>'
+		parser: PointsBuilder
 	}
 }

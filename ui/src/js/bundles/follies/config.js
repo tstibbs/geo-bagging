@@ -13,7 +13,5 @@ export default {
 	dimensionNames: dimensionNames,
 	dimensionValueLabels: dimensionValueLabels,
 	dataToLoad: 'data.json',
-	parser: PointsBuilder,
-	attribution:
-		'Reproduced with the kind permission of Paul from <a href="http://www.follies.org.uk/follymaps.htm">The Folly Fellowship</a>'
+	parser: PointsBuilder
 }

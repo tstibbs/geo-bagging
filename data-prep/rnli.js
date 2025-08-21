@@ -5,8 +5,7 @@ import {tmpInputDir, outputDir} from './constants.js'
 import {convertWikiData} from './rnli_wikipedia.js'
 import compareData from './csv-comparer.js'
 
-const attributionString =
-	'Contains (https://hub.arcgis.com/datasets/7dad2e58254345c08dfde737ec348166_0) licensed under the GIS Open Data Licence &copy; RNLI and data from (https://en.wikipedia.org/wiki/List_of_RNLI_stations)'
+const attributionString = `Contains Open Data licensed under the GIS Open Data Licence &copy; RNLI and from wikipedia licensed under <a href="https://en.wikipedia.org/wiki/Wikipedia:Text_of_the_Creative_Commons_Attribution-ShareAlike_4.0_International_License">CC&nbsp;BY&#8209;SA&nbsp;4.0</a>.`
 const columnHeaders = '[Longitude,Latitude,Id,Name,Link,LifeboatTypes,LaunchMethods]'
 
 class RnliConverter extends Converter {

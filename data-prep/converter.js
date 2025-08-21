@@ -8,7 +8,7 @@ import {writeFile} from './utils.js'
 
 function header(attributionString, columnHeaders) {
 	return `{
-"attribution": "${attributionString}",
+"attribution": ${JSON.stringify(attributionString)},
 "headers": "${columnHeaders}",
 "data": [
 `

@@ -12,8 +12,7 @@ import {heightBandHill, heightBandMtn, heightBand3000} from '../ui/src/js/bundle
 
 const UNCLASSIFIED_CLASSIFICATION = 'Un'
 
-const attributionString =
-	'This file adapted from the The Database of British and Irish Hills (http://www.hills-database.co.uk/downloads.html), licenced under CC BY 3.0 (https://creativecommons.org/licenses/by/3.0/deed.en_GB)'
+const attributionString = `Adapted from the <a href="http://www.hills-database.co.uk/downloads.html">The Database of British and Irish Hills</a>, licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC&nbsp;BY&#8209;SA&nbsp;4.0</a>.`
 const columnHeaders = '[Longitude,Latitude,Id,Name,Classification,HeightBand,Height(m)]'
 
 class HillConverter extends Converter {

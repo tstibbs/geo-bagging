@@ -11,10 +11,14 @@ export async function readDownloadedFiles(sourceName, files) {
 	return Promise.all(files.map(file => `${inputDirectory}/${file}`).map(file => readFile(file)))
 }
 
-export async function process(sourceName, dataProducer, simplificationTolerance) {
+export async function process(sourceName, attribution, dataProducer, simplificationTolerance) {
 	await backUpReferenceData(sourceName, 'data.geojson')
 	let data = await dataProducer()
 	data = simplify(data, simplificationTolerance)
+	if (data.properties == undefined) {
+		data.properties = {}
+	}
+	data.properties.attribution = attribution
 	const fileName = `${outputDir}/${sourceName}/data.geojson`
 	await writeFile(fileName, JSON.stringify(data), 'utf-8')
 

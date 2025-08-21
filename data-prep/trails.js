@@ -7,6 +7,7 @@ import {backUpReferenceData, writeFile, readFile} from './utils.js'
 import {reprojectGeometry} from './crs-utils.js'
 
 const inputDirectory = `${tmpInputDir}/trails`
+const attributionString = `Adapted from open data from Natural Resources Wales and Natural England, used under the <a href="https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/">OGL</a>.`
 
 //additional data not included in the input files
 const walesNatTrailsDetails = {
@@ -190,7 +191,10 @@ async function buildDataFile() {
 	let output = {
 		type: 'FeatureCollection',
 		features: allFeatures,
-		totalFeatures: totalFeatures
+		totalFeatures: totalFeatures,
+		properties: {
+			attribution: attributionString
+		}
 	}
 	const fileName = `${outputDir}/trails/data.geojson`
 	await writeFile(fileName, JSON.stringify(output), 'utf-8')

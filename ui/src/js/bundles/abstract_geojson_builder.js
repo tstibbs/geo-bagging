@@ -40,7 +40,11 @@ var GeojsonLayer = AbstractBundleBuilder.extend({
 	},
 
 	getAttribution: function () {
-		return this._bundleConfig.attribution
+		if (this._bundleConfig.attribution != null) {
+			return this._bundleConfig.attribution
+		} else {
+			return this._data.properties.attribution
+		}
 	}
 })
 

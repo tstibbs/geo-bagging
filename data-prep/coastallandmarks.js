@@ -14,8 +14,7 @@ import {backUpReferenceData} from './utils.js'
 import compareData from './csv-comparer.js'
 const inputDir = `${tmpInputDir}/coastallandmarks`
 
-const attributionString =
-	'Adapted from data from wikipedia licenced under CC BY-SA (https://creativecommons.org/licenses/by-sa/3.0/)'
+const attributionString = `Adapted from data from wikipedia licensed under <a href="https://en.wikipedia.org/wiki/Wikipedia:Text_of_the_Creative_Commons_Attribution-ShareAlike_4.0_International_License">CC&nbsp;BY&#8209;SA&nbsp;4.0</a>.`
 const columnHeaders = '[Longitude,Latitude,Id,Name,Link,Type,YearBuilt]'
 
 const flatten = arrays => {

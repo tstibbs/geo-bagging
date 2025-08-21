@@ -31,8 +31,6 @@ export default {
 	dimensionNames: dimensionNames,
 	dataToLoad: 'data.geojson',
 	parser: Builder,
-	attribution:
-		'Natural England Open Data (<a href="http://www.nationalarchives.gov.uk/doc/open-government-licence/version/">OGL</a>)',
 	urls: urls,
 	style: {
 		initialOutlineWidth: 3

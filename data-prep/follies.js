@@ -69,8 +69,7 @@ const knownTypes = {
 	House: building
 }
 
-const attributionString =
-	'This file adapted from the Folly Maps (http://www.follies.org.uk/follymaps.htm) with the kind permission of Paul from The Folly Fellowship.'
+const attributionString = `Adapted from the <a href="https://follies.org.uk/index.php/map/">Folly Maps</a> with the kind permission of Paul from The Folly Fellowship.`
 const columnHeaders = '[Longitude,Latitude,Name,Url,Type,ImageLinks]'
 
 function getTagForName(name) {
