@@ -16,37 +16,9 @@ const attributionString =
 	'This file adapted from the The Database of British and Irish Hills (http://www.hills-database.co.uk/downloads.html), licenced under CC BY 3.0 (https://creativecommons.org/licenses/by/3.0/deed.en_GB)'
 const columnHeaders = '[Longitude,Latitude,Id,Name,Classification,HeightBand,Height(m)]'
 
-const classesMap = {
-	//used for mapping and filtering, by filtering in only the things we want
-	Ma: 'Ma',
-	Hu: 'Hu',
-	4: 'TU',
-	3: 'TU',
-	2: 'TU',
-	1: 'TU',
-	0: 'TU',
-	Sim: 'Sim',
-	M: 'M',
-	C: 'C',
-	G: 'G',
-	D: 'D',
-	'5D': '5D',
-	'5H': '5H',
-	Hew: 'Hew',
-	N: 'N',
-	5: '5',
-	W: 'W',
-	WO: 'W',
-	SIB: 'SIB',
-	CoU: 'CouT',
-	CoA: 'CouT',
-	CoL: 'CouT'
-}
-
 class HillConverter extends Converter {
-	constructor(filtering) {
+	constructor() {
 		super(attributionString, columnHeaders)
-		this._filtering = filtering
 	}
 
 	extractColumns(record) {
@@ -68,20 +40,11 @@ class HillConverter extends Converter {
 					classString = classString.substring(0, classString.length - 1)
 				}
 				if (classString.length > 0) {
-					if (
-						this._filtering &&
-						!classString.startsWith('s') &&
-						!classString.startsWith('x') && //i.e. it isn't a sub or a deletion
-						classString in classesMap
-					) {
-						allClasses.push(classesMap[classString])
-					} else if (!this._filtering) {
-						allClasses.push(classString)
-					}
+					allClasses.push(classString)
 				}
 			})
 			allClasses = Array.from(new Set(allClasses))
-			if (!this._filtering && allClasses.length == 0) {
+			if (allClasses.length == 0) {
 				allClasses = [UNCLASSIFIED_CLASSIFICATION]
 			}
 			if (allClasses.length > 0) {
@@ -126,7 +89,6 @@ function toStream(buffer) {
 
 async function buildDataFile() {
 	await backUpReferenceData('hills', 'data.json')
-	await backUpReferenceData('hills', 'data_all.json')
 	return new Promise((resolve, reject) => {
 		fs.createReadStream(`${tmpInputDir}/hills/hillcsv.zip`)
 			.pipe(unzipper.Parse())
@@ -136,19 +98,9 @@ async function buildDataFile() {
 					chunks.push(chunk)
 				}
 				let buffer = Buffer.concat(chunks)
-				await new HillConverter(true).writeOutStream(toStream(buffer), `${outputDir}/hills/data.json`)
-				await new HillConverter(false).writeOutStream(toStream(buffer), `${outputDir}/hills/data_all.json`)
-				let result1 = await compareData('hills', 'data.json')
-				let result2 = await compareData('hills', 'data_all.json')
-				if (result1 != null && result2 != null) {
-					resolve(`${result1}; ${result2}`)
-				} else if (result1 != null) {
-					resolve(result1)
-				} else if (result2 != null) {
-					resolve(result2)
-				} else {
-					resolve()
-				}
+				await new HillConverter().writeOutStream(toStream(buffer), `${outputDir}/hills/data.json`)
+				let result = await compareData('hills', 'data.json')
+				resolve(result)
 			})
 			.on('error', error => reject(new Error(error)))
 	})

@@ -4,6 +4,11 @@ import constants from './constants.js'
 import ModelViews from './model_views.js'
 import params from './params.js'
 
+const IGNORED_SOURCE_IDS = [
+	//we used to have the hills source split in two - one reduced data set (which was the default) and one full dataset (the source id referenced below). The default is now the full dataset and we don't maintain the reduced set. Anyone with the 'all' source id in their bookmarks would see an error - so we just ignore it here.
+	'hills/config_all'
+]
+
 var SourceLoader = leaflet.Class.extend({
 	initialize: function (manager, config) {
 		this._manager = manager
@@ -17,6 +22,7 @@ var SourceLoader = leaflet.Class.extend({
 
 	loadSources: function (selectedSourceIds) {
 		var extraDataSources = this._parseSources('extra-datasources')
+		extraDataSources = extraDataSources.filter(source => !IGNORED_SOURCE_IDS.includes(source))
 		var sourceIds = $.uniqueSort(selectedSourceIds.concat(constants.dataSources, extraDataSources))
 		var sourceModuleIds = this._sourceIdsToDataSources(sourceIds)
 		var deferredObject = $.Deferred()

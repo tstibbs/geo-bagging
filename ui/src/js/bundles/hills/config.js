@@ -1,21 +1,8 @@
 import PointsBuilder from './points_builder.js'
-import {labels, links} from './classifications.js'
+import {labels as displayNames, links as urlPaths} from './classifications.js'
 import CustomDefaultIcon from '../../custom_default_icon.js'
 import hillIcon from '../../../img/hill.png'
 import {heightBandHill, heightBandMtn, heightBand3000} from './constants.js'
-
-var displayNames = {
-	...labels,
-	//compatibility with the reduced data set, until it's fixed up
-	CouT: 'County Top',
-	TU: 'Tump'
-}
-var urlPaths = {
-	...links,
-	//compatibility with the reduced data set, until it's fixed up
-	CouT: 'http://www.hill-bagging.co.uk/CountyTops.php',
-	TU: 'http://www.hill-bagging.co.uk/Tumps.php'
-}
 
 var dimensionNames = ['Height', 'Group']
 var dimensionValueLabels = {}
