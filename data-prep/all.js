@@ -10,7 +10,8 @@ const downloadSources = [
 	'nationalparks',
 	'coastallandmarks',
 	'nt',
-	'trigs'
+	'trigs',
+	'counties'
 ]
 const processingSources = [...downloadSources]
 
