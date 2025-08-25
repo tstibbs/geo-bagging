@@ -1,5 +1,5 @@
 {
-"attribution": "This file adapted from the The Database of British and Irish Hills (http://www.hills-database.co.uk/downloads.html), licenced under CC BY 3.0 (https://creativecommons.org/licenses/by/3.0/deed.en_GB)",
+"attribution": "Adapted from the <a href=\"http://www.hills-database.co.uk/downloads.html\">The Database of British and Irish Hills</a>, licensed under <a href=\"https://creativecommons.org/licenses/by/4.0/\">CC&nbsp;BY&#8209;SA&nbsp;4.0</a>.",
 "headers": "[Longitude,Latitude,Id,Name,Classification,HeightBand,Height(m)]",
 "data": [
 ["-3.992057","56.453851","1","Ben Chonzie","Ma;M;Sim;HHB","mtn3000","930.4"],

@@ -1,5 +1,5 @@
 {
-"attribution": "This file adapted from the Folly Maps (http://www.follies.org.uk/follymaps.htm) with the kind permission of Paul from The Folly Fellowship.",
+"attribution": "Adapted from the <a href=\"https://follies.org.uk/index.php/map/\">Folly Maps</a> with the kind permission of Paul from The Folly Fellowship.",
 "headers": "[Longitude,Latitude,Name,Url,Type,ImageLinks]",
 "data": [
 ["-1.952444","52.107655","Abbey Manor Obelisk","http://www.geograph.org.uk/photo/301746","Tower",[]],

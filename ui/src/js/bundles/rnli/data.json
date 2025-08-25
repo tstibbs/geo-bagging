@@ -1,5 +1,5 @@
 {
-"attribution": "Contains (https://hub.arcgis.com/datasets/7dad2e58254345c08dfde737ec348166_0) licensed under the GIS Open Data Licence &copy; RNLI and data from (https://en.wikipedia.org/wiki/List_of_RNLI_stations)",
+"attribution": "Contains Open Data licensed under the GIS Open Data Licence &copy; RNLI and from wikipedia licensed under <a href=\"https://en.wikipedia.org/wiki/Wikipedia:Text_of_the_Creative_Commons_Attribution-ShareAlike_4.0_International_License\">CC&nbsp;BY&#8209;SA&nbsp;4.0</a>.",
 "headers": "[Longitude,Latitude,Id,Name,Link,LifeboatTypes,LaunchMethods]",
 "data": [
 [-7.68214416999996,54.42248535,"1098","Enniskillen","https://rnli.org/find-my-nearest/lifeboat-stations/enniskillen-lifeboat-station","Atlantic85","Carriage"],
