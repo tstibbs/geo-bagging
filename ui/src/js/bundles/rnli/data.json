@@ -154,7 +154,7 @@
 [-2.20012998999994,49.7240982100001,"6678","Alderney","https://rnli.org/find-my-nearest/lifeboat-stations/alderney-lifeboat-station","Trent","MooredAfloat"],
 [-4.15038203999995,50.3630409200001,"6716","Plymouth","https://rnli.org/find-my-nearest/lifeboat-stations/plymouth-lifeboat-station","Severn;Atlantic85","MooredAfloat;MooredAfloat"],
 [-4.45314979999995,50.3519706700001,"6725","Looe","https://rnli.org/find-my-nearest/lifeboat-stations/looe-lifeboat-station","Atlantic85;D","Carriage;Carriage"],
-[-4.63234281999996,50.33872604,"6738","Fowey","https://rnli.org/find-my-nearest/lifeboat-stations/fowey-lifeboat-station","Trent;D","MooredAfloat;Davit"],
+[-4.63234281999996,50.33872604,"6738","Fowey","https://rnli.org/find-my-nearest/lifeboat-stations/fowey-lifeboat-station","Atlantic85;D","MooredAfloat;Davit"],
 [-5.05911397999995,50.15130615,"6750","Falmouth","https://rnli.org/find-my-nearest/lifeboat-stations/falmouth-lifeboat-station","Shannon;Atlantic85","MooredAfloat;Launchway"],
 [-5.18704500999996,49.96951183,"6794","The Lizard","https://rnli.org/find-my-nearest/lifeboat-stations/the-lizard-lifeboat-station","Tamar","Slipway"],
 [-5.54872321999994,50.10393143,"6816","Penlee","https://rnli.org/find-my-nearest/lifeboat-stations/penlee-lifeboat-station","Severn;Atlantic85","MooredAfloat;MooredAfloat"],
