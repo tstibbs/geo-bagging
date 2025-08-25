@@ -45,11 +45,14 @@ async function visualise(datasource, qualifier) {
 }
 
 async function storePropertiesToCsv(geojson, csvPath) {
+	let metaProps = geojson.properties ?? {}
+	let metaHeader = JSON.stringify(Object.keys(metaProps))
+	let metaRow = JSON.stringify(Object.values(metaProps))
 	let allProps = geojson.features.map(feature => feature.properties)
 	let propNames = [...new Set(allProps.flatMap(props => Object.keys(props)))]
 	let headerRow = JSON.stringify(propNames)
 	let rows = allProps.map(props => JSON.stringify(propNames.map(name => props[name])))
-	let csv = [headerRow, ...rows].join('\n')
+	let csv = [metaHeader, metaRow, headerRow, ...rows].join('\n')
 	await writeFile(csvPath, csv)
 }
 
