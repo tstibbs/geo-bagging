@@ -1,5 +1,5 @@
 {
-"attribution": "Adapted from data from wikipedia licenced under CC BY-SA (https://creativecommons.org/licenses/by-sa/3.0/)",
+"attribution": "Adapted from data from wikipedia licensed under <a href=\"https://en.wikipedia.org/wiki/Wikipedia:Text_of_the_Creative_Commons_Attribution-ShareAlike_4.0_International_License\">CC&nbsp;BY&#8209;SA&nbsp;4.0</a>.",
 "headers": "[Longitude,Latitude,Id,Name,Link,Type,YearBuilt]",
 "data": [
 [-6.8261666666667,58.283833333333,"Q102442173","Aird Laimishader","https://www.wikidata.org/wiki/Q102442173","Lighthouse",null],

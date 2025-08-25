@@ -1,0 +1,2 @@
+"use strict";(self.webpackChunk_tstibbs_geo_bagging_ui=self.webpackChunk_tstibbs_geo_bagging_ui||[]).push([[156,190],{4190:(e,t,a)=>{a.r(t),a.d(t,{default:()=>s});const s=a(1995).default.extend({parse:function(e){return{name:e.properties.name,geojson:{type:"FeatureCollection",features:[e]}}}})},1156:(e,t,a)=>{a.r(t),a.d(t,{default:()=>n});var s="National Parks";const n={aspectLabel:s,dimensionNames:[s],dataToLoad:"data.geojson",parser:a(4190).default,style:{initialOutlineWidth:1}}}}]);
+//# sourceMappingURL=156.1ee45bd88b65bdaf3934.js.map
