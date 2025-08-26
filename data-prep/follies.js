@@ -183,7 +183,7 @@ const parser = new xml2js.Parser()
 
 async function buildDataFile() {
 	await backUpReferenceData('follies', 'data.json')
-	let oldRaw = await readFile(`${outputDir}/follies/data.json`)
+	let oldRaw = await readFile(`tmp-input/old-data/follies/data.json`)
 	let oldGeographLinks = Object.fromEntries(
 		JSON.parse(oldRaw)
 			.data.filter(row => row[3].includes('.geograph.'))
