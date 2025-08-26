@@ -123,11 +123,13 @@ class FolliesConverter extends Converter {
 		let description = point.description[0]
 		description == '' ? '' : description
 
-		let mainLinks = point.link[0].split(' ')
-		let mainLink = mainLinks[0]
-		let googleRegexInner = 'http.*?googleusercontent.com.*?'
+		let mainLinks = point.link[0]
+			.split(' ')
+			.filter(link => !link.match(/https?:\/\/mymaps\.usercontent\.google\.com\/hostedimage\/.+/))
+		let mainLink = mainLinks.length == 0 ? '' : mainLinks[0]
+		let googleRegexInner = 'http[^"]*?googleusercontent.com[^"]*?'
 		let googleRegex = new RegExp('"(' + googleRegexInner + ')"', 'g')
-		let geographRegexInner = 'http://www.geograph.org.uk.photo.*?'
+		let geographRegexInner = 'https?://www.geograph.org.uk/photo[^"]*?'
 		let geographRegex = new RegExp('\\((' + geographRegexInner + ')\\)', 'g')
 		let googleLinks = this._match(description, googleRegex)
 		let geographLinks = this._match(description, geographRegex)
@@ -152,7 +154,11 @@ class FolliesConverter extends Converter {
 			url = geographLinks[0]
 			imageLinks = []
 		} else {
-			//otherwise, show all the links in the extra element at the bottom
+			//otherwise, pick a geograph link for main link and then show all the others in the extra element at the bottom
+			//if no geograph links exist, use the historical one if possible
+			if (geographLinks.length == 0 && this._oldGeographLinks[name] != null) {
+				geographLinks = [this._oldGeographLinks[name]]
+			}
 			imageLinks = googleLinks
 			imageLinks.push.apply(imageLinks, geographLinks)
 			imageLinks.push.apply(imageLinks, mainLinks)
@@ -160,15 +166,14 @@ class FolliesConverter extends Converter {
 			if (imageLinks.length == 1) {
 				url = imageLinks[0]
 				imageLinks = []
+			} else if (geographLinks.length > 0) {
+				url = geographLinks[0]
+				imageLinks = imageLinks.filter(link => link != url)
 			} else {
 				url = ''
 			}
 		}
-
-		if (!url.includes('.geograph.') && this._oldGeographLinks[name] != null) {
-			//console.log(`${name}: replaced ${url} with ${this._oldGeographLinks[name]}`)
-			url = this._oldGeographLinks[name]
-		}
+		imageLinks = imageLinks.filter(link => link != null && link.length > 0)
 
 		return [lng, lat, name, url, type, imageLinks]
 	}
