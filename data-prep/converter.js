@@ -5,6 +5,7 @@ import fs from 'fs'
 import {load as loadCheerio} from 'cheerio'
 import gridconversion from '@tstibbs/geo-bagging-shared/conversion.js'
 import {writeFile} from './utils.js'
+import {pointIsInGb} from './utils/bounds.js'
 
 function header(attributionString, columnHeaders) {
 	return `{
@@ -69,16 +70,11 @@ class Converter {
 	}
 
 	_convertGridRef(gridRef) {
-		try {
-			let lngLat = gridconversion.gridRefToLngLat(gridRef)
-			//don't need more precision than 0.00001 because we can't display it. So no point sending all that data back from the server
-			let lng = parseFloat(lngLat[0].toFixed(5))
-			let lat = parseFloat(lngLat[1].toFixed(5))
-			return [lng, lat]
-		} catch (err) {
-			console.log(err.message)
-			return null
-		}
+		let lngLat = gridconversion.gridRefToLngLat(gridRef)
+		//don't need more precision than 0.00001 because we can't display it. So no point sending all that data back from the server
+		let lng = parseFloat(lngLat[0].toFixed(5))
+		let lat = parseFloat(lngLat[1].toFixed(5))
+		return [lng, lat]
 	}
 
 	_formatLine(record) {
@@ -90,6 +86,12 @@ class Converter {
 			let columns = this.extractColumns(record)
 			if (columns != null) {
 				this._lineCount++
+				let lng = columns[0]
+				let lat = columns[1]
+				if (!pointIsInGb(lat, lng)) {
+					console.log('Not in British Isles: ' + JSON.stringify(columns))
+					return ''
+				}
 				if (this._axisIndexes != null) {
 					for (let i = 0; i < this._axisIndexes.length; i++) {
 						if (this._axes[i] == null) {

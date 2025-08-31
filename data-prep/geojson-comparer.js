@@ -5,8 +5,10 @@ import fs from 'fs'
 import assert from 'assert'
 import pngjs from 'pngjs'
 import {ifCmd} from '@tstibbs/cloud-core-utils'
+
 import {createTempDir, readFile, writeFile, deleteFile} from './utils.js'
 import {tmpInputDir, outputDir as sourceDataDir, referenceDataDir} from './constants.js'
+import {gbBoundsAsGeoJson} from './utils/bounds.js'
 
 // register fonts and datasource plugins
 mapnik.register_default_fonts()
@@ -26,16 +28,7 @@ async function visualise(datasource, qualifier) {
 		type: 'Feature',
 		geometry: {
 			type: 'MultiLineString',
-			coordinates: [
-				[
-					//bounds of the UK and Ireland
-					[-13.7, 49.75],
-					[-13.7, 61.01],
-					[2.01, 61.01],
-					[2.01, 49.75],
-					[-13.7, 49.75]
-				]
-			]
+			coordinates: [gbBoundsAsGeoJson]
 		}
 	})
 	let xml = await util.promisify(mapnikify)(geojson, false)
