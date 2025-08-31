@@ -18,12 +18,13 @@ const MUTATION_DESCRIPTORS = [NONE, SIGNIFICANT, INSIGNIFICANT]
 class CsvComparer {
 	#indexName
 
-	constructor(source, file) {
+	constructor(source, file, customEquals = null) {
 		this._filePath = `${source}/${file}`
 		this._source = source
 		this._file = file
 		this._indexId = 2
 		this._report = ''
+		this._equalsFunction = customEquals ?? ((index, oldVal, newVal) => _.isEqual(oldVal, newVal))
 	}
 
 	_print(line) {
@@ -85,6 +86,34 @@ class CsvComparer {
 		return row.filter((elem, i) => indexes.includes(i))
 	}
 
+	_rowEquals(oldRow, newRow, interestingFieldIndexes, filterIn) {
+		for (let i = 0; i < Math.max(oldRow.length, newRow.length); i++) {
+			if (filterIn == interestingFieldIndexes.includes(i)) {
+				if (i > oldRow.length || i > newRow.length) {
+					return false
+				} else {
+					let oldVal = oldRow[i]
+					let newVal = newRow[i]
+					if (oldVal !== newVal && (oldVal == null || newVal == null || !this._equalsFunction(i, oldVal, newVal))) {
+						return false
+					}
+				}
+			}
+		}
+		return true
+	}
+
+	_rowEqualsIgnoreLocation(oldRow, newRow, interestingFieldIndexes, filterIn) {
+		if (!filterIn) {
+			interestingFieldIndexes = interestingFieldIndexes.concat([this._indexLat, this._indexLng])
+		}
+		return this._rowEquals(oldRow, newRow, interestingFieldIndexes, filterIn)
+	}
+
+	_rowEqualsEntireRow(oldRow, newRow) {
+		return this._rowEquals(oldRow, newRow, [], false)
+	}
+
 	_compareSimilarRow(oldRow, newRow, interestingFieldIndexes) {
 		let oldLng = oldRow[this._indexLng]
 		let oldLat = oldRow[this._indexLat]
@@ -105,6 +134,7 @@ class CsvComparer {
 		let dataChange
 		if (
 			!_.isEqual(this._filterIn(oldRow, ...interestingFieldIndexes), this._filterIn(newRow, ...interestingFieldIndexes))
+			// !this._rowEqualsIgnoreLocation(oldRow, newRow, interestingFieldIndexes, true)
 		) {
 			dataChange = SIGNIFICANT
 		} else if (
@@ -112,6 +142,7 @@ class CsvComparer {
 				this._filterOut(oldRow, ...interestingFieldIndexes, this._indexLng, this._indexLat),
 				this._filterOut(newRow, ...interestingFieldIndexes, this._indexLng, this._indexLat)
 			)
+			// !this._rowEqualsIgnoreLocation(oldRow, newRow, interestingFieldIndexes, false)
 		) {
 			let nullIndexes = newRow
 				.map((elem, i) => (elem == null || `${elem}`.length == 0 ? i : null))
@@ -309,7 +340,7 @@ class CsvComparer {
 				let newRow = newData[newIndex]
 				if (oldRow[this._indexId] == newRow[this._indexId]) {
 					//same row id
-					if (!_.isEqual(oldRow, newRow)) {
+					if (!this._rowEqualsEntireRow(oldRow, newRow)) {
 						changes.push([oldRow, newRow])
 					}
 					newIndex++
@@ -484,13 +515,39 @@ class CsvComparer {
 	}
 }
 
-async function compare(source, file) {
-	return await new CsvComparer(source, file).compare()
+async function compare(source, file, customEquals = null) {
+	return await new CsvComparer(source, file, customEquals).compare()
 }
 
 async function cli() {
 	const args = process.argv.slice(2)
-	await compare(args[0], args[1])
+	const googleRegex = /^https:\/\/[\w]+\.googleusercontent\.com\/.+/
+	const fun = (index, oldVal, newVal) => {
+		if (index == 3) {
+			if (_.isEqual(oldVal, newVal)) {
+				console.log('.')
+				return true
+			} else {
+				let res = googleRegex.test(oldVal) && googleRegex.test(newVal)
+				console.log(res)
+				return res
+			}
+		} else if (index == 5) {
+			if (oldVal.length != newVal.length) {
+				return false
+			} else {
+				for (let j = 0; j < oldVal.length; j++) {
+					if (!(googleRegex.test(oldVal[j]) && googleRegex.test(newVal[j]))) {
+						return false
+					}
+				}
+				return true
+			}
+		} else {
+			return _.isEqual(oldVal, newVal)
+		}
+	}
+	console.log(await compare(args[0], args[1], fun))
 }
 
 await ifCmd(import.meta, cli)
