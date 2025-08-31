@@ -1,7 +1,9 @@
+import {writeFile} from 'node:fs/promises'
+
 import {fetchPages, fetchCategories} from './wikipediaUtils.js'
 import {queryWikidata} from './wikidataUtils.js'
 import {ifCmd} from '@tstibbs/cloud-core-utils'
-import {writeFile, createTempDir} from './utils.js'
+import {createTempDir} from './utils.js'
 import {tmpInputDir} from './constants.js'
 
 const inputDir = `${tmpInputDir}/coastallandmarks`

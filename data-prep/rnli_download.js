@@ -1,5 +1,5 @@
+import {writeFile} from 'node:fs/promises'
 import {ifCmd} from '@tstibbs/cloud-core-utils'
-import {writeFile} from './utils.js'
 import {fetchPages} from './wikipediaUtils.js'
 import {tmpInputDir} from './constants.js'
 import {download as downloadFiles} from './downloader.js'

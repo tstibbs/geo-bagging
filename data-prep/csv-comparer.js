@@ -1,8 +1,9 @@
+import {readFile, writeFile} from 'node:fs/promises'
+
 import _, {difference} from 'underscore'
 import geolib from 'geolib'
 import {ifCmd} from '@tstibbs/cloud-core-utils'
-
-import {readFile, writeFile, createTempDir} from './utils.js'
+import {createTempDir} from './utils.js'
 
 const HEADER_LNG = 'Longitude'
 const HEADER_LAT = 'Latitude'

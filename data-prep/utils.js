@@ -1,9 +1,11 @@
-import util from 'util'
-import fs from 'fs'
+import {mkdir, unlink} from 'node:fs/promises'
+import {exists as rawExists} from 'node:fs'
+import {promisify} from 'node:util'
 
 import {exec as rawExec} from '@tstibbs/cloud-core-utils'
 import uiConstants from '../ui/src/js/constants.js'
-const {dataBackendBaseUrl} = uiConstants
+
+const exists = promisify(rawExists)
 
 async function exec(command) {
 	let {stdout, stderr} = await rawExec(command)
@@ -19,7 +21,7 @@ async function backUpReferenceData(source, file) {
 	const outputFile = `tmp-input/old-data/${source}/${file}`
 	let fetchCommand
 	if (['nt', 'trigs'].includes(source)) {
-		fetchCommand = `curl ${dataBackendBaseUrl}${source}/${file} -o ${outputFile}`
+		fetchCommand = `curl ${uiConstants.dataBackendBaseUrl}${source}/${file} -o ${outputFile}`
 	} else {
 		fetchCommand = `git show :ui/src/js/bundles/${source}/${file} > ${outputFile}`
 	}
@@ -29,21 +31,17 @@ async function backUpReferenceData(source, file) {
 }
 
 async function createTempDir(inputDir) {
-	let exists = await util.promisify(fs.exists)(inputDir)
-	if (!exists) {
-		await util.promisify(fs.mkdir)(inputDir, {recursive: true})
+	let dirExists = await exists(inputDir)
+	if (!dirExists) {
+		await mkdir(inputDir, {recursive: true})
 	}
 }
 
 async function deleteFile(file) {
-	let exists = await util.promisify(fs.exists)(file)
-	if (exists) {
-		await util.promisify(fs.unlink)(file)
+	let fileExists = await exists(file)
+	if (fileExists) {
+		await unlink(file)
 	}
 }
-
-export const readFile = util.promisify(fs.readFile)
-export const writeFile = util.promisify(fs.writeFile)
-export const readdir = util.promisify(fs.readdir)
 
 export {createTempDir, deleteFile, exec, backUpReferenceData}

@@ -1,8 +1,10 @@
+import {readFile} from 'node:fs/promises'
+
 import {load as loadCheerio} from 'cheerio'
 
 import Converter from './converter.js'
 import {ifCmd} from '@tstibbs/cloud-core-utils'
-import {readFile, backUpReferenceData} from './utils.js'
+import {backUpReferenceData} from './utils.js'
 import {tmpInputDir, outputDir} from './constants.js'
 import compareData from './csv-comparer.js'
 

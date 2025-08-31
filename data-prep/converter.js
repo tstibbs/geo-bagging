@@ -1,10 +1,11 @@
+import {writeFile} from 'node:fs/promises'
+import {createReadStream, createWriteStream} from 'node:fs'
 import {Transform} from 'stream'
 import Stream from 'stream'
 import {parse, transform} from 'csv'
-import fs from 'fs'
 import {load as loadCheerio} from 'cheerio'
+
 import gridconversion from '@tstibbs/geo-bagging-shared/conversion.js'
-import {writeFile} from './utils.js'
 import {pointIsInGb} from './utils/bounds.js'
 
 function header(attributionString, columnHeaders) {
@@ -122,7 +123,7 @@ class Converter {
 	}
 
 	async writeOut(input, fileName) {
-		await this.writeOutStream(fs.createReadStream(input), fileName)
+		await this.writeOutStream(createReadStream(input), fileName)
 	}
 
 	async writeOutStream(readable, fileName) {
@@ -135,7 +136,7 @@ class Converter {
 	writeOutParsedStream(readable, fileName) {
 		return new Promise((resolve, reject) => {
 			this._lineCount = 0
-			let writeStream = fs.createWriteStream(fileName)
+			let writeStream = createWriteStream(fileName)
 			readable
 				.pipe(transform({parallel: 1}, this._formatLine.bind(this)))
 				.pipe(new HeaderFooterTransformer(this._header))

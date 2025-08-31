@@ -1,4 +1,4 @@
-import fs from 'fs'
+import {createReadStream, createWriteStream} from 'node:fs'
 import unzipper from 'unzipper'
 import {ifCmd} from '@tstibbs/cloud-core-utils'
 import {createTempDir} from './utils.js'
@@ -14,8 +14,8 @@ async function download() {
 	await downloadFiles('defence', {[source]: tempFile})
 	const outputDir = `${tmpInputDir}/defence`
 	await createTempDir(outputDir)
-	let outputFile = fs.createWriteStream(outputDir + '/' + fileName)
-	fs.createReadStream(outputDir + '/' + tempFile)
+	let outputFile = createWriteStream(outputDir + '/' + fileName)
+	createReadStream(outputDir + '/' + tempFile)
 		.pipe(unzipper.Parse())
 		.on('entry', entry => {
 			entry.pipe(outputFile)

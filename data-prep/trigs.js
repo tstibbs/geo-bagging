@@ -1,6 +1,6 @@
 import Converter from './converter.js'
 import {ifCmd} from '@tstibbs/cloud-core-utils'
-import {backUpReferenceData, readdir} from './utils.js'
+import {backUpReferenceData} from './utils.js'
 import {tmpInputDir, outputDir} from './constants.js'
 import compareData from './csv-comparer.js'
 

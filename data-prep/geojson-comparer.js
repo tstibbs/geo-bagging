@@ -1,3 +1,4 @@
+import {readFile, writeFile} from 'node:fs/promises'
 import util from 'util'
 import mapnik from '@mapnik/mapnik'
 import mapnikify from '@mapbox/geojson-mapnikify'
@@ -6,7 +7,7 @@ import assert from 'assert'
 import pngjs from 'pngjs'
 import {ifCmd} from '@tstibbs/cloud-core-utils'
 
-import {createTempDir, readFile, writeFile, deleteFile} from './utils.js'
+import {createTempDir, deleteFile} from './utils.js'
 import {tmpInputDir, outputDir as sourceDataDir, referenceDataDir} from './constants.js'
 import {gbBoundsAsGeoJson} from './utils/bounds.js'
 

@@ -1,4 +1,4 @@
-import fs from 'fs'
+import {unlink, createWriteStream} from 'node:fs'
 import request from 'request'
 import {backOff} from 'exponential-backoff'
 import {tmpInputDir} from './constants.js'
@@ -6,7 +6,7 @@ import {createTempDir} from './utils.js'
 
 async function _httpDownload(source, destination) {
 	return new Promise((resolve, reject) => {
-		let file = fs.createWriteStream(destination)
+		let file = createWriteStream(destination)
 		let req = request(source)
 		req
 			.on('error', err => {
@@ -33,7 +33,7 @@ async function _httpDownload(source, destination) {
 			.on('error', err => {
 				//stream error
 				console.log(err)
-				fs.unlink(destination, reject)
+				unlink(destination, reject)
 			})
 	})
 }

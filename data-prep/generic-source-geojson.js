@@ -1,9 +1,9 @@
-import {readFile} from 'fs/promises'
+import {readFile, writeFile} from 'node:fs/promises'
 
 import Converter from './converter.js'
 import {tmpInputDir, outputDir} from './constants.js'
 import {visualise as visualiseGeoJson, compare as compareGeoJson} from './geojson-comparer.js'
-import {backUpReferenceData, writeFile} from './utils.js'
+import {backUpReferenceData} from './utils.js'
 import {simplify} from './utils/geojson.js'
 
 export async function readDownloadedFiles(sourceName, files) {

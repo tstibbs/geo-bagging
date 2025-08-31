@@ -1,5 +1,5 @@
 import unzipper from 'unzipper'
-import fs from 'fs'
+import {createReadStream} from 'node:fs'
 import {Readable} from 'stream'
 
 import {tmpInputDir, outputDir} from './constants.js'
@@ -89,7 +89,7 @@ function toStream(buffer) {
 async function buildDataFile() {
 	await backUpReferenceData('hills', 'data.json')
 	return new Promise((resolve, reject) => {
-		fs.createReadStream(`${tmpInputDir}/hills/hillcsv.zip`)
+		createReadStream(`${tmpInputDir}/hills/hillcsv.zip`)
 			.pipe(unzipper.Parse())
 			.on('entry', async entry => {
 				let chunks = []

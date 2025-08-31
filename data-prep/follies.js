@@ -1,6 +1,8 @@
+import {readFile} from 'node:fs/promises'
 import xml2js from 'xml2js'
 import {ifCmd} from '@tstibbs/cloud-core-utils'
-import {backUpReferenceData, readFile} from './utils.js'
+
+import {backUpReferenceData} from './utils.js'
 import Converter from './converter.js'
 import xslt from './xslt.js'
 import {tmpInputDir, outputDir} from './constants.js'

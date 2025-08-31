@@ -1,5 +1,5 @@
-import fs from 'fs'
-import {readFile} from 'fs/promises'
+import {readFile as readFileNoAwait} from 'fs'
+import {readFile} from 'node:fs/promises'
 import assert from 'assert/strict'
 
 import {sortBy} from 'underscore'
@@ -104,7 +104,7 @@ function formatDateToPrecision(dateTime, precision) {
 
 function processPiers() {
 	return new Promise((resolve, reject) => {
-		fs.readFile(`${inputDir}/piers.json`, (err, rawData) => {
+		readFileNoAwait(`${inputDir}/piers.json`, (err, rawData) => {
 			if (err) {
 				console.error(err)
 				reject(new Error(err))

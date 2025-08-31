@@ -1,4 +1,4 @@
-import {readFile} from 'fs/promises'
+import {readFile} from 'node:fs/promises'
 
 import {WBK} from 'wikibase-sdk'
 import fetch from 'node-fetch'

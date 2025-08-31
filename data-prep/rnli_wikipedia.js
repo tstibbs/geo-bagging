@@ -1,5 +1,5 @@
+import {readFile} from 'node:fs/promises'
 import {ifCmd} from '@tstibbs/cloud-core-utils'
-import {readFile} from './utils.js'
 import {tmpInputDir} from './constants.js'
 
 const inputDir = `${tmpInputDir}/rnli`

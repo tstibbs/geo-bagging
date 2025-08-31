@@ -1,10 +1,12 @@
+import {readdir} from 'node:fs/promises'
+
 import xlsx from 'xlsx'
 import CombinedStream from 'combined-stream2'
 import stream from 'stream'
 
 import {tmpInputDir, outputDir} from './constants.js'
 import {ifCmd} from '@tstibbs/cloud-core-utils'
-import {backUpReferenceData, readdir} from './utils.js'
+import {backUpReferenceData} from './utils.js'
 import Converter from './converter.js'
 import compareData from './csv-comparer.js'
 
