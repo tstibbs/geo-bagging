@@ -7,7 +7,8 @@ const inputDir = `${tmpInputDir}/rnli`
 
 async function downloadStationsList() {
 	const urls = {
-		'https://opendata.arcgis.com/datasets/7dad2e58254345c08dfde737ec348166_0.csv': 'lifeboatStations.csv' //https://hub.arcgis.com/datasets/7dad2e58254345c08dfde737ec348166_0
+		'https://services1.arcgis.com/evM5NkxAYjTi6XPw/arcgis/rest/services/RNLI_Lifeboat_Station_locations/FeatureServer/0/query?f=json&where=1%3D1&outFields=URL,Station,FuncLocId,Lat,Long&outSR=4326':
+			'lifeboatStations.json' //https://hub.arcgis.com/datasets/7dad2e58254345c08dfde737ec348166_0
 	}
 	return await downloadFiles('rnli', urls)
 }

@@ -1,9 +1,12 @@
+import {readFile} from 'node:fs/promises'
+
 import Converter from './converter.js'
 import {ifCmd} from '@tstibbs/cloud-core-utils'
 import {backUpReferenceData} from './utils.js'
 import {tmpInputDir, outputDir} from './constants.js'
 import {convertWikiData} from './rnli_wikipedia.js'
 import compareData from './csv-comparer.js'
+import {floatToSensiblePrecision} from './utils/coord.js'
 
 const attributionString = `Contains Open Data licensed under the GIS Open Data Licence &copy; RNLI and from wikipedia licensed under <a href="https://en.wikipedia.org/wiki/Wikipedia:Text_of_the_Creative_Commons_Attribution-ShareAlike_4.0_International_License">CC&nbsp;BY&#8209;SA&nbsp;4.0</a>.`
 const columnHeaders = '[Longitude,Latitude,Id,Name,Link,LifeboatTypes,LaunchMethods]'
@@ -42,13 +45,12 @@ class RnliConverter extends Converter {
 	}
 
 	extractColumns(record) {
-		if (record.length > 1) {
-			//OBJECTID,Station Type,County,Division,Region,Country,Lifesaving Area,Lifesaving Region,URL,Station,SAP_ID,Lat (DecDeg),(Long (DecDeg),x,y
-			let lng = parseFloat(record[12])
-			let lat = parseFloat(record[11])
-			let stationName = record[9]
-			let id = record[10]
-			let url = record[8]
+		if (record != null) {
+			let lng = floatToSensiblePrecision(record.attributes.Long)
+			let lat = floatToSensiblePrecision(record.attributes.Lat)
+			let stationName = record.attributes.Station
+			let id = record.attributes.FuncLocId
+			let url = record.attributes.URL
 
 			let lifeboatTypesString = 'Unknown'
 			let launchMethodsString = 'Unknown'
@@ -80,7 +82,9 @@ async function buildDataFile() {
 	await backUpReferenceData('rnli', 'data.json')
 	let wikiData = await convertWikiData()
 	const inputDir = `${tmpInputDir}/rnli`
-	await new RnliConverter(wikiData).writeOut(`${inputDir}/lifeboatStations.csv`, `${outputDir}/rnli/data.json`)
+	let inputData = JSON.parse(await readFile(`${inputDir}/lifeboatStations.json`))
+	inputData = ['dummy', ...inputData.features] //simulate CSV
+	await new RnliConverter(wikiData).writeOutCsv(inputData, `${outputDir}/rnli/data.json`)
 	return await compareData('rnli', 'data.json')
 }
 
