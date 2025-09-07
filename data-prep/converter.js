@@ -63,13 +63,13 @@ class Converter {
 		} else {
 			let columns = this.extractColumns(record)
 			if (columns != null) {
-				this._lineCount++
 				let lng = columns[0]
 				let lat = columns[1]
 				if (!pointIsInGb(lat, lng)) {
 					console.log('Not in British Isles: ' + JSON.stringify(columns))
 					return ''
 				}
+				this._lineCount++
 				if (this._axisIndexes != null) {
 					for (let i = 0; i < this._axisIndexes.length; i++) {
 						if (this._axes[i] == null) {
