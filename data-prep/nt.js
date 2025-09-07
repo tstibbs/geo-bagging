@@ -55,7 +55,7 @@ async function buildDataFile() {
 			let facilities = filterToTags(placeFacilities, entry.tagRefs)
 			return [entry.location.lon, entry.location.lat, id, entry.title, entry.websiteUrl, types, facilities]
 		})
-	let converter = new Converter(attributionString, columnHeaders)
+	let converter = new Converter(attributionString, columnHeaders, null, 0)
 	await converter.writeOutCsv(csv, `${outputDir}/nt/data.json`)
 	return await compareData('nt', 'data.json')
 }
