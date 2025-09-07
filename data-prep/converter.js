@@ -1,7 +1,7 @@
 import {writeFile} from 'node:fs/promises'
 import {createReadStream, createWriteStream} from 'node:fs'
-import {Transform} from 'stream'
-import Stream from 'stream'
+import {pipeline} from 'node:stream/promises'
+import Stream from 'node:stream'
 import {parse, transform} from 'csv'
 import {load as loadCheerio} from 'cheerio'
 
@@ -19,28 +19,6 @@ const footer = `
 ]
 }
 `
-
-class HeaderFooterTransformer extends Transform {
-	constructor(header) {
-		super()
-		this._header = header
-		this._first = true
-	}
-
-	_transform(chunk, enc, cb) {
-		if (this._first === true) {
-			this.push(this._header)
-			this._first = false
-		}
-		this.push(chunk)
-		cb()
-	}
-
-	_flush(cb) {
-		this.push(footer)
-		cb()
-	}
-}
 
 class Converter {
 	constructor(attribution, columnHeaders, axisIndexes) {
@@ -133,23 +111,13 @@ class Converter {
 		await this.writeOutParsedStream(readable.pipe(csvParser), fileName)
 	}
 
-	writeOutParsedStream(readable, fileName) {
-		return new Promise((resolve, reject) => {
-			this._lineCount = 0
-			let writeStream = createWriteStream(fileName)
-			readable
-				.pipe(transform({parallel: 1}, this._formatLine.bind(this)))
-				.pipe(new HeaderFooterTransformer(this._header))
-				.pipe(writeStream)
-			writeStream.on('finish', async () => {
-				await this.writeMetaData(fileName, this._lineCount, this._lastUpdated)
-				this._lineCount = 0
-				resolve()
-			})
-			writeStream.on('error', error => {
-				reject(new Error(error))
-			})
-		})
+	async writeOutParsedStream(readable, fileName) {
+		this._lineCount = 0
+		let writeStream = createWriteStream(fileName)
+		await pipeline(this._header, writeStream, {end: false})
+		await pipeline(readable, transform({parallel: 1}, this._formatLine.bind(this)), writeStream, {end: false})
+		await pipeline(footer, writeStream)
+		await this.writeMetaData(fileName, this._lineCount, this._lastUpdated)
 	}
 
 	async writeOutCsv(csvContent, fileName) {
