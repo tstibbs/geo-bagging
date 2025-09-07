@@ -7,6 +7,7 @@ import {load as loadCheerio} from 'cheerio'
 
 import gridconversion from '@tstibbs/geo-bagging-shared/conversion.js'
 import {pointIsInGb} from './utils/bounds.js'
+import {floatToSensiblePrecision} from './utils/coord.js'
 
 function header(attributionString, columnHeaders) {
 	return `{
@@ -49,9 +50,8 @@ class Converter {
 
 	_convertGridRef(gridRef) {
 		let lngLat = gridconversion.gridRefToLngLat(gridRef)
-		//don't need more precision than 0.00001 because we can't display it. So no point sending all that data back from the server
-		let lng = parseFloat(lngLat[0].toFixed(5))
-		let lat = parseFloat(lngLat[1].toFixed(5))
+		let lng = floatToSensiblePrecision(lngLat[0])
+		let lat = floatToSensiblePrecision(lngLat[1])
 		return [lng, lat]
 	}
 
