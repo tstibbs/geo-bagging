@@ -189,8 +189,7 @@ async function processData() {
 	let csv = flatten(csvs).sort((rowA, rowB) => {
 		return rowA[2].localeCompare(rowB[2])
 	})
-	csv = ['', ...csv] //add a dummy header row which will then be discarded by Converter
-	const converter = new Converter(attributionString, columnHeaders)
+	const converter = new Converter(attributionString, columnHeaders, null, 0)
 	await converter.writeOutCsv(csv, `${outputDir}/coastallandmarks/data.json`)
 	return await compareData('coastallandmarks', 'data.json')
 }

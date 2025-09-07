@@ -13,7 +13,7 @@ const columnHeaders = '[Longitude,Latitude,Id,Name,Link,LifeboatTypes,LaunchMeth
 
 class RnliConverter extends Converter {
 	constructor(wikiData) {
-		super(attributionString, columnHeaders)
+		super(attributionString, columnHeaders, null, 0)
 		this._wikiData = wikiData
 	}
 
@@ -82,8 +82,7 @@ async function buildDataFile() {
 	await backUpReferenceData('rnli', 'data.json')
 	let wikiData = await convertWikiData()
 	const inputDir = `${tmpInputDir}/rnli`
-	let inputData = JSON.parse(await readFile(`${inputDir}/lifeboatStations.json`))
-	inputData = ['dummy', ...inputData.features] //simulate CSV
+	let inputData = JSON.parse(await readFile(`${inputDir}/lifeboatStations.json`)).features
 	await new RnliConverter(wikiData).writeOutCsv(inputData, `${outputDir}/rnli/data.json`)
 	return await compareData('rnli', 'data.json')
 }

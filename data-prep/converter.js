@@ -21,12 +21,11 @@ const footer = `
 `
 
 class Converter {
-	constructor(attribution, columnHeaders, axisIndexes) {
+	constructor(attribution, columnHeaders, axisIndexes, inputHeaderRows = 1) {
 		this._header = header(attribution, columnHeaders)
 		this._axisIndexes = axisIndexes
 		this._axes = []
-		this._first = true
-		this._second = true
+		this._inputHeaderRows = inputHeaderRows // the number of header rows in the input file to ignore
 		this._lastUpdated = new Date().toISOString().split('T')[0]
 	}
 
@@ -57,9 +56,9 @@ class Converter {
 	}
 
 	_formatLine(record) {
-		if (this._first === true) {
+		if (this._inputHeaderRows > 0) {
 			// header row
-			this._first = false
+			this._inputHeaderRows--
 			return ''
 		} else {
 			let columns = this.extractColumns(record)
@@ -80,8 +79,7 @@ class Converter {
 					}
 				}
 				let columnString = JSON.stringify(columns)
-				if (this._second) {
-					this._second = false
+				if (this._lineCount == 1) {
 					return columnString
 				} else {
 					return ',\n' + columnString
