@@ -53,29 +53,40 @@ async function single(action, name, processor) {
 }
 
 export async function run(failFast = true) {
+	const args = process.argv.slice(2)
+	if (args.length > 0 && args.at(0) != 'download' && args.at(0) != 'process') {
+		console.error('Usage: node all <download|process>')
+		process.exit(1)
+	}
+	const doDownload = args.length == 0 || args.at(0) == 'download'
+	const doProcess = args.length == 0 || args.at(0) == 'process'
+
 	const downloaders = await importAll(downloadSources, processor => `./${processor}_download.js`)
 	const processors = await importAll(processingSources, processor => `./${processor}.js`)
 
 	let results = {}
 
-	for (const [name, processor] of downloaders) {
-		let result = await single('Downloading', name, processor)
-		results[name] = result
+	if (doDownload) {
+		for (const [name, processor] of downloaders) {
+			let result = await single('Downloading', name, processor)
+			results[name] = result
+		}
+		Object.entries(results)
+			.filter(([source, result]) => result.status === 'error')
+			.forEach(([source, result]) => {
+				processors.delete(source)
+			})
 	}
-	Object.entries(results)
-		.filter(([source, result]) => result.status === 'error')
-		.forEach(([source, result]) => {
-			processors.delete(source)
-		})
-	if (!failFast || Object.values(results).filter(result => result.status === 'error').length == 0) {
-		//only continue if none of the download have errored
-		console.log('')
-		console.log('Initial download finished, starting processing.')
-		console.log('')
-		//processing downloaded stuff
-		for (const [name, processor] of processors) {
-			let result = await single('Processing', name, processor)
-			results[name] = result // deliberately overwrite the result for the download
+	if (doProcess) {
+		if (!failFast || Object.values(results).filter(result => result.status === 'error').length == 0) {
+			//only continue if none of the download have errored
+			console.log('')
+			console.log('')
+			//processing downloaded stuff
+			for (const [name, processor] of processors) {
+				let result = await single('Processing', name, processor)
+				results[name] = result // deliberately overwrite the result for the download
+			}
 		}
 	}
 	let errored = Object.values(results).filter(result => result.status === 'error')
