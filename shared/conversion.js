@@ -1,9 +1,24 @@
-//heavily borrowed from www.movable-type.co.uk/scripts/latlong-gridref.html (MIT licence)
 import proj4 from 'proj4'
 
-var osgbProj = proj4(
+const osgbProj = proj4(
 	'+proj=tmerc +lat_0=49 +lon_0=-2 +k=0.9996012717 +x_0=400000 +y_0=-100000 +ellps=airy +datum=OSGB36 +units=m +no_defs'
 )
+const utm30Projection = proj4('+proj=utm +zone=30 +ellps=WGS84 +datum=WGS84 +units=m +no_defs')
+const wgs84Projection = proj4('WGS84')
+
+//CI = Channel Islands
+const ciGridOrigins = {
+	// Alderney (WA): Based on UTM 500,000m E and 5,500,000m N (Zone 30U)
+	WA: {
+		easting_origin: 500000,
+		northing_origin: 5500000
+	},
+	// Jersey, Guernsey, etc. (WV): Based on UTM 500,000m E and 5,400,000m N (Zone 30U)
+	WV: {
+		easting_origin: 500000,
+		northing_origin: 5400000
+	}
+}
 
 function pad(num, w) {
 	var n = num.toString()
@@ -11,7 +26,36 @@ function pad(num, w) {
 	return n
 }
 
+function ciGridToLngLat(gridRef) {
+	const normalizedRef = gridRef.toUpperCase().replace(/\s/g, '')
+	const match = normalizedRef.match(/^([A-Z]{2})(\d{6,})$/)
+	if (!match) {
+		throw new Error(`Invalid CI grid reference format: "${gridRef}". Expected format LLNNNNNN (e.g., WV595475).`)
+	}
+	const [_, prefix, digits] = match
+	const origin = ciGridOrigins[prefix]
+	const numDigits = digits.length
+	if (numDigits % 2 !== 0) {
+		throw new Error(`Grid digits length must be even (e.g., 6 for 100m precision, 8 for 10m). Found ${numDigits}.`)
+	}
+
+	const halfLength = numDigits / 2
+	const eastingStr = digits.substring(0, halfLength)
+	const northingStr = digits.substring(halfLength)
+
+	const cigEasting = parseInt(eastingStr, 10)
+	const cigNorthing = parseInt(northingStr, 10)
+
+	const precisionFactor = Math.pow(10, 5 - halfLength)
+
+	// apply the transformation: UTM = Origin + (CI Grid Value * Precision Factor)
+	const utmEasting = origin.easting_origin + cigEasting * precisionFactor
+	const utmNorthing = origin.northing_origin + cigNorthing * precisionFactor
+	return proj4(utm30Projection, wgs84Projection, [utmEasting, utmNorthing])
+}
+
 export default {
+	//heavily borrowed from www.movable-type.co.uk/scripts/latlong-gridref.html (MIT licence)
 	latLngToGridRef: function (lat, lng) {
 		var digits = 10
 
@@ -113,9 +157,13 @@ export default {
 	},
 
 	gridRefToLngLat: function (/*String*/ gridref) {
-		var lngLat = this.gridRefToOsgb(gridref)
-		var out = osgbProj.inverse(lngLat) //to WSG84
-		return out
+		if (gridref.substring(0, 2) in ciGridOrigins) {
+			return ciGridToLngLat(gridref)
+		} else {
+			var lngLat = this.gridRefToOsgb(gridref)
+			var out = osgbProj.inverse(lngLat) //to WSG84
+			return out
+		}
 	},
 
 	_determineGridRefType: function (gridref) {
