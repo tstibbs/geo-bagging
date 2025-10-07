@@ -34,13 +34,20 @@ describe('conversion', function () {
 		}, /Irish/)
 	})
 
-	it('gridRefToLngLat - should work for ireland and channel islands', function () {
+	it('gridRefToLngLat - should work for ireland', function () {
 		assertCloseEnough(assert, 'MZ 82568 85820', -8.53034, 54.99125, 0.00002)
 		assertCloseEnough(assert, 'MZ 86383 16308', -8.37269, 54.37367, 0.00002)
 		assertCloseEnough(assert, 'RE 09504 80322', -9.48801, 53.98501, 0.00002)
 		assertCloseEnough(assert, 'RO 61800 27500', -9.79229, 51.68706, 0.00002)
-		assertCloseEnough(assert, 'WA 55943 05921', -13.43272, 48.48317, 0.0001) //there's a different ellipsis that we need to use for the channel islands, but this is close enough for now
-		assertCloseEnough(assert, 'WA 57817 06737', -13.40949, 48.49285, 0.0001) //there's a different ellipsis that we need to use for the channel islands, but this is close enough for now
+	})
+
+	it('gridRefToLngLat - should work for channel islands', function () {
+		/* channel islands grid doesn't use OSGB but confusingly looks the same. Whilst these grid refs
+		 * are kind of valid in OSGB (though outside of the 'normal' grid), we assume that they're channel
+		 * islands grid references, as that's the most likely case. */
+		assertCloseEnough(assert, 'WA 55943 05921', -2.22416, 49.7032, 0.0001)
+		assertCloseEnough(assert, 'WA 57817 06737', -2.19805, 49.71036, 0.0001)
+		assertCloseEnough(assert, 'WV 35753 83894', -2.50615, 49.50662, 0.0001)
 	})
 })
 
