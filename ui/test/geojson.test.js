@@ -1,7 +1,6 @@
-import {expect} from 'chai'
-import {calcGeoJsonBounds} from '../../src/js/utils/geojson.js'
-import largeExampleInput from './geojson_test-input.json'
-import largeExampleExpectedBounds from './geojson_test-expected.json'
+import {calcGeoJsonBounds} from '../src/js/utils/geojson.js'
+import largeExampleInput from './utils/geojson_test-input.json'
+import largeExampleExpectedBounds from './utils/geojson_test-expected.json'
 
 const POINT_FEATURE = {
 	type: 'Feature',
@@ -190,66 +189,57 @@ function featureCollectionOf(...features) {
 	}
 }
 
-describe('calcGeoJsonBounds', function () {
-	it('handle collection of Point features', function () {
+describe('calcGeoJsonBounds', () => {
+	test('handle collection of Point features', () => {
 		const geoJsonFeatures = featureCollectionOf(POINT_FEATURE)
 		const expectedBounds = [POINT_FEATURE_BOUNDS]
-
 		const result = calcGeoJsonBounds(geoJsonFeatures)
-		console.log(JSON.stringify(expectedBounds))
-		console.log(JSON.stringify(result))
-		expect(result).to.deep.equal(expectedBounds)
+		expect(result).toEqual(expectedBounds)
 	})
 
-	it('handle collection of LineString features', function () {
+	test('handle collection of LineString features', () => {
 		const geoJsonFeatures = featureCollectionOf(LINE_STRING_FEATURE)
 		const expectedBounds = [LINE_STRING_FEATURE_BOUNDS]
-
 		const result = calcGeoJsonBounds(geoJsonFeatures)
-		expect(result).to.deep.equal(expectedBounds)
+		expect(result).toEqual(expectedBounds)
 	})
 
-	it('handle collection of Polygon features', function () {
+	test('handle collection of Polygon features', () => {
 		const geoJsonFeatures = featureCollectionOf(POLYGON_FEATURE)
 		const expectedBounds = [POLYGON_FEATURE_BOUNDS]
-
 		const result = calcGeoJsonBounds(geoJsonFeatures)
-		expect(result).to.deep.equal(expectedBounds)
+		expect(result).toEqual(expectedBounds)
 	})
 
-	it('handle collection of MultiPoint features', function () {
+	test('handle collection of MultiPoint features', () => {
 		const geoJsonFeatures = featureCollectionOf(MULTI_POINT_FEATURE)
 		const expectedBounds = [MULTI_POINT_FEATURE_BOUNDS]
-
 		const result = calcGeoJsonBounds(geoJsonFeatures)
-		expect(result).to.deep.equal(expectedBounds)
+		expect(result).toEqual(expectedBounds)
 	})
 
-	it('handle collection of MultiLineString features', function () {
+	test('handle collection of MultiLineString features', () => {
 		const geoJsonFeatures = featureCollectionOf(MULTI_LINE_STRING_FEATURE)
 		const expectedBounds = [MULTI_LINE_STRING_FEATURE_BOUNDS]
-
 		const result = calcGeoJsonBounds(geoJsonFeatures)
-		expect(result).to.deep.equal(expectedBounds)
+		expect(result).toEqual(expectedBounds)
 	})
 
-	it('handle collection of MultiPolygon features', function () {
+	test('handle collection of MultiPolygon features', () => {
 		const geoJsonFeatures = featureCollectionOf(MULTI_POLYGON_FEATURE)
 		const expectedBounds = [MULTI_POLYGON_FEATURE_BOUNDS]
-
 		const result = calcGeoJsonBounds(geoJsonFeatures)
-		expect(result).to.deep.equal(expectedBounds)
+		expect(result).toEqual(expectedBounds)
 	})
 
-	it('handle collection of GeometryCollection features', function () {
+	test('handle collection of GeometryCollection features', () => {
 		const geoJsonFeatures = featureCollectionOf(GEOM_COLLECTION_FEATURE)
 		const expectedBounds = [GEOM_COLLECTION_FEATURE_BOUNDS]
-
 		const result = calcGeoJsonBounds(geoJsonFeatures)
-		expect(result).to.deep.equal(expectedBounds)
+		expect(result).toEqual(expectedBounds)
 	})
 
-	it('handle multiple features in a collection', function () {
+	test('handle multiple features in a collection', () => {
 		const geoJsonFeatures = featureCollectionOf(
 			POINT_FEATURE,
 			LINE_STRING_FEATURE,
@@ -268,44 +258,43 @@ describe('calcGeoJsonBounds', function () {
 			MULTI_POLYGON_FEATURE_BOUNDS,
 			GEOM_COLLECTION_FEATURE_BOUNDS
 		]
-
 		const result = calcGeoJsonBounds(geoJsonFeatures)
-		expect(result).to.deep.equal(expectedBounds)
+		expect(result).toEqual(expectedBounds)
 	})
 
-	it('handles large inputs', function () {
+	test('handles large inputs', () => {
 		const result = calcGeoJsonBounds(largeExampleInput)
-		expect(result).to.deep.equal(largeExampleExpectedBounds)
-	}).timeout(5000)
+		expect(result).toEqual(largeExampleExpectedBounds)
+	}, 5000)
 
-	describe('handles things other than a collection', function () {
-		it('point', function () {
+	describe('handles things other than a collection', () => {
+		test('point', () => {
 			const result = calcGeoJsonBounds(POINT_FEATURE)
-			expect(result).to.deep.equal([POINT_FEATURE_BOUNDS])
+			expect(result).toEqual([POINT_FEATURE_BOUNDS])
 		})
-		it('line string', function () {
+		test('line string', () => {
 			const result = calcGeoJsonBounds(LINE_STRING_FEATURE)
-			expect(result).to.deep.equal([LINE_STRING_FEATURE_BOUNDS])
+			expect(result).toEqual([LINE_STRING_FEATURE_BOUNDS])
 		})
-		it('polygon', function () {
+		test('polygon', () => {
 			const result = calcGeoJsonBounds(POLYGON_FEATURE)
-			expect(result).to.deep.equal([POLYGON_FEATURE_BOUNDS])
+			expect(result).toEqual([POLYGON_FEATURE_BOUNDS])
 		})
-		it('multipoint', function () {
+		test('multipoint', () => {
 			const result = calcGeoJsonBounds(MULTI_POINT_FEATURE)
-			expect(result).to.deep.equal([MULTI_POINT_FEATURE_BOUNDS])
+			expect(result).toEqual([MULTI_POINT_FEATURE_BOUNDS])
 		})
-		it('multi line string', function () {
+		test('multi line string', () => {
 			const result = calcGeoJsonBounds(MULTI_LINE_STRING_FEATURE)
-			expect(result).to.deep.equal([MULTI_LINE_STRING_FEATURE_BOUNDS])
+			expect(result).toEqual([MULTI_LINE_STRING_FEATURE_BOUNDS])
 		})
-		it('multi polygon', function () {
+		test('multi polygon', () => {
 			const result = calcGeoJsonBounds(MULTI_POLYGON_FEATURE)
-			expect(result).to.deep.equal([MULTI_POLYGON_FEATURE_BOUNDS])
+			expect(result).toEqual([MULTI_POLYGON_FEATURE_BOUNDS])
 		})
-		it('geom', function () {
+		test('geom', () => {
 			const result = calcGeoJsonBounds(GEOM_COLLECTION_FEATURE)
-			expect(result).to.deep.equal([GEOM_COLLECTION_FEATURE_BOUNDS])
+			expect(result).toEqual([GEOM_COLLECTION_FEATURE_BOUNDS])
 		})
 	})
 })

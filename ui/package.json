@@ -7,7 +7,6 @@
 	},
 	"type": "module",
 	"devDependencies": {
-		"chai": "^4.3.7",
 		"copy-webpack-plugin": "^11.0.0",
 		"css-loader": "^6.8.1",
 		"css-minimizer-webpack-plugin": "^5.0.1",
@@ -16,14 +15,10 @@
 		"html-loader": "^4.2.0",
 		"html-webpack-plugin": "^5.5.3",
 		"http-server": "^14.1.1",
-		"karma": "^6.4.2",
-		"karma-chrome-launcher": "^3.2.0",
-		"karma-docker-launcher": "^1.0.0",
-		"karma-mocha": "^2.0.1",
-		"karma-mocha-reporter": "^2.2.5",
+		"jest": "^30.2.0",
+		"jest-environment-jsdom": "^30.2.0",
 		"license-webpack-plugin": "^4.0.2",
 		"mini-css-extract-plugin": "^2.7.6",
-		"mocha": "^10.2.0",
 		"raw-loader": "^4.0.2",
 		"sass": "^1.66.1",
 		"sass-loader": "^13.3.2",
@@ -64,7 +59,7 @@
 		"build": "npx webpack",
 		"serve": "npx http-server dist -p 3000 -c-1 --cors",
 		"dev": "npm run prebuild && npx webpack serve --config webpack.config.dev.js",
-		"test": "npx karma start karma.conf.cjs --no-auto-watch --single-run=true",
+		"test": "node --experimental-vm-modules --nolazy ./node_modules/jest/bin/jest.js",
 		"deploy": "npm run build && ./deploy.sh"
 	}
 }

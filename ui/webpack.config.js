@@ -15,6 +15,7 @@ import {buildTemplateContentRenderingFunction} from '@tstibbs/cloud-core-ui/buil
 const isarrayLicenceText = readFileSync('./src/licences/isarray-LICENSE')
 const mitLicenceText = readFileSync('./src/licences/MIT-License')
 const fontAwesomeLicenceText = readFileSync('./src/licences/Font-Awesome-LICENSE.txt')
+import {modulePrefixAliases, moduleAliases} from './project.config.js'
 
 const projectName = `geo-bagging`
 const bugReportUrl = `https://github.com/tstibbs/${projectName}/issues/new`
@@ -25,23 +26,23 @@ const defaultTemplateParameters = {
 	logsEntriesIndicateErrors: true
 }
 
+const aliases = Object.fromEntries(
+	Object.entries({...modulePrefixAliases, ...moduleAliases}).map(([module, alias]) => [module, resolve(alias)])
+)
+
 export default {
 	mode: 'production',
 	devtool: 'source-map',
 	entry: {
 		main: './src/js/entry/app.js',
 		mini: './src/js/entry/mini.js',
-		integration: './src/js/entry/integration.js',
-		test: './test/suite/suite.js'
+		integration: './src/js/entry/integration.js'
 	},
 	output: {
 		filename: '[name].[contenthash].js'
 	},
 	resolve: {
-		alias: {
-			VendorWrappers: resolve('./src/js/vendor-wrappers'),
-			leaflet: resolve('./node_modules/leaflet') //force everything to use the same version of leaflet
-		},
+		alias: aliases,
 		fallback: {
 			stream: false,
 			util: false
@@ -64,11 +65,6 @@ export default {
 				baseUrl: '../'
 			}),
 			chunks: ['mini']
-		}),
-		new HtmlWebpackPlugin({
-			title: 'GeoBaggingTests',
-			filename: 'test.html',
-			chunks: ['test']
 		}),
 		new HtmlWebpackPlugin({
 			filename: 'integration/trigpointing.js',
