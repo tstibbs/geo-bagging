@@ -71,6 +71,9 @@ jobs:
       working-directory: geo-bagging/ui
 
     # test
+    - name: "test: shared"
+      run: npm run test
+      working-directory: geo-bagging/shared
     - name: "test: data-prep"
       run: npm run test
       working-directory: geo-bagging/data-prep
