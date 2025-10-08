@@ -8,5 +8,11 @@
 	"type": "module",
 	"dependencies": {
 		"proj4": "2.9.0"
+	},
+	"scripts": {
+		"test": "node --experimental-vm-modules --nolazy ./node_modules/jest/bin/jest.js"
+	},
+	"devDependencies": {
+		"jest": "^30.2.0"
 	}
 }
