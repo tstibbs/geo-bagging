@@ -1,7 +1,7 @@
 import {ifCmd} from '@tstibbs/cloud-core-utils'
 
 const downloadSources = [
-	'defence',
+	// 'defence',
 	'hills',
 	//'milestones', removed due to outdated source, see note in milestones_download.js
 	'trails',
