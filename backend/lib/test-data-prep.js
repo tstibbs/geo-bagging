@@ -18,7 +18,12 @@ export function dataPrepTestBuild(stack) {
 		assumedBy: new ServicePrincipal('codebuild.amazonaws.com'),
 		managedPolicies: [
 			ManagedPolicy.fromAwsManagedPolicyName('AmazonS3ReadOnlyAccess'),
-			ManagedPolicy.fromAwsManagedPolicyName('CloudWatchLogsFullAccess')
+			ManagedPolicy.fromAwsManagedPolicyName('CloudWatchLogsFullAccess'),
+			ManagedPolicy.fromManagedPolicyName(
+				stack,
+				'ext-codebuild-base-policy',
+				`service-role/CodeBuildBasePolicy-geobagging-data-prep-test-build-${stack.region}`
+			)
 		]
 	})
 	serviceRole.addToPolicy(
