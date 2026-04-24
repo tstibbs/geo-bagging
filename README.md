@@ -28,17 +28,13 @@ Definitely won't work in Internet Explorer.
 
 ## Unit tests
 
-There are some basic unit tests covering some of the functionality. To run these go here https://tstibbs.github.io/geo-bagging/test.html or run these commands:
+There are some basic unit tests covering some of the functionality.
 
 ```
 cd ui
 npm install
 npm run test
 ```
-
-## Integration with other sites
-
-As a demonstration of some things this project can be used for, some basic integration with trigpointing.uk has been created, see [Integration](ui/src/includes/integration/trigpointing.md) for details.
 
 # Architecture
 
@@ -47,6 +43,12 @@ As a demonstration of some things this project can be used for, some basic integ
 ## Contributing
 
 PRs are very welcome, but for any big changes or new features please open an issue to discuss first.
+
+## Support
+
+Questions and feature suggestions: <https://github.com/tstibbs/geo-bagging/discussions>
+
+Bug reports: <https://github.com/tstibbs/geo-bagging/issues>
 
 ## Licence
 

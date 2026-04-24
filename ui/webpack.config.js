@@ -66,16 +66,6 @@ export default {
 			}),
 			chunks: ['mini']
 		}),
-		new HtmlWebpackPlugin({
-			filename: 'integration/trigpointing.js',
-			templateContent: buildTemplateContentRenderingFunction(
-				'./src/templates/integration.js.ejs',
-				defaultTemplateParameters
-			),
-			inject: false,
-			chunks: ['integration'],
-			minify: false
-		}),
 		new webpack.ProvidePlugin({
 			L: 'leaflet'
 		}),

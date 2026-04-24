@@ -1,9 +1,9 @@
 ## Running the UI
 
-Open `examples/index.html` in your web browser. Note that in some web browsers loading any of the data sources will not work, as the UI makes ajax calls to load files, which is sometimes blocked. Chrome allows you to get around this by running it like this:
-
 ```
-chrome.exe --allow-file-access-from-files
+cd ui
+npm install
+npm run dev
 ```
 
 ## Updating the source data

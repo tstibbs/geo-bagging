@@ -34,11 +34,6 @@ export default {
 		if (this.hasUrlData()) {
 			alert('Loading data from URL is no longer an option.')
 			throw new Error('Loading data from URL is no longer an option.')
-		} else if (options.pointsToLoad != null) {
-			var generalPoints = options.pointsToLoad.generalPoints
-			options.cluster = generalPoints.length > 300
-			options.dimensional_layering = false
-			allBundles = ['trigs/config_embedding']
 		}
 		options = $.extend(
 			{
