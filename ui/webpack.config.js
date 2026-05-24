@@ -36,7 +36,6 @@ export default {
 	entry: {
 		main: './src/js/entry/app.js',
 		mini: './src/js/entry/mini.js',
-		integration: './src/js/entry/integration.js'
 	},
 	output: {
 		filename: '[name].[contenthash].js'
