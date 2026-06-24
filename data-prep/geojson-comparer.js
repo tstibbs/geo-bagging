@@ -1,7 +1,4 @@
 import {readFile, writeFile} from 'node:fs/promises'
-import util from 'util'
-import mapnik from '@mapnik/mapnik'
-import mapnikify from '@mapbox/geojson-mapnikify'
 import fs from 'fs'
 import assert from 'assert'
 import pngjs from 'pngjs'
@@ -10,10 +7,7 @@ import {ifCmd} from '@tstibbs/cloud-core-utils'
 import {createTempDir, deleteFile} from './utils.js'
 import {tmpInputDir, outputDir as sourceDataDir, referenceDataDir} from './constants.js'
 import {gbBoundsAsGeoJson} from './utils/bounds.js'
-
-// register fonts and datasource plugins
-mapnik.register_default_fonts()
-mapnik.register_default_input_plugins()
+import {geojsonToPng} from './geojson-visualiser.js'
 
 async function visualise(datasource, qualifier) {
 	let inputPath = `${qualifier === 'old' ? referenceDataDir : sourceDataDir}/${datasource}/data.geojson`
@@ -24,18 +18,7 @@ async function visualise(datasource, qualifier) {
 	let geojson = await readFile(inputPath)
 	geojson = JSON.parse(geojson)
 	await storePropertiesToCsv(geojson, csvPath)
-	//add bounds of the UK so that changes in bounds between the old and new data doesn't affect the scaling of the image (which could otherwise cause false positive differences)
-	geojson.features.push({
-		type: 'Feature',
-		geometry: {
-			type: 'MultiLineString',
-			coordinates: [gbBoundsAsGeoJson]
-		}
-	})
-	let xml = await util.promisify(mapnikify)(geojson, false)
-	let outputXmlPath = `${outputDir}/tmp-${qualifier}.xml`
-	await writeFile(outputXmlPath, xml)
-	await toPng(outputXmlPath, pngPath)
+	await geojsonToPng(geojson, pngPath)
 }
 
 async function storePropertiesToCsv(geojson, csvPath) {
@@ -48,32 +31,6 @@ async function storePropertiesToCsv(geojson, csvPath) {
 	let rows = allProps.map(props => JSON.stringify(propNames.map(name => props[name])))
 	let csv = [metaHeader, metaRow, headerRow, ...rows].join('\n')
 	await writeFile(csvPath, csv)
-}
-
-function toPng(inputXmlPath, outputPngPath) {
-	//for some reason these methods don't seem to be promisify-able
-	return new Promise((resolve, reject) => {
-		let heightWidth = 1000
-		let map = new mapnik.Map(heightWidth, heightWidth)
-		map.load(inputXmlPath, (err, map) => {
-			if (err) {
-				reject(new Error(err))
-			} else {
-				map.zoomAll()
-				let im = new mapnik.Image(heightWidth, heightWidth)
-				map.render(im, (err, im) => {
-					if (err) reject(new Error(err))
-					im.encode('png', (err, buffer) => {
-						if (err) reject(new Error(err))
-						fs.writeFile(outputPngPath, buffer, err => {
-							if (err) reject(new Error(err))
-							resolve()
-						})
-					})
-				})
-			}
-		})
-	})
 }
 
 function readPng(filename) {
@@ -176,6 +133,8 @@ async function run() {
 		process.exit(1)
 	}
 	let sourceName = args[0]
+	await visualise(sourceName, 'old')
+	await visualise(sourceName, 'new')
 	await compare(sourceName)
 }
 
