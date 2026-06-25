@@ -1,5 +1,6 @@
 import {readFileSync} from 'fs'
 import {resolve} from 'path'
+import {fileURLToPath} from 'url'
 
 import webpack from 'webpack'
 import HtmlWebpackPlugin from 'html-webpack-plugin'
@@ -29,6 +30,8 @@ const defaultTemplateParameters = {
 const aliases = Object.fromEntries(
 	Object.entries({...modulePrefixAliases, ...moduleAliases}).map(([module, alias]) => [module, resolve(alias)])
 )
+
+const resolveDependency = dep => fileURLToPath(import.meta.resolve(dep))
 
 export default {
 	mode: 'production',
@@ -137,27 +140,27 @@ export default {
 				type: 'asset/resource'
 			},
 			{
-				test: resolve('./node_modules/leaflet-mouse-position/src/L.Control.MousePosition.js'),
+				test: resolveDependency('leaflet-mouse-position/src/L.Control.MousePosition.js'),
 				use: 'exports-loader?exports=default|L.Control.MousePosition'
 			},
 			{
-				test: resolve('./node_modules/Leaflet.MapCenterCoord/src/L.Control.MapCenterCoord.js'),
+				test: resolveDependency('Leaflet.MapCenterCoord/src/L.Control.MapCenterCoord.js'),
 				use: 'exports-loader?exports=default|L.Control.MapCenterCoord'
 			},
 			{
-				test: resolve('./node_modules/leaflet-control-hider/src/hider.js'),
+				test: resolveDependency('leaflet-control-hider/src/hider.js'),
 				use: 'exports-loader?exports=default|L.Control.ControlHider'
 			},
 			{
-				test: resolve('./node_modules/leaflet-geosearch/src/js/l.control.geosearch.js'),
+				test: resolveDependency('leaflet-geosearch/src/js/l.control.geosearch.js'),
 				use: 'exports-loader?exports=default|L.Control.GeoSearch'
 			},
 			{
-				test: resolve('./node_modules/sidebar-v2/js/leaflet-sidebar.js'),
+				test: resolveDependency('sidebar-v2/js/leaflet-sidebar.js'),
 				use: 'exports-loader?exports=default|L.Control.Sidebar'
 			},
 			{
-				test: resolve('./node_modules/leaflet.featuregroup.subgroup/dist/leaflet.featuregroup.subgroup-src.js'),
+				test: resolveDependency('leaflet.featuregroup.subgroup/dist/leaflet.featuregroup.subgroup-src.js'),
 				use: 'exports-loader?type=commonjs&exports=single|L.FeatureGroup.SubGroup'
 			}
 		]

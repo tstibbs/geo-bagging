@@ -1,9 +1,17 @@
 {
 	"name": "@tstibbs/geo-bagging-ui",
 	"private": true,
-	"engines": {
-		"node": ">=20",
-		"npm": ">=10"
+	"devEngines": {
+		"runtime": {
+			"name": "node",
+			"version": "22",
+			"onFail": "error"
+		},
+		"packageManager": {
+			"name": "pnpm",
+			"version": ">=11.7",
+			"onFail": "error"
+		}
 	},
 	"type": "module",
 	"devDependencies": {
@@ -24,29 +32,29 @@
 		"sass-loader": "^17.0.0",
 		"terser-webpack-plugin": "^5.6.1",
 		"url-loader": "^4.1.1",
-		"webpack": "^5.108.0",
+		"webpack": "^5.107.2",
 		"webpack-cli": "^7.0.3",
 		"webpack-dev-server": "^5.2.5",
 		"webpack-merge": "^6.0.1"
 	},
 	"dependencies": {
 		"@tmcw/togeojson": "^7.1.2",
-		"@tstibbs/cloud-core-ui": "file:../../cloud-core/ui",
+		"@tstibbs/cloud-core-ui": "github:tstibbs/cloud-core#path:/ui",
 		"@tstibbs/geo-bagging-shared": "file:../shared",
 		"@turf/turf": "^7.3.5",
+		"Leaflet.MapCenterCoord": "github:tstibbs/Leaflet.MapCenterCoord#fix/unnecessary-build",
 		"exceljs": "^4.4.0",
 		"file-saver": "^2.0.5",
 		"font-awesome": "^4.7.0",
 		"jquery": "^4.0.0",
 		"leaflet": "^1.9.4",
-		"leaflet-box-selector": "git+https://tstibbs@github.com/tstibbs/Leaflet.BoxSelector.git",
-		"leaflet-control-hider": "git+https://tstibbs@github.com/tstibbs/Leaflet.ControlHider.git",
-		"leaflet-geosearch": "git+https://tstibbs@github.com/tstibbs/L.GeoSearch.git#local/merging-prs-372-374",
-		"leaflet-matrix-layers-control": "git+https://tstibbs@github.com/tstibbs/Leaflet.MatrixLayersControl.git",
+		"leaflet-box-selector": "github:tstibbs/Leaflet.BoxSelector",
+		"leaflet-control-hider": "github:tstibbs/Leaflet.ControlHider",
+		"leaflet-geosearch": "github:tstibbs/L.GeoSearch#local/merging-prs-372-374",
+		"leaflet-matrix-layers-control": "github:tstibbs/Leaflet.MatrixLayersControl",
 		"leaflet-mouse-position": "^1.2.0",
 		"leaflet.featuregroup.subgroup": "^1.0.2",
 		"leaflet.locatecontrol": "^0.90.0",
-		"Leaflet.MapCenterCoord": "git+https://tstibbs@github.com/xguaita/Leaflet.MapCenterCoord.git",
 		"leaflet.markercluster": "^1.5.3",
 		"leaflet.markercluster.freezable": "^1.0.0",
 		"proj4": "^2.20.9",
@@ -57,10 +65,10 @@
 	},
 	"scripts": {
 		"prebuild": "rm -rf dist/*",
-		"build": "npx webpack",
-		"serve": "npx http-server dist -p 3000 -c-1 --cors",
-		"dev": "npm run prebuild && npx webpack serve --config webpack.config.dev.js",
+		"build": "pnpm exec webpack",
+		"serve": "pnpm exec http-server dist -p 3000 -c-1 --cors",
+		"dev": "pnpm run prebuild && pnpm exec webpack serve --config webpack.config.dev.js",
 		"test": "node --experimental-vm-modules --nolazy ./node_modules/jest/bin/jest.js",
-		"deploy": "npm run build && ./deploy.sh"
+		"deploy": "pnpm run build && ./deploy.sh"
 	}
 }
