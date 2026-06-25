@@ -1,7 +1,7 @@
-import leaflet_locate from 'leaflet.locatecontrol'
+import {LocateControl} from 'leaflet.locatecontrol'
 import 'leaflet.locatecontrol/dist/L.Control.Locate.min.css'
 
-var Locate = leaflet_locate.extend({
+var Locate = LocateControl.extend({
 	options: {
 		keepCurrentZoomLevel: true,
 		setView: 'once'
