@@ -35,7 +35,7 @@ export default {
 	devtool: 'source-map',
 	entry: {
 		main: './src/js/entry/app.js',
-		mini: './src/js/entry/mini.js',
+		mini: './src/js/entry/mini.js'
 	},
 	output: {
 		filename: '[name].[contenthash].js'
@@ -78,16 +78,6 @@ export default {
 			]
 		}),
 		new MiniCssExtractPlugin(),
-		//replace the 'current directory' context (which won't exist in the browser) with something that doesn't exist now. It may still break, but at least webpack won't keep telling us about mocha.
-		new webpack.ContextReplacementPlugin(/^\.$/, context => {
-			if (/\/node_modules\/mocha\/lib/.test(context.context)) {
-				//ensure we're only doing this for modules we know about
-				context.regExp = /this_should_never_exist/
-				for (const d of context.dependencies) {
-					if (d.critical) d.critical = false
-				}
-			}
-		}),
 		new LicenseWebpackPlugin({
 			...defaultLicenseWebpackPluginConfig,
 			excludedPackageTest: packageName => packageName === '@tstibbs/geo-bagging-shared',
@@ -169,10 +159,6 @@ export default {
 			{
 				test: resolve('./node_modules/leaflet.featuregroup.subgroup/dist/leaflet.featuregroup.subgroup-src.js'),
 				use: 'exports-loader?type=commonjs&exports=single|L.FeatureGroup.SubGroup'
-			},
-			{
-				test: resolve('./node_modules/mocha/browser-entry.js'),
-				use: 'exports-loader?type=commonjs&exports=single|window'
 			}
 		]
 	}
