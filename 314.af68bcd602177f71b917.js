@@ -1,0 +1,2 @@
+"use strict";(self.webpackChunk_tstibbs_geo_bagging_ui=self.webpackChunk_tstibbs_geo_bagging_ui||[]).push([[314],{5314(e,t,n){n.r(t);const s=n(6445).default.extend({parse:function(e){var t=e.properties.name,n=this.getBundleConfig().urls[t],s={type:"FeatureCollection",features:[e]},r=[["Length (miles)",e.properties.length],["Notes",e.properties.notes]],o=e.properties.openedDate;if(null!=o){var a=new Date(o).toLocaleDateString();r.push(["Opened",a])}return{name:t,url:n,geojson:s,extraInfos:r}}});n.d(t,["default",0,s])}}]);
+//# sourceMappingURL=314.af68bcd602177f71b917.js.map
