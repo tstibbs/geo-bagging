@@ -1,18 +1,26 @@
 {
 	"name": "@tstibbs/geo-bagging-backend",
 	"private": true,
-	"engines": {
-		"node": ">=22",
-		"npm": ">=10"
+	"devEngines": {
+		"runtime": {
+			"name": "node",
+			"version": "22",
+			"onFail": "error"
+		},
+		"packageManager": {
+			"name": "pnpm",
+			"version": ">=11.7",
+			"onFail": "error"
+		}
 	},
 	"type": "module",
 	"devDependencies": {
 		"@aws-sdk/client-cloudformation": "^3.845.0",
 		"@aws-sdk/client-s3": "^3.845.0",
 		"@aws-sdk/lib-storage": "^3.845.0",
-		"@tstibbs/cloud-core-utils": "file:../../cloud-core/aws/utils",
-		"aws-cdk": "2.1018.1",
-		"aws-cdk-lib": "2.200.1",
+		"@tstibbs/cloud-core-utils": "github:tstibbs/cloud-core#path:/aws/utils",
+		"aws-cdk": "2.1126.0",
+		"aws-cdk-lib": "2.258.1",
 		"esbuild": "^0.25.5",
 		"jest": "30.0.0"
 	},
