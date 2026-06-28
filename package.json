@@ -1,15 +1,23 @@
 {
 	"name": "@tstibbs/geo-bagging-root",
 	"private": true,
-	"engines": {
-		"node": ">=20",
-		"npm": ">=10"
+	"devEngines": {
+		"runtime": {
+			"name": "node",
+			"version": "22",
+			"onFail": "error"
+		},
+		"packageManager": {
+			"name": "pnpm",
+			"version": ">=11.7",
+			"onFail": "error"
+		}
 	},
 	"devDependencies": {
 		"lint-staged": "^15.2.2",
 		"prettier": "^3.2.5"
 	},
 	"scripts": {
-		"preinstall": "git config core.hooksPath .project/hooks"
+		"prepare": "git config core.hooksPath .project/hooks"
 	}
 }
