@@ -1,2 +1,0 @@
-"use strict";(self.webpackChunk_tstibbs_geo_bagging_ui=self.webpackChunk_tstibbs_geo_bagging_ui||[]).push([[57,230],{7057(e,t,a){a.r(t);const s=a(6445).default.extend({parse:function(e){return{name:e.properties.name,geojson:{type:"FeatureCollection",features:[e]}}}});a.d(t,["default",0,s])},6230(e,t,a){a.r(t);var s="Counties";const i={aspectLabel:s,dimensionNames:[s],dataToLoad:"data.geojson",parser:a(7057).default,style:{initialOutlineWidth:1,fillOpacity:0}};a.d(t,["default",0,i])}}]);
-//# sourceMappingURL=230.3ac380c8b80f054cd446.js.map

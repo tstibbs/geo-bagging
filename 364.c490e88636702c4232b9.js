@@ -1,0 +1,2 @@
+"use strict";(self.webpackChunk_tstibbs_geo_bagging_ui=self.webpackChunk_tstibbs_geo_bagging_ui||[]).push([[364],{6364(e,t,s){s.r(t),s.d(t,{default:()=>n});const n=s(6445).default.extend({parse:function(e){return{name:e.properties.name,geojson:{type:"FeatureCollection",features:[e]}}}})}}]);
+//# sourceMappingURL=364.c490e88636702c4232b9.js.map
