@@ -4,8 +4,8 @@ import {tmpInputDir} from './constants.js'
 async function transform(xslt, input, output) {
 	return new Promise((resolve, reject) => {
 		let child = spawn(
-			`npx`,
-			[`xslt3`, `-xsl:${xslt}`, `-s:${tmpInputDir}/${input}`, `-o:${tmpInputDir}/${output}`, `-t`],
+			`pnpm`,
+			[`exec`, `xslt3`, `-xsl:${xslt}`, `-s:${tmpInputDir}/${input}`, `-o:${tmpInputDir}/${output}`, `-t`],
 			{
 				stdio: 'inherit'
 			}

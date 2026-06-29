@@ -1,0 +1,4 @@
+allowBuilds:
+  puppeteer: true
+  skia-canvas: true
+  wtf_wikipedia: true
