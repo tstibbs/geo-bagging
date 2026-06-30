@@ -1,7 +1,7 @@
 import Converter from './converter.js'
 import {ifCmd} from '@tstibbs/cloud-core-utils'
 import {backUpReferenceData} from './utils.js'
-import {tmpInputDir, outputDir} from './constants.js'
+import {inputDataDir, outputDir} from './constants.js'
 import compareData from './csv-comparer.js'
 
 const attributionString = `Adapted from data available on <a href="https://trigpointing.uk/">trigpointing.uk</a> which is a mixture of Public Domain and OGL from Ordnance Survey.`
@@ -39,7 +39,7 @@ class TrigConverter extends Converter {
 async function buildDataFile() {
 	await backUpReferenceData('trigs', 'data_all.json')
 	await backUpReferenceData('trigs', 'data_mini.json')
-	const inputFile = `${tmpInputDir}/trigs/trigpoints.csv`
+	const inputFile = `${inputDataDir}/trigs/trigpoints.csv`
 
 	//generate the 'all' data
 

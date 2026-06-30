@@ -4,6 +4,7 @@ import _, {difference} from 'underscore'
 import geolib from 'geolib'
 import {ifCmd} from '@tstibbs/cloud-core-utils'
 import {createTempDir} from './utils.js'
+import {comparisonsDir, referenceDataDir} from './constants.js'
 
 const HEADER_LNG = 'Longitude'
 const HEADER_LAT = 'Latitude'
@@ -33,7 +34,7 @@ class CsvComparer {
 	}
 
 	async _printReport() {
-		let dir = `tmp-input/comparisons/${this._source}`
+		let dir = `${comparisonsDir}/${this._source}`
 		await createTempDir(dir)
 		let reportPath = `${dir}/${this._file}.report.diff`
 		await writeFile(reportPath, this._report)
@@ -255,7 +256,7 @@ class CsvComparer {
 	}
 
 	async compare(oldPath, newPath) {
-		let oldContents = await this._read(oldPath ?? `tmp-input/old-data/${this._filePath}`)
+		let oldContents = await this._read(oldPath ?? `${referenceDataDir}/${this._filePath}`)
 		let newContents = await this._read(newPath ?? `../ui/src/js/bundles/${this._filePath}`)
 		let oldHeaders = oldContents.headers
 		let newHeaders = newContents.headers

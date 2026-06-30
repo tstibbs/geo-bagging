@@ -1,11 +1,11 @@
 import {spawn} from 'child_process'
-import {tmpInputDir} from './constants.js'
+import {inputDataDir} from './constants.js'
 
 async function transform(xslt, input, output) {
 	return new Promise((resolve, reject) => {
 		let child = spawn(
 			`pnpm`,
-			[`exec`, `xslt3`, `-xsl:${xslt}`, `-s:${tmpInputDir}/${input}`, `-o:${tmpInputDir}/${output}`, `-t`],
+			[`exec`, `xslt3`, `-xsl:${xslt}`, `-s:${inputDataDir}/${input}`, `-o:${inputDataDir}/${output}`, `-t`],
 			{
 				stdio: 'inherit'
 			}

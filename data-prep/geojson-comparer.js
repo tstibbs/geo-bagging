@@ -5,13 +5,13 @@ import pngjs from 'pngjs'
 import {ifCmd} from '@tstibbs/cloud-core-utils'
 
 import {createTempDir, deleteFile} from './utils.js'
-import {tmpInputDir, outputDir as sourceDataDir, referenceDataDir} from './constants.js'
+import {comparisonsDir, outputDir as sourceDataDir, referenceDataDir} from './constants.js'
 import {gbBoundsAsGeoJson} from './utils/bounds.js'
 import {geojsonToPng} from './geojson-visualiser.js'
 
 async function visualise(datasource, qualifier) {
 	let inputPath = `${qualifier === 'old' ? referenceDataDir : sourceDataDir}/${datasource}/data.geojson`
-	let outputDir = `${tmpInputDir}/comparisons/${datasource}`
+	let outputDir = `${comparisonsDir}/${datasource}`
 	await createTempDir(outputDir)
 	let pngPath = `${outputDir}/output-${qualifier}.png`
 	let csvPath = `${outputDir}/output-${qualifier}.csv`
@@ -67,17 +67,17 @@ function setPixel(buffer, idx, r, g, b, a) {
 async function compare(datasource) {
 	let errors = []
 
-	let oldCsvFile = `${tmpInputDir}/comparisons/${datasource}/output-old.csv`
-	let newCsvFile = `${tmpInputDir}/comparisons/${datasource}/output-new.csv`
+	let oldCsvFile = `${comparisonsDir}/${datasource}/output-old.csv`
+	let newCsvFile = `${comparisonsDir}/${datasource}/output-new.csv`
 	let oldCsv = (await readFile(oldCsvFile)).toString()
 	let newCsv = (await readFile(newCsvFile)).toString()
 	if (oldCsv != newCsv) {
 		errors.push(`Properties differ: ${oldCsvFile}, ${newCsvFile}`)
 	}
 
-	let oldImg = `${tmpInputDir}/comparisons/${datasource}/output-old.png`
-	let newImg = `${tmpInputDir}/comparisons/${datasource}/output-new.png`
-	let diffFile = `${tmpInputDir}/comparisons/${datasource}/output-diff.png`
+	let oldImg = `${comparisonsDir}/${datasource}/output-old.png`
+	let newImg = `${comparisonsDir}/${datasource}/output-new.png`
+	let diffFile = `${comparisonsDir}/${datasource}/output-diff.png`
 	await deleteFile(diffFile)
 	let img1 = await readPng(oldImg)
 	let img2 = await readPng(newImg)

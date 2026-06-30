@@ -2,12 +2,12 @@ import {readFile, writeFile} from 'node:fs/promises'
 import proj4 from 'proj4'
 import {visualise as visualiseGeoJson, compare as compareGeoJson} from './geojson-comparer.js'
 import Converter from './converter.js'
-import {tmpInputDir, outputDir} from './constants.js'
+import {inputDataDir, outputDir} from './constants.js'
 import {ifCmd} from '@tstibbs/cloud-core-utils'
 import {backUpReferenceData} from './utils.js'
 import {reprojectGeometry} from './crs-utils.js'
 
-const inputDirectory = `${tmpInputDir}/trails`
+const inputDirectory = `${inputDataDir}/trails`
 const attributionString = `Adapted from open data from Natural Resources Wales and Natural England, used under the <a href="https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/">OGL</a>.`
 
 //additional data not included in the input files

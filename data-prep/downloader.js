@@ -1,7 +1,8 @@
 import {unlink, createWriteStream} from 'node:fs'
+import assert from 'node:assert'
 import request from 'request'
 import {backOff} from 'exponential-backoff'
-import {tmpInputDir} from './constants.js'
+import {inputDataDir} from './constants.js'
 import {createTempDir} from './utils.js'
 
 async function _httpDownload(source, destination) {
@@ -46,10 +47,8 @@ async function _downloadSingle(source, destination, downloaderFunction) {
 }
 
 export async function _downloadMultiple(bundleName, urls, downloaderFunction) {
-	let outputDir = `${tmpInputDir}`
-	if (bundleName != null) {
-		outputDir += `/${bundleName}`
-	}
+	assert.ok(bundleName)
+	let outputDir = `${inputDataDir}/${bundleName}`
 	await createTempDir(outputDir)
 	let orderedArrayOfUrls = Array.isArray(urls) ? urls : Object.entries(urls)
 	let from = bundleName != null ? bundleName : Object.keys(urls).join(';')

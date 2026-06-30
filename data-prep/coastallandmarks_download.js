@@ -4,9 +4,9 @@ import {fetchPages, fetchCategories} from './wikipediaUtils.js'
 import {queryWikidata} from './wikidataUtils.js'
 import {ifCmd} from '@tstibbs/cloud-core-utils'
 import {createTempDir} from './utils.js'
-import {tmpInputDir} from './constants.js'
+import {inputDataDir} from './constants.js'
 
-const inputDir = `${tmpInputDir}/coastallandmarks`
+const inputDir = `${inputDataDir}/coastallandmarks`
 
 async function downloadLighthouses() {
 	let pageDocs = await queryWikidata('coastallandmarks-lighthouses.rq')

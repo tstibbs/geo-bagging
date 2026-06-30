@@ -5,14 +5,14 @@ import assert from 'assert/strict'
 import {sortBy} from 'underscore'
 import {DateTime} from 'luxon'
 
-import {tmpInputDir, outputDir} from './constants.js'
+import {inputDataDir, outputDir} from './constants.js'
 import Converter from './converter.js'
 import {filterPages} from './wikipediaUtils.js'
 import {deduplicate} from './wikidataUtils.js'
 import {ifCmd} from '@tstibbs/cloud-core-utils'
 import {backUpReferenceData} from './utils.js'
 import compareData from './csv-comparer.js'
-const inputDir = `${tmpInputDir}/coastallandmarks`
+const inputDir = `${inputDataDir}/coastallandmarks`
 
 const attributionString = `Adapted from data from wikipedia licensed under <a href="https://en.wikipedia.org/wiki/Wikipedia:Text_of_the_Creative_Commons_Attribution-ShareAlike_4.0_International_License">CC&nbsp;BY&#8209;SA&nbsp;4.0</a>.`
 const columnHeaders = '[Longitude,Latitude,Id,Name,Link,Type,YearBuilt]'

@@ -1,9 +1,9 @@
 import {writeFile} from 'node:fs/promises'
 import {ifCmd} from '@tstibbs/cloud-core-utils'
 import {fetchPages} from './wikipediaUtils.js'
-import {tmpInputDir} from './constants.js'
+import {inputDataDir} from './constants.js'
 import {download as downloadFiles} from './downloader.js'
-const inputDir = `${tmpInputDir}/rnli`
+const inputDir = `${inputDataDir}/rnli`
 
 async function downloadStationsList() {
 	const urls = {

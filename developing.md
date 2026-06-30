@@ -29,5 +29,5 @@ _These datasources are not distributed with this project due to licencing restri
 1. Select "Download file format": `CSV`
 1. Select "Customise for": (pick a blank)
 1. Click `Download`
-1. Place downloaded file into `converters/tmp-input/trigs` (deleting any other files)
+1. Place downloaded file into `converters/tmp-data-processing/input-data/trigs` (deleting any other files)
 1. `node trigs.js`

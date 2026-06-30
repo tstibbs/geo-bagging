@@ -3,7 +3,7 @@ import unzipper from 'unzipper'
 import {ifCmd} from '@tstibbs/cloud-core-utils'
 import {createTempDir} from './utils.js'
 import {download as downloadFiles} from './downloader.js'
-import {tmpInputDir} from './constants.js'
+import {inputDataDir} from './constants.js'
 
 const source =
 	'http://archaeologydataservice.ac.uk/catalogue/adsdata/dob_cba_2005/ahds/dissemination/kmz/DoB_Google_Earth.kmz'
@@ -12,7 +12,7 @@ const fileName = 'doc.kml'
 
 async function download() {
 	await downloadFiles('defence', {[source]: tempFile})
-	const outputDir = `${tmpInputDir}/defence`
+	const outputDir = `${inputDataDir}/defence`
 	await createTempDir(outputDir)
 	let outputFile = createWriteStream(outputDir + '/' + fileName)
 	createReadStream(outputDir + '/' + tempFile)

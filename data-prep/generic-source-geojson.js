@@ -1,13 +1,13 @@
 import {readFile, writeFile} from 'node:fs/promises'
 
 import Converter from './converter.js'
-import {tmpInputDir, outputDir} from './constants.js'
+import {inputDataDir, outputDir} from './constants.js'
 import {visualise as visualiseGeoJson, compare as compareGeoJson} from './geojson-comparer.js'
 import {backUpReferenceData} from './utils.js'
 import {simplify} from './utils/geojson.js'
 
 export async function readDownloadedFiles(sourceName, files) {
-	const inputDirectory = `${tmpInputDir}/${sourceName}`
+	const inputDirectory = `${inputDataDir}/${sourceName}`
 	return Promise.all(files.map(file => `${inputDirectory}/${file}`).map(file => readFile(file)))
 }
 

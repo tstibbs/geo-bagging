@@ -3,7 +3,7 @@ import {createWriteStream} from 'fs'
 
 import {ifCmd} from '@tstibbs/cloud-core-utils'
 import {TRIGS_USERNAME, TRIGS_PASSWORD} from './envs.js'
-import {tmpInputDir} from './constants.js'
+import {inputDataDir} from './constants.js'
 import {createTempDir} from './utils.js'
 
 const credentials = {
@@ -14,7 +14,7 @@ const credentials = {
 
 const loginUrl = 'https://trigpointing.uk/login.php'
 const csvDownloadUrl = 'https://trigpointing.uk/trigs/down-csv.php'
-const outputDir = `${tmpInputDir}/trigs`
+const outputDir = `${inputDataDir}/trigs`
 const outputFileName = `${outputDir}/trigpoints.csv`
 
 async function download() {

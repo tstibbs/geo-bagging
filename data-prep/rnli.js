@@ -3,7 +3,7 @@ import {readFile} from 'node:fs/promises'
 import Converter from './converter.js'
 import {ifCmd} from '@tstibbs/cloud-core-utils'
 import {backUpReferenceData} from './utils.js'
-import {tmpInputDir, outputDir} from './constants.js'
+import {inputDataDir, outputDir} from './constants.js'
 import {convertWikiData} from './rnli_wikipedia.js'
 import compareData from './csv-comparer.js'
 import {floatToSensiblePrecision} from './utils/coord.js'
@@ -81,7 +81,7 @@ class RnliConverter extends Converter {
 async function buildDataFile() {
 	await backUpReferenceData('rnli', 'data.json')
 	let wikiData = await convertWikiData()
-	const inputDir = `${tmpInputDir}/rnli`
+	const inputDir = `${inputDataDir}/rnli`
 	let inputData = JSON.parse(await readFile(`${inputDir}/lifeboatStations.json`)).features
 	await new RnliConverter(wikiData).writeOutCsv(inputData, `${outputDir}/rnli/data.json`)
 	return await compareData('rnli', 'data.json')

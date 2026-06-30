@@ -4,13 +4,13 @@ import xlsx from 'xlsx'
 import CombinedStream from 'combined-stream2'
 import stream from 'stream'
 
-import {tmpInputDir, outputDir} from './constants.js'
+import {inputDataDir, outputDir} from './constants.js'
 import {ifCmd} from '@tstibbs/cloud-core-utils'
 import {backUpReferenceData} from './utils.js'
 import Converter from './converter.js'
 import compareData from './csv-comparer.js'
 
-const inputDir = `${tmpInputDir}/milestones`
+const inputDir = `${inputDataDir}/milestones`
 
 const attributionString = `Adapted from the the database of <a href="http://www.milestonesociety.co.uk/database.html">The Milestone Society</a>.`
 const columnHeaders =

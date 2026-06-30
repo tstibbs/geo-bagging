@@ -2,7 +2,7 @@ import unzipper from 'unzipper'
 import {createReadStream} from 'node:fs'
 import {Readable} from 'stream'
 
-import {tmpInputDir, outputDir} from './constants.js'
+import {inputDataDir, outputDir} from './constants.js'
 import {ifCmd} from '@tstibbs/cloud-core-utils'
 import {backUpReferenceData} from './utils.js'
 import Converter from './converter.js'
@@ -89,7 +89,7 @@ function toStream(buffer) {
 async function buildDataFile() {
 	await backUpReferenceData('hills', 'data.json')
 	return new Promise((resolve, reject) => {
-		createReadStream(`${tmpInputDir}/hills/hillcsv.zip`)
+		createReadStream(`${inputDataDir}/hills/hillcsv.zip`)
 			.pipe(unzipper.Parse())
 			.on('entry', async entry => {
 				let chunks = []

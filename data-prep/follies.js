@@ -5,7 +5,7 @@ import {ifCmd} from '@tstibbs/cloud-core-utils'
 import {backUpReferenceData} from './utils.js'
 import Converter from './converter.js'
 import xslt from './xslt.js'
-import {tmpInputDir, outputDir} from './constants.js'
+import {inputDataDir, outputDir, referenceDataDir} from './constants.js'
 import compareData from './csv-comparer.js'
 
 const gardenStructure = 'Garden structure'
@@ -185,14 +185,14 @@ const parser = new xml2js.Parser()
 
 async function buildDataFile() {
 	await backUpReferenceData('follies', 'data.json')
-	let oldRaw = await readFile(`tmp-input/old-data/follies/data.json`)
+	let oldRaw = await readFile(`${referenceDataDir}/follies/data.json`)
 	let oldGeographLinks = Object.fromEntries(
 		JSON.parse(oldRaw)
 			.data.filter(row => row[3].includes('.geograph.'))
 			.map(row => [row[2], row[3]])
 	)
 	await xslt('follies-extract.xslt', 'follies/follies.kml', 'follies/out.xml')
-	let data = await readFile(`${tmpInputDir}/follies/out.xml`)
+	let data = await readFile(`${inputDataDir}/follies/out.xml`)
 	let result = await parser.parseStringPromise(data)
 	const converter = new FolliesConverter(oldGeographLinks)
 	await converter.writeOutCsv(result.points.point, `${outputDir}/follies/data.json`)

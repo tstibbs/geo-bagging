@@ -1,8 +1,8 @@
 import {readFile} from 'node:fs/promises'
 import {ifCmd} from '@tstibbs/cloud-core-utils'
-import {tmpInputDir} from './constants.js'
+import {inputDataDir} from './constants.js'
 
-const inputDir = `${tmpInputDir}/rnli`
+const inputDir = `${inputDataDir}/rnli`
 const validLaunchMethods = [
 	'MooredAfloat',
 	'Carriage',

@@ -4,6 +4,7 @@ import {promisify} from 'node:util'
 
 import {exec as rawExec} from '@tstibbs/cloud-core-utils'
 import uiConstants from '../ui/src/js/constants.js'
+import {referenceDataDir} from './constants.js'
 
 const exists = promisify(rawExists)
 
@@ -18,14 +19,14 @@ async function exec(command) {
 }
 
 async function backUpReferenceData(source, file) {
-	const outputFile = `tmp-input/old-data/${source}/${file}`
+	const outputFile = `${referenceDataDir}/${source}/${file}`
 	let fetchCommand
 	if (['nt', 'trigs'].includes(source)) {
 		fetchCommand = `curl ${uiConstants.dataBackendBaseUrl}${source}/${file} -o ${outputFile}`
 	} else {
 		fetchCommand = `git show :ui/src/js/bundles/${source}/${file} > ${outputFile}`
 	}
-	const command = `mkdir -p tmp-input/old-data/${source} && ${fetchCommand}`
+	const command = `mkdir -p ${referenceDataDir}/${source} && ${fetchCommand}`
 	console.log(`exec: ${command}`)
 	await exec(command)
 }
