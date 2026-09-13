@@ -14,10 +14,11 @@
 		}
 	},
 	"devDependencies": {
+		"husky": "9.1.7",
 		"lint-staged": "^15.2.2",
 		"prettier": "^3.2.5"
 	},
 	"scripts": {
-		"prepare": "git config core.hooksPath .project/hooks"
+		"prepare": "husky .config/husky"
 	}
 }
