@@ -4,17 +4,18 @@ on: [push, pull_request]
 
 env:
   npm_config_engine_strict: true
+  MISE_IDIOMATIC_VERSION_FILE_ENABLE_TOOLS: "node,pnpm"
 
 jobs:
   build:
 
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
 
     steps:
     - name: Checkout
       uses: actions/checkout@v7
-    - name: Set up dependencies
-      uses: jdx/mise-action@v4
+    - name: Setup mise
+      uses: jdx/mise-action@v5
     - name: Set up environment
       run: mkdir cdk.tmp
       working-directory: backend
