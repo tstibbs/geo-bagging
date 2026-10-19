@@ -43,5 +43,5 @@ WHERE {
   ?coordinate_node wikibase:geoLongitude ?lon .
   ?coordinate_node wikibase:geoLatitude ?lat ;
   
-  SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en" }
+  SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],mul,en" }
 }
