@@ -185,7 +185,19 @@ async function processData() {
 	let csvsPromises = [processLighthouses(), processPiers()]
 	let csvs = await Promise.all(csvsPromises)
 	let csv = flatten(csvs).sort((rowA, rowB) => {
-		return rowA[2].localeCompare(rowB[2])
+		const valueA = rowA[2]
+		const valueB = rowB[2]
+
+		if (valueA == null && valueB == null) {
+			return String(rowA[3] ?? '').localeCompare(String(rowB[3] ?? ''))
+		}
+		if (valueA == null) return 1
+		if (valueB == null) return -1
+
+		const primaryCompare = String(valueA).localeCompare(String(valueB))
+		if (primaryCompare !== 0) return primaryCompare
+
+		return String(rowA[3] ?? '').localeCompare(String(rowB[3] ?? ''))
 	})
 	const converter = new Converter(attributionString, columnHeaders, null, 0)
 	await converter.writeOutCsv(csv, `${outputDir}/coastallandmarks/data.json`)
