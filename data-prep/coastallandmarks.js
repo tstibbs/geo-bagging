@@ -130,9 +130,7 @@ function processPiers() {
 					).filter(sectionCoords => sectionCoords != null)
 					let openings = flatten(
 						allInfoboxes.map(infoboxes => {
-							return infoboxes
-								.filter(infobox => infobox.open != null && infobox.open.text != null)
-								.map(infobox => infobox.open.text)
+							return infoboxes.map(infobox => (infobox.open ?? infobox.opened)?.text).filter(Boolean)
 						})
 					).filter(opening => opening != null)
 					if (docCoords.length > 0) {
