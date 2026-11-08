@@ -3,7 +3,7 @@ import {download as downloadFiles} from './downloader.js'
 
 async function download() {
 	return await downloadFiles('hills', {
-		'http://www.hills-database.co.uk/hillcsv.zip': 'hillcsv.zip'
+		'https://www.hill-bagging.co.uk/dobih-downloads/hillcsv.zip': 'hillcsv.zip'
 	})
 }
 
