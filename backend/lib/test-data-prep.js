@@ -5,14 +5,12 @@ import {Rule, Schedule} from 'aws-cdk-lib/aws-events'
 import {CodeBuildProject} from 'aws-cdk-lib/aws-events-targets'
 import {Topic} from 'aws-cdk-lib/aws-sns'
 import {EmailSubscription} from 'aws-cdk-lib/aws-sns-subscriptions'
+
+import {CodeBuildFailureNotifications} from '@tstibbs/cloud-core-utils/src/stacks/codebuild-failure-notification/lib/stack.js'
+
 import {NOTIFICATION_EMAIL, TRIGS_USERNAME, TRIGS_PASSWORD} from './deploy-envs.js'
 
 export function dataPrepTestBuild(stack) {
-	const buildNotificationTopic = new Topic(stack, 'DataPrepTest-BuildNotificationTopic', {
-		topicName: 'geobagging-data-prep-test-build-notifications'
-	})
-	buildNotificationTopic.addSubscription(new EmailSubscription(NOTIFICATION_EMAIL))
-
 	const serviceRole = new Role(stack, 'DataPrepTest-CodeBuildServiceRole', {
 		roleName: 'codebuild-geobagging-data-prep-test-build-service-role',
 		assumedBy: new ServicePrincipal('codebuild.amazonaws.com'),
@@ -26,12 +24,6 @@ export function dataPrepTestBuild(stack) {
 			)
 		]
 	})
-	serviceRole.addToPolicy(
-		new PolicyStatement({
-			actions: ['sns:Publish'],
-			resources: [buildNotificationTopic.topicArn]
-		})
-	)
 
 	const project = new Project(stack, 'DataPrepTest-CodebuildProject', {
 		projectName: 'geobagging-data-prep-test',
@@ -49,7 +41,6 @@ export function dataPrepTestBuild(stack) {
 		queuedTimeout: Duration.hours(8),
 		concurrentBuildLimit: 1
 	})
-	project.notifyOnBuildFailed('DataPrepTest-notify', buildNotificationTopic)
 
 	new Rule(stack, 'DataPrepTest-WeeklyBuildRule', {
 		ruleName: 'trigger-geobagging-data-prep-test-build',
@@ -61,4 +52,7 @@ export function dataPrepTestBuild(stack) {
 		}),
 		targets: [new CodeBuildProject(project)]
 	})
+
+	const notifier = new CodeBuildFailureNotifications(stack, NOTIFICATION_EMAIL)
+	notifier.addProject(project, 'geobagging-data-prep-test-build')
 }

@@ -92,19 +92,24 @@ export async function run(failFast = true) {
 	let errored = Object.values(results).filter(result => result.status === 'error')
 	let changes = Object.values(results).filter(result => result.status === 'changes')
 	let noChanges = Object.values(results).filter(result => result.status === 'noChanges')
-	const logResults = (message, resultSet) =>
-		console.log([message, ...resultSet.map(result => result.report)].join('\n * '))
+
+	const resultsLogs = []
+	const formatResults = (message, resultSet) =>
+		resultsLogs.push([message, ...resultSet.map(result => result.report)].join('\n * '))
 	console.log('')
 	if (noChanges.length > 0) {
-		logResults('Sources ran and produced no changes: ', noChanges)
+		formatResults('Sources ran and produced no changes: ', noChanges)
 	}
 	if (changes.length > 0) {
-		logResults('Sources ran but produced diffs to review: ', changes)
+		formatResults('Sources ran but produced diffs to review: ', changes)
 	}
 	if (errored.length > 0) {
-		logResults('Sources errored: ', errored)
+		formatResults('Sources errored: ', errored)
 		process.exitCode = 1
 	}
+	const resultMessage = resultsLogs.join('\n')
+	console.log(resultMessage)
+	return resultMessage
 }
 
 await ifCmd(import.meta, run)
