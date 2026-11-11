@@ -225,9 +225,6 @@ importers:
       exceljs:
         specifier: ^4.4.0
         version: 4.4.0
-      file-saver:
-        specifier: ^2.0.5
-        version: 2.0.5
       font-awesome:
         specifier: ^4.7.0
         version: 4.7.0
@@ -238,8 +235,8 @@ importers:
         specifier: ^1.9.4
         version: 1.9.4
       leaflet-box-selector:
-        specifier: github:tstibbs/Leaflet.BoxSelector
-        version: https://codeload.github.com/tstibbs/Leaflet.BoxSelector/tar.gz/577f48b3de721a06417255a6c2127d29e9936741
+        specifier: github:tstibbs/Leaflet.BoxSelector#feature/leaflet-2
+        version: https://codeload.github.com/tstibbs/Leaflet.BoxSelector/tar.gz/bf5ac481f5b90dc1112288bb7b8767be5d531317
       leaflet-control-hider:
         specifier: github:tstibbs/Leaflet.ControlHider
         version: https://codeload.github.com/tstibbs/Leaflet.ControlHider/tar.gz/1d181ac1b413e7f235c37ee970758c491d9f0d47
@@ -3047,8 +3044,8 @@ packages:
     resolution: {integrity: sha512-b94GiNHQNy6JNTrt5w6zNyffMrNkXZb3KTkCZJb2V1xaEGCk093vkZ2jk3tpaeP33/OiXC+WvK9AxUebnf5nbw==}
     engines: {node: '>= 0.6.3'}
 
-  leaflet-box-selector@https://codeload.github.com/tstibbs/Leaflet.BoxSelector/tar.gz/577f48b3de721a06417255a6c2127d29e9936741:
-    resolution: {gitHosted: true, integrity: sha512-B5WuKzcm3yHUODV/Mfp1EEnzI6wUfH1IpfxeBAi8aoPq/onF+bgmR4QG+yuNTaqkf/k0oJZk85UgmJ/qQO2Lcw==, tarball: https://codeload.github.com/tstibbs/Leaflet.BoxSelector/tar.gz/577f48b3de721a06417255a6c2127d29e9936741}
+  leaflet-box-selector@https://codeload.github.com/tstibbs/Leaflet.BoxSelector/tar.gz/bf5ac481f5b90dc1112288bb7b8767be5d531317:
+    resolution: {gitHosted: true, integrity: sha512-dWcUE5xJ7UXIGtYZDq9sQuF2sUVMXQ32hieiafnKh2vDupexiXgHQZBXwTOwaRUv1LYA6y3uB4qrtDVWboQQpw==, tarball: https://codeload.github.com/tstibbs/Leaflet.BoxSelector/tar.gz/bf5ac481f5b90dc1112288bb7b8767be5d531317}
     version: 0.0.1
 
   leaflet-control-hider@https://codeload.github.com/tstibbs/Leaflet.ControlHider/tar.gz/1d181ac1b413e7f235c37ee970758c491d9f0d47:
@@ -8448,7 +8445,9 @@ snapshots:
     dependencies:
       readable-stream: 2.3.8
 
-  leaflet-box-selector@https://codeload.github.com/tstibbs/Leaflet.BoxSelector/tar.gz/577f48b3de721a06417255a6c2127d29e9936741: {}
+  leaflet-box-selector@https://codeload.github.com/tstibbs/Leaflet.BoxSelector/tar.gz/bf5ac481f5b90dc1112288bb7b8767be5d531317:
+    dependencies:
+      file-saver: 2.0.5
 
   leaflet-control-hider@https://codeload.github.com/tstibbs/Leaflet.ControlHider/tar.gz/1d181ac1b413e7f235c37ee970758c491d9f0d47: {}
 
