@@ -1,0 +1,2 @@
+"use strict";(self.webpackChunk_tstibbs_geo_bagging_ui=self.webpackChunk_tstibbs_geo_bagging_ui||[]).push([[208,433],{7208(a,e,s){s.r(e);const t={aspectLabel:"Coastal Landmarks",dimensionNames:["Type"],dataToLoad:"data.json",parser:s(4433).default};s.d(e,["default",0,t])},4433(a,e,s){s.r(e);const t=s(5295).default.extend({parse:function(a){var e=a[0],s=a[1],t=a[3],d=a[4],n=a[5],u=[["Type",n],["Built/Opened",a[6]]];this.addMarker(t,s,e,d,t,u,null,[n])}});s.d(e,["default",0,t])}}]);
+//# sourceMappingURL=208.75a53da3d429ef39b5ca.js.map
