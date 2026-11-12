@@ -49,7 +49,7 @@
 		"leaflet": "^1.9.4",
 		"leaflet-box-selector": "github:tstibbs/Leaflet.BoxSelector#feature/leaflet-2",
 		"leaflet-control-hider": "github:tstibbs/Leaflet.ControlHider",
-		"leaflet-geosearch": "4.4.0",
+		"leaflet-geosearch": "5.2.0",
 		"leaflet-matrix-layers-control": "github:tstibbs/Leaflet.MatrixLayersControl",
 		"leaflet-mouse-position": "^1.2.0",
 		"leaflet.featuregroup.subgroup": "^1.0.2",

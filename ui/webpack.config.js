@@ -152,10 +152,6 @@ export default {
 				use: 'exports-loader?exports=default|L.Control.ControlHider'
 			},
 			{
-				test: resolveDependency('leaflet-geosearch/src/js/l.control.geosearch.js'),
-				use: 'exports-loader?exports=default|L.Control.GeoSearch'
-			},
-			{
 				test: resolveDependency('sidebar-v2/js/leaflet-sidebar.js'),
 				use: 'exports-loader?exports=default|L.Control.Sidebar'
 			},
