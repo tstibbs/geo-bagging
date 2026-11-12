@@ -241,8 +241,8 @@ importers:
         specifier: github:tstibbs/Leaflet.ControlHider
         version: https://codeload.github.com/tstibbs/Leaflet.ControlHider/tar.gz/1d181ac1b413e7f235c37ee970758c491d9f0d47
       leaflet-geosearch:
-        specifier: 5.2.0
-        version: 5.2.0
+        specifier: 5.0.0
+        version: 5.0.0
       leaflet-matrix-layers-control:
         specifier: github:tstibbs/Leaflet.MatrixLayersControl
         version: https://codeload.github.com/tstibbs/Leaflet.MatrixLayersControl/tar.gz/4fdd68402dfc595675f2b246425e4e3e64d4c580
@@ -3055,8 +3055,8 @@ packages:
     resolution: {gitHosted: true, integrity: sha512-rXIiaepqr3ehehCtxI5zPS6DrCiPcpHbeixqRAKae/Ef8DH/WCFp4cBd81ubATGg0wzf3Jd0xddNuf0IGUR4Cg==, tarball: https://codeload.github.com/tstibbs/Leaflet.ControlHider/tar.gz/1d181ac1b413e7f235c37ee970758c491d9f0d47}
     version: 0.0.1
 
-  leaflet-geosearch@5.2.0:
-    resolution: {integrity: sha512-odgQ0E9SmnCFGjvwOiZHzfqlQgo/A3mJ4f3zeT1RBrVBDAKwP3MYrNre3k9x4/m5yhFA8wNrRfVQ8mIMm9RrLg==}
+  leaflet-geosearch@5.0.0:
+    resolution: {integrity: sha512-ovugNWutv7VKGMCiRTgXEVX25mBFrbkZ4jAu6apl2TLw8cnW9Z7ig5sCy2EMkguqeIX8LV8VgKi7BCnQwm74YQ==}
 
   leaflet-matrix-layers-control@https://codeload.github.com/tstibbs/Leaflet.MatrixLayersControl/tar.gz/4fdd68402dfc595675f2b246425e4e3e64d4c580:
     resolution: {gitHosted: true, integrity: sha512-O3AGuuAqjFkgG/slEIvT9ozweflaitGQbIIMqPTqfEjVdeSEgab42CBCPNSaDYYYIV2N6SG6i0ba6gcLIWe8YA==, tarball: https://codeload.github.com/tstibbs/Leaflet.MatrixLayersControl/tar.gz/4fdd68402dfc595675f2b246425e4e3e64d4c580}
@@ -8458,7 +8458,7 @@ snapshots:
 
   leaflet-control-hider@https://codeload.github.com/tstibbs/Leaflet.ControlHider/tar.gz/1d181ac1b413e7f235c37ee970758c491d9f0d47: {}
 
-  leaflet-geosearch@5.2.0:
+  leaflet-geosearch@5.0.0:
     dependencies:
       '@types/google.maps': 3.66.10
     optionalDependencies:
