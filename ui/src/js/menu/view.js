@@ -27,26 +27,32 @@ var MenuView = leaflet.Class.extend({
 		view += '<div id="sidebar" class="' + classes.join(' ') + '">'
 		view += '    <div class="sidebar-tabs">'
 		view += '        <ul role="tablist">'
-		view += '            <li><a href="#sidebar-layers" role="tab"><i class="fa fa-bars"></i></a></li>'
-		view += '            <li><a href="#sidebar-settings" role="tab"><i class="fa fa-sliders"></i></a></li>'
-		view += '            <li><a href="#sidebar-constraints" role="tab"><i class="fa fa-map-o"></i></a></li>'
+		view +=
+			'            <li><a href="#sidebar-layers" role="tab" title="Layers" aria-label="Layers"><i class="fa fa-bars"></i></a></li>'
+		view +=
+			'            <li><a href="#sidebar-settings" role="tab" title="Settings" aria-label="Settings"><i class="fa fa-sliders"></i></a></li>'
+		view +=
+			'            <li><a href="#sidebar-constraints" role="tab" title="Constraints" aria-label="Constraints"><i class="fa fa-map-o"></i></a></li>'
 		view += `            <li>
-                                 <a href="#sidebar-visits" role="tab">
+                                 <a href="#sidebar-visits" role="tab" title="Visits" aria-label="Visits">
                                      <span class="fa fa-stack">
                                          <i class="fa-check fa fa-stack-1x fa-small-icon"></i>
                                          <i class="fa-map-o fa fa-stack-1x"></i>
                                      </span>
                                  </a>
                              </li>`
-		view += '            <li><a href="#sidebar-external-files" role="tab"><i class="fa fa-plus-square-o"></i></a></li>'
+		view +=
+			'            <li><a href="#sidebar-external-files" role="tab" title="External Files" aria-label="External Files"><i class="fa fa-plus-square-o"></i></a></li>'
 		view += '        </ul>'
 
 		//bottom of the navigation bar
 		view += '        <ul role="tablist">'
 		if (showUserSettings) {
-			view += '            <li><a href="#sidebar-user" role="tab"><i class="fa fa-user"></i></a></li>'
+			view +=
+				'            <li><a href="#sidebar-user" role="tab" title="User Settings" aria-label="User Settings"><i class="fa fa-user"></i></a></li>'
 		}
-		view += '            <li><a href="#sidebar-attribution" role="tab"><i class="fa fa-copyright"></i></a></li>'
+		view +=
+			'            <li><a href="#sidebar-attribution" role="tab" title="Attribution" aria-label="Attribution"><i class="fa fa-copyright"></i></a></li>'
 		view += '        </ul>'
 		view += '    </div>'
 
