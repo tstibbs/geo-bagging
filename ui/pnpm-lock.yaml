@@ -239,7 +239,7 @@ importers:
         version: https://codeload.github.com/tstibbs/Leaflet.BoxSelector/tar.gz/73efea6af22bff4acf60ad74c2e4e1af98ccb181(leaflet@1.9.4)
       leaflet-control-hider:
         specifier: github:tstibbs/Leaflet.ControlHider
-        version: https://codeload.github.com/tstibbs/Leaflet.ControlHider/tar.gz/1d181ac1b413e7f235c37ee970758c491d9f0d47
+        version: https://codeload.github.com/tstibbs/Leaflet.ControlHider/tar.gz/aa424f7460a963627243f25abc3a8eb535a9f6d7(leaflet@1.9.4)
       leaflet-geosearch:
         specifier: 5.2.0
         version: 5.2.0
@@ -3053,9 +3053,11 @@ packages:
     peerDependencies:
       leaflet: 1.9.4
 
-  leaflet-control-hider@https://codeload.github.com/tstibbs/Leaflet.ControlHider/tar.gz/1d181ac1b413e7f235c37ee970758c491d9f0d47:
-    resolution: {gitHosted: true, integrity: sha512-rXIiaepqr3ehehCtxI5zPS6DrCiPcpHbeixqRAKae/Ef8DH/WCFp4cBd81ubATGg0wzf3Jd0xddNuf0IGUR4Cg==, tarball: https://codeload.github.com/tstibbs/Leaflet.ControlHider/tar.gz/1d181ac1b413e7f235c37ee970758c491d9f0d47}
+  leaflet-control-hider@https://codeload.github.com/tstibbs/Leaflet.ControlHider/tar.gz/aa424f7460a963627243f25abc3a8eb535a9f6d7:
+    resolution: {gitHosted: true, integrity: sha512-mXyU+5QgKSVnSDr7LEbDedhCyNoVjdYsxGt2DTLKLh4R1v218peYpOrB+SwxbLB18ksyrOFUkrzhmVRL7P6OLg==, tarball: https://codeload.github.com/tstibbs/Leaflet.ControlHider/tar.gz/aa424f7460a963627243f25abc3a8eb535a9f6d7}
     version: 0.0.1
+    peerDependencies:
+      leaflet: ^1.9.4
 
   leaflet-geosearch@5.2.0:
     resolution: {integrity: sha512-odgQ0E9SmnCFGjvwOiZHzfqlQgo/A3mJ4f3zeT1RBrVBDAKwP3MYrNre3k9x4/m5yhFA8wNrRfVQ8mIMm9RrLg==}
@@ -8459,7 +8461,9 @@ snapshots:
       file-saver: 2.0.5
       leaflet: 1.9.4
 
-  leaflet-control-hider@https://codeload.github.com/tstibbs/Leaflet.ControlHider/tar.gz/1d181ac1b413e7f235c37ee970758c491d9f0d47: {}
+  leaflet-control-hider@https://codeload.github.com/tstibbs/Leaflet.ControlHider/tar.gz/aa424f7460a963627243f25abc3a8eb535a9f6d7(leaflet@1.9.4):
+    dependencies:
+      leaflet: 1.9.4
 
   leaflet-geosearch@5.2.0:
     dependencies:
