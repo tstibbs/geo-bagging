@@ -1,2 +1,0 @@
-"use strict";(self.webpackChunk_tstibbs_geo_bagging_ui=self.webpackChunk_tstibbs_geo_bagging_ui||[]).push([[782],{8451(i,s,b){b(8504);b(1240).A.loadMiniMap()}},i=>{i.O(0,[96,151],()=>i(8451));i.O()}]);
-//# sourceMappingURL=mini.cb729715006248b855a4.js.map
