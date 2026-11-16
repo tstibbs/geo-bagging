@@ -236,7 +236,7 @@ importers:
         version: 1.9.4
       leaflet-box-selector:
         specifier: github:tstibbs/Leaflet.BoxSelector
-        version: https://codeload.github.com/tstibbs/Leaflet.BoxSelector/tar.gz/73efea6af22bff4acf60ad74c2e4e1af98ccb181(leaflet@1.9.4)
+        version: https://codeload.github.com/tstibbs/Leaflet.BoxSelector/tar.gz/b4368ea99e16e1477e7d74f5e39034e1fbf7ae59(leaflet@1.9.4)
       leaflet-control-hider:
         specifier: github:tstibbs/Leaflet.ControlHider
         version: https://codeload.github.com/tstibbs/Leaflet.ControlHider/tar.gz/aa424f7460a963627243f25abc3a8eb535a9f6d7(leaflet@1.9.4)
@@ -3047,8 +3047,8 @@ packages:
     resolution: {integrity: sha512-b94GiNHQNy6JNTrt5w6zNyffMrNkXZb3KTkCZJb2V1xaEGCk093vkZ2jk3tpaeP33/OiXC+WvK9AxUebnf5nbw==}
     engines: {node: '>= 0.6.3'}
 
-  leaflet-box-selector@https://codeload.github.com/tstibbs/Leaflet.BoxSelector/tar.gz/73efea6af22bff4acf60ad74c2e4e1af98ccb181:
-    resolution: {gitHosted: true, integrity: sha512-I3Tsw/yrCfyX/ie4Hk3kJ+HmlHGCqw4E+f0ECZ0JxVCPdF76AknPkRD/GhdcUuKELW37Qd8+Ma7HJ2ijUbbxPg==, tarball: https://codeload.github.com/tstibbs/Leaflet.BoxSelector/tar.gz/73efea6af22bff4acf60ad74c2e4e1af98ccb181}
+  leaflet-box-selector@https://codeload.github.com/tstibbs/Leaflet.BoxSelector/tar.gz/b4368ea99e16e1477e7d74f5e39034e1fbf7ae59:
+    resolution: {gitHosted: true, integrity: sha512-Qo8t+w+3w7rWWQmbf6rQdLXtlQqvM5SyJON6onKR4cvMAXlpFSufY6K71SlSLv55ov4hjclxZSBIpN13OdKF5A==, tarball: https://codeload.github.com/tstibbs/Leaflet.BoxSelector/tar.gz/b4368ea99e16e1477e7d74f5e39034e1fbf7ae59}
     version: 0.0.1
     peerDependencies:
       leaflet: 1.9.4
@@ -8456,7 +8456,7 @@ snapshots:
     dependencies:
       readable-stream: 2.3.8
 
-  leaflet-box-selector@https://codeload.github.com/tstibbs/Leaflet.BoxSelector/tar.gz/73efea6af22bff4acf60ad74c2e4e1af98ccb181(leaflet@1.9.4):
+  leaflet-box-selector@https://codeload.github.com/tstibbs/Leaflet.BoxSelector/tar.gz/b4368ea99e16e1477e7d74f5e39034e1fbf7ae59(leaflet@1.9.4):
     dependencies:
       file-saver: 2.0.5
       leaflet: 1.9.4
