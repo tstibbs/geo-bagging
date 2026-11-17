@@ -15,6 +15,7 @@
 	},
 	"type": "module",
 	"devDependencies": {
+		"@playwright/test": "^1.65.0",
 		"copy-webpack-plugin": "^14.0.0",
 		"css-loader": "^7.1.5",
 		"css-minimizer-webpack-plugin": "^8.0.0",
@@ -66,8 +67,10 @@
 		"prebuild": "rm -rf dist/*",
 		"build": "pnpm exec webpack",
 		"serve": "pnpm exec http-server dist -p 3000 -c-1 --cors",
-		"dev": "pnpm run prebuild && pnpm exec webpack serve --config webpack.config.dev.js",
+		"start": "pnpm exec webpack serve --config webpack.config.dev.js",
+		"dev": "pnpm run prebuild && pnpm run start",
 		"test": "node --experimental-vm-modules --nolazy ./node_modules/jest/bin/jest.js",
+		"test:playwright": "pnpm exec playwright test",
 		"deploy": "pnpm run build && ./deploy.sh"
 	}
 }
