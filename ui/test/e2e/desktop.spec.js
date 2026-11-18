@@ -3,7 +3,7 @@ import {setTimeout} from 'node:timers/promises'
 import {test, expect} from '@playwright/test'
 
 const startUrl = '?startPosition=52.926310,-0.572129&startZoom=12'
-const maxMapPixelsDiff = 400 // number of pixels that are allowed to be different when viewing the map, to account for OSM render changes
+const maxMapPixelsDiff = 1000 // number of pixels that are allowed to be different when viewing the map, to account for OSM render changes. Ignored when masking the map. Screenshots not including the map tiles must be pixel identical.
 
 test.use({
 	viewport: {

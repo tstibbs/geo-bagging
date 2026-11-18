@@ -2,12 +2,14 @@ import {defineConfig, devices} from '@playwright/test'
 
 const baseURL = 'http://localhost:3000'
 
+const CI = !!process.env.CI
+
 export default defineConfig({
 	testDir: './test/e2e',
 	// Fail the build on CI if you accidentally left test.only in the source code.
-	forbidOnly: !!process.env.CI,
+	forbidOnly: CI,
 	// Retry on CI only
-	retries: process.env.CI ? 2 : 0,
+	retries: CI ? 2 : 0,
 	workers: 1,
 	reporter: [['list'], ['html', {open: 'never'}]],
 	timeout: 60000,
@@ -18,9 +20,9 @@ export default defineConfig({
 		actionTimeout: 3000
 	},
 	webServer: {
-		command: 'pnpm run start',
+		command: CI ? 'pnpm run serve' : 'pnpm run start',
 		url: baseURL,
-		reuseExistingServer: !process.env.CI,
+		reuseExistingServer: !CI,
 		timeout: 120 * 1000
 	},
 	projects: [
