@@ -9,5 +9,6 @@ let alias2 = Object.entries(modulePrefixAliases)
 
 export default {
 	moduleNameMapper: Object.fromEntries([...alias1, ...alias2]),
-	testEnvironment: 'jsdom'
+	testEnvironment: 'jsdom',
+	testPathIgnorePatterns: ['/test/e2e/']
 }
